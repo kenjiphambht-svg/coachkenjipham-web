@@ -17,9 +17,9 @@ export default function Home() {
             <Image
               src="/essence-wordmark-inline-light.svg"
               alt="Kenji Phạm · Essence Coaching"
-              width={180}
-              height={40}
-              className="h-10 w-auto"
+              width={540}
+              height={120}
+              className="h-auto w-auto max-w-[280px] md:max-w-[540px]"
             />
             <a
               href="#contact"
