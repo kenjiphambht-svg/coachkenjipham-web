@@ -17,13 +17,13 @@ export default function Home() {
               <div className="font-sans text-[10px] tracking-[0.3em] uppercase text-ink">
                 KENJI PHẠM
               </div>
-              <div className="font-serif italic text-[18px] text-gold">
+              <div className="font-serif italic text-[18px] text-gold-brand">
                 Essence Coaching
               </div>
             </div>
             <a
               href="#contact"
-              className="font-sans text-[10px] tracking-widest uppercase border border-gold px-[14px] py-[5px] text-ink hover:bg-gold hover:text-ink transition-colors"
+              className="font-sans text-[10px] tracking-widest uppercase border border-gold-brand px-[14px] py-[5px] text-gold-brand hover:bg-gold-brand hover:text-ink transition-colors"
             >
               Ưu đãi ra mắt
             </a>
@@ -33,7 +33,7 @@ export default function Home() {
         {/* Hero Section */}
         <section className="py-20 px-6 text-center bg-cream">
           <div className="max-w-4xl mx-auto space-y-6">
-            <div className="font-sans text-[11px] tracking-widest uppercase text-gold">
+            <div className="font-sans text-[11px] tracking-widest uppercase text-gold-brand">
               Báo cáo bản đồ tâm hồn · Bé 0–6 tuổi · Sài Gòn
             </div>
             <h1 className="font-serif text-4xl md:text-[56px] leading-tight text-ink">
@@ -388,7 +388,7 @@ export default function Home() {
                   Tôi không đọc tương lai. Tôi đọc bản thiết kế — cái mà mỗi
                   đứa trẻ mang theo khi sinh ra. Sau 8 năm làm coach cho người
                   lớn, tôi nhận ra rằng nhiều vấn đề của họ bắt nguồn từ việc bị
-                  \"sửa\" sai từ nhỏ. Bản Đồ Tâm Hồn Bé là để những đứa trẻ này
+                  "sửa" sai từ nhỏ. Bản Đồ Tâm Hồn Bé là để những đứa trẻ này
                   không phải trải qua điều đó.
                 </p>
               </div>
@@ -441,7 +441,7 @@ export default function Home() {
           <div className="max-w-3xl mx-auto space-y-6">
             <h2 className="font-serif text-3xl md:text-[40px] text-ink">
               Con chỉ có một lần{" "}
-              <span className="italic text-gold">0 đến 6 tuổi.</span>
+              <span className="italic text-gold-brand">0 đến 6 tuổi.</span>
             </h2>
             <p className="text-[15px] leading-relaxed">
               Báo cáo này không thay đổi con. Nó giúp ba mẹ nhìn thấy con.
@@ -470,7 +470,7 @@ export default function Home() {
               <div className="font-sans text-[10px] tracking-[0.3em] uppercase text-ink">
                 KENJI PHẠM
               </div>
-              <div className="font-serif italic text-[18px] text-gold">
+              <div className="font-serif italic text-[18px] text-gold-brand">
                 Essence Coaching
               </div>
             </div>

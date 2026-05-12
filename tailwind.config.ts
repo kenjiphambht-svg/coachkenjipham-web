@@ -54,6 +54,7 @@ const config: Config = {
         ink: "var(--ink)",
         "body-text": "var(--body-text)",
         gold: "var(--gold)",
+        "gold-brand": "var(--gold-brand)",
         "gold-deep": "var(--gold-deep)",
         "dark-section": "var(--dark-section)",
         "cream-light": "var(--cream-light)",
