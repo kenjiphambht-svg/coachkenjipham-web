@@ -1,5 +1,6 @@
 import { SEO } from "@/components/SEO";
 import { Sparkles, Heart, Compass, Star } from "lucide-react";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -13,17 +14,16 @@ export default function Home() {
         {/* Navigation */}
         <nav className="border-b border-[rgba(201,168,76,0.3)] bg-cream">
           <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
-            <div className="flex flex-col">
-              <div className="font-sans text-[10px] tracking-[0.3em] uppercase text-ink">
-                KENJI PHẠM
-              </div>
-              <div className="font-serif italic text-[18px] text-gold-brand">
-                Essence Coaching
-              </div>
-            </div>
+            <Image
+              src="/essence-wordmark-inline-light.svg"
+              alt="Kenji Phạm · Essence Coaching"
+              width={180}
+              height={40}
+              className="h-10 w-auto"
+            />
             <a
               href="#contact"
-              className="font-sans text-[10px] tracking-widest uppercase border border-gold-brand px-[14px] py-[5px] text-gold-brand hover:bg-gold-brand hover:text-ink transition-colors"
+              className="font-sans text-[10px] tracking-widest uppercase border border-gold-brand px-[14px] py-[5px] text-ink hover:bg-gold-brand hover:text-ink transition-colors"
             >
               Ưu đãi ra mắt
             </a>
@@ -466,14 +466,13 @@ export default function Home() {
         {/* Footer */}
         <footer className="border-t border-[rgba(201,168,76,0.2)] bg-cream py-8 px-6">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex flex-col">
-              <div className="font-sans text-[10px] tracking-[0.3em] uppercase text-ink">
-                KENJI PHẠM
-              </div>
-              <div className="font-serif italic text-[18px] text-gold-brand">
-                Essence Coaching
-              </div>
-            </div>
+            <Image
+              src="/essence-wordmark-full-vn-light.svg"
+              alt="Kenji Phạm · Essence Coaching · Sài Gòn"
+              width={220}
+              height={60}
+              className="h-auto w-auto"
+            />
             <div className="font-sans text-[11px] text-gold-deep">
               Không dự đoán tương lai · Không phán định mệnh
             </div>
