@@ -1,6 +1,6 @@
 ---
 title: Landing page hoàn chỉnh
-status: in_progress
+status: done
 priority: high
 type: feature
 tags: [landing, vietnamese]
@@ -14,7 +14,7 @@ Single landing page với 10 sections theo design system chỉ định: cream/go
 
 ## Checklist
 - [x] Design system: import fonts, register colors in globals.css + tailwind.config.ts
-- [x] Navigation: logo left (2-line) + CTA button right
+- [x] Navigation: logo left (SVG) + CTA button right
 - [x] Hero section: eyebrow + H1 (italic gold highlight) + subtext + 2 CTAs
 - [x] Pain Points: 2x2 grid, Q&A format
 - [x] 5 Chapters: dark section, numbered 01-05 with titles/descriptions
@@ -24,9 +24,11 @@ Single landing page với 10 sections theo design system chỉ định: cream/go
 - [x] Kenji Bio: monogram + name + title + bio text
 - [x] FAQ: 4 questions, accordion pattern
 - [x] Final CTA: centered text + 2 buttons
-- [x] Footer: logo + tagline + border-top
+- [x] Footer: logo SVG + tagline + border-top
 
 ## Acceptance
 - Landing page displays all 10 sections với đúng Vietnamese content
 - Design system matches specification: cream/gold palette, sharp corners, Cormorant + Raleway
 - Mobile responsive
+- Brand color #e0c373 applied to Essence Coaching instances
+- SVG logos integrated in nav and footer
