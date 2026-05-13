@@ -5,11 +5,12 @@ Bản Đồ Tâm Hồn Bé — báo cáo bản đồ tâm hồn cho trẻ 0-6 tu
 Upscale editorial wellness — boutique spiritual coaching aesthetic.
 
 Colors (hex values registered in Tailwind):
-- `--background: #faf8f3` (cream ấm — dominant)
-- `--foreground: #1a1510` (mực than — headings/nav)
+- `--cream: #faf8f3` (cream ấm — dominant background)
+- `--ink: #1a1510` (mực than — headings/nav)
 - `--body-text: #3d3020` (nâu đậm — body copy)
-- `--gold: #c9a84c` (accent — CTAs/highlights)
-- `--gold-deep: #8a6820` (footer muted)
+- `--gold: #c9a84c` (accent — general highlights)
+- `--gold-brand: #e0c373` (brand color — Essence Coaching, hero eyebrow, key CTAs)
+- `--gold-deep: #8a6820` (footer muted text)
 - `--dark-section: #100f0c` (chapters section background)
 - `--cream-light: #f2ead8` (text on dark)
 - `--cream-muted: #a08d6e` (muted text on dark)
@@ -17,6 +18,11 @@ Colors (hex values registered in Tailwind):
 Fonts:
 - Headings: Cormorant Garamond (serif, weights: 400/400i/600/600i)
 - Body: Raleway (sans, weights: 400/500/600/700)
+
+Logos:
+- Nav: essence-wordmark-inline-light.svg (enlarged 3x for mobile readability)
+- Bio: essence-monogram-light.svg (E monogram in bordered square)
+- Footer: essence-wordmark-full-vn-light.svg (compact, with slogan)
 
 Style: Sharp corners (border-radius: 0), wide whitespace (80px padding), borders 0.5px solid rgba(201,168,76,0.3).
 
