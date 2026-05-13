@@ -17,9 +17,9 @@ export default function Home() {
             <Image
               src="/essence-wordmark-inline-light.svg"
               alt="Kenji Phạm · Essence Coaching"
-              width={540}
-              height={120}
-              className="h-auto w-auto max-w-[280px] md:max-w-[540px]"
+              width={380}
+              height={85}
+              className="h-auto w-auto max-w-[200px] md:max-w-[380px]"
             />
             <a
               href="#contact"
@@ -370,12 +370,12 @@ export default function Home() {
         <section className="py-20 px-6 bg-cream border-t border-[rgba(201,168,76,0.3)]">
           <div className="max-w-4xl mx-auto">
             <div className="flex flex-col md:flex-row gap-6 items-start">
-              <div className="w-[68px] h-[68px] border border-gold flex items-center justify-center flex-shrink-0 p-2">
+              <div className="w-[68px] h-[68px] flex-shrink-0">
                 <Image
                   src="/essence-monogram-light.svg"
                   alt="Essence Coaching"
-                  width={60}
-                  height={60}
+                  width={68}
+                  height={68}
                   className="w-full h-full"
                 />
               </div>
@@ -473,9 +473,9 @@ export default function Home() {
             <Image
               src="/essence-wordmark-full-vn-light.svg"
               alt="Kenji Phạm · Essence Coaching · Sài Gòn"
-              width={140}
-              height={40}
-              className="h-auto w-auto max-w-[140px]"
+              width={280}
+              height={80}
+              className="h-auto w-auto max-w-[280px]"
             />
             <div className="font-sans text-[11px] text-gold-deep">
               Không dự đoán tương lai · Không phán định mệnh
