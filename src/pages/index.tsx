@@ -370,10 +370,14 @@ export default function Home() {
         <section className="py-20 px-6 bg-cream border-t border-[rgba(201,168,76,0.3)]">
           <div className="max-w-4xl mx-auto">
             <div className="flex flex-col md:flex-row gap-6 items-start">
-              <div className="w-[68px] h-[68px] border border-gold flex items-center justify-center flex-shrink-0">
-                <span className="font-serif italic text-[28px] text-gold">
-                  K
-                </span>
+              <div className="w-[68px] h-[68px] border border-gold flex items-center justify-center flex-shrink-0 p-2">
+                <Image
+                  src="/essence-monogram-light.svg"
+                  alt="Essence Coaching"
+                  width={60}
+                  height={60}
+                  className="w-full h-full"
+                />
               </div>
               <div className="space-y-3 flex-1">
                 <div className="space-y-1">
@@ -469,9 +473,9 @@ export default function Home() {
             <Image
               src="/essence-wordmark-full-vn-light.svg"
               alt="Kenji Phạm · Essence Coaching · Sài Gòn"
-              width={220}
-              height={60}
-              className="h-auto w-auto"
+              width={140}
+              height={40}
+              className="h-auto w-auto max-w-[140px]"
             />
             <div className="font-sans text-[11px] text-gold-deep">
               Không dự đoán tương lai · Không phán định mệnh
