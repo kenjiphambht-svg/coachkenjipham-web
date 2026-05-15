@@ -8,6 +8,8 @@ export default function Home() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isNavSticky, setIsNavSticky] = useState(false);
   const monogramRef = useRef<HTMLDivElement>(null);
+  const [isMounted, setIsMounted)] = useState(false);
+  const [parallaxOffset, setParallaxOffset] = useState(0);
 
   // Reading progress bar
   useEffect(() => {
@@ -111,19 +113,19 @@ export default function Home() {
             #1a1510 60%,
             #1a1510 100%
           );
-          background-size: 200% 100%;
+          background-size: 200% auto;
+          color: transparent;
           -webkit-background-clip: text;
           background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: shimmer 3s ease-in-out infinite;
+          animation: shimmer 5s linear infinite;
         }
 
         @keyframes shimmer {
-          0%, 100% {
-            background-position: 0% 0%;
+          0% {
+            background-position: -200% center;
           }
-          50% {
-            background-position: 100% 0%;
+          100% {
+            background-position: 200% center;
           }
         }
 
@@ -220,6 +222,23 @@ export default function Home() {
           </div>
         </section>
 
+        {/* IMAGE PLACEHOLDER: Ebook Cover Mockup */}
+        <section className="py-16 px-6 bg-[#f2ead8]">
+          <div className="max-w-5xl mx-auto text-center">
+            <div className="bg-cream border border-[rgba(201,168,76,0.3)] rounded-sm p-12 min-h-[400px] flex flex-col items-center justify-center">
+              <div className="text-gold mb-4">
+                <BookOpen className="w-16 h-16 mx-auto" />
+              </div>
+              <p className="font-serif text-[18px] text-body-text mb-2">
+                📸 PLACEHOLDER: Ebook Cover Mockup
+              </p>
+              <p className="text-[13px] text-gold-deep max-w-md">
+                Anh upload hình bìa sách "Bản Sắc" vào đây — format portrait, tỷ lệ 3:4, kích thước tối ưu 800x1066px
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* Pain Points Grid */}
         <section className="py-28 px-6 bg-[#f2ead8]">
           <div className="max-w-6xl mx-auto">
@@ -275,42 +294,76 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="max-w-3xl mx-auto text-center fade-in-section">
-              <p className="text-[15px] leading-[1.7] text-body-text">
-                Trong thế giới đầy rẫy những lời khuyên "phải làm thế này, phải
-                làm thế kia", ba mẹ thường tự trách mình khi con không giống "con
-                nhà người ta". Nhưng kỳ thực, không có cuốn sách giáo khoa nào
-                viết đúng về đứa trẻ của bạn cả. Trừ cuốn sách này.{" "}
-                <span className="font-semibold">Bản Sắc</span> không dạy bạn cách
-                làm ba mẹ, nó giúp bạn học cách đọc cuốn sách quý giá nhất đời
-                mình: Đó chính là con bạn. Khi bạn hiểu được ngôn ngữ của con,
-                mọi áp lực sẽ tan biến, chỉ còn lại sự kết nối tĩnh lặng và đầy
-                yêu thương.
+            {/* Bridge Text */}
+            <div className="mt-16 max-w-3xl mx-auto space-y-4 text-center">
+              <p className="text-[15px] leading-relaxed text-body-text">
+                Trong thế giới đầy rẫy những lời khuyên "phải làm thế này, phải làm thế kia",
+              </p>
+              <p className="text-[15px] leading-relaxed text-body-text">
+                ba mẹ thường tự trách mình khi con không giống "con nhà người ta".
+              </p>
+              <p className="text-[15px] leading-relaxed text-body-text">
+                Nhưng kỳ thực, không có cuốn sách giáo khoa nào viết đúng về đứa trẻ của bạn cả.
+              </p>
+              <p className="text-[15px] leading-relaxed text-body-text font-medium">
+                Trừ cuốn sách này.
+              </p>
+              <p className="text-[15px] leading-relaxed text-body-text mt-6">
+                Bản Sắc không dạy bạn cách làm ba mẹ, nó giúp bạn học cách đọc cuốn sách quý giá nhất đời mình:
+              </p>
+              <p className="text-[15px] leading-relaxed text-body-text font-medium">
+                Đó chính là con bạn.
+              </p>
+              <p className="text-[15px] leading-relaxed text-body-text mt-6">
+                Khi bạn hiểu được ngôn ngữ của con, mọi áp lực sẽ tan biến,
+              </p>
+              <p className="text-[15px] leading-relaxed text-body-text">
+                chỉ còn lại sự kết nối tĩnh lặng và đầy yêu thương.
               </p>
             </div>
           </div>
         </section>
 
-        {/* Kenji Bio with Parallax Monogram */}
-        <section className="py-28 px-6 bg-cream border-t border-[rgba(201,168,76,0.3)] fade-in-section">
+        {/* Kenji Bio */}
+        <section className="py-28 px-6 bg-cream border-t border-[rgba(201,168,76,0.3)]">
           <div className="max-w-4xl mx-auto">
-            <h2 className="font-serif text-3xl md:text-[42px] text-center text-ink mb-12">
-              Tôi đọc "bản sắc" của con bạn.
+            <h2 className="text-[42px] leading-tight font-serif text-ink mb-12 text-center">
+              Tôi chạm vào <span className="italic">bản sắc</span> nguyên sơ của con bạn.
             </h2>
             <div className="flex flex-col md:flex-row gap-8 items-start">
-              <div
-                ref={monogramRef}
-                className="w-[68px] h-[68px] flex-shrink-0 transition-transform duration-300"
-              >
-                <Image
-                  src="/essence-monogram-light.svg"
-                  alt="Essence Coaching"
-                  width={68}
-                  height={68}
-                  className="w-full h-full"
-                />
+              {/* IMAGE PLACEHOLDER: Kenji Portrait */}
+              <div className="flex gap-6 items-start">
+                <div 
+                  ref={monogramRef}
+                  className="w-[68px] h-[68px] flex-shrink-0"
+                  style={{
+                    transform: `translateY(${isMounted && window.innerWidth >= 768 ? parallaxOffset * 0.05 : 0}px)`,
+                    transition: "transform 0.1s ease-out",
+                  }}
+                >
+                  <Image
+                    src="/essence-monogram-light.svg"
+                    alt="Essence Coaching"
+                    width={68}
+                    height={68}
+                    className="w-full h-full"
+                  />
+                </div>
+                
+                {/* Kenji Photo Placeholder */}
+                <div className="w-[180px] h-[220px] bg-cream border border-[rgba(201,168,76,0.3)] flex flex-col items-center justify-center flex-shrink-0">
+                  <div className="text-gold mb-2">
+                    <Users className="w-8 h-8" />
+                  </div>
+                  <p className="text-[11px] text-gold-deep text-center px-4">
+                    📸 Ảnh Kenji<br/>
+                    Portrait 9:11<br/>
+                    540x660px
+                  </p>
+                </div>
               </div>
-              <div className="space-y-4 flex-1">
+
+              <div className="space-y-3 flex-1">
                 <div className="space-y-1">
                   <div className="font-serif text-[18px] text-ink">
                     Kenji Phạm
@@ -392,7 +445,7 @@ export default function Home() {
                   {
                     num: "01",
                     title: "Bản thiết kế nguyên bản (Hạt mầm)",
-                    desc: 'Tìm hiểu cách con đã chọn để bước vào thế giới. Chương này giúp ba mẹ nhận diện "mã code" riêng biệt mà con mang theo, để yêu thương con mà không cần ép uổng.',
+                    desc: 'Tìm hiểu cách con đã chọn để bước vào thế giới. Chương này giúp ba mẹ nhận diện cá tính riêng biệt mà con mang theo, để yêu thương con mà không cần ép uổng.',
                   },
                   {
                     num: "02",
@@ -448,40 +501,57 @@ export default function Home() {
             <div className="grid md:grid-cols-3 gap-8">
               {[
                 {
-                  icon: FileText,
-                  step: "Bước 1",
+                  icon: <Send className="w-6 h-6" />,
                   title: "Gửi thông tin",
                   desc: "Ba mẹ cung cấp ngày, giờ (dương lịch), nơi sinh của bé cùng một vài bối cảnh gia đình (không bắt buộc).",
                 },
                 {
-                  icon: MessageCircle,
-                  step: "Bước 2",
+                  icon: <FileText className="w-6 h-6" />,
                   title: "Phân tích",
-                  desc: "Kenji dành thời gian đi sâu vào dữ liệu, phác họa và viết từng chương của cuốn sách.",
+                  desc: "Kenji dành thời gian phân tích sâu dữ liệu, phác họa và viết từng chương của cuốn sách.",
                 },
                 {
-                  icon: Send,
-                  step: "Bước 3",
+                  icon: <Heart className="w-6 h-6" />,
                   title: "Trao gửi Ebook của con",
-                  desc: "Sau 3-5 ngày làm việc, cuốn sách điện tử (file PDF) thiết kế sang trọng sẽ được gửi trực tiếp qua Email và Zalo của ba mẹ.",
+                  desc: "Sau 3-5 ngày làm việc, cuốn sách điện tử thiết kế sang trọng sẽ được gửi trực tiếp qua Email và Zalo của ba mẹ. Định dạng này giúp ba mẹ dễ dàng lưu trữ, mở ra xem trên điện thoại hoặc iPad bất cứ lúc nào, ở bất cứ đâu.",
                 },
-              ].map((item, index) => (
+              ].map((step, index) => (
                 <div
                   key={index}
                   className={`text-center space-y-4 fade-in-section delay-${index * 100}`}
                 >
                   <div className="w-16 h-16 rounded-full border-2 border-gold bg-cream mx-auto flex items-center justify-center">
-                    <item.icon className="w-7 h-7 text-gold" />
+                    <step.icon className="w-7 h-7 text-gold" />
                   </div>
                   <div className="font-sans text-[10px] tracking-widest uppercase text-gold">
-                    {item.step}
+                    {step.title}
                   </div>
                   <h3 className="font-serif text-[19px] text-ink">
-                    {item.title}
+                    {step.title}
                   </h3>
-                  <p className="text-[14px] leading-relaxed">{item.desc}</p>
+                  <p className="text-[14px] leading-relaxed">{step.desc}</p>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* IMAGE PLACEHOLDER: Sample Page Excerpt */}
+        <section className="py-16 px-6 bg-cream">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-[28px] font-serif text-ink mb-8 text-center">
+              Ngôn ngữ của báo cáo
+            </h2>
+            <div className="bg-[#f2ead8] border border-[rgba(201,168,76,0.3)] p-8 min-h-[300px] flex flex-col items-center justify-center">
+              <div className="text-gold mb-4">
+                <FileText className="w-12 h-12 mx-auto" />
+              </div>
+              <p className="font-serif text-[16px] text-body-text mb-2 text-center">
+                📸 PLACEHOLDER: Trích dẫn từ sách
+              </p>
+              <p className="text-[13px] text-gold-deep max-w-md text-center">
+                Anh upload screenshot 1 đoạn text từ ebook mẫu — landscape 16:9, kích thước 1200x675px
+              </p>
             </div>
           </div>
         </section>
@@ -513,8 +583,8 @@ export default function Home() {
                       2.000.000đ
                     </div>
                   </div>
-                  <div className="font-sans text-[11px] text-gold">
-                    Ra mắt · Thường 3.000.000đ
+                  <div className="text-[11px] text-gold-brand uppercase tracking-wider mb-2">
+                    Chi phí chính thức 3.000.000đ
                   </div>
                 </div>
 
@@ -558,8 +628,8 @@ export default function Home() {
                       3.500.000đ
                     </div>
                   </div>
-                  <div className="font-sans text-[11px] text-gold">
-                    Ra mắt · Thường 5.500.000đ
+                  <div className="text-[11px] text-gold-brand uppercase tracking-wider mb-2">
+                    Chi phí chính thức 5.500.000đ
                   </div>
                 </div>
 
@@ -669,15 +739,12 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="border-l-2 border-gold pl-6">
-                <h3 className="font-serif text-[19px] text-ink mb-3">
-                  Đối soát thay vì kỳ vọng
+              <div>
+                <h3 className="font-serif text-[20px] text-ink mb-3 border-l-2 border-gold pl-4">
+                  Đón nhận thay vì kỳ vọng
                 </h3>
-                <p className="text-[14px] leading-relaxed">
-                  Đừng tìm kiếm xem tương lai con sẽ thành ông nọ bà kia. Hãy đối
-                  chiếu những dòng chữ này với những cái nhíu mày, những lần con
-                  bướng bỉnh hay những cái ôm con vừa trao sáng nay. Ba mẹ sẽ thấy
-                  sự thấu cảm nảy mầm.
+                <p className="text-[14px] leading-relaxed pl-6">
+                  Đừng tìm kiếm xem tương lai con sẽ thành ông nọ bà kia. Hãy đối chiếu những dòng chữ này với những cái nhíu mày, những lần con bướng bỉnh hay những cái ôm con vừa trao sáng nay. Ba mẹ sẽ thấy sự thấu cảm nảy mầm.
                 </p>
               </div>
 
