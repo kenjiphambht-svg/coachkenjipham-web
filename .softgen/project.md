@@ -1,5 +1,5 @@
 ## Vision
-Bản Đồ Tâm Hồn Bé — báo cáo bản đồ tâm hồn cho trẻ 0-6 tuổi bởi Kenji Phạm · Essence Coaching · Sài Gòn. Landing page giới thiệu sản phẩm và 2 gói dịch vụ (Gói 1: 2.000.000đ, Gói 2: 3.500.000đ). Target: ba mẹ Việt Nam có con nhỏ, quan tâm đến tâm lý phát triển trẻ.
+BẢN SẮC — Mini Ebook cá nhân hóa cho bé 0-6 tuổi bởi Kenji Phạm · Essence Coaching · Sài Gòn. Landing page giới thiệu sản phẩm và 2 gói dịch vụ (Gói 1: 2.000.000đ - Ebook only, Gói 2: 3.500.000đ - Ebook + 1-1 consultation). Target: ba mẹ Việt Nam có con nhỏ, quan tâm đến tâm lý phát triển trẻ.
 
 ## Design
 Upscale editorial wellness — boutique spiritual coaching aesthetic.
@@ -20,11 +20,11 @@ Fonts:
 - Body: Raleway (sans, weights: 400/500/600/700)
 
 Logos:
-- Nav: essence-wordmark-inline-light.svg (enlarged 3x for mobile readability)
-- Bio: essence-monogram-light.svg (E monogram in bordered square)
-- Footer: essence-wordmark-full-vn-light.svg (compact, with slogan)
+- Nav: essence-wordmark-inline-light.svg (reduced 30% from 3x for optimal mobile readability)
+- Bio: essence-monogram-light.svg (E monogram, no border)
+- Footer: essence-wordmark-full-vn-light.svg (2x size, with slogan)
 
 Style: Sharp corners (border-radius: 0), wide whitespace (80px padding), borders 0.5px solid rgba(201,168,76,0.3).
 
 ## Features
-Single-page landing with 10 sections: Navigation, Hero, Pain Points grid, 5 Chapters (dark section), Value Props grid, Sample Excerpts, Pricing (2 packages), Kenji Bio, FAQ accordion, Final CTA, Footer.
+Single-page landing with 10 sections: Navigation, Hero, Pain Points (with bridge text), Kenji Bio (with emphasis box), Testimonials (2 quotes), 5 Chapters (dark section), How It Works (3 steps), Pricing (2 packages), FAQ (3 questions), Final CTA, Footer (with Terms & Privacy Accordion).
