@@ -27,4 +27,6 @@ Logos:
 Style: Sharp corners (border-radius: 0), wide whitespace (80px padding), borders 0.5px solid rgba(201,168,76,0.3).
 
 ## Features
-Single-page landing with 10 sections: Navigation, Hero, Pain Points (with bridge text), Kenji Bio (with emphasis box), Testimonials (2 quotes), 5 Chapters (dark section), How It Works (3 steps), Pricing (2 packages), FAQ (3 questions), Final CTA, Footer (with Terms & Privacy Accordion).
+Single-page landing with 10+ sections: Navigation (sticky with backdrop blur), Hero (text shimmer), Pain Points grid (4 cards with fade-in), Kenji Bio (parallax monogram + emphasis box), Testimonials (2 quotes), 5 Chapters Timeline (dark section with fade-in), How It Works (3 steps), Pricing (2 packages, Gói 2 highlighted), FAQ (Accordion), Reading Guide section, Final CTA, Footer (Terms & Privacy Accordion).
+
+Premium animations: reading progress bar (gold, top), fade-in on scroll (staggered), smooth scroll navigation, text gradient shimmer (hero), parallax (E monogram), enhanced hover states (cards lift + shadow).
