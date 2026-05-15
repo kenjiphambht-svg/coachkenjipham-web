@@ -1,5 +1,5 @@
 import { SEO } from "@/components/SEO";
-import { Sparkles, Heart, Compass, Star, FileText, MessageCircle, Send } from "lucide-react";
+import { Sparkles, Heart, Compass, Star, FileText, MessageCircle, Send, BookOpen } from "lucide-react";
 import Image from "next/image";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
