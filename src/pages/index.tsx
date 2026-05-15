@@ -353,12 +353,12 @@ export default function Home() {
                 </div>
                 
                 {/* Kenji Photo */}
-                <div className="w-[180px] h-[220px] flex-shrink-0 overflow-hidden shadow-md">
+                <div className="w-[180px] h-[180px] flex-shrink-0 overflow-hidden rounded-full ring-2 ring-gold shadow-xl">
                   <Image
                     src="/klp.jpg"
                     alt="Kenji Phạm - Essence Coach"
                     width={540}
-                    height={660}
+                    height={540}
                     className="w-full h-full object-cover"
                   />
                 </div>
