@@ -504,17 +504,17 @@ export default function Home() {
             <div className="grid md:grid-cols-3 gap-8">
               {[
                 {
-                  icon: <Send className="w-6 h-6" />,
+                  icon: Send,
                   title: "Gửi thông tin",
                   desc: "Ba mẹ cung cấp ngày, giờ (dương lịch), nơi sinh của bé cùng một vài bối cảnh gia đình (không bắt buộc).",
                 },
                 {
-                  icon: <FileText className="w-6 h-6" />,
+                  icon: FileText,
                   title: "Phân tích",
                   desc: "Kenji dành thời gian phân tích sâu dữ liệu, phác họa và viết từng chương của cuốn sách.",
                 },
                 {
-                  icon: <Heart className="w-6 h-6" />,
+                  icon: Heart,
                   title: "Trao gửi Ebook của con",
                   desc: "Sau 3-5 ngày làm việc, cuốn sách điện tử thiết kế sang trọng sẽ được gửi trực tiếp qua Email và Zalo của ba mẹ. Định dạng này giúp ba mẹ dễ dàng lưu trữ, mở ra xem trên điện thoại hoặc iPad bất cứ lúc nào, ở bất cứ đâu.",
                 },
