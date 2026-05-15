@@ -226,19 +226,18 @@ export default function Home() {
           </div>
         </section>
 
-        {/* IMAGE PLACEHOLDER: Ebook Cover Mockup */}
-        <section className="py-16 px-6 bg-[#f2ead8]">
+        {/* Ebook Cover Image */}
+        <section className="py-16 px-6 bg-[#f2ead8] fade-in-section">
           <div className="max-w-5xl mx-auto text-center">
-            <div className="bg-cream border border-[rgba(201,168,76,0.3)] rounded-sm p-12 min-h-[400px] flex flex-col items-center justify-center">
-              <div className="text-gold mb-4">
-                <BookOpen className="w-16 h-16 mx-auto" />
-              </div>
-              <p className="font-serif text-[18px] text-body-text mb-2">
-                📸 PLACEHOLDER: Ebook Cover Mockup
-              </p>
-              <p className="text-[13px] text-gold-deep max-w-md">
-                Anh upload hình bìa sách "Bản Sắc" vào đây — format portrait, tỷ lệ 3:4, kích thước tối ưu 800x1066px
-              </p>
+            <div className="max-w-2xl mx-auto">
+              <Image
+                src="/b1.png"
+                alt="Bản Sắc - Mini Ebook Cover"
+                width={800}
+                height={1066}
+                className="w-full h-auto shadow-2xl"
+                priority
+              />
             </div>
           </div>
         </section>
@@ -335,7 +334,7 @@ export default function Home() {
               Tôi chạm vào <span className="italic">bản sắc</span> nguyên sơ của con bạn.
             </h2>
             <div className="flex flex-col md:flex-row gap-8 items-start">
-              {/* IMAGE PLACEHOLDER: Kenji Portrait */}
+              {/* Kenji Portrait & Monogram */}
               <div className="flex gap-6 items-start">
                 <div 
                   ref={monogramRef}
@@ -353,16 +352,15 @@ export default function Home() {
                   />
                 </div>
                 
-                {/* Kenji Photo Placeholder */}
-                <div className="w-[180px] h-[220px] bg-cream border border-[rgba(201,168,76,0.3)] flex flex-col items-center justify-center flex-shrink-0">
-                  <div className="text-gold mb-2">
-                    <Users className="w-8 h-8" />
-                  </div>
-                  <p className="text-[11px] text-gold-deep text-center px-4">
-                    📸 Ảnh Kenji<br/>
-                    Portrait 9:11<br/>
-                    540x660px
-                  </p>
+                {/* Kenji Photo */}
+                <div className="w-[180px] h-[220px] flex-shrink-0 overflow-hidden shadow-md">
+                  <Image
+                    src="/klp.jpg"
+                    alt="Kenji Phạm - Essence Coach"
+                    width={540}
+                    height={660}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
 
@@ -539,22 +537,20 @@ export default function Home() {
           </div>
         </section>
 
-        {/* IMAGE PLACEHOLDER: Sample Page Excerpt */}
-        <section className="py-16 px-6 bg-cream">
+        {/* Sample Page Excerpt */}
+        <section className="py-16 px-6 bg-cream fade-in-section">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-[28px] font-serif text-ink mb-8 text-center">
               Ngôn ngữ của báo cáo
             </h2>
-            <div className="bg-[#f2ead8] border border-[rgba(201,168,76,0.3)] p-8 min-h-[300px] flex flex-col items-center justify-center">
-              <div className="text-gold mb-4">
-                <FileText className="w-12 h-12 mx-auto" />
-              </div>
-              <p className="font-serif text-[16px] text-body-text mb-2 text-center">
-                📸 PLACEHOLDER: Trích dẫn từ sách
-              </p>
-              <p className="text-[13px] text-gold-deep max-w-md text-center">
-                Anh upload screenshot 1 đoạn text từ ebook mẫu — landscape 16:9, kích thước 1200x675px
-              </p>
+            <div className="shadow-lg">
+              <Image
+                src="/nd1.png"
+                alt="Trích dẫn từ Bản Sắc Ebook"
+                width={1200}
+                height={675}
+                className="w-full h-auto"
+              />
             </div>
           </div>
         </section>
