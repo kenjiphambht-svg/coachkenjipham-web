@@ -10,25 +10,30 @@ position: 0
 ---
 
 ## Notes
-Single landing page với 10 sections theo design system chỉ định: cream/gold palette, Cormorant Garamond + Raleway fonts, sharp corners, wide whitespace.
+Single landing page với 10 sections theo design system chỉ định: cream/gold palette, Cormorant Garamond + Raleway fonts, sharp corners, wide whitespace. Updated with new "Bản Sắc" product content and premium design patterns (cards, timeline, alternating backgrounds).
 
 ## Checklist
 - [x] Design system: import fonts, register colors in globals.css + tailwind.config.ts
-- [x] Navigation: logo left (SVG) + CTA button right
-- [x] Hero section: eyebrow + H1 (italic gold highlight) + subtext + 2 CTAs
-- [x] Pain Points: 2x2 grid, Q&A format
-- [x] 5 Chapters: dark section, numbered 01-05 with titles/descriptions
-- [x] Value Props: 2x2 grid, icon + title + tag
-- [x] Sample Excerpts: 2 quote blocks with borders
-- [x] Pricing: 2 cards side by side, Gói 1 + Gói 2 (badge)
-- [x] Kenji Bio: monogram + name + title + bio text
-- [x] FAQ: 4 questions, accordion pattern
-- [x] Final CTA: centered text + 2 buttons
-- [x] Footer: logo SVG + tagline + border-top
+- [x] Navigation: logo SVG + CTA button
+- [x] Hero section: tagline (gold) + H1 + subtext + 2 CTAs (updated text)
+- [x] Pain Points: 4 cards grid with icons + shadow + bridge text
+- [x] Kenji Bio: content updated + emphasis box (20 bản/tháng limit)
+- [x] Testimonials: 2 quotes (Minh Khuê + Win)
+- [x] 5 Chapters: Timeline dọc with numbered circles (dark section)
+- [x] How It Works: 3 steps with circular icons
+- [x] Pricing: 2 cards (Gói 2 scale-105 + highlight)
+- [x] FAQ: 3 questions (Accordion)
+- [x] New section: Hướng dẫn đọc & Ghi nhật ký
+- [x] Final CTA: updated text + button
+- [x] Footer: Terms & Privacy Accordion
+- [x] Enhanced spacing: py-28 sections, max-w-3xl/4xl text
+- [x] Visual hierarchy: larger headings, line-height 1.7
+- [x] Alternating backgrounds for rhythm
 
 ## Acceptance
-- Landing page displays all 10 sections với đúng Vietnamese content
-- Design system matches specification: cream/gold palette, sharp corners, Cormorant + Raleway
+- Landing page displays all 10+ sections with "Bản Sắc" content
+- Design matches specification: premium editorial wellness aesthetic
 - Mobile responsive
-- Brand color #e0c373 applied to Essence Coaching instances
-- SVG logos integrated in nav and footer
+- Brand color #e0c373 applied correctly
+- SVG logos integrated
+- No build/runtime errors
