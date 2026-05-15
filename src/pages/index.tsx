@@ -392,17 +392,17 @@ export default function Home() {
                   {
                     num: "01",
                     title: "Bản thiết kế nguyên bản (Hạt mầm)",
-                    desc: "Tìm hiểu cách con đã chọn để bước vào thế giới. Chương này giúp ba mẹ nhận diện "mã code" riêng biệt mà con mang theo, để yêu thương con mà không cần ép uổng.",
+                    desc: 'Tìm hiểu cách con đã chọn để bước vào thế giới. Chương này giúp ba mẹ nhận diện "mã code" riêng biệt mà con mang theo, để yêu thương con mà không cần ép uổng.',
                   },
                   {
                     num: "02",
                     title: "0–2 tuổi — Thế giới qua lăng kính của con",
-                    desc: "Trong hai năm đầu đời, con dùng chiếc "ăng-ten" cảm xúc để hít thở bầu không khí của gia đình. Chương này giúp ba mẹ giải mã những cơn quấy khóc tưởng chừng vô lý, để hiểu đằng sau sự khó ở đó.",
+                    desc: 'Trong hai năm đầu đời, con dùng chiếc "ăng-ten" cảm xúc để hít thở bầu không khí của gia đình. Chương này giúp ba mẹ giải mã những cơn quấy khóc tưởng chừng vô lý, để hiểu đằng sau sự khó ở đó.',
                   },
                   {
                     num: "03",
                     title: "2–4 tuổi — Ý chí độc lập của con",
-                    desc: "Chứng kiến khoảnh khắc con bắt đầu tự vẽ nên biên giới của riêng mình. Đây là lúc "ngôi sao" bên trong con bừng sáng, ba mẹ sẽ học cách thiết lập ranh giới mà không làm gãy đổ cá tính của con.",
+                    desc: 'Chứng kiến khoảnh khắc con bắt đầu tự vẽ nên biên giới của riêng mình. Đây là lúc "ngôi sao" bên trong con bừng sáng, ba mẹ sẽ học cách thiết lập ranh giới mà không làm gãy đổ cá tính của con.',
                   },
                   {
                     num: "04",
