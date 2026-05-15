@@ -8,8 +8,6 @@ export default function Home() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isNavSticky, setIsNavSticky] = useState(false);
   const monogramRef = useRef<HTMLDivElement>(null);
-  const [isMounted, setIsMounted)] = useState(false);
-  const [parallaxOffset, setParallaxOffset] = useState(0);
 
   // Reading progress bar
   useEffect(() => {
@@ -60,16 +58,22 @@ export default function Home() {
   useEffect(() => {
     const handleParallax = () => {
       if (monogramRef.current) {
-        const rect = monogramRef.current.getBoundingClientRect();
-        const scrolled = window.scrollY;
-        const offsetTop = monogramRef.current.offsetTop;
-        const diff = scrolled - offsetTop + window.innerHeight / 2;
-        const parallaxValue = diff * 0.05;
-        monogramRef.current.style.transform = `translateY(${parallaxValue}px)`;
+        if (window.innerWidth >= 768) {
+          const scrolled = window.scrollY;
+          const offsetTop = monogramRef.current.offsetTop;
+          const diff = scrolled - offsetTop + window.innerHeight / 2;
+          const parallaxValue = diff * 0.05;
+          monogramRef.current.style.transform = `translateY(${parallaxValue}px)`;
+        } else {
+          monogramRef.current.style.transform = `translateY(0px)`;
+        }
       }
     };
 
     window.addEventListener("scroll", handleParallax);
+    // Initialize
+    handleParallax();
+    
     return () => window.removeEventListener("scroll", handleParallax);
   }, []);
 
@@ -337,7 +341,6 @@ export default function Home() {
                   ref={monogramRef}
                   className="w-[68px] h-[68px] flex-shrink-0"
                   style={{
-                    transform: `translateY(${isMounted && window.innerWidth >= 768 ? parallaxOffset * 0.05 : 0}px)`,
                     transition: "transform 0.1s ease-out",
                   }}
                 >
@@ -739,11 +742,11 @@ export default function Home() {
                 </p>
               </div>
 
-              <div>
-                <h3 className="font-serif text-[20px] text-ink mb-3 border-l-2 border-gold pl-4">
+              <div className="border-l-2 border-gold pl-6">
+                <h3 className="font-serif text-[19px] text-ink mb-3">
                   Đón nhận thay vì kỳ vọng
                 </h3>
-                <p className="text-[14px] leading-relaxed pl-6">
+                <p className="text-[14px] leading-relaxed">
                   Đừng tìm kiếm xem tương lai con sẽ thành ông nọ bà kia. Hãy đối chiếu những dòng chữ này với những cái nhíu mày, những lần con bướng bỉnh hay những cái ôm con vừa trao sáng nay. Ba mẹ sẽ thấy sự thấu cảm nảy mầm.
                 </p>
               </div>
