@@ -527,7 +527,7 @@ export default function Home() {
         <section className="py-16 px-6 bg-cream fade-in-section">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-[28px] font-serif text-ink mb-8 text-center">
-              Ngôn ngữ của báo cáo
+              Trích dẫn từ Bản Sắc Ebook
             </h2>
             <div className="shadow-lg">
               <Image
