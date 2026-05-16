@@ -119,14 +119,14 @@ export default function Home() {
       <style jsx global>{`
         .fade-in-section {
           opacity: 0;
-          filter: blur(8px);
-          transform: translate3d(0, 8px, 0);
+          filter: blur(4px);
+          transform: translate3d(0, 4px, 0);
           will-change: opacity, transform, filter;
           backface-visibility: hidden;
           -webkit-font-smoothing: antialiased;
-          transition: opacity 1s cubic-bezier(0.25, 0.1, 0.25, 1), 
-                      filter 1s cubic-bezier(0.25, 0.1, 0.25, 1),
-                      transform 1s cubic-bezier(0.25, 0.1, 0.25, 1);
+          transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                      filter 1.2s cubic-bezier(0.4, 0, 0.2, 1),
+                      transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .fade-in-section.animate-in {
