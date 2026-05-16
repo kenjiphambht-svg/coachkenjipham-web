@@ -124,9 +124,9 @@ export default function Home() {
           will-change: opacity, transform, filter;
           backface-visibility: hidden;
           -webkit-font-smoothing: antialiased;
-          transition: opacity 1.4s cubic-bezier(0.3, 0, 0.7, 1), 
-                      filter 1.4s cubic-bezier(0.3, 0, 0.7, 1),
-                      transform 1.4s cubic-bezier(0.3, 0, 0.7, 1);
+          transition: opacity 1.4s cubic-bezier(0, 0, 0.2, 1), 
+                      filter 1.4s cubic-bezier(0, 0, 0.2, 1),
+                      transform 1.4s cubic-bezier(0, 0, 0.2, 1);
         }
 
         .fade-in-section.animate-in {
@@ -135,16 +135,32 @@ export default function Home() {
           transform: translate3d(0, 0, 0);
         }
 
+        .fade-in-section.delay-50 {
+          transition-delay: 50ms;
+        }
+
         .fade-in-section.delay-100 {
           transition-delay: 100ms;
+        }
+
+        .fade-in-section.delay-150 {
+          transition-delay: 150ms;
         }
 
         .fade-in-section.delay-200 {
           transition-delay: 200ms;
         }
 
+        .fade-in-section.delay-250 {
+          transition-delay: 250ms;
+        }
+
         .fade-in-section.delay-300 {
           transition-delay: 300ms;
+        }
+
+        .fade-in-section.delay-350 {
+          transition-delay: 350ms;
         }
 
         .fade-in-section.delay-400 {
@@ -357,25 +373,25 @@ export default function Home() {
               <p className="text-[15px] leading-relaxed text-body-text italic fade-in-section">
                 Trong thế giới đầy rẫy những lời khuyên "phải làm thế này, phải làm thế kia",
               </p>
-              <p className="text-[15px] leading-relaxed text-body-text italic fade-in-section delay-100">
+              <p className="text-[15px] leading-relaxed text-body-text italic fade-in-section delay-50">
                 ba mẹ thường tự trách mình khi con không giống "con nhà người ta".
               </p>
-              <p className="text-[15px] leading-relaxed text-body-text italic fade-in-section delay-200">
+              <p className="text-[15px] leading-relaxed text-body-text italic fade-in-section delay-100">
                 Nhưng kỳ thực, không có cuốn sách giáo khoa nào viết đúng về đứa trẻ của bạn cả.
               </p>
-              <p className="text-[15px] leading-relaxed text-body-text font-medium italic fade-in-section delay-300">
+              <p className="text-[15px] leading-relaxed text-body-text font-medium italic fade-in-section delay-150">
                 Trừ cuốn sách này.
               </p>
-              <p className="text-[15px] leading-relaxed text-body-text mt-6 italic fade-in-section delay-400">
+              <p className="text-[15px] leading-relaxed text-body-text mt-6 italic fade-in-section delay-200">
                 Bản Sắc không dạy bạn cách làm ba mẹ, nó giúp bạn học cách đọc cuốn sách quý giá nhất đời mình:
               </p>
-              <p className="text-[15px] leading-relaxed text-body-text font-medium italic fade-in-section delay-500">
+              <p className="text-[15px] leading-relaxed text-body-text font-medium italic fade-in-section delay-250">
                 Đó chính là con bạn.
               </p>
-              <p className="text-[15px] leading-relaxed text-body-text mt-6 italic fade-in-section delay-600">
+              <p className="text-[15px] leading-relaxed text-body-text mt-6 italic fade-in-section delay-300">
                 Khi bạn hiểu được ngôn ngữ của con, mọi áp lực sẽ tan biến,
               </p>
-              <p className="text-[15px] leading-relaxed text-body-text italic fade-in-section delay-700">
+              <p className="text-[15px] leading-relaxed text-body-text italic fade-in-section delay-350">
                 chỉ còn lại sự kết nối tĩnh lặng và đầy yêu thương.
               </p>
             </div>
@@ -526,7 +542,7 @@ export default function Home() {
                 ].map((chapter, index) => (
                   <div
                     key={index}
-                    className={`relative flex gap-6 fade-in-section delay-${index * 100}`}
+                    className={`relative flex gap-6 fade-in-section delay-${index * 50}`}
                   >
                     <div className="flex-shrink-0 w-12 h-12 rounded-full border-2 border-gold bg-dark-section flex items-center justify-center z-10">
                       <span className="font-serif text-[16px] text-gold">
