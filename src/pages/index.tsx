@@ -66,14 +66,16 @@ export default function Home() {
   // Intersection Observer for fade-in animations
   useEffect(() => {
     const observerOptions = {
-      threshold: 0.1,
-      rootMargin: "0px 0px -50px 0px",
+      threshold: 0.05,
+      rootMargin: "0px 0px -80px 0px",
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && !entry.target.classList.contains("animate-in")) {
           entry.target.classList.add("animate-in");
+          // Unobserve after animation triggered once
+          observer.unobserve(entry.target);
         }
       });
     }, observerOptions);
@@ -118,7 +120,8 @@ export default function Home() {
         .fade-in-section {
           opacity: 0;
           filter: blur(8px);
-          transform: translateY(8px);
+          transform: translateY(8px) translateZ(0);
+          will-change: opacity, transform, filter;
           transition: opacity 1s cubic-bezier(0.25, 0.1, 0.25, 1), 
                       filter 1s cubic-bezier(0.25, 0.1, 0.25, 1),
                       transform 1s cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -127,7 +130,7 @@ export default function Home() {
         .fade-in-section.animate-in {
           opacity: 1;
           filter: blur(0px);
-          transform: translateY(0);
+          transform: translateY(0) translateZ(0);
         }
 
         .fade-in-section.delay-100 {
