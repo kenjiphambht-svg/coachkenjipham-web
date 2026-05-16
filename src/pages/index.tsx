@@ -569,7 +569,7 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="text-[11px] text-gold-brand uppercase tracking-wider mb-2">
-                    Chi phí chính thức 3.000.000đ
+                    Mức phí chính thức 3.000.000đ
                   </div>
                 </div>
 
@@ -614,7 +614,7 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="text-[11px] text-gold-brand uppercase tracking-wider mb-2">
-                    Chi phí chính thức 5.500.000đ
+                    Mức phí chính thức 5.500.000đ
                   </div>
                 </div>
 
