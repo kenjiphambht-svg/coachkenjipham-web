@@ -120,8 +120,10 @@ export default function Home() {
         .fade-in-section {
           opacity: 0;
           filter: blur(8px);
-          transform: translateY(8px) translateZ(0);
+          transform: translate3d(0, 8px, 0);
           will-change: opacity, transform, filter;
+          backface-visibility: hidden;
+          -webkit-font-smoothing: antialiased;
           transition: opacity 1s cubic-bezier(0.25, 0.1, 0.25, 1), 
                       filter 1s cubic-bezier(0.25, 0.1, 0.25, 1),
                       transform 1s cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -130,7 +132,7 @@ export default function Home() {
         .fade-in-section.animate-in {
           opacity: 1;
           filter: blur(0px);
-          transform: translateY(0) translateZ(0);
+          transform: translate3d(0, 0, 0);
         }
 
         .fade-in-section.delay-100 {
