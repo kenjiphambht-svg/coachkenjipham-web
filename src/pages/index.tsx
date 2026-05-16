@@ -117,13 +117,16 @@ export default function Home() {
       <style jsx global>{`
         .fade-in-section {
           opacity: 0;
-          transform: translateY(15px);
-          transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), 
-                      transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+          filter: blur(8px);
+          transform: translateY(8px);
+          transition: opacity 1s cubic-bezier(0.25, 0.1, 0.25, 1), 
+                      filter 1s cubic-bezier(0.25, 0.1, 0.25, 1),
+                      transform 1s cubic-bezier(0.25, 0.1, 0.25, 1);
         }
 
         .fade-in-section.animate-in {
           opacity: 1;
+          filter: blur(0px);
           transform: translateY(0);
         }
 
