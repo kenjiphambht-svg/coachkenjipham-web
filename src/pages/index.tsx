@@ -87,8 +87,8 @@ export default function Home() {
       <style jsx global>{`
         .fade-in-section {
           opacity: 0;
-          transform: translateY(30px);
-          transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+          transform: translateY(40px);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
 
         .fade-in-section.animate-in {
@@ -106,6 +106,22 @@ export default function Home() {
 
         .fade-in-section.delay-300 {
           transition-delay: 300ms;
+        }
+
+        .fade-in-section.delay-400 {
+          transition-delay: 400ms;
+        }
+
+        .fade-in-section.delay-500 {
+          transition-delay: 500ms;
+        }
+
+        .fade-in-section.delay-600 {
+          transition-delay: 600ms;
+        }
+
+        .fade-in-section.delay-700 {
+          transition-delay: 700ms;
         }
 
         .shimmer-text {
@@ -299,28 +315,28 @@ export default function Home() {
 
             {/* Bridge Text */}
             <div className="mt-16 max-w-3xl mx-auto space-y-4 text-center">
-              <p className="text-[15px] leading-relaxed text-body-text">
+              <p className="text-[15px] leading-relaxed text-body-text italic fade-in-section">
                 Trong thế giới đầy rẫy những lời khuyên "phải làm thế này, phải làm thế kia",
               </p>
-              <p className="text-[15px] leading-relaxed text-body-text">
+              <p className="text-[15px] leading-relaxed text-body-text italic fade-in-section delay-100">
                 ba mẹ thường tự trách mình khi con không giống "con nhà người ta".
               </p>
-              <p className="text-[15px] leading-relaxed text-body-text">
+              <p className="text-[15px] leading-relaxed text-body-text italic fade-in-section delay-200">
                 Nhưng kỳ thực, không có cuốn sách giáo khoa nào viết đúng về đứa trẻ của bạn cả.
               </p>
-              <p className="text-[15px] leading-relaxed text-body-text font-medium">
+              <p className="text-[15px] leading-relaxed text-body-text font-medium italic fade-in-section delay-300">
                 Trừ cuốn sách này.
               </p>
-              <p className="text-[15px] leading-relaxed text-body-text mt-6">
+              <p className="text-[15px] leading-relaxed text-body-text mt-6 italic fade-in-section delay-400">
                 Bản Sắc không dạy bạn cách làm ba mẹ, nó giúp bạn học cách đọc cuốn sách quý giá nhất đời mình:
               </p>
-              <p className="text-[15px] leading-relaxed text-body-text font-medium">
+              <p className="text-[15px] leading-relaxed text-body-text font-medium italic fade-in-section delay-500">
                 Đó chính là con bạn.
               </p>
-              <p className="text-[15px] leading-relaxed text-body-text mt-6">
+              <p className="text-[15px] leading-relaxed text-body-text mt-6 italic fade-in-section delay-600">
                 Khi bạn hiểu được ngôn ngữ của con, mọi áp lực sẽ tan biến,
               </p>
-              <p className="text-[15px] leading-relaxed text-body-text">
+              <p className="text-[15px] leading-relaxed text-body-text italic fade-in-section delay-700">
                 chỉ còn lại sự kết nối tĩnh lặng và đầy yêu thương.
               </p>
             </div>
@@ -331,7 +347,7 @@ export default function Home() {
         <section className="py-28 px-6 bg-cream border-t border-[rgba(201,168,76,0.3)]">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-[42px] leading-tight font-serif text-ink mb-12 text-center">
-              Tôi chạm vào <span className="italic">bản sắc</span> nguyên sơ của con bạn.
+              Tôi gọi tên những hạt mầm tính cách ẩn sâu trong con bạn.
             </h2>
             <div className="flex flex-col md:flex-row gap-8 items-start">
               {/* Kenji Portrait & Monogram */}
@@ -720,7 +736,7 @@ export default function Home() {
               CÁCH LẬT MỞ "BẢN SẮC" & LƯU GIỮ KỶ VẬT CÙNG CON
             </h2>
             <p className="text-[15px] leading-[1.7] mb-10 text-center">
-              Cuốn sách trên tay ba mẹ không phải là một tài liệu đọc một lần rồi
+              Khi Ebook được cầm trên tay ba mẹ, nó không phải là một tài liệu đọc một lần rồi
               cất đi. Nó là chiếc la bàn đi cùng sự trưởng thành của con. Để cảm
               nhận trọn vẹn kiệt tác này, Kenji gợi ý ba mẹ một vài "nhịp nghỉ"
               sau:
