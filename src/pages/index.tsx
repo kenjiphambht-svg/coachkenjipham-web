@@ -9,6 +9,35 @@ export default function Home() {
   const [isNavSticky, setIsNavSticky] = useState(false);
   const monogramRef = useRef<HTMLDivElement>(null);
 
+  // Custom smooth scroll with easeInOutQuart
+  const smoothScrollTo = (targetPosition: number, duration: number = 1400) => {
+    const startPosition = window.scrollY;
+    const distance = targetPosition - startPosition;
+    let startTime: number | null = null;
+
+    // easeInOutQuart: slow start -> smooth middle -> slow end
+    const easeInOutQuart = (t: number): number => {
+      return t < 0.5 
+        ? 8 * t * t * t * t 
+        : 1 - 8 * (--t) * t * t * t;
+    };
+
+    const animation = (currentTime: number) => {
+      if (startTime === null) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const progress = Math.min(timeElapsed / duration, 1);
+      const ease = easeInOutQuart(progress);
+      
+      window.scrollTo(0, startPosition + distance * ease);
+      
+      if (progress < 1) {
+        requestAnimationFrame(animation);
+      }
+    };
+
+    requestAnimationFrame(animation);
+  };
+
   // Reading progress bar
   useEffect(() => {
     const handleScroll = () => {
@@ -29,7 +58,8 @@ export default function Home() {
     e.preventDefault();
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
+      const targetPosition = element.offsetTop - 80; // offset for sticky nav
+      smoothScrollTo(targetPosition, 1400); // 1.4s zen scroll
     }
   };
 
@@ -87,8 +117,9 @@ export default function Home() {
       <style jsx global>{`
         .fade-in-section {
           opacity: 0;
-          transform: translateY(60px);
-          transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+          transform: translateY(15px);
+          transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), 
+                      transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .fade-in-section.animate-in {
@@ -169,7 +200,6 @@ export default function Home() {
         }
 
         html {
-          scroll-behavior: smooth;
           scroll-padding-top: 80px;
         }
       `}</style>
