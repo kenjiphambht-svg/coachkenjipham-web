@@ -92,4 +92,20 @@
   .container {
     @apply mx-auto px-4 md:px-6 lg:px-8 max-w-7xl w-full;
   }
+  
+  /* Mist Fade-in — initial hidden state set via CSS to prevent FOUC */
+  /* GSAP will override these values when element enters viewport */
+  .fade-in-section {
+    opacity: 0;
+    visibility: visible;
+  }
+
+  /* Reduced motion accessibility — respect user preference */
+  @media (prefers-reduced-motion: reduce) {
+    .fade-in-section {
+      opacity: 1 !important;
+      transform: none !important;
+      filter: none !important;
+    }
+  }
 }

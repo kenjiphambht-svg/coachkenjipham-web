@@ -63,29 +63,6 @@ export default function Home() {
     }
   };
 
-  // Intersection Observer for fade-in animations
-  useEffect(() => {
-    const observerOptions = {
-      threshold: 0.05,
-      rootMargin: "0px 0px -80px 0px",
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && !entry.target.classList.contains("animate-in")) {
-          entry.target.classList.add("animate-in");
-          // Unobserve after animation triggered once
-          observer.unobserve(entry.target);
-        }
-      });
-    }, observerOptions);
-
-    const elements = document.querySelectorAll(".fade-in-section");
-    elements.forEach((el) => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, []);
-
   // Parallax effect for monogram
   useEffect(() => {
     const handleParallax = () => {
@@ -117,68 +94,6 @@ export default function Home() {
       />
 
       <style jsx global>{`
-        .fade-in-section {
-          opacity: 0;
-          filter: blur(2px);
-          transform: translate3d(0, 2px, 0);
-          will-change: opacity, transform, filter;
-          backface-visibility: hidden;
-          -webkit-font-smoothing: antialiased;
-          transition: opacity 1.4s cubic-bezier(0, 0, 0.2, 1), 
-                      filter 1.4s cubic-bezier(0, 0, 0.2, 1),
-                      transform 1.4s cubic-bezier(0, 0, 0.2, 1);
-        }
-
-        .fade-in-section.animate-in {
-          opacity: 1;
-          filter: blur(0px);
-          transform: translate3d(0, 0, 0);
-        }
-
-        .fade-in-section.delay-50 {
-          transition-delay: 50ms;
-        }
-
-        .fade-in-section.delay-100 {
-          transition-delay: 100ms;
-        }
-
-        .fade-in-section.delay-150 {
-          transition-delay: 150ms;
-        }
-
-        .fade-in-section.delay-200 {
-          transition-delay: 200ms;
-        }
-
-        .fade-in-section.delay-250 {
-          transition-delay: 250ms;
-        }
-
-        .fade-in-section.delay-300 {
-          transition-delay: 300ms;
-        }
-
-        .fade-in-section.delay-350 {
-          transition-delay: 350ms;
-        }
-
-        .fade-in-section.delay-400 {
-          transition-delay: 400ms;
-        }
-
-        .fade-in-section.delay-500 {
-          transition-delay: 500ms;
-        }
-
-        .fade-in-section.delay-600 {
-          transition-delay: 600ms;
-        }
-
-        .fade-in-section.delay-700 {
-          transition-delay: 700ms;
-        }
-
         .shimmer-text {
           background: linear-gradient(
             120deg,
