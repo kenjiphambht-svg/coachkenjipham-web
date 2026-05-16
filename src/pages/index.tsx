@@ -37,7 +37,7 @@ export default function Home() {
   useEffect(() => {
     const observerOptions = {
       threshold: 0.1,
-      rootMargin: "0px 0px -100px 0px",
+      rootMargin: "0px 0px -50px 0px",
     };
 
     const observer = new IntersectionObserver((entries) => {
@@ -87,8 +87,8 @@ export default function Home() {
       <style jsx global>{`
         .fade-in-section {
           opacity: 0;
-          transform: translateY(40px);
-          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+          transform: translateY(60px);
+          transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
 
         .fade-in-section.animate-in {
@@ -170,6 +170,7 @@ export default function Home() {
 
         html {
           scroll-behavior: smooth;
+          scroll-padding-top: 80px;
         }
       `}</style>
 
