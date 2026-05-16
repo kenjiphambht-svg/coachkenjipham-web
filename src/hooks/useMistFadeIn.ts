@@ -26,7 +26,7 @@ export function useMistFadeIn() {
     }
     
     // Collect all elements with the class
-    const elements = gsap.utils.toArray('.fade-in-section');
+    const elements = gsap.utils.toArray<HTMLElement>('.fade-in-section');
     
     // Store ScrollTrigger instances for cleanup
     const triggers: ScrollTrigger[] = [];
