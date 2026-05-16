@@ -3,9 +3,11 @@ title: Landing page hoàn chỉnh
 status: done
 priority: high
 type: feature
-tags: [landing, vietnamese]
+tags:
+- landing
+- vietnamese
 created_by: agent
-created_at: 2026-05-08T00:57:21Z
+created_at: 2026-05-08 00:57:21+00:00
 position: 0
 ---
 
