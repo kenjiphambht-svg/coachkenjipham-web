@@ -577,7 +577,7 @@ export default function Home() {
                   {[
                     "Nhận ấn phẩm Mini Ebook (5 Chương)",
                     "Cá nhân hóa 100% cho từng bé",
-                    "Ba mẹ tự chiêm nghiệm và lưu giữ như một kỷ vật",
+                    "Ba mẹ đọc, quan sát và lưu giữ như một kỷ vật",
                     "Giao trong 3-5 ngày",
                   ].map((item, index) => (
                     <li key={index} className="flex gap-3 text-[14px]">
