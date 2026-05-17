@@ -12,7 +12,7 @@ export function SEOElements({
   title = "Kenji Phạm",
   description = "Welcome to Essence Coach",
   image = "/og-image.png",
-  url,
+  url = undefined,
 }: SEOProps) {
   return (
     <>
@@ -42,7 +42,7 @@ export function SEO({
   title = "Hello World",
   description = "Welcome to my app",
   image = "/og-image.png",
-  url,
+  url = undefined,
 }: SEOProps) {
   return (
     <Head>
