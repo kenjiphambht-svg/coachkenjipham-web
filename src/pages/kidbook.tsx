@@ -715,7 +715,7 @@ export default function Home() {
             <div className="space-y-8">
               <div className="border-l-2 border-gold pl-6">
                 <h3 className="font-serif text-[19px] text-ink mb-3 font-medium">
-                  Đọc trong sự tĩnh lặng
+                  Đọc chậm
                 </h3>
                 <p className="text-[14px] leading-relaxed">
                   Đừng vội vã lướt qua các trang sách giữa những giờ làm việc căng
