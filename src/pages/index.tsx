@@ -1,16 +1,9 @@
-import Head from 'next/head';
 import Link from 'next/link';
 
 export default function HomePage() {
   return (
     <>
-      <Head>
-        <title>Essence Coaching · Kenji Phạm</title>
-        <meta 
-          name="description" 
-          content="Essence Coaching by Kenji Phạm — Coming Soon" 
-        />
-      </Head>
+      
       
       <main className="min-h-screen w-full flex items-center justify-center bg-[#100f0c] px-6">
         <div className="text-center max-w-2xl">
