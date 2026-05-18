@@ -431,7 +431,7 @@ export default function Home() {
                 {[
                   {
                     num: "01",
-                    title: "Bản thiết kế nguyên bản (Hạt mầm)",
+                    title: "Hạt mầm",
                     desc: 'Tìm hiểu cách con đã chọn để bước vào thế giới. Chương này giúp ba mẹ nhận diện cá tính riêng biệt mà con mang theo, để yêu thương con mà không cần ép uổng.',
                   },
                   {
@@ -532,7 +532,7 @@ export default function Home() {
             <div className="shadow-lg">
               <Image
                 src="/nd1.png"
-                alt="Trích dẫn từ Bản Sắc Ebook"
+                alt="Trích dẫn từ Ebook Bản Sắc"
                 width={1200}
                 height={675}
                 className="w-full h-auto"
@@ -569,7 +569,7 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="text-[11px] text-gold-brand uppercase tracking-wider mb-2">
-                    Chi phí chính thức 3.000.000đ
+                    Mức phí chính thức 3.000.000đ
                   </div>
                 </div>
 
@@ -577,7 +577,7 @@ export default function Home() {
                   {[
                     "Nhận ấn phẩm Mini Ebook (5 Chương)",
                     "Cá nhân hóa 100% cho từng bé",
-                    "Ba mẹ tự chiêm nghiệm và lưu giữ như một kỷ vật",
+                    "Ba mẹ đọc, quan sát và lưu giữ như một kỷ vật",
                     "Giao trong 3-5 ngày",
                   ].map((item, index) => (
                     <li key={index} className="flex gap-3 text-[14px]">
@@ -614,7 +614,7 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="text-[11px] text-gold-brand uppercase tracking-wider mb-2">
-                    Chi phí chính thức 5.500.000đ
+                    Mức phí chính thức 5.500.000đ
                   </div>
                 </div>
 
