@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 
 export default function HomePage() {
   return (
@@ -38,12 +39,12 @@ export default function HomePage() {
           </p>
           
           {/* CTA to /kidbook */}
-          <a 
+          <Link 
             href="/kidbook"
             className="inline-block px-8 py-3 border border-[#c9a84c] text-[#c9a84c] text-[11px] tracking-[0.2em] uppercase font-medium hover:bg-[#c9a84c] hover:text-[#100f0c] transition-colors duration-500"
           >
             Khám phá Mini Ebook Bản Sắc
-          </a>
+          </Link>
           
           {/* Footer */}
           <div className="mt-24 text-[9px] tracking-[0.3em] uppercase text-[#8a6820] opacity-60">
