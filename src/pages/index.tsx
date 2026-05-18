@@ -34,20 +34,21 @@ export default function HomePage() {
           </div>
           
           <p className="font-serif italic text-xl md:text-2xl text-[#f2ead8] leading-relaxed mb-12">
-            Hành trình khai vấn đang được chưng cất.<br />
+            Câu chuyện cuộc sống của bạn là một kiệt tác.<br />
             Một không gian dành riêng cho người đi tìm bản sắc.
           </p>
           
           {/* CTA to /kidbook */}
           <Link 
             href="/kidbook"
+            prefetch={true}
             className="inline-block px-8 py-3 border border-[#c9a84c] text-[#c9a84c] text-[11px] tracking-[0.2em] uppercase font-medium hover:bg-[#c9a84c] hover:text-[#100f0c] transition-colors duration-500"
           >
             Khám phá Mini Ebook Bản Sắc
           </Link>
           
           {/* Footer */}
-          <div className="mt-24 text-[9px] tracking-[0.3em] uppercase text-[#8a6820] opacity-60">
+          <div className="mt-24 text-[9px] tracking-[0.3em] uppercase text-[#8a6820] opacity-90">
             Sài Gòn · 2026
           </div>
           

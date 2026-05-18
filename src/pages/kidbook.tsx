@@ -175,9 +175,9 @@ export default function Home() {
         </nav>
 
         {/* Hero Section */}
-        <section className="py-28 px-6 text-center bg-cream fade-in-section">
+        <section className="py-14 px-6 text-center bg-cream fade-in-section">
           <div className="max-w-4xl mx-auto space-y-6">
-            <div className="font-sans text-[11px] tracking-widest uppercase text-gold">
+            <div className="font-sans text-[11px] tracking-widest uppercase text-gold-deep">
               MINI EBOOK BẢN SẮC · DÀNH CHO BÉ 0–6 TUỔI
             </div>
             <h1 className="font-serif text-4xl md:text-[56px] leading-[1.2] text-ink max-w-3xl mx-auto font-semibold">
@@ -237,7 +237,7 @@ export default function Home() {
             <div className="grid md:grid-cols-2 gap-6 mb-12">
               <div className="bg-cream p-8 hover-lift fade-in-section shadow-sm">
                 <Heart className="w-8 h-8 text-gold mb-4" />
-                <p className="font-serif text-[17px] italic text-gold mb-3 font-medium">
+                <p className="font-serif text-[17px] italic text-gold-deep mb-3 font-medium">
                   "Sao con cứ quấy khóc mà mình không hiểu lý do?"
                 </p>
                 <p className="text-[14px] leading-relaxed">
@@ -249,7 +249,7 @@ export default function Home() {
 
               <div className="bg-cream p-8 hover-lift fade-in-section delay-100 shadow-sm">
                 <AlertCircle className="w-8 h-8 text-gold mb-4" />
-                <p className="font-serif text-[17px] italic text-gold mb-3 font-medium">
+                <p className="font-serif text-[17px] italic text-gold-deep mb-3 font-medium">
                   "Nuôi theo đúng sách dạy, sao con vẫn không như kỳ vọng?"
                 </p>
                 <p className="text-[14px] leading-relaxed">
@@ -261,7 +261,7 @@ export default function Home() {
 
               <div className="bg-cream p-8 hover-lift fade-in-section delay-200 shadow-sm">
                 <Lightbulb className="w-8 h-8 text-gold mb-4" />
-                <p className="font-serif text-[17px] italic text-gold mb-3 font-medium">
+                <p className="font-serif text-[17px] italic text-gold-deep mb-3 font-medium">
                   "Làm sao để biết con có năng khiếu gì từ sớm?"
                 </p>
                 <p className="text-[14px] leading-relaxed">
@@ -272,7 +272,7 @@ export default function Home() {
 
               <div className="bg-cream p-8 hover-lift fade-in-section delay-300 shadow-sm">
                 <Users className="w-8 h-8 text-gold mb-4" />
-                <p className="font-serif text-[17px] italic text-gold mb-3 font-medium">
+                <p className="font-serif text-[17px] italic text-gold-deep mb-3 font-medium">
                   "Con bướng bỉnh — là con đang hư hay đó là cá tính?"
                 </p>
                 <p className="text-[14px] leading-relaxed">
