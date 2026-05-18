@@ -199,14 +199,14 @@ export default function Home() {
                 onClick={(e) => scrollToSection(e, "pricing")}
                 className="font-sans text-[11px] tracking-widest uppercase bg-gold-brand text-ink px-8 py-4 hover:bg-gold transition-all duration-300 hover:shadow-lg hover:scale-105"
               >
-                MÓN QUÀ THẤU HIỂU (2.000.000đ)
+                MÓN QUÀ THẤU HIỂU
               </a>
               <a
                 href="#pricing"
                 onClick={(e) => scrollToSection(e, "pricing")}
                 className="font-sans text-[11px] tracking-widest uppercase border border-ink text-ink px-8 py-4 hover:bg-ink hover:text-cream transition-all duration-300 hover:shadow-lg hover:scale-105"
               >
-                TRÒ CHUYỆN CÙNG KENJI (3.500.000đ)
+                TRÒ CHUYỆN CÙNG KENJI
               </a>
             </div>
           </div>
