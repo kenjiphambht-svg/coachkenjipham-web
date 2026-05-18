@@ -9,16 +9,16 @@ interface SEOProps {
 
 // SEO elements that can be used in _document.tsx (returns JSX without Head wrapper)
 export function SEOElements({
-  title = "Kenji Phạm",
-  description = "Welcome to Essence Coach\\nCâu chuyện cuộc sống của bạn là một kiệt tác.",
+  title = "Essence Coaching · Kenji Phạm",
+  description = "Câu chuyện cuộc sống của bạn là một kiệt tác. Essence Coaching by Kenji Phạm — Sài Gòn",
   image = "/og-image.png",
-  url,
- SEOProps) {
+  url = undefined,
+}: SEOProps) {
   return (
     <>
       <title>{title}</title>
       <meta name="description" content={description} />
-      <link rel="icon" href="/favicon.ico" />
+      <link rel="icon" href="/essence-monogram-light.svg" type="image/svg+xml" />
 
       {/* Open Graph */}
       <meta property="og:title" content={title} />
@@ -39,8 +39,8 @@ export function SEOElements({
 // SEO component for use in pages/_app.tsx or individual pages (uses next/head)
 // Note: Flattened structure (no fragment) for better Next.js Head compatibility during hot reload
 export function SEO({
-  title = "Hello World",
-  description = "Welcome to my app",
+  title = "Essence Coaching · Kenji Phạm",
+  description = "Câu chuyện cuộc sống của bạn là một kiệt tác. Essence Coaching by Kenji Phạm — Sài Gòn",
   image = "/og-image.png",
   url = undefined,
 }: SEOProps) {
@@ -48,7 +48,7 @@ export function SEO({
     <Head>
       <title>{title}</title>
       <meta name="description" content={description} />
-      <link rel="icon" href="/favicon.ico" />
+      <link rel="icon" href="/essence-monogram-light.svg" type="image/svg+xml" />
 
       {/* Open Graph */}
       <meta property="og:title" content={title} />
