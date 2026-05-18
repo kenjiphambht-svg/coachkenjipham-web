@@ -1,8 +1,40 @@
+import Head from 'next/head';
 import Link from 'next/link';
+import { SEO } from '@/components/SEO';
 
 export default function HomePage() {
   return (
     <>
+      <SEO 
+        title="Essence Coaching · Kenji Phạm — Sài Gòn"
+        description="Câu chuyện cuộc sống của bạn là một kiệt tác. Essence Coaching by Kenji Phạm — Coaching tâm hồn chuyên sâu tại Sài Gòn."
+        image="/og-image.png"
+        url="https://coachkenjipham.com"
+      />
+      
+      <Head>
+        {/* Organization JSON-LD structured data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Essence Coaching",
+              "founder": {
+                "@type": "Person",
+                "name": "Kenji Phạm"
+              },
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Sài Gòn",
+                "addressCountry": "VN"
+              },
+              "url": "https://coachkenjipham.com"
+            })
+          }}
+        />
+      </Head>
       
       
       <main className="min-h-screen w-full flex items-center justify-center bg-[#100f0c] px-6">

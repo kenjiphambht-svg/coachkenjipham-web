@@ -1,10 +1,15 @@
 import { SEO } from "@/components/SEO";
-import { Heart, AlertCircle, Lightbulb, Users, FileText, MessageCircle, Send, BookOpen } from "lucide-react";
+import { Heart, AlertCircle, Lightbulb, Users, FileText, MessageCircle, Send, BookOpen, Target, Shield, CheckCircle, Phone } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useEffect, useState, useRef } from "react";
+import { useMistFadeIn } from "@/hooks/useMistFadeIn";
+import Head from "next/head";
 
-export default function Home() {
+export default function KidbookPage() {
+  useMistFadeIn();
+
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isNavSticky, setIsNavSticky] = useState(false);
   const monogramRef = useRef<HTMLDivElement>(null);
@@ -88,10 +93,54 @@ export default function Home() {
 
   return (
     <>
-      <SEO
-        title="Bản Sắc · Cuốn sách tâm hồn duy nhất của bé · Essence Coaching"
-        description="Mỗi đứa trẻ mang một bản thiết kế riêng. Ấn phẩm Mini Ebook được viết riêng để giải mã tính cách bẩm sinh, cảm xúc và tài năng bẩm sinh cho bé 0-6 tuổi."
+      <SEO 
+        title="Mini Ebook Bản Sắc — Báo cáo tâm lý trẻ 0-6 tuổi | Kenji Phạm"
+        description="Bản Đồ Tâm Hồn Bé giải mã khí chất, cảm xúc và tài năng bẩm sinh của con qua từng giai đoạn 0-6 tuổi. Báo cáo cá nhân hóa hoàn toàn bởi Essence Coach Kenji Phạm tại Sài Gòn."
+        image="/nd1.png"
+        url="https://coachkenjipham.com/kidbook"
       />
+      
+      <Head>
+        {/* Product JSON-LD structured data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Product",
+              "name": "Mini Ebook Bản Sắc",
+              "description": "Báo cáo tâm lý trẻ 0-6 tuổi cá nhân hóa hoàn toàn",
+              "brand": {
+                "@type": "Brand",
+                "name": "Essence Coaching"
+              },
+              "offers": [
+                {
+                  "@type": "Offer",
+                  "name": "Gói 1 - Báo cáo đầy đủ",
+                  "price": "2000000",
+                  "priceCurrency": "VND",
+                  "availability": "https://schema.org/InStock",
+                  "url": "https://coachkenjipham.com/kidbook#contact"
+                },
+                {
+                  "@type": "Offer",
+                  "name": "Gói 2 - Báo cáo + Tư vấn 1-1",
+                  "price": "3500000",
+                  "priceCurrency": "VND",
+                  "availability": "https://schema.org/InStock",
+                  "url": "https://coachkenjipham.com/kidbook#contact"
+                }
+              ],
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "5",
+                "reviewCount": "2"
+              }
+            })
+          }}
+        />
+      </Head>
 
       <style jsx global>{`
         .shimmer-text {
