@@ -527,7 +527,7 @@ export default function Home() {
         <section className="py-16 px-6 bg-cream fade-in-section">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-[28px] font-serif text-ink mb-8 text-center font-medium">
-              Ngôn ngữ của báo cáo
+              Trích dẫn từ Ebook Bản Sắc
             </h2>
             <div className="shadow-lg">
               <Image
@@ -568,7 +568,7 @@ export default function Home() {
                       2.000.000đ
                     </div>
                   </div>
-                  <div className="text-[11px] text-gold-brand uppercase tracking-wider mb-2">
+                  <div className="text-[11px] text-gold-deep font-semibold uppercase tracking-wider mb-2">
                     Mức phí chính thức 3.000.000đ
                   </div>
                 </div>
@@ -613,7 +613,7 @@ export default function Home() {
                       3.500.000đ
                     </div>
                   </div>
-                  <div className="text-[11px] text-gold-brand uppercase tracking-wider mb-2">
+                  <div className="text-[11px] text-gold-deep font-semibold uppercase tracking-wider mb-2">
                     Mức phí chính thức 5.500.000đ
                   </div>
                 </div>
@@ -781,11 +781,11 @@ export default function Home() {
               <Image
                 src="/essence-wordmark-full-vn-light.svg"
                 alt="Kenji Phạm · Essence Coaching · Sài Gòn"
-                width={280}
-                height={80}
-                className="h-auto w-auto max-w-[280px]"
+                width={350}
+                height={100}
+                className="h-auto w-auto max-w-[200px] sm:max-w-[280px] md:max-w-[350px]"
               />
-              <div className="font-sans text-[11px] text-gold-deep text-center md:text-right">
+              <div className="font-sans text-[14px] text-gold-deep text-center md:text-right leading-relaxed">
                 Không dự đoán tương lai · Không phán định mệnh
                 <br />
                 Chỉ mang đến sự thấu cảm và tĩnh lặng.
