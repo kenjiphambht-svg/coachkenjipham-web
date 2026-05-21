@@ -636,12 +636,16 @@ export default function KidbookPage() {
                   ))}
                 </ul>
 
-                <a
-                  href="#contact"
-                  className="block w-full text-center font-sans text-[11px] tracking-widest uppercase bg-ink text-cream-light px-6 py-4 hover:bg-body-text transition-all duration-300 hover:shadow-lg hover:scale-105"
+                <button
+                  data-tally-open="1ANjJ4"
+                  data-tally-layout="modal"
+                  data-tally-width="700"
+                  data-tally-emoji-text="🌿"
+                  data-tally-emoji-animation="wave"
+                  className="w-full bg-[#1a1510] text-[#f2ead8] py-3 text-[11px] tracking-[0.2em] uppercase font-medium hover:bg-[#3d3020] transition-colors"
                 >
-                  Đặt Gói 1
-                </a>
+                  Món Quà Thấu Hiểu (2.000.000đ)
+                </button>
               </div>
 
               {/* Gói 2 - Highlighted */}
@@ -682,12 +686,16 @@ export default function KidbookPage() {
                   ))}
                 </ul>
 
-                <a
-                  href="#contact"
-                  className="block w-full text-center font-sans text-[11px] tracking-widest uppercase bg-gold text-ink px-6 py-4 hover:bg-gold-brand transition-all duration-300 hover:shadow-lg hover:scale-105"
+                <button
+                  data-tally-open="Y5J2VN"
+                  data-tally-layout="modal"
+                  data-tally-width="700"
+                  data-tally-emoji-text="✨"
+                  data-tally-emoji-animation="wave"
+                  className="w-full bg-[#c9a84c] text-[#1a1510] py-3 text-[11px] tracking-[0.2em] uppercase font-medium hover:bg-[#8a6820] hover:text-[#f2ead8] transition-colors"
                 >
-                  Đặt Gói 2
-                </a>
+                  Trò Chuyện Cùng Kenji (3.500.000đ)
+                </button>
               </div>
             </div>
           </div>
