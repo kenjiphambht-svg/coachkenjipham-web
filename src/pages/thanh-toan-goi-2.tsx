@@ -51,11 +51,7 @@ export default function ThanhToanGoi2() {
             </div>
             
             <div className="aspect-square max-w-[280px] mx-auto bg-[#f2ead8] border-2 border-dashed border-[#c9a84c]/40 flex items-center justify-center mb-6">
-              {/* TODO: Replace with <img src="/qr-goi-2.png" alt="QR" className="w-full h-full object-contain" /> when QR uploaded */}
-              <div className="text-center px-4">
-                <div className="text-[#8a6820] text-xs tracking-[0.2em] uppercase mb-2">Mã QR</div>
-                <div className="text-[#6b5432] text-xs italic">Sẽ được Kenji cập nhật</div>
-              </div>
+              <img src="/G2.jpg" alt="QR Code Gói 2 - 3.500.000đ" className="w-full h-full object-contain" />
             </div>
             
             <div className="bg-[#faf8f3] border-l-2 border-[#c9a84c] p-5">
