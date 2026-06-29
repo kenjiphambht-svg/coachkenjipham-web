@@ -1,5 +1,5 @@
 import { SEO } from "@/components/SEO";
-import { FloatingZaloButton } from "@/components/FloatingZaloButton";
+import FloatingZaloButton from "@/components/FloatingZaloButton";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { CheckCircle2, Shield, Layers, Zap, Brain, Target, TrendingUp, Users, ArrowRight, Mail } from "lucide-react";
