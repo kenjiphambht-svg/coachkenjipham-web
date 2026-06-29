@@ -94,13 +94,13 @@ export default function AIStartupDossier() {
           style={{ width: `${scrollProgress}%` }}
         />
 
-        <nav className="fixed top-0 left-0 right-0 z-40 backdrop-blur-md bg-cream/80 border-b border-gold/20">
+        <nav className="fixed top-0 left-0 right-0 z-40 backdrop-blur-md bg-dark-section/90 border-b border-gold-brand/20">
           <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-gold-brand/10 border border-gold-brand/30 flex items-center justify-center">
                 <span className="text-gold-brand font-serif text-sm">E</span>
               </div>
-              <span className="text-sm tracking-wide text-ink font-medium">ESSENCE COACHING</span>
+              <span className="text-sm tracking-wide text-cream-light font-normal">ESSENCE COACHING</span>
             </div>
             
             <div className="hidden md:flex items-center gap-8">
@@ -114,8 +114,8 @@ export default function AIStartupDossier() {
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={`text-sm transition-colors ${
-                    activeSection === item.id ? "text-gold-brand" : "text-body-text hover:text-ink"
+                  className={`text-sm transition-colors font-light ${
+                    activeSection === item.id ? "text-gold-brand" : "text-cream-light/70 hover:text-gold-brand"
                   }`}
                 >
                   {item.label}
@@ -125,7 +125,7 @@ export default function AIStartupDossier() {
 
             <Button 
               onClick={() => scrollToSection("early-access")}
-              className="bg-gold-brand hover:bg-gold text-ink"
+              className="bg-gold-brand hover:bg-gold text-ink font-normal"
             >
               Apply
             </Button>
