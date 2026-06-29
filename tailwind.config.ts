@@ -61,7 +61,7 @@ const config: Config = {
         "cream-muted": "var(--cream-muted)",
       },
       fontFamily: {
-        sans: ["Raleway", "system-ui", "sans-serif"],
+        sans: ["Inter", "system-ui", "sans-serif"],
         serif: ["Cormorant Garamond", "Georgia", "serif"],
       },
       borderRadius: {

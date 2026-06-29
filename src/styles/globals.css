@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Raleway:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* === TYPOGRAPHY UPGRADE — Phương án C Kết hợp === */
+/* === TYPOGRAPHY — Essence Brand === */
 
 /* Optimize font rendering for Retina/high-DPI displays */
 html {
@@ -13,23 +13,29 @@ html {
   text-rendering: optimizeLegibility;
 }
 
-/* Large headings — H1, H2 use weight 600 (denser, more presence) */
+/* Headings — lighter, more refined weights */
 h1, h2 {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: -0.01em;
 }
 
-/* Sub-headings — H3, H4 use weight 500 (balanced) */
+/* Sub-headings */
 h3, h4 {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-weight: 500;
+  font-weight: 400;
 }
 
-/* Italic emphasis within headings use weight 500 italic */
+/* Italic emphasis within headings */
 h1 em, h2 em, h3 em, h4 em {
   font-style: italic;
   font-weight: 500;
+}
+
+/* Body text — lighter, spacious */
+body {
+  font-weight: 300;
+  letter-spacing: 0.01em;
 }
 
 @layer utilities {
