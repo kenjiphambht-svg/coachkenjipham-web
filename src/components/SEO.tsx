@@ -9,8 +9,8 @@ interface SEOProps {
 
 // SEO elements that can be used in _document.tsx (returns JSX without Head wrapper)
 export function SEOElements({
-  title = "Essence Coaching · Kenji Phạm",
-  description = "Câu chuyện cuộc sống của bạn là một kiệt tác. Essence Coaching by Kenji Phạm — Sài Gòn",
+  title = "Kenji Phạm | Essence Coaching — Khai vấn bản sắc AI-native",
+  description = "Kenji Phạm là Essence Coach và founder Essence Coaching System — hệ khai vấn bản sắc AI-native giúp con người nhìn rõ bản sắc, an định phản xạ cảm xúc và chọn bước đi kế tiếp bằng một giao thức có cấu trúc.",
   image = "/og-image.png",
   url = undefined,
 }: SEOProps) {
@@ -39,8 +39,8 @@ export function SEOElements({
 // SEO component for use in pages/_app.tsx or individual pages (uses next/head)
 // Note: Flattened structure (no fragment) for better Next.js Head compatibility during hot reload
 export function SEO({
-  title = "Essence Coaching · Kenji Phạm",
-  description = "Câu chuyện cuộc sống của bạn là một kiệt tác. Essence Coaching by Kenji Phạm — Sài Gòn",
+  title = "Kenji Phạm | Essence Coaching — Khai vấn bản sắc AI-native",
+  description = "Kenji Phạm là Essence Coach và founder Essence Coaching System — hệ khai vấn bản sắc AI-native giúp con người nhìn rõ bản sắc, an định phản xạ cảm xúc và chọn bước đi kế tiếp bằng một giao thức có cấu trúc.",
   image = "/og-image.png",
   url = undefined,
 }: SEOProps) {

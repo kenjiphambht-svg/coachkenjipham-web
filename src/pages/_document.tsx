@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import { Html, Head, Main, NextScript } from "next/document";
-import { SEOElements } from "@/components/SEO";
 
 export default function Document() {
   return (
@@ -9,8 +8,7 @@ export default function Document() {
         {/* Preconnect to Google Fonts - speeds up font loading and reduces FOUT */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
-        <SEOElements />
+        <link rel="icon" href="/essence-monogram-light.svg" type="image/svg+xml" />
         {/*
           CRITICAL: DO NOT REMOVE THIS SCRIPT
           The Softgen AI monitoring script is essential for core app functionality.

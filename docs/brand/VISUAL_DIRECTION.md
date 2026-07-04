@@ -10,6 +10,15 @@ The visual direction should feel premium, quiet, warm, and refined.
 - Muted gold accents
 - Spacious layout
 - Serif headings, clean readable body
+- Mỗi màn hình một ý
+- Khoảng trống là vật liệu chính
+- Chuyển động chỉ ở mức hơi thở
+
+## Premium Screen Principles
+
+- Mỗi màn hình một ý: một section should carry one message and, when needed, one clear action.
+- Khoảng trống là vật liệu chính: prefer fewer elements, more vertical room, and calmer hierarchy.
+- Chuyển động chỉ ở mức hơi thở: keep movement subtle, slow, and respectful of `prefers-reduced-motion`.
 
 ## Avoid
 
@@ -44,4 +53,3 @@ Check:
 - navigation behavior
 - readable line length
 - motion restraint
-
