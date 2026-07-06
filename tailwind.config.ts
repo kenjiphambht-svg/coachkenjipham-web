@@ -59,6 +59,20 @@ const config: Config = {
         "dark-section": "var(--dark-section)",
         "cream-light": "var(--cream-light)",
         "cream-muted": "var(--cream-muted)",
+        // Essence 2026 tokens — Homepage V2 only (docs/brand/design-system/03_COLOR_TOKENS_2026.md).
+        // Token mới song song; không đổi token legacy phía trên (kidbook/payment đang dùng).
+        "e26-white": "var(--essence-white-2026)",
+        "e26-ivory": "var(--essence-ivory-2026)",
+        "e26-cream": "var(--essence-cream-2026)",
+        "e26-black": "var(--essence-black-2026)",
+        "e26-text": "var(--essence-text-primary-2026)",
+        "e26-text-2": "var(--essence-text-secondary-2026)",
+        "e26-text-dark": "var(--essence-text-primary-dark-2026)",
+        "e26-text-dark-2": "var(--essence-text-secondary-dark-2026)",
+        "e26-border": "var(--essence-border-light-2026)",
+        "e26-border-dark": "var(--essence-border-dark-2026)",
+        "e26-gold": "var(--essence-gold-2026)",
+        "e26-gold-deep": "var(--essence-gold-deep-2026)",
       },
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],

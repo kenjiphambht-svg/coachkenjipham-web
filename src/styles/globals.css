@@ -143,3 +143,23 @@ body {
     }
   }
 }
+
+/* === ESSENCE 2026 TOKENS — Homepage V2 (Light-led premium) ===
+   Nguồn: docs/brand/design-system/03_COLOR_TOKENS_2026.md
+   Token MỚI, song song với token legacy phía trên.
+   KHÔNG đổi giá trị các biến legacy (--gold, --ink, --cream, --dark-section...)
+   vì /kidbook và payment pages đang phụ thuộc trực tiếp. */
+:root {
+  --essence-white-2026: #FFFFFF;
+  --essence-ivory-2026: #FAF9F7;
+  --essence-cream-2026: #F1EFE8;
+  --essence-black-2026: #1A1A1A;
+  --essence-text-primary-2026: #1A1A1A;
+  --essence-text-secondary-2026: #5F5E5A;
+  --essence-text-primary-dark-2026: #FAF9F7;
+  --essence-text-secondary-dark-2026: #B4B2A9;
+  --essence-border-light-2026: #E8E6DF;
+  --essence-border-dark-2026: #2C2C2A;
+  --essence-gold-2026: #E0C068;
+  --essence-gold-deep-2026: #8A6D1F;
+}

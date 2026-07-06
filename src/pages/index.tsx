@@ -1,87 +1,76 @@
-import Head from 'next/head';
-import Link from 'next/link';
-import { SEO } from '@/components/SEO';
-import { useMistFadeIn } from '@/hooks/useMistFadeIn';
+import Head from "next/head";
+import { SEO } from "@/components/SEO";
+import HomeHero from "@/components/homepage/HomeHero";
+import KenjiSection from "@/components/homepage/KenjiSection";
+import TwoStates from "@/components/homepage/TwoStates";
+import WhatIsEssence from "@/components/homepage/WhatIsEssence";
+import HatMamSection from "@/components/homepage/HatMamSection";
+import NotPromised from "@/components/homepage/NotPromised";
+import NotesTeaser from "@/components/homepage/NotesTeaser";
+import HomeFooter from "@/components/homepage/HomeFooter";
 
+// Homepage V2 — Essence 2026.
+// Mode: Light-led premium with dark silence section
+// (docs/brand/design-system/08_PAGE_APPLICATION_GUIDE_2026.md mục 1).
+// 8 section cố định theo docs/website/master-plan/04_HOMEPAGE_10000_USD_SPEC.md mục 2.
+// Motion: MistFadeProvider (global trong _app.tsx) xử lý .fade-in-section — không gọi lại hook ở đây.
 export default function HomePage() {
-  useMistFadeIn();
-
   return (
     <>
-      <SEO 
-        title="Essence Coaching · Kenji Phạm — Sài Gòn"
-        description="Câu chuyện cuộc sống của bạn là một kiệt tác. Essence Coaching by Kenji Phạm — Coaching tâm hồn chuyên sâu tại Sài Gòn."
+      <SEO
+        title="Kenji Phạm — Essence Coach | Essence Coaching System"
+        description="Kenji Phạm — Essence Coach tại Sài Gòn. Một không gian có cấu trúc và ranh giới an toàn: để bạn nhìn rõ mình, và để ba mẹ hiểu con hơn."
         image="/og-image.png"
         url="https://coachkenjipham.com"
       />
-      
+
       <Head>
-        {/* Organization JSON-LD structured data */}
+        {/* WebSite + Person JSON-LD (docs/website/master-plan/03_PAGE_BRIEFS_PUBLIC_PAGES.md mục 1) */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "Essence Coaching",
-              "founder": {
-                "@type": "Person",
-                "name": "Kenji Phạm"
+              "@type": "WebSite",
+              name: "Essence Coaching",
+              url: "https://coachkenjipham.com",
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Kenji Phạm",
+              alternateName: "Coach Kenji Phạm",
+              jobTitle: "Essence Coach",
+              worksFor: {
+                "@type": "Organization",
+                name: "Essence Coaching System",
               },
-              "address": {
+              address: {
                 "@type": "PostalAddress",
-                "addressLocality": "Sài Gòn",
-                "addressCountry": "VN"
+                addressLocality: "Sài Gòn",
+                addressCountry: "VN",
               },
-              "url": "https://coachkenjipham.com"
-            })
+              url: "https://coachkenjipham.com",
+            }),
           }}
         />
       </Head>
-      
-      
-      <main className="min-h-screen w-full flex items-center justify-center bg-[#100f0c] px-6">
-        <div className="text-center max-w-2xl">
-          
-          {/* Brand logo */}
-          <div className="mb-12 fade-in-section">
-            <div className="text-[10px] tracking-[0.38em] uppercase text-[#8a6820] font-medium mb-2">
-              Kenji Phạm
-            </div>
-            <div className="font-serif italic text-3xl md:text-4xl text-[#c9a84c]">
-              Essence Coaching
-            </div>
-          </div>
-          
-          {/* Gold divider */}
-          <div className="w-12 h-px bg-[#c9a84c] mx-auto mb-12 opacity-60 fade-in-section" />
-          
-          {/* Coming Soon */}
-          <div className="text-[11px] tracking-[0.35em] uppercase text-[#8a6820] font-medium mb-6 fade-in-section">
-            Coming Soon
-          </div>
-          
-          <p className="font-serif italic text-xl md:text-2xl text-[#f2ead8] leading-relaxed mb-12 fade-in-section">
-            Câu chuyện cuộc sống của bạn là một kiệt tác.<br />
-            Một không gian dành riêng cho người đi tìm bản sắc.
-          </p>
-          
-          {/* CTA to /kidbook */}
-          <Link 
-            href="/kidbook"
-            prefetch={true}
-            className="inline-block px-8 py-3 border border-[#c9a84c] text-[#c9a84c] text-[11px] tracking-[0.2em] uppercase font-medium hover:bg-[#c9a84c] hover:text-[#100f0c] transition-colors duration-500 fade-in-section"
-          >
-            Khám phá Mini Ebook Bản Sắc
-          </Link>
-          
-          {/* Footer */}
-          <div className="mt-24 text-[9px] tracking-[0.3em] uppercase text-[#8a6820] opacity-90 fade-in-section">
-            Sài Gòn · 2026
-          </div>
-          
-        </div>
+
+      <main className="bg-e26-ivory">
+        <HomeHero />
+        <KenjiSection />
+        <TwoStates />
+        <WhatIsEssence />
+        <HatMamSection />
+        <NotPromised />
+        <NotesTeaser />
       </main>
+      <HomeFooter />
     </>
   );
 }
