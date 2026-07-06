@@ -2,6 +2,11 @@
 
 Use this skill for preview QA before handing work back.
 
+## Read First
+
+- `docs/brand/BRAND_SYSTEM_INDEX.md` (brand/system entry point)
+- `docs/website/master-plan/13_QA_CHECKLIST_10000_USD_WEBSITE.md`
+
 ## Loop
 
 1. Run the app or build if possible.
