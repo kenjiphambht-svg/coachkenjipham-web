@@ -6,7 +6,7 @@ import Link from "next/link";
 // Tầng 1: định danh (wordmark). Tầng 2: liên hệ. Tầng 3: đối tác lặng + bản quyền.
 export default function HomeFooter() {
   return (
-    <footer className="bg-e26-black px-6 py-16 md:py-20">
+    <footer id="lien-he" className="bg-e26-black px-6 py-16 md:py-20 scroll-mt-10">
       <div className="max-w-4xl mx-auto text-center">
         {/* Tầng 1 — Wordmark / định danh */}
         <p className="font-sans text-xs tracking-[0.24em] uppercase text-e26-text-dark-2 mb-3">
