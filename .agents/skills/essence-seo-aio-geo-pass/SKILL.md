@@ -5,6 +5,8 @@ Use this skill when reviewing or editing SEO, AIO, GEO, metadata, schema, sitema
 ## Read First
 
 - `AGENTS.md`
+- `docs/brand/BRAND_SYSTEM_INDEX.md` (brand/system entry point)
+- `docs/website/master-plan/10_SEO_AIO_GEO_CONTENT_SYSTEM.md`
 - `docs/brand/SEO_ENTITY.md`
 - `docs/website/ROUTE_POLICY.md`
 - `docs/brand/SAFETY_BOUNDARIES.md`
