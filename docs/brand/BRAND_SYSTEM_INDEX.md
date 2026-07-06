@@ -39,6 +39,7 @@ Chi tiết: [`FOUNDER_VISUAL_DECISION_SUMMARY.md`](design-system/FOUNDER_VISUAL_
 
 - Giữ Inter trong beta.
 - Không đổi sang DM Sans trong Phase 0.
+- Mọi thay đổi font sau beta cần một task riêng được Kenji duyệt trước. (Any future font change after beta requires a separate Kenji-approved task.)
 
 ## Ghi chú phạm vi
 
