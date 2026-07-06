@@ -7,19 +7,19 @@ Quyết định đã chốt: `docs/website/master-plan/15_DECISION_LOG_AND_NEXT_
 
 ## Current Phase
 
-**Phase 0 — Route & Source Audit**
-
-Luật của phase này: **chỉ NHÌN, không sửa.** Không bắt đầu sửa homepage khi chưa xong audit route.
+**Phase 1 — Homepage V2**
 
 ## Phase 0 — Route & Source Audit
 
-- [ ] Audit current routes.
-- [ ] Audit homepage current implementation.
-- [ ] Audit `/kidbook`.
-- [ ] Audit `/ai-startup`.
-- [ ] Audit payment pages.
-- [ ] Audit SEO/noindex/privacy requirements.
-- [ ] Báo cáo route nào giữ, route nào sửa, route nào redirect/noindex sau.
+Status: Completed — see `docs/website/audits/PHASE_0_ROUTE_SOURCE_AUDIT.md`
+
+- [x] Audit current routes.
+- [x] Audit homepage current implementation.
+- [x] Audit `/kidbook`.
+- [x] Audit `/ai-startup`.
+- [x] Audit payment pages.
+- [x] Audit SEO/noindex/privacy requirements.
+- [x] Báo cáo route nào giữ, route nào sửa, route nào redirect/noindex sau.
 
 Nguồn đọc: `docs/website/master-plan/02_PUBLIC_SITEMAP_AND_ROUTE_POLICY.md`, `docs/website/master-plan/09_SECURITY_PRIVACY_AND_CHILD_DATA_POLICY.md`.
 
@@ -74,6 +74,10 @@ Nguồn đọc: `docs/website/master-plan/07_BACKEND_CRM_PAYMENT_AND_DATA_ARCHIT
 - Package dependencies (`package.json`, `package-lock.json`).
 - Deployment settings.
 - Existing live paid pages.
+
+## Migration Note
+
+Live routes stay online until replacements are fully built, QA-passed, and explicitly approved by Kenji for migration.
 
 ## Luật của file này
 
