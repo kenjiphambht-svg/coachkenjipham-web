@@ -27,12 +27,20 @@ export default function TrangChuV2Page() {
       <SEO
         title="Kenji Phạm — Essence Coach | Essence Coaching System (Bản nháp)"
         description="Kenji Phạm — Essence Coach tại Sài Gòn. Một không gian có cấu trúc và ranh giới an toàn: để bạn nhìn rõ mình, và để ba mẹ hiểu con hơn."
-        image="/og-image.png"
+        image="/essence-og-1200x630.png"
         url="https://coachkenjipham.com/trang-chu-v2"
       />
 
       <Head>
         <meta name="robots" content="noindex" />
+        {/* Favicon bộ 2026 — chỉ gắn riêng trang này (không sửa _document.tsx/SEO.tsx
+            dùng chung, vì /kidbook và /ai-startup cũng gọi component đó). */}
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         {/* WebSite + Person JSON-LD (docs/website/master-plan/03_PAGE_BRIEFS_PUBLIC_PAGES.md mục 1) */}
         <script
           type="application/ld+json"

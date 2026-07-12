@@ -159,6 +159,11 @@ export default function Room7Doors() {
       {/* --- FOOTER SIGNATURE --- */}
       <footer className="bg-e26-black px-6 py-20 md:py-28">
         <div className="max-w-[720px] mx-auto text-center">
+          <img
+            src="/brand/logo/essence-monogram-2026-dark.svg"
+            alt="Essence Coaching"
+            className="hm-reveal h-9 w-9 mx-auto mb-8"
+          />
           <p className="hm-reveal hm-reveal-slow font-serif italic text-2xl md:text-3xl leading-relaxed text-e26-gold mb-10">
             Câu chuyện cuộc sống của bạn là một kiệt tác.
           </p>

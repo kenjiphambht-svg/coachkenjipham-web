@@ -34,12 +34,20 @@ export default function LandingHatMamPage() {
       <SEO
         title="Ấn phẩm Bản Sắc Hạt Mầm — Bản Sắc Của Con | Kenji Phạm (Bản nháp)"
         description="Ấn phẩm cá nhân hóa cho bé 0–7 tuổi — nhịp điệu riêng, cảm xúc đầu đời và hạt mầm tài năng của con. Không dán nhãn, không dự đoán số phận."
-        image="/og-image.png"
+        image="/essence-og-1200x630.png"
         url="https://coachkenjipham.com/an-pham-ban-sac-hat-mam"
       />
 
       <Head>
         <meta name="robots" content="noindex" />
+        {/* Favicon bộ 2026 — chỉ gắn riêng trang này (không sửa _document.tsx/SEO.tsx
+            dùng chung, vì /kidbook và /ai-startup cũng gọi component đó). */}
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         {/* Product schema (docs/website/master-plan/03 mục 6: Product + FAQPage).
             Không aggregateRating — chưa có review thật được phép dùng. */}
         <script
