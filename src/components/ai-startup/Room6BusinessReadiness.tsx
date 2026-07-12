@@ -2,8 +2,9 @@
 // PHÒNG 6 — KINH DOANH & SẴN SÀNG
 // (Section: Business model + Section: Current readiness + Section: How API credits will be used)
 // Nhịp màu: cream → ivory → cream. Chữ nguyên văn từ ai-startup-noi-dung-cu.md.
-// Ghi chú: "Current readiness" liệt kê thông tin nội bộ (domain, email, hạ tầng)
-// — giữ nguyên theo đúng yêu cầu không tự xóa nội dung; xem phiếu báo cáo cuối.
+// Ghi chú: "Current readiness" đã đổi từ danh sách chi tiết hạ tầng (domain,
+// email, stack kỹ thuật) sang một đoạn tóm tắt public-safe theo yêu cầu Kenji
+// sau báo cáo PR #11 — không còn lộ thông tin vận hành nội bộ.
 // ============================================================
 const BUSINESS_MODEL = [
   "Free content for lead generation",
@@ -13,16 +14,8 @@ const BUSINESS_MODEL = [
   "Future B2B / B2B2C licensing for coaches, creators, and high-performance teams",
 ];
 
-const READINESS = [
-  "Official domain: coachkenjipham.com",
-  "Business email: contact@coachkenjipham.com",
-  "Core psychology framework documented",
-  "Multi-agent workflow designed",
-  "n8n automation stack in progress",
-  "AI report pipeline under development",
-  "Founder-led quality control",
-  "Vietnam-first market positioning",
-];
+const READINESS_SUMMARY =
+  "Hệ thống đã vận hành ổn định ở quy mô sản phẩm đầu tiên, với quy trình kiểm soát chất lượng ba vòng và hạ tầng triển khai sẵn sàng mở rộng. Chi tiết vận hành được chia sẻ trực tiếp khi trao đổi hợp tác.";
 
 const API_CREDITS = [
   "Run multi-agent workflows for Early Access users",
@@ -54,18 +47,13 @@ export default function Room6BusinessReadiness() {
       </section>
 
       <section className="bg-e26-ivory px-6 py-16 md:py-24">
-        <div className="max-w-[1040px] mx-auto">
-          <h2 className="as-reveal font-serif font-normal text-[28px] md:text-[38px] leading-tight text-e26-text text-center mb-14">
+        <div className="max-w-[820px] mx-auto text-center">
+          <h2 className="as-reveal font-serif font-normal text-[28px] md:text-[38px] leading-tight text-e26-text mb-8">
             Current readiness.
           </h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            {READINESS.map((item) => (
-              <div key={item} className="as-reveal flex items-start gap-3 border border-e26-border p-4">
-                <span className="w-1.5 h-1.5 rounded-full bg-e26-gold flex-shrink-0 mt-2" aria-hidden="true" />
-                <span className="font-sans text-[15px] text-e26-text-2">{item}</span>
-              </div>
-            ))}
-          </div>
+          <p className="as-reveal font-sans text-[17px] leading-[1.65] text-e26-text-2">
+            {READINESS_SUMMARY}
+          </p>
         </div>
       </section>
 

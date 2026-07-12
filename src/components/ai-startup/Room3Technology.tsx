@@ -1,9 +1,9 @@
 // ============================================================
 // PHÒNG 3 — CÔNG NGHỆ (Section: Technology + Section: Multi-model)
 // Nhịp màu: ivory → cream. Chữ nguyên văn từ ai-startup-noi-dung-cu.md.
-// Ghi chú: giữ nguyên "FCP Protocol" trong Psychology Engine Layer theo đúng
-// nội dung gốc — xem lưu ý trong phiếu báo cáo cuối (docs/brand/design-system/08
-// khuyến nghị /ve-essence không nêu chi tiết FCP; ai-startup.tsx đang có).
+// Ghi chú: "Psychology Engine Layer" đã thay đoạn nhắc "FCP Protocol" (thuật ngữ
+// nội bộ M4 — Casting Gateway Protocol) bằng mô tả public-safe theo yêu cầu Kenji
+// sau báo cáo PR #11 — không còn lộ chi tiết vận hành tầng sâu.
 // ============================================================
 const LAYERS = [
   {
@@ -19,7 +19,7 @@ const LAYERS = [
   {
     n: "3",
     title: "Psychology Engine Layer",
-    body: "FCP Protocol · Emotional pattern detection · Limiting loop mapping · Identity reflection",
+    body: "Cốt lõi công nghệ của Essence không phải một công cụ có sẵn ghép lại. Đó là một giao thức nội bộ tự phát triển — kết hợp tâm lý học chiều sâu, khung phát triển bảy giai đoạn, và một hệ vận hành AI-native được thiết kế riêng cho từng lớp sản phẩm. Giao thức này không công khai chi tiết vận hành — vì bản chất của nó cần được bảo vệ, giống cách một quy trình chẩn đoán chuyên sâu không được rút gọn thành một trang mô tả đại chúng.",
   },
   {
     n: "4",
