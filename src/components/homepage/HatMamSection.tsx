@@ -5,7 +5,7 @@ import ImageSlot from "./ImageSlot";
 // Heading + kicker căn trái; nội dung 7/12, slot ảnh 4:5 bên phải 5/12.
 // Số section ma "05" Cormorant ~200px, opacity 6%, góc trái trên, sau nội dung.
 // NÚT VÀNG DUY NHẤT CỦA TRANG — 0px radius, 16×36, chữ 13px uppercase.
-// CTA tạm trỏ /kidbook (live funnel) cho đến khi landing mới sẵn sàng + Kenji duyệt migration.
+// CTA trỏ /an-pham-ban-sac-hat-mam (route noindex bản nháp — xem Migration Strategy).
 // Ngôn ngữ trẻ em theo docs/brand/CHILD_LANGUAGE_RULES.md: không gán nhãn,
 // không dự đoán tương lai, không bắt con gánh cảm xúc gia đình.
 export default function HatMamSection() {
@@ -50,7 +50,7 @@ export default function HatMamSection() {
 
             <div className="e26-reveal">
               <Link
-                href="/kidbook"
+                href="/an-pham-ban-sac-hat-mam"
                 className="inline-block bg-e26-gold text-e26-black rounded-none font-sans font-medium text-[13px] tracking-[0.08em] uppercase px-9 py-4 hover:bg-e26-gold-deep hover:text-e26-ivory transition-colors duration-300"
               >
                 Tìm hiểu ấn phẩm Hạt Mầm
