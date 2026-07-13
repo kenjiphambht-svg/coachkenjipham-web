@@ -16,6 +16,7 @@ This is the shared instruction file for Codex, Claude Code, and future AI coding
 - Do not merge or deploy automatically.
 - The human owner must review before merge.
 - The 9 legacy color variables in `globals.css` (`--cream`, `--gold`, `--ink`, `--body-text`, `--cream-muted`, `--gold-brand`, `--gold-deep`, `--dark-section`, `--cream-light`) are used ONLY by `kidbook.tsx` and `ai-startup.tsx` (legacy routes). Do not use these variables for any new component or route — all new code must use the `--essence-*-2026` tokens only.
+- Khi Kenji gõ "fable mode" hoặc việc đụng route sống/quyết định khó đảo ngược — đọc `.claude/skills/fable-mode/SKILL.md` trước khi làm.
 
 ## Project Identity
 
