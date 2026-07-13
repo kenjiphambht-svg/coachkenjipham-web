@@ -6,8 +6,11 @@ import { SEO } from "@/components/SEO";
 // ============================================================
 // LANDING "Lặng 90'" — /lang-90 (noindex, bản nháp chờ Kenji duyệt)
 // Mode: Light-led premium (token --essence-*-2026), 1 nút vàng duy nhất ("Giữ chỗ").
-// Copy: NGUYÊN VĂN tài liệu Kenji cung cấp; chỉ áp 4 điểm đã duyệt
-// (bỏ "FCP Clear" ở bước 1 · 5→6 phiên · VietQR · check-in 7/30). Không sửa gì thêm.
+// Copy: NGUYÊN VĂN tài liệu Kenji cung cấp; áp các điểm đã duyệt
+// (bỏ "FCP Clear" ở bước 1 · VietQR · check-in 7/30 · Bản Đồ 30 Ngày).
+// LƯU Ý: bản build đầu có ghi nhầm "6 phiên" — đã sửa lại đúng "5 phiên"
+// theo README gói 07/07 + chỉ đạo Kenji (năng lực thật 8, giữ 3 đệm,
+// không giải thích số đệm trên trang công khai).
 // Route sống KHÔNG bị đụng.
 // ============================================================
 export default function Lang90Landing() {
@@ -43,6 +46,10 @@ export default function Lang90Landing() {
           <p className="font-sans text-[17px] leading-[1.65] text-e26-text-2 mt-10 max-w-xl">
             90 phút ngồi xuống cùng nhau. Tôi không an ủi. Tôi không dạy. Tôi giúp bạn nhìn
             thẳng vào thứ đang giữ bạn lại — và bước ra khỏi đó.
+          </p>
+          {/* Bổ sung 2 — định vị "cho ai" (gói 07/07), chỉ là tín hiệu, không phải rào cản tuổi cứng */}
+          <p className="font-sans text-sm text-e26-text-2 italic mt-6 max-w-xl">
+            Một phiên giữ nhịp ở điểm gãy — dành cho người trên 35, đang đứng trước một ngã rẽ.
           </p>
         </section>
 
@@ -142,10 +149,10 @@ export default function Lang90Landing() {
             </div>
 
             <div className="border-t border-e26-border mt-12 pt-8">
-              <h3 className="font-serif text-xl text-e26-text mb-3">Tối đa 6 phiên mỗi tháng</h3>
+              <h3 className="font-serif text-xl text-e26-text mb-3">Tối đa 5 phiên mỗi tháng</h3>
               <p className="font-sans text-[15px] leading-[1.7] text-e26-text-2 max-w-xl">
                 Không phải chiến thuật marketing. Mỗi phiên tôi cần mang toàn bộ sự tập trung
-                vào — và tôi chỉ có đủ cho 6 người. Khi đủ chỗ, tháng đó đóng.
+                vào — và tôi chỉ có đủ cho 5 người. Khi đủ chỗ, tháng đó đóng.
               </p>
             </div>
           </div>
@@ -159,8 +166,11 @@ export default function Lang90Landing() {
           <p className="font-serif text-4xl text-e26-text mb-6">10.000.000đ</p>
           <div className="space-y-2 font-sans text-[15px] leading-[1.7] text-e26-text-2">
             <p>90 phút · 1:1 với Kenji · Zoom hoặc gặp mặt tại Sài Gòn</p>
-            <p>Thanh toán trước · Báo cáo tóm tắt giao trong 24h sau phiên</p>
-            <p>Check-in ngày 7 và ngày 30 (nằm trong giá)</p>
+            <p>Thanh toán trước</p>
+            <p>
+              Sau phiên, bạn nhận Bản Đồ 30 Ngày — một ấn phẩm riêng giúp giữ điều đã mở ra
+              trong phiên không trôi mất, kèm hai lần check-in ngày 7 và ngày 30.
+            </p>
           </div>
         </section>
 
