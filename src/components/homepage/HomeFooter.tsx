@@ -31,7 +31,27 @@ export default function HomeFooter() {
           </p>
         </div>
 
-        {/* Tầng 3 — Đối tác lặng + bản quyền */}
+        {/* Tầng 3 — Trang pháp lý/tin cậy */}
+        <div className="border-t border-e26-border-dark max-w-md mx-auto mt-8 pt-8">
+          <nav
+            aria-label="Trang pháp lý và tin cậy"
+            className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-sans text-xs text-e26-text-dark-2"
+          >
+            <Link href="/dieu-essence-khong-hua" className="hover:text-e26-gold transition-colors duration-300">
+              Điều Essence không hứa
+            </Link>
+            <span aria-hidden="true">·</span>
+            <Link href="/chinh-sach-rieng-tu" className="hover:text-e26-gold transition-colors duration-300">
+              Chính sách riêng tư
+            </Link>
+            <span aria-hidden="true">·</span>
+            <Link href="/lien-he" className="hover:text-e26-gold transition-colors duration-300">
+              Liên hệ
+            </Link>
+          </nav>
+        </div>
+
+        {/* Tầng 4 — Đối tác lặng + bản quyền */}
         <div className="border-t border-e26-border-dark max-w-md mx-auto mt-8 pt-8">
           <p className="font-sans text-xs text-e26-text-dark-2 mb-3">
             Dành cho đối tác &amp; nhà tài trợ —{" "}

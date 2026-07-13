@@ -2,6 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import { SEO } from "@/components/SEO";
+import HomeHeader from "@/components/homepage/HomeHeader";
 
 // ============================================================
 // "VỀ KENJI" — /ve-kenji (noindex, bản nháp chờ Kenji duyệt)
@@ -54,6 +55,7 @@ export default function VeKenjiPage() {
         />
       </Head>
 
+      <HomeHeader />
       <main className="bg-e26-ivory text-e26-text">
         {/* Kicker định danh */}
         <div className="max-w-[720px] mx-auto px-6 pt-10">
@@ -256,6 +258,22 @@ export default function VeKenjiPage() {
             </div>
 
             <div className="border-t border-e26-border-dark max-w-md mx-auto mt-8 pt-8">
+              <nav
+                aria-label="Trang pháp lý và tin cậy"
+                className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-sans text-xs text-e26-text-dark-2 mb-4"
+              >
+                <Link href="/dieu-essence-khong-hua" className="hover:text-e26-gold transition-colors duration-300">
+                  Điều Essence không hứa
+                </Link>
+                <span aria-hidden="true">·</span>
+                <Link href="/chinh-sach-rieng-tu" className="hover:text-e26-gold transition-colors duration-300">
+                  Chính sách riêng tư
+                </Link>
+                <span aria-hidden="true">·</span>
+                <Link href="/lien-he" className="hover:text-e26-gold transition-colors duration-300">
+                  Liên hệ
+                </Link>
+              </nav>
               <p className="font-sans text-xs text-e26-text-dark-2">© 2026 Essence Coaching</p>
             </div>
           </div>
