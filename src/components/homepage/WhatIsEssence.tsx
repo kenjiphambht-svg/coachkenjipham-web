@@ -5,7 +5,7 @@ import ImageSlot from "./ImageSlot";
 // Cuối section: slot ảnh không khí 3:2 (fallback cream + hairline vàng khi chưa có ảnh).
 export default function WhatIsEssence() {
   return (
-    <section id="essence" className="cinema-scene bg-e26-ivory px-6 py-16 md:py-32 scroll-mt-10">
+    <section id="essence" className="bg-e26-ivory px-6 py-16 md:py-32 scroll-mt-10">
       <div className="max-w-[1120px] mx-auto">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="e26-reveal font-serif font-normal text-[28px] md:text-[40px] text-e26-text mb-8">

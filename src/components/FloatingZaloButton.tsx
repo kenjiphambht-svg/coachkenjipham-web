@@ -1,5 +1,8 @@
 'use client';
 
+// Màu #0068FF là màu xanh dương chính thức của thương hiệu Zalo (đã tra cứu,
+// không đoán) — cố ý KHÔNG dùng token -2026 của Essence vì đây là icon bên
+// thứ ba, cần đúng nhận diện gốc để người dùng nhận ra ngay.
 export default function FloatingZaloButton() {
   const ZALO_URL = 'https://zalo.me/0907491289';
   
@@ -11,9 +14,9 @@ export default function FloatingZaloButton() {
       aria-label="Chat với Kenji qua Zalo"
       className="fixed bottom-6 right-6 z-50 group"
     >
-      <span className="absolute inset-0 rounded-full bg-[#c9a84c] opacity-40 animate-ping-slow" />
+      <span className="absolute inset-0 rounded-full bg-[#0068FF] opacity-40 animate-ping-slow" />
       
-      <span className="relative flex flex-col items-center justify-center w-16 h-16 rounded-full bg-[#c9a84c] shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+      <span className="relative flex flex-col items-center justify-center w-16 h-16 rounded-full bg-[#0068FF] shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
           viewBox="0 0 48 48" 

@@ -9,7 +9,7 @@ import Link from "next/link";
 // sự thật (không viết thêm copy marketing mới, chỉ sửa phần đã sai so với thực tế).
 export default function TwoStates() {
   return (
-    <section className="cinema-scene bg-e26-cream px-6 py-16 md:py-32">
+    <section className="bg-e26-cream px-6 py-16 md:py-32">
       <div className="max-w-[1120px] mx-auto relative">
         <span
           className="hidden md:block absolute -top-10 left-0 font-serif font-light text-[200px] leading-none text-e26-black opacity-[0.06] select-none pointer-events-none"

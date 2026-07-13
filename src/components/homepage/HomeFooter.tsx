@@ -5,7 +5,7 @@ import Link from "next/link";
 // Tầng 2: liên hệ. Tầng 3: đối tác lặng + bản quyền.
 export default function HomeFooter() {
   return (
-    <footer id="lien-he" className="cinema-scene bg-e26-black px-6 py-16 md:py-20 scroll-mt-10">
+    <footer id="lien-he" className="bg-e26-black px-6 py-16 md:py-20 scroll-mt-10">
       <div className="max-w-4xl mx-auto text-center">
         {/* Tầng 1 — Định danh: monogram nhỏ + caption chữ */}
         <img

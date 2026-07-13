@@ -10,7 +10,7 @@ import ImageSlot from "./ImageSlot";
 // không dự đoán tương lai, không bắt con gánh cảm xúc gia đình.
 export default function HatMamSection() {
   return (
-    <section id="hat-mam" className="cinema-scene bg-e26-cream px-6 py-16 md:py-32 scroll-mt-10">
+    <section id="hat-mam" className="bg-e26-cream px-6 py-16 md:py-32 scroll-mt-10">
       <div className="max-w-[1120px] mx-auto relative">
         <span
           className="hidden md:block absolute -top-10 left-0 font-serif font-light text-[200px] leading-none text-e26-black opacity-[0.06] select-none pointer-events-none"
