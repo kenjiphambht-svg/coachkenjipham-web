@@ -9,6 +9,7 @@ import HatMamSection from "@/components/homepage/HatMamSection";
 import NotPromised from "@/components/homepage/NotPromised";
 import NotesTeaser from "@/components/homepage/NotesTeaser";
 import HomeFooter from "@/components/homepage/HomeFooter";
+import CinematicControls from "@/components/homepage/CinematicControls";
 import { useHomeReveal } from "@/components/homepage/useHomeReveal";
 
 // Homepage V2 — Essence 2026. Route TẠM /trang-chu-v2 để Kenji xem bản nháp
@@ -78,6 +79,9 @@ export default function TrangChuV2Page() {
       </Head>
 
       <HomeHeader />
+      {/* Chế độ điện ảnh theo cú vuốt — chỉ mobile, mặc định bật, có nút tắt.
+          Desktop + prefers-reduced-motion: cuộn tự do như cũ, không đổi gì. */}
+      <CinematicControls />
       <main className="bg-e26-ivory">
         <HomeHero />
         <KenjiSection />

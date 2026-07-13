@@ -2,7 +2,7 @@
 // Nền ivory — trả lại ánh sáng sau khoảng lặng, trước footer đen (đúng nhịp lặng–thở–lặng).
 export default function NotesTeaser() {
   return (
-    <section id="ghi-chep" className="bg-e26-ivory px-6 py-16 md:py-28 scroll-mt-10">
+    <section id="ghi-chep" className="cinema-scene bg-e26-ivory px-6 py-16 md:py-28 scroll-mt-10">
       <div className="max-w-2xl mx-auto text-center">
         <p className="e26-reveal font-serif text-2xl text-e26-text mb-3">Ghi chép Essence</p>
         <p className="e26-reveal font-sans text-[15px] leading-[1.65] text-e26-text-2">

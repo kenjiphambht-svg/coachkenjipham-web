@@ -4,7 +4,7 @@
 // Luật: không "AI", không thuật ngữ hệ, không lời hứa (File 04 mục 2.1). Không nút vàng.
 export default function HomeHero() {
   return (
-    <section className="bg-e26-ivory px-6 pt-28 pb-20 md:py-40">
+    <section className="cinema-scene bg-e26-ivory px-6 pt-28 pb-20 md:py-40">
       <div className="max-w-[1120px] mx-auto">
         <div className="grid md:grid-cols-12">
           <div className="md:col-span-7">

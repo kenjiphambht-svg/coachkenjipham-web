@@ -10,7 +10,8 @@ export default function KenjiSection() {
       <div className="max-w-[1120px] mx-auto">
         <div className="grid md:grid-cols-12 gap-10 md:gap-16 items-start">
           {/* --- Ảnh chân dung 5/12 (swap slot 4:5) --- */}
-          <figure className="e26-reveal md:col-span-5">
+          {/* Cảnh riêng trên mobile cinema: chân dung full màn */}
+          <figure className="cinema-scene e26-reveal md:col-span-5">
             <div className="relative w-full aspect-[4/5] overflow-hidden">
               <Image
                 src="/klp.jpg"
@@ -26,7 +27,8 @@ export default function KenjiSection() {
           </figure>
 
           {/* --- Nội dung 7/12 --- */}
-          <div className="e26-reveal md:col-span-7">
+          {/* Cảnh riêng trên mobile cinema: lời Kenji + pull-quote */}
+          <div className="cinema-scene e26-reveal md:col-span-7">
             <h2 className="font-serif font-normal text-[28px] md:text-[40px] text-e26-text mb-6">
               Tôi là Kenji Phạm.
             </h2>
