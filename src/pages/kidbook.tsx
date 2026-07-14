@@ -94,8 +94,8 @@ export default function KidbookPage() {
   return (
     <>
       <SEO 
-        title="Mini Ebook Bản Sắc — Báo cáo tâm lý trẻ 0-6 tuổi | Kenji Phạm"
-        description="Bản Đồ Tâm Hồn Bé giải mã khí chất, cảm xúc và tài năng bẩm sinh của con qua từng giai đoạn 0-6 tuổi. Báo cáo cá nhân hóa hoàn toàn bởi Essence Coach Kenji Phạm tại Sài Gòn."
+        title="Mini Ebook Bản Sắc — Báo cáo tâm lý trẻ 0-7 tuổi | Kenji Phạm"
+        description="Bản Đồ Tâm Hồn Bé giải mã khí chất, cảm xúc và tài năng bẩm sinh của con qua từng giai đoạn 0-7 tuổi. Báo cáo cá nhân hóa hoàn toàn bởi Essence Coach Kenji Phạm tại Sài Gòn."
         image="/nd1.png"
         url="https://coachkenjipham.com/kidbook"
       />
@@ -109,7 +109,7 @@ export default function KidbookPage() {
               "@context": "https://schema.org",
               "@type": "Product",
               "name": "Mini Ebook Bản Sắc",
-              "description": "Báo cáo tâm lý trẻ 0-6 tuổi cá nhân hóa hoàn toàn",
+              "description": "Báo cáo tâm lý trẻ 0-7 tuổi cá nhân hóa hoàn toàn",
               "brand": {
                 "@type": "Brand",
                 "name": "Essence Coaching"
@@ -227,7 +227,7 @@ export default function KidbookPage() {
         <section className="py-14 px-6 text-center bg-cream fade-in-section">
           <div className="max-w-4xl mx-auto space-y-6">
             <div className="font-sans text-[11px] tracking-widest uppercase text-gold-deep">
-              MINI EBOOK BẢN SẮC · DÀNH CHO BÉ 0–6 TUỔI
+              MINI EBOOK BẢN SẮC · DÀNH CHO BÉ 0–7 TUỔI
             </div>
             <h1 className="font-serif text-4xl md:text-[56px] leading-[1.2] text-ink max-w-3xl mx-auto font-semibold">
               <span className="shimmer-text">
