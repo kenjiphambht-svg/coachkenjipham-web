@@ -10,7 +10,7 @@ export default function HomePage() {
     <>
       <SEO 
         title="Essence Coaching · Kenji Phạm — Sài Gòn"
-        description="Câu chuyện cuộc sống của bạn là một kiệt tác. Essence Coaching by Kenji Phạm — Coaching tâm hồn chuyên sâu tại Sài Gòn."
+        description="Câu chuyện cuộc sống của bạn là một kiệt tác. Essence Coaching by Kenji Phạm — Coaching bản sắc chuyên sâu — nhìn rõ mình, sống đúng với mình."
         image="/og-image.png"
         url="https://coachkenjipham.com"
       />
