@@ -209,9 +209,10 @@ body {
 }
 
 /* === ESSENCE 2026 — landing reveal dòng "Bản Sắc" (fade-up 0.75s / 16px, stagger nhẹ) ===
-   Dùng chung qua class .hm-reveal cho /an-pham-ban-sac-hat-mam VÀ
-   /an-pham-ban-sac-kham-pha (cùng hook useLandingReveal — utility CSS
-   thuần, không có copy Hạt Mầm cứng trong rule này nên tái dùng an toàn).
+   Dùng chung qua class .hm-reveal cho /an-pham-ban-sac-hat-mam,
+   /an-pham-ban-sac-kham-pha VÀ /an-pham-ban-sac-giao-mua (cùng hook
+   useLandingReveal — utility CSS thuần, không có copy cứng trong rule
+   này nên tái dùng an toàn giữa các sản phẩm).
    Mobile rút còn 0.6s / 12px. Không đụng .fade-in-section và .e26-reveal. */
 .hm-reveal {
   opacity: 0;
