@@ -34,14 +34,13 @@ const nextConfig = {
       rules: getTurboRules(),
     },
   },
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**",
-      },
-    ],
-  },
+  // Đã kiểm toàn repo (grep mọi <Image src=...>): 100% ảnh dùng path local
+  // trong /public, không route nào load ảnh remote qua Image Optimizer.
+  // Bỏ hẳn remotePatterns thay vì whitelist domain nào — vá advisory HIGH
+  // "DoS via Image Optimizer remotePatterns" (GHSA-9g9p-9gw9-jx7f) tận gốc
+  // thay vì chỉ nâng version. Nếu sau này cần ảnh remote thật, thêm domain
+  // cụ thể vào đây — không dùng lại hostname "**".
+  images: {},
   allowedDevOrigins: ["*.daytona.work", "*.softgen.dev"],
 };
 
