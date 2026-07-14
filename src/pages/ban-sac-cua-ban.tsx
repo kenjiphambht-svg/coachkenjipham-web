@@ -113,16 +113,21 @@ export default function BanSacCuaBanPage() {
                 <p className="font-sans text-sm text-e26-text-2">Sắp mở</p>
               </div>
 
-              {/* Thẻ 3 — Bạn Là Duy Nhất, SẮP MỞ (không link) */}
-              <div className="bg-e26-white border border-e26-border p-8 flex flex-col opacity-70">
+              {/* Thẻ 3 — Bạn Là Duy Nhất, PREVIEW (link thật, chưa mở bán) */}
+              <div className="bg-e26-white border border-e26-border p-8 flex flex-col">
                 <p className="font-sans text-xs tracking-[0.08em] uppercase text-e26-text-2 mb-3">
-                  Sắp mở
+                  Xem trước
                 </p>
-                <h3 className="font-serif text-xl text-e26-text-2 mb-4">Bạn Là Duy Nhất</h3>
+                <h3 className="font-serif text-xl text-e26-text mb-4">Bạn Là Duy Nhất</h3>
                 <p className="font-sans text-[15px] leading-[1.6] text-e26-text-2 mb-6 flex-1">
                   Bước khởi đầu nhẹ để bắt đầu nhìn lại chính mình.
                 </p>
-                <p className="font-sans text-sm text-e26-text-2">Sắp mở</p>
+                <Link
+                  href="/ban-la-duy-nhat"
+                  className="font-sans text-[14px] text-e26-text underline underline-offset-4 decoration-e26-border hover:text-e26-gold-deep hover:decoration-e26-gold transition-colors duration-300"
+                >
+                  Xem trước ấn phẩm
+                </Link>
               </div>
             </div>
 
