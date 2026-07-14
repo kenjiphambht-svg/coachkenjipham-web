@@ -7,32 +7,19 @@ import HomeFooter from "@/components/homepage/HomeFooter";
 // ============================================================
 // /chinh-sach-rieng-tu — trang pháp lý + cam kết dữ liệu trẻ em.
 //
-// ⚠️ BẢN NHÁP DO CLAUDE (CHAT) SOẠN theo File 09 (Security & Child Data
-// Policy nội bộ) — KHÔNG PHẢI tư vấn pháp lý. Claude không phải luật sư,
-// không đảm bảo tính pháp lý đầy đủ. KENJI (và/hoặc luật sư) BẮT BUỘC
-// phải đọc + duyệt lại nội dung này trước khi coi là chính thức.
-//
-// LỆCH so với chỉ thị 1 điểm (đã cân nhắc, ghi rõ trong báo cáo): task
-// yêu cầu "KHÔNG noindex" vì đây là trang niềm tin công khai — nhưng em
-// GIỮ NOINDEX cho tới khi Kenji xác nhận đã đọc/duyệt xong. Lý do: đây
-// là cam kết pháp lý công khai về xử lý dữ liệu TRẺ EM, một khi Google
-// đã index/cache thì rất khó thu hồi nếu sau này phát hiện câu nào không
-// đúng thực tế vận hành. Bỏ noindex là 1 dòng, Kenji xác nhận là làm
-// ngay. Không ảnh hưởng gì khác — nội dung, cấu trúc, schema giữ nguyên
-// đúng yêu cầu.
+// Nội dung soạn theo File 09 (Security & Child Data Policy nội bộ),
+// đã được Kenji đọc và DUYỆT CHÍNH THỨC. Từ đây trang này công khai,
+// cho phép Google index (đúng vai trò trang niềm tin công khai).
 // ============================================================
 export default function ChinhSachRiengTuPage() {
   return (
     <>
       <SEO
-        title="Chính sách riêng tư & dữ liệu trẻ em — Kenji Phạm (Bản nháp, chờ duyệt pháp lý)"
+        title="Chính sách riêng tư & dữ liệu trẻ em — Kenji Phạm"
         description="Chúng tôi thu gì, để làm gì, giữ ở đâu, và bạn có quyền gì — kể cả với thông tin của con bạn."
         url="https://coachkenjipham.com/chinh-sach-rieng-tu"
       />
       <Head>
-        {/* Xem ghi chú ở đầu file: giữ noindex tạm thời cho tới khi Kenji
-            xác nhận đã duyệt nội dung pháp lý — khác với chỉ thị gốc. */}
-        <meta name="robots" content="noindex" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
         <script
           type="application/ld+json"
