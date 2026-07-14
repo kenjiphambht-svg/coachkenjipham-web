@@ -4,19 +4,20 @@ import HomeHeader from "@/components/homepage/HomeHeader";
 import HomeFooter from "@/components/homepage/HomeFooter";
 
 // ============================================================
-// /lien-he — KHUNG (noindex). Theo brief 03 mục 10.
-// CTA chính (email) là REAL — mailto hoạt động ngay. Kênh Messenger/Zalo
-// đã có sẵn qua FloatingZaloButton toàn site (_app.tsx) nên không lặp lại
-// link riêng ở đây. "Form tối giản" CHƯA nối backend (repo chỉ có
-// src/pages/api/hello.ts stub) — để placeholder rõ ràng, không dựng form
-// giả không gửi đi đâu.
+// /lien-he — theo brief 03 mục 10 ("một cánh cửa liên hệ rõ, không rào
+// cản"). Nội dung thật (không còn placeholder/ghi chú nội bộ hiển thị
+// công khai). Vẫn NOINDEX — chưa công khai cho Google, chờ Kenji duyệt.
+// Chỉ 2 kênh thật đang có: email (mailto) + Zalo (FloatingZaloButton
+// dùng chung toàn site qua _app.tsx). Không dựng form — repo chưa có
+// backend nhận form (chỉ có src/pages/api/hello.ts stub); không hứa một
+// tính năng chưa tồn tại.
 // ============================================================
 export default function LienHePage() {
   return (
     <>
       <SEO
-        title="Liên hệ — Kenji Phạm (Bản khung)"
-        description="Một cánh cửa liên hệ rõ, không rào cản. Trang đang dựng khung, chờ Kenji duyệt nội dung."
+        title="Liên hệ — Kenji Phạm (Bản nháp)"
+        description="Một cách liên hệ rõ, không rào cản. Email hoặc Zalo — chọn cách nào tiện cho bạn."
         url="https://coachkenjipham.com/lien-he"
       />
       <Head>
@@ -28,19 +29,22 @@ export default function LienHePage() {
       <main className="bg-e26-ivory min-h-[70vh]">
         <div className="max-w-[720px] mx-auto px-6 pt-14 pb-4">
           <p className="font-sans text-sm text-e26-text-2">Liên hệ</p>
-          <h1 className="font-serif font-light text-[34px] md:text-[46px] text-e26-text mt-3">
-            [HERO — chờ nội dung]
+          <h1 className="font-serif font-light text-[34px] md:text-[46px] text-e26-text mt-4 max-w-lg">
+            Muốn nhắn gì, cứ nhắn thẳng.
           </h1>
+          <p className="font-sans text-[17px] leading-[1.65] text-e26-text-2 mt-6 max-w-xl">
+            Không cần rào trước, không cần viết dài. Chọn cách nào tiện cho bạn.
+          </p>
         </div>
 
-        <section className="bg-e26-white px-6 py-16 md:py-24 border-b border-e26-border">
+        <section className="bg-e26-white px-6 py-16 md:py-24">
           <div className="max-w-[720px] mx-auto">
-            <p className="font-serif text-xl md:text-2xl text-e26-text mb-3">
-              [SECTION — kênh liên hệ nhanh]
-            </p>
-            <p className="font-sans text-sm text-e26-text-2 mb-8">
-              Nội dung sẽ được Kenji duyệt và đưa vào sau — xem file GOI-XX tương ứng trong Drive.
-              Nút Zalo góc màn hình đã hoạt động (dùng chung toàn site).
+            <h2 className="font-serif font-normal text-[24px] md:text-[30px] text-e26-text mb-4">
+              Hai cách để tới được tôi
+            </h2>
+            <p className="font-sans text-[17px] leading-[1.7] text-e26-text-2 max-w-xl mb-8">
+              Nhắn Zalo qua nút góc màn hình để trao đổi nhanh, hoặc gửi email nếu bạn muốn
+              viết dài hơn một chút.
             </p>
             <a
               href="mailto:kenjipham.bht@gmail.com"
@@ -48,18 +52,6 @@ export default function LienHePage() {
             >
               Gửi email cho Kenji
             </a>
-          </div>
-        </section>
-
-        <section className="bg-e26-ivory px-6 py-16 md:py-24">
-          <div className="max-w-[720px] mx-auto">
-            <p className="font-serif text-xl md:text-2xl text-e26-text mb-3">
-              [SECTION — form tối giản (tên · email · lời nhắn)]
-            </p>
-            <p className="font-sans text-sm text-e26-text-2">
-              Chưa nối backend gửi form ở bước dựng khung này (xem File 07 để nối API + chống
-              spam nhẹ dạng honeypot). Hiện tại dùng email/Zalo ở trên là kênh thật.
-            </p>
           </div>
         </section>
       </main>
