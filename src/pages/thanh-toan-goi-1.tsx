@@ -9,6 +9,7 @@ export default function ThanhToanGoi1() {
     <>
       <Head>
         <title>Hoàn tất thanh toán · KIDMAP Gói 1 · Essence Coaching</title>
+        <meta name="robots" content="noindex" />
       </Head>
       
       <main className="min-h-screen bg-[#faf8f3] py-12 md:py-16 px-6">
