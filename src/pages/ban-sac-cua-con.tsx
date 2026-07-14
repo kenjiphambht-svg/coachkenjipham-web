@@ -10,8 +10,11 @@ import HomeFooter from "@/components/homepage/HomeFooter";
 // nghiêm nhất site: không dán nhãn, không hứa, không dọa, ngôn ngữ mở
 // ("có thể", "ba mẹ có thể quan sát"). Câu lõi bắt buộc có mặt ở Section 2.
 // Schema: Article (KHÔNG Product — đây là hub, không phải trang bán hàng).
-// Chỉ 1 nút vàng duy nhất (Section 5). 2/3 thẻ độ tuổi "Sắp mở", không link
-// (không giả vờ đã có sản phẩm chưa tồn tại).
+// Chỉ 1 nút vàng duy nhất (Section 5). 2/3 thẻ độ tuổi vẫn ghi "Sắp mở"
+// (đúng thực tế — chưa mở bán, ẩn giá) NHƯNG đã có link tới trang preview
+// noindex tương ứng (/an-pham-ban-sac-kham-pha, /an-pham-ban-sac-giao-mua)
+// theo yêu cầu trực tiếp của Kenji — khác với chỉ thị "giữ nguyên hub"
+// ban đầu ở 2 task xây 2 trang preview đó.
 // ============================================================
 export default function BanSacCuaConPage() {
   return (
@@ -103,29 +106,39 @@ export default function BanSacCuaConPage() {
                 </Link>
               </div>
 
-              {/* Thẻ 2 — Khám Phá, SẮP MỞ (không link) */}
-              <div className="bg-e26-white border border-e26-border p-8 flex flex-col opacity-70">
+              {/* Thẻ 2 — Khám Phá, SẮP MỞ (đã có link preview theo yêu cầu Kenji) */}
+              <div className="bg-e26-white border border-e26-border p-8 flex flex-col">
                 <p className="font-sans text-xs tracking-[0.08em] uppercase text-e26-text-2 mb-3">
                   7–14 tuổi · Sắp mở
                 </p>
-                <h3 className="font-serif text-xl text-e26-text-2 mb-4">Bản Sắc Khám Phá</h3>
+                <h3 className="font-serif text-xl text-e26-text mb-4">Bản Sắc Khám Phá</h3>
                 <p className="font-sans text-[15px] leading-[1.6] text-e26-text-2 mb-6 flex-1">
                   Khi con bước vào học đường, bạn bè, năng lực và thế giới bên ngoài gia đình.
                 </p>
-                <p className="font-sans text-sm text-e26-text-2">Sắp mở</p>
+                <Link
+                  href="/an-pham-ban-sac-kham-pha"
+                  className="font-sans text-[14px] text-e26-text underline underline-offset-4 decoration-e26-border hover:text-e26-gold-deep hover:decoration-e26-gold transition-colors duration-300"
+                >
+                  Sắp mở
+                </Link>
               </div>
 
-              {/* Thẻ 3 — Giao Mùa, SẮP MỞ (không link) */}
-              <div className="bg-e26-white border border-e26-border p-8 flex flex-col opacity-70">
+              {/* Thẻ 3 — Giao Mùa, SẮP MỞ (đã có link preview theo yêu cầu Kenji) */}
+              <div className="bg-e26-white border border-e26-border p-8 flex flex-col">
                 <p className="font-sans text-xs tracking-[0.08em] uppercase text-e26-text-2 mb-3">
                   14–21 tuổi · Sắp mở
                 </p>
-                <h3 className="font-serif text-xl text-e26-text-2 mb-4">Bản Sắc Giao Mùa</h3>
+                <h3 className="font-serif text-xl text-e26-text mb-4">Bản Sắc Giao Mùa</h3>
                 <p className="font-sans text-[15px] leading-[1.6] text-e26-text-2 mb-6 flex-1">
                   Khi con đi qua tuổi chuyển mùa — cần tự do hơn, ranh giới hơn, được tôn trọng
                   như một cá thể riêng.
                 </p>
-                <p className="font-sans text-sm text-e26-text-2">Sắp mở</p>
+                <Link
+                  href="/an-pham-ban-sac-giao-mua"
+                  className="font-sans text-[14px] text-e26-text underline underline-offset-4 decoration-e26-border hover:text-e26-gold-deep hover:decoration-e26-gold transition-colors duration-300"
+                >
+                  Sắp mở
+                </Link>
               </div>
             </div>
 
