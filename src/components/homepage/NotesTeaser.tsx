@@ -1,14 +1,34 @@
-// Section 7 — Ghi chép Essence: một dòng trung thực, "sắp mở".
-// Nền ivory — trả lại ánh sáng sau khoảng lặng, trước footer đen (đúng nhịp lặng–thở–lặng).
+// Section 9 — Ghi chép + Lối ra. Nền ivory. Đúng 3 chỗ "sắp mở" theo
+// BAN-CHOT: (1) dòng mô tả Ghi chép, (2) cụm "Góc Đọc", (3) nút Ebook.
+// Cả 3 là <span>, KHÔNG <Link>/<a>, không href — tránh soft 404 cho trạng
+// thái chưa có nội dung thật. Câu kết KHÔNG chứa mệnh lệnh nào cho người
+// đọc (không "hãy quay lại"/"bạn cứ về") — chủ đích giữ người đọc ở lại,
+// không tiễn họ ra cửa.
 export default function NotesTeaser() {
   return (
-    <section id="ghi-chep" className="bg-e26-ivory px-6 py-16 md:py-28 scroll-mt-10">
+    <section className="bg-e26-ivory px-6 py-16 md:py-28">
       <div className="max-w-2xl mx-auto text-center">
-        <p className="e26-reveal font-serif text-2xl text-e26-text mb-3">Ghi chép Essence</p>
-        <p className="e26-reveal font-sans text-[15px] leading-[1.65] text-e26-text-2">
-          Những bài viết chậm về bản sắc, nội tâm và chuyện làm cha mẹ.
-          Đang được viết — sẽ mở trong thời gian tới.
+        <p className="e26-reveal font-serif text-2xl text-e26-text mb-3">Ghi chép Essence.</p>
+        <span className="e26-reveal block font-sans text-[15px] leading-[1.65] text-e26-text-2 opacity-45 select-none">
+          Những bài viết nhỏ đang được ghi lại.
+        </span>
+
+        <p className="e26-reveal font-sans text-[15px] leading-[1.65] text-e26-text-2 mt-8">
+          Nếu hôm nay bạn chỉ muốn tìm một góc tĩnh lặng, mời bạn ghé{" "}
+          <span className="opacity-45 select-none">Góc Đọc</span>, hoặc nhận miễn phí cuốn
+          Ebook &quot;Bắt Đầu Từ Đâu? Bản Sắc Nhân Hiệu&quot;.
         </p>
+
+        <p className="e26-reveal font-sans text-[15px] leading-[1.65] text-e26-text-2 mt-6">
+          Cánh cửa luôn mở, và bạn là người tự chọn nhịp đi của mình.
+        </p>
+
+        <span
+          className="e26-reveal inline-block mt-10 bg-e26-gold text-e26-black font-sans font-medium text-[13px] tracking-[0.08em] uppercase px-8 py-4 opacity-45 select-none cursor-default"
+          aria-hidden="true"
+        >
+          Đọc Ebook Miễn Phí
+        </span>
       </div>
     </section>
   );
