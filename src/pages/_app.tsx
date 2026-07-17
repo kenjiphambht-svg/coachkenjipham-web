@@ -6,7 +6,9 @@ import '@/styles/globals.css';
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const hideFloatingZalo = router.pathname === '/ai-startup';
+  // TẠM ẨN toàn site theo yêu cầu Kenji 16/07/2026 — chưa xoá component,
+  // chờ quyết định về kênh liên lạc (Zalo/Messenger/không dùng widget).
+  const hideFloatingZalo = true;
 
   return (
     <MistFadeProvider>
