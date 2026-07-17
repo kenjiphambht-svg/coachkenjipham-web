@@ -22,10 +22,10 @@ const TRUST_LINKS = [
 // canh giữa bên dưới). Dùng 2 file SVG có sẵn trong public/brand/logo/, KHÔNG
 // sửa nội dung file gốc. Header luôn nằm trên nền kem/trong suốt — không dùng
 // bản -dark (để dành cho trang có header trên nền tối sau này, nếu có).
-// TINH CHỈNH 18/07/2026: Kenji thấy wordmark ~51% cũ vẫn nhỏ, khoảng cách 2
-// lớp rời rạc như 2 khối tách biệt. Tăng wordmark lên ~67% chiều rộng chữ ký
-// (đã đo thật bằng getBoundingClientRect, đúng khoảng 65-70% yêu cầu), giảm
-// margin-top xuống còn 4-6px để đọc như MỘT lockup, không phải 2 thứ tách rời.
+// TINH CHỈNH 18/07/2026 (lần 2): Kenji yêu cầu tăng wordmark gấp đôi so với
+// mức 67% vừa chỉnh — h-[14px]/h-[17px] → h-[28px]/h-[34px]. LƯU Ý tự phản
+// biện: ở mức này wordmark RỘNG HƠN chữ ký (~130% thay vì phụ đề nhỏ hơn dòng
+// chính) — đã chụp ảnh thật gửi kèm báo cáo để Kenji xác nhận đúng ý muốn.
 function HeaderLogo() {
   return (
     <span className="flex flex-col items-center">
@@ -37,7 +37,7 @@ function HeaderLogo() {
       <img
         src="/brand/logo/essence-wordmark-minimal-2026.svg"
         alt="Essence Coaching"
-        className="h-[14px] md:h-[17px] w-auto mt-1"
+        className="h-[28px] md:h-[34px] w-auto mt-1"
       />
     </span>
   );
