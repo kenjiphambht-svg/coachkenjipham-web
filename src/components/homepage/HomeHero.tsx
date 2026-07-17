@@ -29,8 +29,11 @@ export default function HomeHero() {
 
           {/* Ảnh 1 — tràn xuống ranh giới sang section ③ (margin âm phía dưới) */}
           <div className="e26-reveal md:col-span-5 relative z-10 -mb-16 md:-mb-32">
-            {/* SWAP SLOT: /images/home/kenji-portrait.webp khi có ảnh web-ready */}
-            <ImageSlot ratio="4/5" />
+            <ImageSlot
+              ratio="4/5"
+              src="/images/home/kenji-portrait.webp"
+              alt="Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu"
+            />
           </div>
         </div>
       </div>
