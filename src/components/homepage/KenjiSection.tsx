@@ -2,11 +2,16 @@ import ImageSlot from "./ImageSlot";
 
 // Section 3 — Kenji là ai. Nền white, editorial 2 cột: ảnh 5/12 trái, chữ 7/12 phải.
 // Ảnh 2 (rót trà, ratio 4/5) tràn NGƯỢC LÊN ranh giới ②→③ bằng margin âm phía trên —
-// ảnh 1 ở Hero tràn xuống từ cột phải, ảnh này tràn lên từ cột trái: hai luồng ảnh
-// bắt chéo tại đường ranh giới, không chồng lên nhau (khác cột ngang).
+// ảnh 1 ở Hero tràn xuống từ cột phải.
+// LƯU Ý: cột chữ (col-span-7, cột 6-12) và ảnh Hero (col-span-5, cột 8-12) CHIA SẺ
+// cột 8-12 theo lưới 12 cột — không phải "khác cột ngang" như ghi chú cũ (sai, đã
+// sửa). Vì vậy KHÔNG dựa vào việc lệch cột để tránh chồng chữ; thay vào đó tăng
+// pt (32px→96px desktop) để chữ bắt đầu thấp hơn, cộng với thu hẹp mức tràn của
+// ảnh Hero (xem HomeHero.tsx) — đã đo thật bằng getBoundingClientRect ở cả
+// mobile (375-595px) và desktop (1280px), không còn chồng lên "Tôi là Kenji Phạm.".
 export default function KenjiSection() {
   return (
-    <section className="bg-e26-white px-6 pt-8 pb-16 md:pt-8 md:pb-32 relative overflow-visible">
+    <section className="bg-e26-white px-6 pt-12 pb-16 md:pt-24 md:pb-32 relative overflow-visible">
       <div className="max-w-[1120px] mx-auto">
         <div className="grid md:grid-cols-12 gap-10 md:gap-16 items-start">
           {/* --- Ảnh 2 — rót trà, tràn lên ranh giới (swap slot 4:5) --- */}
