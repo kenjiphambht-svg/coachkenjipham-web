@@ -18,6 +18,29 @@ const TRUST_LINKS = [
   { href: "/lien-he", label: "Liên hệ" },
 ];
 
+// Lockup logo — chữ ký Kenji (dòng chính) + wordmark Essence Coaching (phụ đề,
+// canh giữa bên dưới). Dùng 2 file SVG có sẵn trong public/brand/logo/, KHÔNG
+// sửa nội dung file gốc. Header luôn nằm trên nền kem/trong suốt — không dùng
+// bản -dark (để dành cho trang có header trên nền tối sau này, nếu có).
+// Tỉ lệ chiều rộng wordmark/chữ ký ~51% ở cả 2 kích thước (đã đo thật bằng
+// getBoundingClientRect trên trình duyệt, nằm trong khoảng 45–55% yêu cầu).
+function HeaderLogo() {
+  return (
+    <span className="flex flex-col items-center">
+      <img
+        src="/brand/logo/kenji-signature-2026.svg"
+        alt="Kenji Phạm"
+        className="h-10 md:h-12 w-auto"
+      />
+      <img
+        src="/brand/logo/essence-wordmark-minimal-2026.svg"
+        alt="Essence Coaching"
+        className="h-[11px] md:h-[13px] w-auto mt-1.5 md:mt-2"
+      />
+    </span>
+  );
+}
+
 export default function HomeHeader() {
   const [open, setOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -67,11 +90,7 @@ export default function HomeHeader() {
     <header className="relative z-50 bg-e26-ivory border-b border-e26-border px-6">
       <div className="max-w-[1120px] mx-auto flex items-center justify-between py-4">
         <Link href="/trang-chu-v2" aria-label="Về trang chủ">
-          <img
-            src="/brand/logo/essence-wordmark-inline-2026.svg"
-            alt="Essence Coaching — Kenji Phạm"
-            className="h-14 w-auto"
-          />
+          <HeaderLogo />
         </Link>
         <button
           ref={menuButtonRef}
@@ -104,11 +123,7 @@ export default function HomeHeader() {
         <div className="max-w-[1120px] mx-auto h-full flex flex-col px-6">
           <div className="flex items-center justify-between py-4">
             <Link href="/trang-chu-v2" aria-label="Về trang chủ" onClick={(e) => e.stopPropagation()}>
-              <img
-                src="/brand/logo/essence-wordmark-inline-2026.svg"
-                alt="Essence Coaching — Kenji Phạm"
-                className="h-14 w-auto"
-              />
+              <HeaderLogo />
             </Link>
             <button
               type="button"
