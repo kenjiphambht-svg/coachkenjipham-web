@@ -79,7 +79,7 @@ export default function ThanhToanGoi1() {
               </li>
               <li className="flex gap-3">
                 <span className="text-[#c9a84c] font-semibold">2.</span>
-                <span>Nhắn cho Kenji qua Zalo (bấm bong bóng vàng góc phải)</span>
+                <span>Nhắn cho Kenji qua Zalo: zalo.me/0911755118</span>
               </li>
               <li className="flex gap-3">
                 <span className="text-[#c9a84c] font-semibold">3.</span>
