@@ -3,9 +3,11 @@ import { SEO } from "@/components/SEO";
 import HomeHeader from "@/components/homepage/HomeHeader";
 import HomeHero from "@/components/homepage/HomeHero";
 import KenjiSection from "@/components/homepage/KenjiSection";
+import KietTac from "@/components/homepage/KietTac";
 import TwoStates from "@/components/homepage/TwoStates";
 import WhatIsEssence from "@/components/homepage/WhatIsEssence";
-import HatMamSection from "@/components/homepage/HatMamSection";
+import AnDinhAnThinh from "@/components/homepage/AnDinhAnThinh";
+import ImageBridge from "@/components/homepage/ImageBridge";
 import NotPromised from "@/components/homepage/NotPromised";
 import NotesTeaser from "@/components/homepage/NotesTeaser";
 import HomeFooter from "@/components/homepage/HomeFooter";
@@ -15,18 +17,24 @@ import { useHomeReveal } from "@/components/homepage/useHomeReveal";
 // trên domain thật mà không đụng "/" (Coming Soon) đang sống. NOINDEX — chưa
 // công khai cho Google. Khi duyệt xong, nội dung này sẽ thay thế index.tsx
 // thật và route tạm này sẽ được gỡ (theo Migration Strategy — Phase 0 audit).
-// Mode: Light-led premium with dark silence section
-// (docs/brand/design-system/08_PAGE_APPLICATION_GUIDE_2026.md mục 1).
-// 8 section cố định theo docs/website/master-plan/04_HOMEPAGE_10000_USD_SPEC.md mục 2.
-// Motion: reveal riêng của homepage (.e26-reveal, 250ms/12px) — useHomeReveal bên dưới.
+//
+// NỘI DUNG THEO BAN-CHOT.md (16/07/2026) — bản duy nhất được đọc khi build,
+// xem BRIEF-CLAUDE-CODE-trang-chu-CHOT.md. 10 section cố định: Header, Hero,
+// Kenji, Kiệt Tác (H1 duy nhất), Hai Cửa, Essence Là Gì, An Định → An Thịnh,
+// cầu nối ảnh, Điều Essence Không Hứa (teaser), Ghi Chép + Lối Ra, Footer.
+// Đã bỏ HatMamSection khỏi trang chủ (Hạt Mầm giờ dẫn qua thẻ "Bản Sắc Của
+// Con" ở Hai Cửa) — GIỮ NGUYÊN file HatMamSection.tsx trong repo, không xoá.
+// Nhịp sáng-tối: kem → kem → kem → ĐEN (Kiệt Tác) → kem → kem → ĐEN (An Định
+// → An Thịnh) → kem → kem → đen (footer). Đúng 2 khối tối giữa trang.
+// Motion: reveal riêng của homepage (.e26-reveal, 250ms/12px) — useHomeReveal.
 export default function TrangChuV2Page() {
   useHomeReveal();
 
   return (
     <>
       <SEO
-        title="Kenji Phạm — Essence Coach | Essence Coaching System (Bản nháp)"
-        description="Kenji Phạm — Essence Coach tại Sài Gòn. Một không gian có cấu trúc và ranh giới an toàn: để bạn nhìn rõ mình, và để ba mẹ hiểu con hơn."
+        title="Kenji Phạm | Huấn luyện viên Tâm lý Chiều sâu"
+        description="Câu chuyện cuộc sống của bạn là một kiệt tác. Cùng Kenji Phạm dọn phản xạ cũ, thiết lập nhịp sống mới và kiến tạo đời sống An Thịnh từ bản sắc thật."
         image="/essence-og-1200x630.png"
         url="https://coachkenjipham.com/trang-chu-v2"
       />
@@ -41,14 +49,26 @@ export default function TrangChuV2Page() {
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180.png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        {/* WebSite + Person JSON-LD (docs/website/master-plan/03_PAGE_BRIEFS_PUBLIC_PAGES.md mục 1) */}
+        {/* Person + Organization JSON-LD — theo "Schema đề xuất" trong BAN-CHOT.md
+            (thay cho WebSite schema của bản trước). */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "WebSite",
-              name: "Essence Coaching",
+              "@type": "Person",
+              name: "Kenji Phạm",
+              alternateName: "Coach Kenji Phạm",
+              jobTitle: "Huấn luyện viên Tâm lý Chiều sâu",
+              worksFor: {
+                "@type": "Organization",
+                name: "Essence Coaching System",
+              },
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Sài Gòn",
+                addressCountry: "VN",
+              },
               url: "https://coachkenjipham.com/trang-chu-v2",
             }),
           }}
@@ -58,13 +78,11 @@ export default function TrangChuV2Page() {
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "Person",
-              name: "Kenji Phạm",
-              alternateName: "Coach Kenji Phạm",
-              jobTitle: "Essence Coach",
-              worksFor: {
-                "@type": "Organization",
-                name: "Essence Coaching System",
+              "@type": "Organization",
+              name: "Essence Coaching System",
+              founder: {
+                "@type": "Person",
+                name: "Kenji Phạm",
               },
               address: {
                 "@type": "PostalAddress",
@@ -81,9 +99,11 @@ export default function TrangChuV2Page() {
       <main className="bg-e26-ivory">
         <HomeHero />
         <KenjiSection />
+        <KietTac />
         <TwoStates />
         <WhatIsEssence />
-        <HatMamSection />
+        <AnDinhAnThinh />
+        <ImageBridge />
         <NotPromised />
         <NotesTeaser />
       </main>

@@ -1,5 +1,6 @@
 import { useState, FormEvent } from "react";
 import Head from "next/head";
+import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import HomeHeader from "@/components/homepage/HomeHeader";
 import HomeFooter from "@/components/homepage/HomeFooter";
@@ -213,6 +214,21 @@ export default function LienHePage() {
             — đó là nơi có thể giúp bạn nhanh và đúng hơn.
           </p>
         </section>
+
+        {/* 5 — Hợp tác & đầu tư: giữ lối vào /ai-startup sau khi link Dossier
+            bị bỏ khỏi HomeFooter.tsx (theo BRIEF-CLAUDE-CODE-trang-chu-CHOT.md).
+            Nhỏ, cuối trang, không phải khối nổi bật. */}
+        <div className="max-w-[720px] mx-auto px-6 mt-12 pt-8 border-t border-e26-border text-center">
+          <p className="font-sans text-sm text-e26-text-2">
+            Dành cho đối tác &amp; nhà tài trợ —{" "}
+            <Link
+              href="/ai-startup"
+              className="underline underline-offset-4 decoration-e26-border hover:text-e26-gold-deep hover:decoration-e26-gold transition-colors duration-300"
+            >
+              Essence AI Startup Dossier
+            </Link>
+          </p>
+        </div>
       </main>
       <HomeFooter />
     </>

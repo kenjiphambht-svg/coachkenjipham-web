@@ -249,3 +249,49 @@ body {
     transition: none !important;
   }
 }
+
+/* === ESSENCE 2026 — vệt vàng "kiệt tác" (section ④ trang chủ) ===
+   Element thật (span/i), KHÔNG phải ::after — GSAP/CSS transition không
+   animate được pseudo-element theo lỗi đã biết. Dùng chung IntersectionObserver
+   của useHomeReveal (class .e26-reveal) nhưng override lại opacity/transform
+   gốc bằng selector cụ thể hơn (.gold-brush-line.e26-reveal), vì hiệu ứng ở
+   đây là scaleX chứ không phải fade-up như chữ thường. */
+.gold-brush-line {
+  position: absolute;
+  left: -4px;
+  right: -6px;
+  bottom: 3px;
+  height: 4px;
+  background-color: var(--essence-gold-2026);
+  border-radius: 2px 5px 1px 4px;
+  transform: rotate(-0.7deg) scaleX(0);
+  transform-origin: left center;
+}
+
+.gold-brush-line.e26-reveal {
+  opacity: 1;
+  transform: rotate(-0.7deg) scaleX(0);
+  transition: transform 500ms ease-out;
+}
+
+.gold-brush-line.e26-reveal.is-visible {
+  transform: rotate(-0.7deg) scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gold-brush-line.e26-reveal {
+    transform: rotate(-0.7deg) scaleX(1) !important;
+    transition: none !important;
+  }
+}
+
+/* === ESSENCE 2026 — chữ ma "AN" (section ⑦ An Định → An Thịnh) ===
+   Chữ nền mờ tĩnh, không animate — chỉ hiện diện, giữ theo quyết định Kenji. */
+.andinh-ghost-an {
+  font-size: clamp(180px, 32vw, 420px);
+  line-height: 1;
+  opacity: 0.05;
+  color: var(--essence-text-primary-dark-2026);
+  user-select: none;
+  pointer-events: none;
+}
