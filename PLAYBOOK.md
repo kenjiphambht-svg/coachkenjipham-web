@@ -42,7 +42,14 @@ QA checklist đầy đủ theo loại task: `docs/website/master-plan/13_QA_CHEC
 - Claude Code reports (phiếu 5 dòng: đã làm gì / tự kiểm gì / có sửa code không / rủi ro / cần Kenji xem chỗ nào).
 - ChatGPT interprets for Kenji.
 - Codex audits PR.
-- Kenji decides merge. Không có ngoại lệ.
+- Kenji decides merge cho mọi PR đụng payment pages, dữ liệu trẻ em, hoặc thay
+  đổi cấu trúc/route lớn — không có ngoại lệ. Các PR này luôn để Draft, chờ
+  Kenji xem và tự bấm merge.
+- **Ngoại lệ đã duyệt (18/07/2026)**: với PR thuộc loại nhỏ và rõ ràng — đổi
+  ảnh, sửa lỗi hiển thị/CSS — và KHÔNG đụng payment pages, KHÔNG đụng dữ liệu
+  trẻ em, KHÔNG đổi cấu trúc/route, Claude Code được tự merge sau khi
+  build/lint pass và đã tự kiểm đầy đủ theo mục 4. Vẫn phải mở PR + phiếu báo
+  cáo đầy đủ như thường lệ — chỉ khác bước bấm merge cuối cùng.
 
 ## 6. Quy tắc visual
 
