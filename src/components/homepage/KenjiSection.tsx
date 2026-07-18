@@ -16,8 +16,11 @@ export default function KenjiSection() {
         <div className="grid md:grid-cols-12 gap-10 md:gap-16 items-start">
           {/* --- Ảnh 2 — rót trà, tràn lên ranh giới (swap slot 4:5) --- */}
           <figure className="e26-reveal md:col-span-5 relative z-10 -mt-16 md:-mt-28">
-            {/* SWAP SLOT: /images/home/kenji-pouring-tea.webp khi có ảnh web-ready */}
-            <ImageSlot ratio="4/5" />
+            <ImageSlot
+              ratio="4/5"
+              src="/images/home/kenji-pouring-tea.webp"
+              alt="Kenji Phạm rót trà"
+            />
             <figcaption className="font-sans text-sm text-e26-text-2 pt-3 pb-3 border-b border-e26-border">
               Sài Gòn · 2026
             </figcaption>
