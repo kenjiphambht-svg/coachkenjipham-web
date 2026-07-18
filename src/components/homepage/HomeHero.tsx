@@ -5,24 +5,29 @@ import ImageSlot from "./ImageSlot";
 // hero giữ nguyên độ tương phản đọc được (không đổi màu chữ hiện tại).
 const HERO_BG_SRC: string | undefined = "/images/home/bg-hero-light.webp";
 
-// Section 2 — Hero: trạng thái con người. Nền CREAM (không phải ivory —
-// luật #2 của brief). Chữ lớn nhất mắt nhìn thấy nhưng KHÔNG phải heading
-// (H1 duy nhất của trang nằm ở section ④ KietTac) — dùng <p>, không <h1>.
-// Ảnh 1 (4:5, kenji-portrait) tràn xuống ranh giới sang section ③ bằng margin âm.
+// Section 2 — Hero: trạng thái con người, dựng theo hệ KHỐI-LỚP (18/07/2026).
+// Nền CREAM (không phải ivory — luật #2). Chữ lớn nhất mắt nhìn thấy nhưng
+// KHÔNG phải heading (H1 duy nhất ở section ④ KietTac) — dùng <p>, không <h1>.
+//   Lớp 1 (dưới): ảnh bg-hero-light phủ TRỌN section + lớp cream ~90% → chữ
+//                 nổi trên nền nắng (kỹ thuật A).
+//   Lớp 2: khối chữ hero.
+//   Lớp 3 (trên): ảnh kenji-portrait. MOBILE thu còn ~85% chiều ngang, lệch
+//                 phải, mép trái hở nền → thấy lớp 1 → có chiều sâu. Ảnh vẫn
+//                 chờm xuống ranh giới ②→③ (kỹ thuật C). DESKTOP giữ 2 cột.
 export default function HomeHero() {
   return (
     <section className="bg-e26-cream px-6 pt-28 pb-20 md:pt-40 md:pb-0 relative overflow-visible">
-      {/* Lớp ảnh nền Hero — chưa có ảnh thật nên chưa render gì (nền vẫn là
-          bg-e26-cream thuần của section). Khi HERO_BG_SRC có giá trị, layer
-          này tự hiện: ảnh phủ full section + lớp cream 90% đè lên trên. */}
+      {/* LỚP 1 — ảnh nền phủ trọn section (inset-0), cream ~90% giữ tương phản
+          chữ. Đã đo thật ở PR trước: chữ hero vẫn đọc rõ trên nền này. */}
       {HERO_BG_SRC && (
         <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-          <Image src={HERO_BG_SRC} alt="" fill className="object-cover" />
+          <Image src={HERO_BG_SRC} alt="" fill className="object-cover" priority />
           <div className="absolute inset-0 bg-e26-cream/90" />
         </div>
       )}
       <div className="relative z-10 max-w-[1120px] mx-auto">
         <div className="grid md:grid-cols-12 gap-10 items-end">
+          {/* LỚP 2 — khối chữ */}
           <div className="md:col-span-7 md:pb-40">
             <p className="e26-reveal font-sans text-sm text-e26-text-2 mb-10">
               <span className="inline-block w-6 h-px bg-e26-gold align-middle mr-3" aria-hidden="true" />
@@ -41,12 +46,12 @@ export default function HomeHero() {
             </p>
           </div>
 
-          {/* Ảnh 1 — tràn xuống ranh giới sang section ③ (margin âm phía dưới).
-              Đã THU HẸP mức tràn so với bản trước (-mb-16/-mb-32) — mức cũ khiến ảnh
-              đè lên "Tôi là Kenji Phạm." ở section ③ (đã đo thật: đè 96px ở desktop
-              1280px). Giá trị mới đã kiểm tra thật bằng getBoundingClientRect, không
-              còn chồng chữ ở cả mobile lẫn desktop — xem thêm KenjiSection.tsx. */}
-          <div className="e26-reveal md:col-span-5 relative z-10 -mb-4 md:-mb-10">
+          {/* LỚP 3 — ảnh chân dung.
+              MOBILE: w-[85%] + ml-auto → thu hẹp, lệch phải, hở nền trái.
+              DESKTOP: md:w-full md:ml-0 → trả về full cột 5/12 như cũ.
+              -mb-4/-mb-10: chờm xuống ranh giới ②→③ (giữ từ trước, đã đo không
+              đè chữ ③). */}
+          <div className="e26-reveal md:col-span-5 relative z-10 -mb-4 md:-mb-10 w-[85%] ml-auto md:w-full md:ml-0">
             <ImageSlot
               ratio="4/5"
               src="/images/home/kenji-portrait.webp"
