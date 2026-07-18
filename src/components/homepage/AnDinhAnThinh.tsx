@@ -14,7 +14,7 @@ export default function AnDinhAnThinh() {
         <p className="e26-reveal font-sans text-[17px] leading-[1.8] text-e26-text-dark-2 mt-6">
           Chỉ là tối đó, sau một quyết định lớn, bạn ngủ được. Bữa cơm nhà bớt căng. Con kể một
           chuyện dài về con kiến ngoài sân, kể mà chẳng có đầu có đuôi gì — lần này bạn nghe hết,
-          rồi mới nhẹ nhàng gọi con vào ăn cơm.
+          rồi mới gọi con vào ăn cơm.
         </p>
         <p className="e26-reveal font-serif text-2xl text-e26-text-dark mt-10">
           Trạng thái đó có một cái tên: <span className="italic">An định.</span>

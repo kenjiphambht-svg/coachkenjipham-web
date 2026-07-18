@@ -25,7 +25,6 @@ export default function TwoStates() {
           </p>
           <p className="e26-reveal font-sans text-[17px] leading-[1.65] text-e26-text-2">
             Sau cả hai cánh cửa là cùng một khoảng lặng — chỗ để bạn nghe lại nhịp của chính mình.
-            Bạn vào bên nào trước cũng đúng.
           </p>
         </div>
 
@@ -89,7 +88,9 @@ export default function TwoStates() {
           </div>
         </div>
 
-        <p className="e26-reveal font-sans text-[15px] text-e26-text-2 mt-16 md:mt-20 max-w-md">
+        {/* Câu chốt cảnh — serif italic, cỡ nhỉnh hơn đoạn thường để nổi lên
+            như câu kết (2.2). Giữ nguyên vị trí (dưới 2 thẻ, mt-16/mt-20). */}
+        <p className="e26-reveal font-serif italic text-[19px] md:text-[24px] leading-snug text-e26-text mt-16 md:mt-20 max-w-md">
           Bạn biết mình đang đứng gần bên nào hơn.
         </p>
       </div>

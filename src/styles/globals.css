@@ -263,12 +263,17 @@ body {
    đây là scaleX chứ không phải fade-up như chữ thường. */
 .gold-brush-line {
   position: absolute;
-  left: -4px;
-  right: -6px;
-  bottom: 3px;
-  height: 4px;
+  /* Tràn qua 2 đầu chữ — vệt lớn hơn chữ một chút (2.1) */
+  left: -5px;
+  right: -8px;
+  /* Hạ thấp: nằm HOÀN TOÀN dưới đáy chữ, kể cả dấu nặng "ạ/ác" (2.1).
+     -8px đã đo trên browser thật ở cả mobile lẫn desktop — không cắt ký tự. */
+  bottom: -8px;
+  /* Vệt sơn dày hơn đường kẻ */
+  height: 5px;
   background-color: var(--essence-gold-2026);
-  border-radius: 2px 5px 1px 4px;
+  /* border-radius bất đối xứng — một đầu dày, một đầu vát, như vệt bút dạ */
+  border-radius: 1px 6px 2px 3px / 2px 5px 1px 4px;
   transform: rotate(-0.7deg) scaleX(0);
   transform-origin: left center;
 }
