@@ -33,8 +33,11 @@ export default function TwoStates() {
           {/* Thẻ 1 — Bản Sắc Của Bạn */}
           <div className="e26-reveal group border border-transparent hover:border-e26-gold focus-within:border-e26-gold transition-colors duration-300 p-4 -m-4">
             <div className="relative z-0">
-              {/* SWAP SLOT: /images/home/kitchen-morning.webp khi có ảnh web-ready */}
-              <ImageSlot ratio="4/5" />
+              <ImageSlot
+                ratio="4/5"
+                src="/images/home/kitchen-morning.webp"
+                alt="Căn bếp ivory sáng sớm"
+              />
             </div>
             <p className="font-sans text-sm tracking-[0.08em] uppercase text-e26-text-2 mt-6 mb-4">
               Bản Sắc Của Bạn

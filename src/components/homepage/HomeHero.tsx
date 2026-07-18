@@ -1,10 +1,9 @@
 import Image from "next/image";
 import ImageSlot from "./ImageSlot";
 
-// SWAP SLOT: khi có ảnh, đặt "/images/home/bg-hero-light.webp" vào đây.
 // Ảnh trang trí (alt rỗng, aria-hidden) — phủ lớp cream ~90% lên trên để chữ
 // hero giữ nguyên độ tương phản đọc được (không đổi màu chữ hiện tại).
-const HERO_BG_SRC: string | undefined = undefined;
+const HERO_BG_SRC: string | undefined = "/images/home/bg-hero-light.webp";
 
 // Section 2 — Hero: trạng thái con người. Nền CREAM (không phải ivory —
 // luật #2 của brief). Chữ lớn nhất mắt nhìn thấy nhưng KHÔNG phải heading
