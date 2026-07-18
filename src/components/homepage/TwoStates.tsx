@@ -57,8 +57,11 @@ export default function TwoStates() {
           {/* Thẻ 2 — Bản Sắc Của Con (lệch dọc xuống + ảnh chờm sang trái vào thẻ 1, chỉ desktop) */}
           <div className="e26-reveal group border border-transparent hover:border-e26-gold focus-within:border-e26-gold transition-colors duration-300 p-4 -m-4 md:mt-20">
             <div className="relative z-10 md:-ml-10">
-              {/* SWAP SLOT: /images/home/child-door-dusk.webp khi có ảnh web-ready */}
-              <ImageSlot ratio="4/5" />
+              <ImageSlot
+                ratio="4/5"
+                src="/images/home/child-door-dusk.webp"
+                alt="Hành lang tối nhìn qua khung cửa, đèn ngủ ấm — không có mặt người"
+              />
             </div>
             <p className="font-sans text-sm tracking-[0.08em] uppercase text-e26-text-2 mt-6 mb-4">
               Bản Sắc Của Con

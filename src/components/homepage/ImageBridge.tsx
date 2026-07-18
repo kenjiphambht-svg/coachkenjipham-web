@@ -1,19 +1,24 @@
 // Cầu nối ảnh 5 — giữa section ⑦ (đen, An Định → An Thịnh) và ⑧ (kem, Điều
-// Essence không hứa). Full-bleed, tối→sáng trên xuống dưới. Desktop 21:9,
-// mobile 4:5 (đứng) — theo brief mở rộng ImageSlot, nhưng cầu nối này cần
-// fallback riêng (gradient đen→kem) thay vì khối cream phẳng mặc định của
-// ImageSlot, vì bản thân sự chuyển sắc chính là nội dung của section này,
-// không phải chỉ là chỗ chờ ảnh.
+// Essence không hứa). Full-bleed, tối→sáng trên xuống dưới (đã đo thật bằng
+// phân tích pixel: mép trên ảnh rất tối, mép dưới sáng hơn nhiều — đúng
+// hướng, không phải trái-phải). <picture> đổi ảnh theo breakpoint: mobile
+// dọc (< md), desktop ngang (≥ md) — không dùng next/image vì cần <source>
+// art-direction thật (2 ảnh khác khung hình, không phải cùng ảnh resize).
 export default function ImageBridge() {
   return (
     <div
-      className="e26-reveal relative w-full aspect-[4/5] md:aspect-[21/9] overflow-hidden bg-gradient-to-b from-e26-black to-e26-cream"
+      className="e26-reveal relative w-full aspect-[4/5] md:aspect-[21/9] overflow-hidden bg-e26-black"
       role="img"
-      aria-label="Ánh sáng chuyển từ tối sang sáng, như cửa sổ đón bình minh"
+      aria-label="Ánh sáng chuyển từ tối sang sáng — cửa sổ đón bình minh, ghế trống trong căn phòng lặng"
     >
-      {/* SWAP SLOT khi có ảnh thật (thay div gradient này bằng next/image):
-          desktop 21:9 → /images/home/window-first-light.webp
-          mobile 4:5  → /images/home/window-first-light-mobile.webp */}
+      <picture>
+        <source media="(min-width: 768px)" srcSet="/images/home/window-first-light.webp" />
+        <img
+          src="/images/home/window-first-light-mobile.webp"
+          alt=""
+          className="w-full h-full object-cover"
+        />
+      </picture>
     </div>
   );
 }
