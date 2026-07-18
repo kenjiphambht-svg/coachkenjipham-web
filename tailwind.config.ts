@@ -64,6 +64,7 @@ const config: Config = {
         "e26-white": "var(--essence-white-2026)",
         "e26-ivory": "var(--essence-ivory-2026)",
         "e26-cream": "var(--essence-cream-2026)",
+        "e26-cream-deep": "var(--essence-cream-deep-2026)",
         "e26-black": "var(--essence-black-2026)",
         "e26-text": "var(--essence-text-primary-2026)",
         "e26-text-2": "var(--essence-text-secondary-2026)",
