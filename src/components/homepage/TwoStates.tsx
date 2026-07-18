@@ -29,53 +29,63 @@ export default function TwoStates() {
           </p>
         </div>
 
+        {/* Hai CARD thật (hệ khối-lớp): mỗi thẻ = khối nền cream-deep (tương
+            phản NHẸ với nền cream section — nhất quán họ khối ③⑥), ảnh CHỜM
+            MÉP TRÊN của card (kỹ thuật B). Viền vàng khi hover GIỮ NGUYÊN
+            (điểm vàng #2) — chuyển lên khối card qua group-hover, hiệu ứng
+            không đổi. Lệch dọc thẻ 2 (md:mt-20) GIỮ NGUYÊN. Bỏ md:-ml-10 cũ
+            (chờm chéo sang card kia) — nay ảnh chờm mép trên của chính card. */}
         <div className="grid md:grid-cols-2 gap-14 md:gap-10">
           {/* Thẻ 1 — Bản Sắc Của Bạn */}
-          <div className="e26-reveal group border border-transparent hover:border-e26-gold focus-within:border-e26-gold transition-colors duration-300 p-4 -m-4">
-            <div className="relative z-0">
+          <div className="e26-reveal group">
+            <figure className="relative z-20 mx-auto w-[88%]">
               <ImageSlot
                 ratio="4/5"
                 src="/images/home/kitchen-morning.webp"
                 alt="Căn bếp ivory sáng sớm"
               />
+            </figure>
+            <div className="relative z-10 -mt-10 bg-e26-cream-deep border border-transparent group-hover:border-e26-gold focus-within:border-e26-gold transition-colors duration-300 px-6 pt-16 pb-8">
+              <p className="font-sans text-sm tracking-[0.08em] uppercase text-e26-text-2 mb-4">
+                Bản Sắc Của Bạn
+              </p>
+              <p className="font-serif text-2xl leading-snug text-e26-text-2 mb-5">
+                Có một kiểu mệt không nằm ở công việc. Nó nằm ở chỗ cứ phải gồng lên làm một phiên
+                bản nào đó để tồn tại...
+              </p>
+              <Link
+                href="/ban-sac-cua-ban"
+                className="font-sans text-[15px] text-e26-text hover:text-e26-gold-deep transition-colors duration-300"
+              >
+                → Mời bạn vào cửa này
+              </Link>
             </div>
-            <p className="font-sans text-sm tracking-[0.08em] uppercase text-e26-text-2 mt-6 mb-4">
-              Bản Sắc Của Bạn
-            </p>
-            <p className="font-serif text-2xl leading-snug text-e26-text-2 mb-5">
-              Có một kiểu mệt không nằm ở công việc. Nó nằm ở chỗ cứ phải gồng lên làm một phiên
-              bản nào đó để tồn tại...
-            </p>
-            <Link
-              href="/ban-sac-cua-ban"
-              className="font-sans text-[15px] text-e26-text hover:text-e26-gold-deep transition-colors duration-300"
-            >
-              → Mời bạn vào cửa này
-            </Link>
           </div>
 
-          {/* Thẻ 2 — Bản Sắc Của Con (lệch dọc xuống + ảnh chờm sang trái vào thẻ 1, chỉ desktop) */}
-          <div className="e26-reveal group border border-transparent hover:border-e26-gold focus-within:border-e26-gold transition-colors duration-300 p-4 -m-4 md:mt-20">
-            <div className="relative z-10 md:-ml-10">
+          {/* Thẻ 2 — Bản Sắc Của Con (lệch dọc xuống, giữ md:mt-20) */}
+          <div className="e26-reveal group md:mt-20">
+            <figure className="relative z-20 mx-auto w-[88%]">
               <ImageSlot
                 ratio="4/5"
                 src="/images/home/child-door-dusk.webp"
                 alt="Hành lang tối nhìn qua khung cửa, đèn ngủ ấm — không có mặt người"
               />
+            </figure>
+            <div className="relative z-10 -mt-10 bg-e26-cream-deep border border-transparent group-hover:border-e26-gold focus-within:border-e26-gold transition-colors duration-300 px-6 pt-16 pb-8">
+              <p className="font-sans text-sm tracking-[0.08em] uppercase text-e26-text-2 mb-4">
+                Bản Sắc Của Con
+              </p>
+              <p className="font-serif text-2xl leading-snug text-e26-text mb-5">
+                Có tối bạn đứng ở cửa phòng, nhìn con ngủ. Thương thì thương lắm. Mà vẫn có gì đó
+                chưa gọi được tên. Không phải để sửa con — chỉ là mở thêm một cửa sổ...
+              </p>
+              <Link
+                href="/ban-sac-cua-con"
+                className="font-sans text-[15px] text-e26-text hover:text-e26-gold-deep transition-colors duration-300"
+              >
+                → Bạn mở cửa sổ này
+              </Link>
             </div>
-            <p className="font-sans text-sm tracking-[0.08em] uppercase text-e26-text-2 mt-6 mb-4">
-              Bản Sắc Của Con
-            </p>
-            <p className="font-serif text-2xl leading-snug text-e26-text mb-5">
-              Có tối bạn đứng ở cửa phòng, nhìn con ngủ. Thương thì thương lắm. Mà vẫn có gì đó
-              chưa gọi được tên. Không phải để sửa con — chỉ là mở thêm một cửa sổ...
-            </p>
-            <Link
-              href="/ban-sac-cua-con"
-              className="font-sans text-[15px] text-e26-text hover:text-e26-gold-deep transition-colors duration-300"
-            >
-              → Bạn mở cửa sổ này
-            </Link>
           </div>
         </div>
 

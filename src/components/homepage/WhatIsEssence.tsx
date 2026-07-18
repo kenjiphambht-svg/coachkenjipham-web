@@ -5,7 +5,10 @@
 export default function WhatIsEssence() {
   return (
     <section className="bg-e26-ivory px-6 py-16 md:py-32">
-      <div className="max-w-3xl mx-auto text-center">
+      {/* Khối kem đậm ngang (họ khối ③) — bọc toàn nội dung ⑥. Không thêm ảnh
+          (section vốn không ảnh theo BAN-CHOT). Bố cục 3 trụ + chữ ký GIỮ
+          NGUYÊN, chỉ đổi từ nền trần sang khối có biên rõ. */}
+      <div className="max-w-3xl mx-auto text-center bg-e26-cream-deep px-8 py-14 md:px-16 md:py-20">
         <h2 className="e26-reveal font-serif font-normal text-[26px] md:text-[36px] leading-snug text-e26-text mb-14">
           Essence không mở cửa nào khi người ta chưa đứng vững.
         </h2>

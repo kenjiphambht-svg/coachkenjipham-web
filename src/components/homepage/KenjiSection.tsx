@@ -56,7 +56,7 @@ export default function KenjiSection() {
               yên, để người ngồi đối diện nghe được chính mình.
             </p>
           </div>
-          <blockquote className="e26-reveal border-l border-e26-gold pl-6 mt-8">
+          <blockquote className="e26-reveal border-l border-e26-black pl-6 mt-8">
             <p className="font-serif italic text-2xl leading-snug text-e26-text max-w-lg">
               &quot;Tôi không sửa. Tôi tạo sự An định.&quot;
             </p>
