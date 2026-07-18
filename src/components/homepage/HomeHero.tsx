@@ -27,12 +27,11 @@ export default function HomeHero() {
       )}
       <div className="relative z-10 max-w-[1120px] mx-auto">
         <div className="grid md:grid-cols-12 gap-10 items-end">
-          {/* LỚP 2 — khối chữ */}
+          {/* LỚP 2 — khối chữ. Eyebrow đã bỏ (18/07/2026): tên+chức danh đã có
+              ở logo header và section ③ — câu lớn đứng một mình ngay từ đầu.
+              (Việc bỏ eyebrow cũng gỡ luôn gạch vàng hairline ở đây → toàn
+              trang còn đúng 3 điểm vàng: brush ④, hover ⑤, ebook ⑨.) */}
           <div className="md:col-span-7 md:pb-40">
-            <p className="e26-reveal font-sans text-sm text-e26-text-2 mb-10">
-              <span className="inline-block w-6 h-px bg-e26-gold align-middle mr-3" aria-hidden="true" />
-              Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu
-            </p>
             <p className="e26-reveal font-serif font-light text-[38px] md:text-[66px] leading-[1.08] text-e26-text text-balance">
               Lâu rồi, chưa ai hỏi bạn đang thế nào.
             </p>
@@ -41,8 +40,8 @@ export default function HomeHero() {
               công việc lúc tối muộn. Bề ngoài, mọi thứ có vẻ rất ổn.
             </p>
             <p className="e26-reveal font-sans text-[17px] leading-[1.65] text-e26-text-2 mt-6 max-w-xl">
-              Ở Essence, không ai hối thúc bạn phải khá lên. Khung cửa này chỉ có một khoảng
-              lặng. Một chỗ để bạn ngồi xuống, nhìn rõ hơn, rồi tự chọn nhịp đi tiếp.
+              Ở Essence, không ai hối thúc bạn phải khá lên. Một chỗ để bạn ngồi xuống, nhìn
+              rõ hơn, rồi tự chọn nhịp đi tiếp.
             </p>
           </div>
 
