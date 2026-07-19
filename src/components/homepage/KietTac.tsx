@@ -1,8 +1,12 @@
 // Section 4 — Kiệt Tác. H1 DUY NHẤT của trang chủ (theo BAN-CHOT — hero ở
 // section 2 KHÔNG được gắn heading, chỉ section này). Nền đen, đứng một mình.
-// Nền ảnh /images/home/bg-wall-dark.webp (16:9) phủ đen 94% — dùng CSS
-// background-image (không phải <Image>) để nếu ảnh chưa có, không hiện icon
-// vỡ: nền vẫn là khối đen thuần cho tới khi Kenji cung cấp ảnh thật.
+// Nền ảnh /images/home/bg-wall-dark.webp (16:9) — dùng CSS background-image
+// (không phải <Image>) để nếu ảnh chưa có, không hiện icon vỡ: nền vẫn là
+// khối đen thuần cho tới khi Kenji cung cấp ảnh thật.
+// TINH CHỈNH 19/07/2026: độ phủ đen 94% (opacity 0.06) gần như không thấy vân
+// tường → giảm còn phủ đen ~87% (opacity 0.13) để vân tường/góc phòng thấp
+// thoáng lộ ra, vẫn đủ tối giữ vai "khối tối" (nền vẫn bg-e26-black solid,
+// chỉ lớp ảnh trang trí tăng độ hiện — đã đo tương phản chữ trắng vẫn đọc rõ).
 // Vệt vàng dưới "kiệt tác" là phần tử thật (span + i), animate scaleX qua
 // class .e26-reveal có sẵn — KHÔNG dùng ::after (GSAP/CSS không animate được
 // pseudo-element theo lỗi đã biết ghi trong brief).
@@ -10,7 +14,7 @@ export default function KietTac() {
   return (
     <section className="relative bg-e26-black px-6 py-24 md:py-32 overflow-hidden">
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-[0.06]"
+        className="absolute inset-0 bg-cover bg-center opacity-[0.13]"
         style={{ backgroundImage: "url(/images/home/bg-wall-dark.webp)" }}
         aria-hidden="true"
       />

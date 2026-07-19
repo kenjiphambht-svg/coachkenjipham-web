@@ -26,6 +26,11 @@ const TRUST_LINKS = [
 // mức 67% vừa chỉnh — h-[14px]/h-[17px] → h-[28px]/h-[34px]. LƯU Ý tự phản
 // biện: ở mức này wordmark RỘNG HƠN chữ ký (~130% thay vì phụ đề nhỏ hơn dòng
 // chính) — đã chụp ảnh thật gửi kèm báo cáo để Kenji xác nhận đúng ý muốn.
+// TINH CHỈNH 19/07/2026 (lần 3) — Header gọn lại: gap giữa 2 dòng lockup đã
+// đo thật = 4px (mt-1), đã nằm trong khoảng gợi ý 2-6px nên GIỮ NGUYÊN, chỉ
+// kéo sát thêm 1 nấc xuống mt-0.5 (2px) theo đúng tinh thần "sát". Phần lớn
+// độ cao header đo được (119px) đến từ padding ngoài (py-4), không phải gap
+// này — xem HomeHeader's header/nav padding.
 function HeaderLogo() {
   return (
     <span className="flex flex-col items-center">
@@ -37,7 +42,7 @@ function HeaderLogo() {
       <img
         src="/brand/logo/essence-wordmark-minimal-2026.svg"
         alt="Essence Coaching"
-        className="h-[28px] md:h-[34px] w-auto mt-1"
+        className="h-[28px] md:h-[34px] w-auto mt-0.5"
       />
     </span>
   );
@@ -90,7 +95,10 @@ export default function HomeHeader() {
 
   return (
     <header className="relative z-50 bg-e26-ivory border-b border-e26-border px-6">
-      <div className="max-w-[1120px] mx-auto flex items-center justify-between py-4">
+      {/* TINH CHỈNH 19/07/2026 (lần 3): thu gọn header — py-4 (16px) → py-2.5
+          (10px), giảm chiều cao tổng từ 119px xuống ~106px. Áp cùng mức cho
+          cả header cuộn (đây) lẫn tấm phủ menu (bên dưới) để nhất quán. */}
+      <div className="max-w-[1120px] mx-auto flex items-center justify-between py-2.5">
         <Link href="/trang-chu-v2" aria-label="Về trang chủ">
           <HeaderLogo />
         </Link>
@@ -123,7 +131,7 @@ export default function HomeHeader() {
         }`}
       >
         <div className="max-w-[1120px] mx-auto h-full flex flex-col px-6">
-          <div className="flex items-center justify-between py-4">
+          <div className="flex items-center justify-between py-2.5">
             <Link href="/trang-chu-v2" aria-label="Về trang chủ" onClick={(e) => e.stopPropagation()}>
               <HeaderLogo />
             </Link>

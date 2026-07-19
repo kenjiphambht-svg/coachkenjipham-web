@@ -297,10 +297,15 @@ body {
 
 /* === ESSENCE 2026 — chữ ma "AN" (section ⑦ An Định → An Thịnh) ===
    Chữ nền mờ tĩnh, không animate — chỉ hiện diện, giữ theo quyết định Kenji. */
+/* TINH CHỈNH 19/07/2026: chữ ma "AN" từng TO + CĂN GIỮA đè sau chữ chính, khó
+   đọc/khó coi. Đổi NHỎ hẳn, đặt GÓC TRÁI PHÍA TRÊN (positioning ở component,
+   class này chỉ còn giữ kích thước/màu/opacity) — không còn tranh vùng đọc
+   với khối chữ chính (vốn canh giữa, max-w-[640px]). Opacity tăng nhẹ
+   0.05→0.09 (vẫn "tinh tế, đủ thấy", trong khoảng gợi ý 8-12%). */
 .andinh-ghost-an {
-  font-size: clamp(180px, 32vw, 420px);
+  font-size: clamp(56px, 9vw, 120px);
   line-height: 1;
-  opacity: 0.05;
+  opacity: 0.09;
   color: var(--essence-text-primary-dark-2026);
   user-select: none;
   pointer-events: none;
