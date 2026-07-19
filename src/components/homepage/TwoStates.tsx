@@ -12,8 +12,18 @@ import ImageSlot from "./ImageSlot";
 // ngoài, không thể "mời" ai vào phòng riêng của con họ.
 export default function TwoStates() {
   return (
-    <section className="bg-e26-cream px-6 py-16 md:py-32">
-      <div className="max-w-[1120px] mx-auto">
+    <section className="relative bg-e26-cream px-6 py-16 md:py-32">
+      {/* VIỆC 3 (19/07/2026) — vật liệu nền dùng chung "vệt nắng" (bg-hero-light),
+          opacity rất thấp trên nền cream gốc — cùng kỹ thuật KietTac. z-auto:
+          content bên dưới được nâng lên "relative z-10" để luôn nổi trên (đoạn
+          intro + câu chốt trước đây không có z-index, cần bọc để không bị lớp
+          nền này đè — 2 thẻ card vốn đã có z-10/z-20 riêng, không ảnh hưởng). */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-[0.05]"
+        style={{ backgroundImage: "url(/images/home/bg-hero-light.webp)" }}
+        aria-hidden="true"
+      />
+      <div className="relative z-10 max-w-[1120px] mx-auto">
         <div className="max-w-2xl mb-16 md:mb-20">
           <p className="e26-reveal font-serif font-normal text-[24px] md:text-[32px] leading-snug text-e26-text mb-6">
             Ở đây có hai cánh cửa.

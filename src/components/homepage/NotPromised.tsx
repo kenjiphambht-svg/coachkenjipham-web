@@ -7,8 +7,17 @@ import Link from "next/link";
 // vàng ở link này (không tính vào đếm 3 điểm vàng của trang).
 export default function NotPromised() {
   return (
-    <section className="bg-e26-cream px-6 py-20 md:py-28">
-      <div className="max-w-[640px] mx-auto text-center">
+    <section className="relative bg-e26-cream px-6 py-20 md:py-28">
+      {/* VIỆC 3 (19/07/2026) — vật liệu nền dùng chung "vệt nắng" (bg-hero-light),
+          opacity rất thấp trên nền cream gốc — cùng kỹ thuật KietTac. z-auto:
+          content bên dưới nâng "relative z-10" (không có block bọc riêng —
+          chữ + link nằm trực tiếp trên nền section). */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-[0.05]"
+        style={{ backgroundImage: "url(/images/home/bg-hero-light.webp)" }}
+        aria-hidden="true"
+      />
+      <div className="relative z-10 max-w-[640px] mx-auto text-center">
         <p className="e26-reveal font-serif text-2xl md:text-3xl leading-snug text-e26-text">
           Có những lời rất dễ nói, và Essence chọn không nói...
         </p>
