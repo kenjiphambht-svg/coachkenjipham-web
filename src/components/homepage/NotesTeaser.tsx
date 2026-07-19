@@ -6,11 +6,21 @@
 // không tiễn họ ra cửa.
 export default function NotesTeaser() {
   return (
-    <section className="bg-e26-ivory px-6 py-16 md:py-28">
+    <section className="relative bg-e26-ivory px-6 py-16 md:py-28">
+      {/* VIỆC 3 (19/07/2026) — vật liệu nền dùng chung "vệt nắng" (bg-hero-light),
+          opacity rất thấp trên nền ivory gốc — cùng kỹ thuật KietTac. z-auto:
+          khối kem bên dưới nâng "relative z-10" — QUAN TRỌNG vì khối này chứa
+          nút ebook (1 trong 3 điểm vàng của trang), phải chắc chắn không bị
+          lớp nền này phủ lên. */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-[0.05]"
+        style={{ backgroundImage: "url(/images/home/bg-hero-light.webp)" }}
+        aria-hidden="true"
+      />
       {/* Khối cuối trước footer đen — kem đậm NHẸ (e26-cream, nhẹ hơn cream-deep
           của ③⑥ một bậc) vì không cần tương phản mạnh bằng các khối trên. Giữ
           nguyên 3 chỗ "sắp mở", câu kết, vị trí nút. */}
-      <div className="max-w-2xl mx-auto text-center bg-e26-cream px-8 py-14 md:px-16 md:py-16">
+      <div className="relative z-10 max-w-2xl mx-auto text-center bg-e26-cream px-8 py-14 md:px-16 md:py-16">
         <p className="e26-reveal font-serif text-2xl text-e26-text mb-3">Ghi chép Essence.</p>
         <span className="e26-reveal block font-sans text-[15px] leading-[1.65] text-e26-text-2 opacity-45 select-none">
           Những bài viết nhỏ đang được ghi lại.

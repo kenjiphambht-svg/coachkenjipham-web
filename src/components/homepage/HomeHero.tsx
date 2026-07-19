@@ -2,6 +2,13 @@ import Image from "next/image";
 
 // Ảnh trang trí (alt rỗng, aria-hidden) — phủ lớp cream ~90% lên trên để chữ
 // hero giữ nguyên độ tương phản đọc được (không đổi màu chữ hiện tại).
+//
+// VIỆC 1 (19/07/2026) — TRẠNG THÁI TẠM: brief yêu cầu đổi sang `bg-hero-open`
+// (phòng mờ bokeh, cửa sổ rèm voan trái — cùng khí quyển với ảnh Kenji ngồi).
+// File đó CHƯA có trong repo tại thời điểm build này (đã kiểm: không có ở
+// repo/Desktop/Downloads) → giữ nguyên `bg-hero-light` làm tạm theo đúng chỉ
+// dẫn brief. Khi Kenji thả file: XEM ẢNH THẬT (không đoán theo tên) rồi đổi
+// dòng dưới thành "/images/home/bg-hero-open.webp".
 const HERO_BG_SRC: string | undefined = "/images/home/bg-hero-light.webp";
 
 // Ảnh hero (19/07/2026): Kenji cầm ly trà nhìn ra cửa sổ, KHÔNG nhìn máy.
@@ -26,12 +33,39 @@ export default function HomeHero() {
     <section className="bg-e26-cream px-6 pt-24 pb-24 md:pt-[120px] md:pb-[140px] relative overflow-visible">
       {/* LỚP 1 — ảnh nền phủ trọn section (inset-0), cream ~90% giữ tương phản
           chữ. Đã đo thật ở PR trước: chữ hero vẫn đọc rõ trên nền này. */}
+      {/* SỬA BUG PHÁT HIỆN 19/07/2026 (nằm ngay trong file này, sửa kèm để
+          Việc 1/2 hoạt động đúng): overlay từng viết "bg-e26-cream/90" —
+          KHÔNG BAO GIỜ thực sự render (đã đo computed style: backgroundColor
+          = rgba(0,0,0,0), hoàn toàn trong suốt) vì token màu định nghĩa bằng
+          chuỗi hex thô (var(--essence-*-2026)) khiến Tailwind không generate
+          được modifier "/opacity". Đổi sang color-mix() — kỹ thuật đã kiểm
+          chứng hoạt động (dùng cho màu chữ body bên dưới). Chữ hero trước giờ
+          vẫn đọc được là NHỜ ảnh gốc bg-hero-light vốn đã rất sáng, không phải
+          nhờ overlay này. NGOÀI SCOPE hôm nay (không sửa): ImageBridge (⑦→⑧)
+          dùng đúng pattern lỗi này ở 2 chỗ — đã flag riêng trong báo cáo. */}
       {HERO_BG_SRC && (
         <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
           <Image src={HERO_BG_SRC} alt="" fill className="object-cover" priority />
-          <div className="absolute inset-0 bg-e26-cream/90" />
+          <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_90%,transparent)]" />
         </div>
       )}
+      {/* VIỆC 2 (19/07/2026) — nền hero TAN xuống đen của Kiệt Tác (③) ngay sau.
+          Tinh thần giống dải gradient ở ImageBridge (cầu nối ⑦→⑧), chỉ ĐẢO
+          CHIỀU: trong suốt ở trên → tan hẳn vào e26-black ở đáy. DÙNG INLINE
+          STYLE (không dùng Tailwind "from-e26-black/0 to-e26-black") vì cùng
+          lý do bug ở trên — modifier /opacity không generate được cho token
+          màu này; "transparent → var(--essence-black-2026)" không cần alpha
+          modifier nên né được bug hoàn toàn, vẫn dùng đúng token có sẵn,
+          không thêm màu mới. z-auto (không set z-index) nên tự nằm TRÊN lớp
+          ảnh nền/overlay (cũng z-auto, nhưng đứng sau trong DOM) và TRƯỚC lớp
+          chữ/ảnh Kenji (z-10 tường minh — luôn thắng bất kể thứ tự DOM). Ảnh
+          Kenji (LỚP 3) vẫn giữ bóng/ring riêng nên mép không bị nuốt dù nằm
+          trên dải đen này. */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-40 md:h-64"
+        style={{ backgroundImage: "linear-gradient(to bottom, transparent, var(--essence-black-2026))" }}
+        aria-hidden="true"
+      />
       <div className="relative z-10 max-w-[1440px] mx-auto">
         <div className="grid md:grid-cols-12 gap-12 md:gap-16 items-end">
           {/* LỚP 2 — khối chữ (cột 7/12 ≈ 58%). Headline là HÌNH ẢNH: serif rất

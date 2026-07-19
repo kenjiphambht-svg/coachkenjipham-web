@@ -19,6 +19,16 @@ import ImageSlot from "./ImageSlot";
 export default function KenjiSection() {
   return (
     <section className="bg-e26-white px-6 py-16 md:py-28 relative overflow-visible">
+      {/* VIỆC 3 (19/07/2026) — vật liệu nền dùng chung "vệt nắng" (bg-hero-light),
+          opacity rất thấp trên nền trắng gốc của section — cùng kỹ thuật đã
+          dùng ở KietTac (ảnh mờ trên màu nền, không đổi token). z-auto (không
+          set z-index) nên luôn nằm DƯỚI figure (z-20) và khối chữ (z-10) đã
+          có sẵn — không cần bọc thêm gì. */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-[0.05]"
+        style={{ backgroundImage: "url(/images/home/bg-hero-light.webp)" }}
+        aria-hidden="true"
+      />
       <div className="max-w-[1120px] mx-auto flex flex-col md:flex-row md:items-center">
         {/* --- Ảnh CHÍNH: chân dung nhìn thẳng, chờm mép khối --- */}
         <figure className="e26-reveal relative z-20 self-center w-[82%] max-w-[360px] md:self-auto md:w-[42%] md:max-w-none md:shrink-0 md:-mr-16">
