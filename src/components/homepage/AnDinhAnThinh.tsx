@@ -1,10 +1,21 @@
 // Section 7 — An Định → An Thịnh. Dark silence section thứ hai của trang
-// (đúng 2 khối tối toàn trang: ④ và ⑦). Chữ ma "AN" mờ 5% phía sau, tĩnh,
-// không animate — giữ theo quyết định của Kenji.
+// (đúng 2 khối tối toàn trang: ④ và ⑦).
+// TINH CHỈNH 19/07/2026:
+// - Thêm nền bg-wall-dark (phủ đen ~87%, opacity 0.13) — PHÁT HIỆN THIẾU khi
+//   soát lại: section này trước đó KHÔNG có lớp ảnh nào (chỉ bg-e26-black
+//   thuần), trong khi ③ Kiệt Tác đã có bg-wall-dark từ đầu. Cùng vật liệu,
+//   cùng mức phủ với ③ để nhất quán "khối tối lộ vân tường thấp thoáng".
+// - Chữ ma "AN": trước TO + CĂN GIỮA (đè sau chữ chính, khó đọc) → đổi NHỎ,
+//   góc TRÁI PHÍA TRÊN, tĩnh không animate (giữ theo quyết định của Kenji).
 export default function AnDinhAnThinh() {
   return (
     <section className="relative bg-e26-black px-6 py-24 md:py-40 overflow-hidden">
-      <span className="andinh-ghost-an absolute inset-0 flex items-center justify-center font-serif" aria-hidden="true">
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-[0.13]"
+        style={{ backgroundImage: "url(/images/home/bg-wall-dark.webp)" }}
+        aria-hidden="true"
+      />
+      <span className="andinh-ghost-an absolute top-6 left-6 md:top-10 md:left-10 font-serif" aria-hidden="true">
         AN
       </span>
       <div className="relative max-w-[640px] mx-auto text-center">

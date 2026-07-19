@@ -5,21 +5,19 @@
 // cuối để riêng, chữ nghiêng — sự thật, không phải lời hứa quá tay: RANH GIỚI
 // THƯƠNG HIỆU TUYỆT ĐỐI, không hạ xuống thành "đọc/duyệt/rà soát", giữ đúng
 // "Kenji phân tích và viết, từ dòng đầu đến dòng cuối".
+// TINH CHỈNH 19/07/2026: BỎ khung (khối bg-e26-cream-deep có biên rõ) — thay
+// bằng nền mờ bg-hero-light phủ kem ~93-95% (opacity 0.05, cùng vật liệu/mức
+// với ⑤⑧⑨), chữ nổi trên bề mặt có hơi thở, KHÔNG còn viền/khung. Chữ giữ
+// nguyên 100%, câu chữ ký vẫn nghiêng đứng riêng, giữ chữ "viết".
 export default function WhatIsEssence() {
   return (
     <section className="relative bg-e26-ivory px-6 py-16 md:py-32">
-      {/* VIỆC 3 (19/07/2026) — vật liệu nền dùng chung "vệt nắng" (bg-hero-light),
-          opacity rất thấp trên nền ivory gốc — cùng kỹ thuật KietTac. z-auto:
-          khối kem-đậm bên dưới được nâng "relative z-10" để không bị đè. */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-[0.05]"
         style={{ backgroundImage: "url(/images/home/bg-hero-light.webp)" }}
         aria-hidden="true"
       />
-      {/* Khối kem đậm ngang (họ khối ③) — bọc toàn nội dung ⑥. Không thêm ảnh
-          (section vốn không ảnh theo BAN-CHOT). Bố cục 3 trụ + chữ ký GIỮ
-          NGUYÊN, chỉ đổi từ nền trần sang khối có biên rõ. */}
-      <div className="relative z-10 max-w-3xl mx-auto text-center bg-e26-cream-deep px-8 py-14 md:px-16 md:py-20">
+      <div className="relative z-10 max-w-3xl mx-auto text-center">
         <h2 className="e26-reveal font-serif font-normal text-[26px] md:text-[36px] leading-snug text-e26-text mb-8">
           Essence không mở cửa nào khi người ta chưa đứng vững.
         </h2>
