@@ -4,7 +4,7 @@ import { SEOElements } from "@/components/SEO";
 
 export default function Document() {
   return (
-    <Html lang="en">
+    <Html lang="vi">
       <Head>
         {/* Preconnect to Google Fonts - speeds up font loading and reduces FOUT */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
