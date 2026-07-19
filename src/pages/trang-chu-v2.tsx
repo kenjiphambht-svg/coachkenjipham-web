@@ -18,14 +18,16 @@ import { useHomeReveal } from "@/components/homepage/useHomeReveal";
 // công khai cho Google. Khi duyệt xong, nội dung này sẽ thay thế index.tsx
 // thật và route tạm này sẽ được gỡ (theo Migration Strategy — Phase 0 audit).
 //
-// NỘI DUNG THEO BAN-CHOT.md (16/07/2026) — bản duy nhất được đọc khi build,
-// xem BRIEF-CLAUDE-CODE-trang-chu-CHOT.md. 10 section cố định: Header, Hero,
-// Kenji, Kiệt Tác (H1 duy nhất), Hai Cửa, Essence Là Gì, An Định → An Thịnh,
-// cầu nối ảnh, Điều Essence Không Hứa (teaser), Ghi Chép + Lối Ra, Footer.
+// NỘI DUNG THEO BAN-CHOT.md (16/07/2026). ĐẢO MẠCH 19/07/2026 (Experience
+// Bible): mở cửa → gọi cảm xúc → KHOẢNG LẶNG (Kiệt Tác) → rồi mới Kenji. Thứ
+// tự: Header, Hero, Kiệt Tác (H1 duy nhất, ĐEN), Kenji Là Ai, Hai Cửa, Essence
+// Là Gì, An Định → An Thịnh, cầu nối ảnh, Điều Essence Không Hứa (teaser), Ghi
+// Chép + Lối Ra, Footer.
 // Đã bỏ HatMamSection khỏi trang chủ (Hạt Mầm giờ dẫn qua thẻ "Bản Sắc Của
 // Con" ở Hai Cửa) — GIỮ NGUYÊN file HatMamSection.tsx trong repo, không xoá.
-// Nhịp sáng-tối: kem → kem → kem → ĐEN (Kiệt Tác) → kem → kem → ĐEN (An Định
-// → An Thịnh) → kem → kem → đen (footer). Đúng 2 khối tối giữa trang.
+// Nhịp sáng-tối SAU ĐẢO: kem (Hero) → ĐEN (Kiệt Tác) → kem (Kenji, Hai Cửa,
+// Essence) → ĐEN (An Định → An Thịnh) → kem → đen (footer). Vẫn ĐÚNG 2 khối
+// tối giữa trang. Ảnh hero chờm ranh giới kem→đen (kỹ thuật đắt).
 // Motion: reveal riêng của homepage (.e26-reveal, 250ms/12px) — useHomeReveal.
 export default function TrangChuV2Page() {
   useHomeReveal();
@@ -98,8 +100,8 @@ export default function TrangChuV2Page() {
       <HomeHeader />
       <main className="bg-e26-ivory">
         <HomeHero />
-        <KenjiSection />
         <KietTac />
+        <KenjiSection />
         <TwoStates />
         <WhatIsEssence />
         <AnDinhAnThinh />
