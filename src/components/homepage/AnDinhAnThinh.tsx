@@ -20,8 +20,7 @@ export default function AnDinhAnThinh() {
           Trạng thái đó có một cái tên: <span className="italic">An định.</span>
         </p>
         <p className="e26-reveal font-sans text-[17px] leading-[1.8] text-e26-text-dark-2 mt-10">
-          Bên trong bớt căng. Có một khoảng trống nhỏ giữa chuyện xảy ra và điều mình làm tiếp
-          theo.
+          Có một khoảng trống nhỏ giữa chuyện xảy ra và điều mình làm tiếp theo.
         </p>
         <p className="e26-reveal font-sans text-[17px] leading-[1.8] text-e26-text-dark-2 mt-6">
           An định không phải đích đến. Nó là nền đất.

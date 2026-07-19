@@ -48,23 +48,19 @@ export default function KenjiSection() {
           </h2>
           <div className="e26-reveal space-y-5 font-sans text-[17px] leading-[1.65] text-e26-text-2 max-w-xl">
             <p>
-              Tâm lý chiều sâu, những tấm bản đồ biểu tượng — tôi mang chúng theo từ rất lâu,
-              trước cả khi tôi làm nghề này.
-            </p>
-            <p>
-              Tám năm nay, tôi ngồi cùng người lớn — nghe họ kể về công việc, về gia đình, về
-              những thứ họ không nói được với ai khác. Và ngồi cùng ba mẹ — nghe họ lo cho con
-              mà không biết lo đúng chỗ nào.
+              Tám năm nay, việc của tôi là ngồi nghe. Ngồi cùng người lớn — nghe những điều họ
+              không nói được với ai khác. Ngồi cùng ba mẹ — nghe họ lo cho con mà chưa biết lo
+              đúng chỗ nào.
             </p>
             <p>
               Người tìm đến tôi thường không thiếu phương pháp. Chỉ là tới nơi rồi, cái mệt
               vẫn còn nguyên đó. Có người ký xong hợp đồng lớn nhất đời mình, ra xe ngồi, tay
               cầm vô lăng, rồi không biết phải về đâu.
             </p>
-            <p>Nên chỗ tôi ngồi xuống không phải chỗ bàn cách đi nhanh hơn.</p>
+            <p>Chỗ tôi ngồi xuống không phải chỗ bàn cách đi nhanh hơn.</p>
             <p>
-              Phần lớn thời gian, tôi không nói gì nhiều. Tôi rót trà. Rồi giữ cho căn phòng đủ
-              yên, để người ngồi đối diện nghe được chính mình.
+              Phần lớn thời gian, tôi không nói gì nhiều. Tôi rót trà. Giữ căn phòng đủ yên, để
+              người đối diện nghe được chính mình.
             </p>
           </div>
 
