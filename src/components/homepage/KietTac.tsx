@@ -10,6 +10,10 @@
 // Vệt vàng dưới "kiệt tác" là phần tử thật (span + i), animate scaleX qua
 // class .e26-reveal có sẵn — KHÔNG dùng ::after (GSAP/CSS không animate được
 // pseudo-element theo lỗi đã biết ghi trong brief).
+// SỬA 19/07/2026 — đối chiếu toàn diện với BAN-CHOT-v8.md theo yêu cầu Kenji:
+// đoạn dưới H1 đang có "— kể cả bạn." (di sản từ BAN-CHOT.md cũ trước v8),
+// nhưng v8 (dòng 72-73) đã đổi kết câu bằng dấu "…", KHÔNG có cụm "kể cả
+// bạn." — trả về đúng nguyên văn v8.
 export default function KietTac() {
   return (
     <section className="relative bg-e26-black px-6 py-24 md:py-32 overflow-hidden">
@@ -28,7 +32,7 @@ export default function KietTac() {
           .
         </h1>
         <p className="e26-reveal font-sans text-[17px] leading-[1.65] text-e26-text-dark-2 mt-8 max-w-lg mx-auto">
-          Không phải vì mọi chương đều đẹp. Mà vì chưa ai đọc nó đủ chậm — kể cả bạn.
+          Không phải vì mọi chương đều đẹp. Mà vì chưa ai đọc nó đủ chậm…
         </p>
       </div>
     </section>
