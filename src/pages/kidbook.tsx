@@ -266,7 +266,7 @@ export default function KidbookPage() {
           <div className="max-w-5xl mx-auto text-center">
             <div className="max-w-2xl mx-auto">
               <Image
-                src="/b1.png"
+                src="/b1.webp"
                 alt="Bản Sắc - Mini Ebook Cover"
                 width={800}
                 height={1066}
@@ -580,7 +580,7 @@ export default function KidbookPage() {
             </h2>
             <div className="shadow-lg">
               <Image
-                src="/nd1.png"
+                src="/nd1.webp"
                 alt="Trích dẫn từ Ebook Bản Sắc"
                 width={1200}
                 height={675}
