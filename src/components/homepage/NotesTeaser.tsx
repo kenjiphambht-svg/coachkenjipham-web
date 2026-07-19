@@ -1,29 +1,32 @@
 // Section 9 — Ghi chép + Lối ra. Nền ivory.
-// TINH CHỈNH 19/07/2026: tổ chức lại thành HAI PHẦN TÁCH BẠCH rõ ràng (Ghi
-// chép Essence / Ebook), phân nhóm bằng khoảng cách + divider nhẹ. BỎ hẳn nút
-// vàng "Đọc Ebook Miễn Phí" (bỏ điểm vàng #3 — sau thay đổi này trang còn
-// đúng 2 điểm vàng: vệt ③, viền hover ⑤). Thay bằng LINK chữ "Đọc Ebook"
-// (bỏ "Miễn Phí") ở trạng thái "sắp mở". Đúng 3 chỗ "(sắp mở)" hiện chữ rõ
-// theo BAN-CHOT: (1) dòng mô tả Ghi chép, (2) "Góc Đọc", (3) "Đọc Ebook". Cả
-// 3 là <span>, KHÔNG <Link>/<a>, không href — tránh soft 404 cho trạng thái
-// chưa có nội dung thật. Câu kết KHÔNG chứa mệnh lệnh nào cho người đọc
-// (không "hãy quay lại"/"bạn cứ về") — chủ đích giữ người đọc ở lại, không
-// tiễn họ ra cửa.
+// SỬA 19/07/2026 — BÀI HỌC TỪ PR #32: opacity nền cũ (0.05) không thấy được
+// bằng mắt (đã chụp ảnh production xác nhận, giống lỗi ở ⑧) → tăng lên 0.20
+// (cùng mức đã chọn cho ⑧, xem NotPromised.tsx). BỎ HẲN khung (bg-e26-cream +
+// padding riêng tạo card/box rõ nét) — chữ đứng trực tiếp trên nền section,
+// TRẦN như ⑧. Tổ chức lại 2 PHẦN TÁCH BẠCH bằng khoảng cách dọc lớn (mt-14)
+// + divider nhẹ, để mắt phân biệt ngay "đây là Ghi chép, đây là Ebook" dù
+// không còn card bao ngoài.
+// Đổi chữ Phần B: "nhận cuốn Ebook" → "đọc online cuốn" (Kenji xác nhận nội
+// dung sách CHƯA sẵn sàng, hướng tương lai là đọc trên web chứ không phải
+// tải file) — bỏ hẳn dòng "Đọc Ebook (sắp mở)" tách biệt cuối cùng, gộp
+// "(sắp mở)" ngay vào câu chính, nhất quán cách "Góc Đọc (sắp mở)" đã có.
+// Đúng 2 chỗ "(sắp mở)" còn lại theo BAN-CHOT: (1) dòng mô tả Ghi chép, (2)
+// "Góc Đọc" + hành động đọc online gộp chung 1 câu. Cả 2 là <span>, KHÔNG
+// <Link>/<a>, không href — tránh soft 404 cho trạng thái chưa có nội dung
+// thật. Câu kết KHÔNG chứa mệnh lệnh nào cho người đọc (không "hãy quay
+// lại"/"bạn cứ về") — chủ đích giữ người đọc ở lại, không tiễn họ ra cửa.
+// KHÔNG còn nút vàng (đã bỏ ở PR #32) — đúng 2 điểm vàng toàn trang (vệt ③,
+// viền hover ⑤).
 export default function NotesTeaser() {
   return (
     <section className="relative bg-e26-ivory px-6 py-16 md:py-28">
-      {/* Vật liệu nền dùng chung "vệt nắng" (bg-hero-light), opacity rất thấp
-          trên nền ivory gốc — cùng kỹ thuật KietTac. z-auto: khối kem bên
-          dưới nâng "relative z-10" để không bị lớp nền này phủ lên. */}
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-[0.05]"
+        className="absolute inset-0 bg-cover bg-center opacity-[0.20]"
         style={{ backgroundImage: "url(/images/home/bg-hero-light.webp)" }}
         aria-hidden="true"
       />
-      {/* Khối cuối trước footer đen — kem đậm NHẸ (e26-cream, nhẹ hơn cream-deep
-          của ③⑥ một bậc) vì không cần tương phản mạnh bằng các khối trên. */}
-      <div className="relative z-10 max-w-2xl mx-auto text-center bg-e26-cream px-8 py-14 md:px-16 md:py-16">
-        {/* Phần 1 — Ghi chép Essence (sắp mở) */}
+      <div className="relative z-10 max-w-2xl mx-auto text-center">
+        {/* Phần A — Ghi chép Essence (sắp mở) */}
         <div>
           <p className="e26-reveal font-serif text-2xl text-e26-text mb-3">Ghi chép Essence.</p>
           <span className="e26-reveal block font-sans text-[15px] leading-[1.65] text-e26-text-2 opacity-45 select-none">
@@ -31,28 +34,22 @@ export default function NotesTeaser() {
           </span>
         </div>
 
-        {/* Ranh giới tách bạch 2 phần */}
-        <div className="w-10 h-px bg-e26-border mx-auto my-8" aria-hidden="true" />
+        {/* Ranh giới tách bạch 2 phần — khoảng cách dọc lớn thay vai trò khung cũ */}
+        <div className="w-10 h-px bg-e26-border mx-auto mt-14 mb-14" aria-hidden="true" />
 
-        {/* Phần 2 — Ebook (sắp mở) */}
+        {/* Phần B — Ebook, đọc online (sắp mở) */}
         <div>
           <p className="e26-reveal font-sans text-[15px] leading-[1.65] text-e26-text-2">
             Nếu hôm nay bạn chỉ muốn tìm một góc tĩnh lặng, mời bạn ghé{" "}
-            <span className="opacity-45 select-none">Góc Đọc (sắp mở)</span>, hoặc nhận cuốn
-            Ebook &quot;Bắt Đầu Từ Đâu? Bản Sắc Nhân Hiệu&quot;{" "}
+            <span className="opacity-45 select-none">Góc Đọc (sắp mở)</span>, hoặc{" "}
+            <span className="opacity-45 select-none">đọc online</span> cuốn &quot;Bắt Đầu Từ
+            Đâu? Bản Sắc Nhân Hiệu&quot;{" "}
             <span className="opacity-45 select-none">(sắp mở)</span>.
           </p>
 
           <p className="e26-reveal font-sans text-[15px] leading-[1.65] text-e26-text-2 mt-6">
             Cánh cửa luôn mở, và bạn là người tự chọn nhịp đi của mình.
           </p>
-
-          <span
-            className="e26-reveal inline-block mt-6 font-sans text-[15px] text-e26-text-2 opacity-45 select-none cursor-default underline-offset-4 decoration-e26-text-2"
-            aria-hidden="true"
-          >
-            Đọc Ebook (sắp mở)
-          </span>
         </div>
       </div>
     </section>

@@ -8,12 +8,15 @@ import Link from "next/link";
 export default function NotPromised() {
   return (
     <section className="relative bg-e26-cream px-6 py-20 md:py-28">
-      {/* VIỆC 3 (19/07/2026) — vật liệu nền dùng chung "vệt nắng" (bg-hero-light),
-          opacity rất thấp trên nền cream gốc — cùng kỹ thuật KietTac. z-auto:
-          content bên dưới nâng "relative z-10" (không có block bọc riêng —
-          chữ + link nằm trực tiếp trên nền section). */}
+      {/* SỬA 19/07/2026 — BÀI HỌC TỪ PR #32: opacity 0.05 (đặt lúc "hệ nền
+          toàn trang") ĐÃ ĐO ĐÚNG bằng số nhưng KHÔNG THẤY ĐƯỢC bằng mắt — đã
+          chụp ảnh production thật, section trông phẳng trơn, đúng như Kenji
+          phản hồi. Không lặp lại sai lầm "tin computed style mà không xem
+          ảnh": đã thử trực tiếp trên DOM production 3 mức (0.05/0.15/0.22)
+          trước khi chọn 0.20 — mức thấy rõ vệt nắng/texture tường bằng mắt
+          nhưng chữ đen vẫn đọc rõ, không tranh chấp. */}
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-[0.05]"
+        className="absolute inset-0 bg-cover bg-center opacity-[0.20]"
         style={{ backgroundImage: "url(/images/home/bg-hero-light.webp)" }}
         aria-hidden="true"
       />
