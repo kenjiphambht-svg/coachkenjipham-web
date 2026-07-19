@@ -60,7 +60,7 @@ export default function TwoStates() {
               </p>
               <p className="font-serif text-2xl leading-snug text-e26-text-2 mb-5">
                 Có một kiểu mệt không nằm ở công việc. Nó nằm ở chỗ cứ phải gồng lên làm một phiên
-                bản nào đó để tồn tại...
+                bản nào đó để mình tồn tại...
               </p>
               <Link
                 href="/ban-sac-cua-ban"
@@ -86,7 +86,7 @@ export default function TwoStates() {
               </p>
               <p className="font-serif text-2xl leading-snug text-e26-text mb-5">
                 Có tối bạn đứng ở cửa phòng, nhìn con ngủ. Thương con lắm. Mà vẫn có gì đó chưa
-                gọi được tên. Không phải để sửa con — chỉ là muốn hiểu con thêm một chút...
+                gọi được tên. Không phải để sửa con — chỉ là muốn hiểu con thêm một chút.
               </p>
               <Link
                 href="/ban-sac-cua-con"

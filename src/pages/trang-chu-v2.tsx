@@ -37,6 +37,7 @@ export default function TrangChuV2Page() {
       <SEO
         title="Kenji Phạm | Huấn luyện viên Tâm lý Chiều sâu"
         description="Câu chuyện cuộc sống của bạn là một kiệt tác. Cùng Kenji Phạm dọn phản xạ cũ, thiết lập nhịp sống mới và kiến tạo đời sống An Thịnh từ bản sắc thật."
+        ogDescription="Câu chuyện cuộc sống của bạn là một kiệt tác. Essence Coaching by Kenji Phạm — Sài Gòn"
         image="https://coachkenjipham.com/essence-og-1200x630.png"
         url="https://coachkenjipham.com/trang-chu-v2"
       />

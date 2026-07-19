@@ -95,10 +95,10 @@ export default function HomeHeader() {
 
   return (
     <header className="relative z-50 bg-e26-ivory border-b border-e26-border px-6">
-      {/* TINH CHỈNH 19/07/2026 (lần 3): thu gọn header — py-4 (16px) → py-2.5
-          (10px), giảm chiều cao tổng từ 119px xuống ~106px. Áp cùng mức cho
-          cả header cuộn (đây) lẫn tấm phủ menu (bên dưới) để nhất quán. */}
-      <div className="max-w-[1120px] mx-auto flex items-center justify-between py-2.5">
+      {/* TINH CHỈNH 19/07/2026 (lần 4, v8-FINAL) — thu gọn thêm: py-2.5 (10px,
+          lần 3) vẫn còn thấy dày → py-1.5 (6px). Áp cùng mức cho cả header
+          cuộn (đây) lẫn tấm phủ menu (bên dưới) để nhất quán. */}
+      <div className="max-w-[1120px] mx-auto flex items-center justify-between py-1.5">
         <Link href="/trang-chu-v2" aria-label="Về trang chủ">
           <HeaderLogo />
         </Link>
@@ -131,7 +131,7 @@ export default function HomeHeader() {
         }`}
       >
         <div className="max-w-[1120px] mx-auto h-full flex flex-col px-6">
-          <div className="flex items-center justify-between py-2.5">
+          <div className="flex items-center justify-between py-1.5">
             <Link href="/trang-chu-v2" aria-label="Về trang chủ" onClick={(e) => e.stopPropagation()}>
               <HeaderLogo />
             </Link>

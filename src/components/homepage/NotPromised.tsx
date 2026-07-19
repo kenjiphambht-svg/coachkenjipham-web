@@ -8,15 +8,14 @@ import Link from "next/link";
 export default function NotPromised() {
   return (
     <section className="relative bg-e26-cream px-6 py-20 md:py-28">
-      {/* SỬA 19/07/2026 — BÀI HỌC TỪ PR #32: opacity 0.05 (đặt lúc "hệ nền
-          toàn trang") ĐÃ ĐO ĐÚNG bằng số nhưng KHÔNG THẤY ĐƯỢC bằng mắt — đã
-          chụp ảnh production thật, section trông phẳng trơn, đúng như Kenji
-          phản hồi. Không lặp lại sai lầm "tin computed style mà không xem
-          ảnh": đã thử trực tiếp trên DOM production 3 mức (0.05/0.15/0.22)
-          trước khi chọn 0.20 — mức thấy rõ vệt nắng/texture tường bằng mắt
-          nhưng chữ đen vẫn đọc rõ, không tranh chấp. */}
+      {/* SỬA 19/07/2026 (v8-FINAL) — chuẩn hoá theo mức FINAL chỉ định cho
+          ④⑤⑥⑧⑨: phủ kem ~88-90% (opacity ~0.10-0.12), đồng bộ với ⑥⑨. Trước
+          đó từng đặt 0.20 (thử nghiệm 3 mức trên production) — nay hạ về
+          đúng khoảng FINAL, verify lại bằng ảnh thật; nếu vẫn không đủ rõ sẽ
+          tăng tiếp (tiêu chí thật là THẤY ĐƯỢC bằng mắt, không phải khớp số
+          tuyệt đối). */}
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-[0.20]"
+        className="absolute inset-0 bg-cover bg-center opacity-[0.11]"
         style={{ backgroundImage: "url(/images/home/bg-hero-light.webp)" }}
         aria-hidden="true"
       />
