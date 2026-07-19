@@ -3,13 +3,12 @@ import Image from "next/image";
 // Ảnh trang trí (alt rỗng, aria-hidden) — phủ lớp cream ~90% lên trên để chữ
 // hero giữ nguyên độ tương phản đọc được (không đổi màu chữ hiện tại).
 //
-// VIỆC 1 (19/07/2026) — TRẠNG THÁI TẠM: brief yêu cầu đổi sang `bg-hero-open`
-// (phòng mờ bokeh, cửa sổ rèm voan trái — cùng khí quyển với ảnh Kenji ngồi).
-// File đó CHƯA có trong repo tại thời điểm build này (đã kiểm: không có ở
-// repo/Desktop/Downloads) → giữ nguyên `bg-hero-light` làm tạm theo đúng chỉ
-// dẫn brief. Khi Kenji thả file: XEM ẢNH THẬT (không đoán theo tên) rồi đổi
-// dòng dưới thành "/images/home/bg-hero-open.webp".
-const HERO_BG_SRC: string | undefined = "/images/home/bg-hero-light.webp";
+// VIỆC 1 (19/07/2026) — ĐÃ WIRE: Kenji thả `bg-hero-open.png` (1600×896,
+// ~1015KB) — đã xem tận mắt: phòng mờ bokeh, cửa sổ rèm voan bên TRÁI, nắng
+// trái, cùng khí quyển với ảnh Kenji ngồi (kenji-hero-window) — khớp đúng mô
+// tả brief, không phải đoán theo tên. Convert sang webp q80 → chỉ 15.3KB (ảnh
+// mờ nén cực tốt, dưới xa ngưỡng 300KB yêu cầu).
+const HERO_BG_SRC: string | undefined = "/images/home/bg-hero-open.webp";
 
 // Ảnh hero (19/07/2026): Kenji cầm ly trà nhìn ra cửa sổ, KHÔNG nhìn máy.
 // Kenji thả `kenji-hero-window.png.png` (896×1152 ≈ 4:5), đã convert sang webp
@@ -21,7 +20,7 @@ const HERO_IMAGE_SRC: string | null = "/images/home/kenji-hero-window.webp";
 // Section 2 — Hero: trạng thái con người, dựng theo hệ KHỐI-LỚP.
 // Nền CREAM (không phải ivory — luật #2). Chữ lớn nhất mắt nhìn thấy nhưng
 // KHÔNG phải heading (H1 duy nhất ở section Kiệt Tác) — dùng <p>, không <h1>.
-//   Lớp 1 (dưới): ảnh bg-hero-light phủ TRỌN section + lớp cream ~90% → chữ
+//   Lớp 1 (dưới): ảnh bg-hero-open phủ TRỌN section + lớp cream ~90% → chữ
 //                 nổi trên nền nắng (kỹ thuật A), không đứng trên nền trơn.
 //   Lớp 2: khối chữ hero (trái ~40%, cột 2/5).
 //   Lớp 3 (trên): ảnh Kenji (phải ~60%, cột 3/5). CHỜM XUỐNG ranh giới ②→③ —

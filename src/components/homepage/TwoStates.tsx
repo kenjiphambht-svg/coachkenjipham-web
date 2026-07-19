@@ -29,12 +29,12 @@ export default function TwoStates() {
             Ở đây có hai cánh cửa.
           </p>
           <p className="e26-reveal font-sans text-[17px] leading-[1.65] text-e26-text-2 mb-5">
-            Nhiều người ngồi xuống đây rồi mới nhận ra: cái nhịp làm mình mệt hôm nay, mình học
-            được từ hồi còn rất nhỏ. Trong một căn bếp nào đó, khi mình hiểu ra rằng mình im lặng
-            thì nhà mới yên. Và chẳng ai kịp nhận ra, mình đang vô tình dạy lại con y như vậy.
+            Nhiều người tới đây rồi mới nhận ra: cái nhịp làm mình mệt hôm nay, mình học được
+            từ hồi còn rất nhỏ. Trong một căn bếp nào đó, khi mình hiểu ra — mình im lặng thì
+            nhà mới yên. Và mình đang vô tình dạy lại con y như vậy.
           </p>
           <p className="e26-reveal font-sans text-[17px] leading-[1.65] text-e26-text-2">
-            Sau cả hai cánh cửa là cùng một khoảng lặng — chỗ để bạn nghe lại nhịp của chính mình.
+            Sau cả hai cánh cửa là cùng một khoảng lặng.
           </p>
         </div>
 
@@ -85,8 +85,8 @@ export default function TwoStates() {
                 Bản Sắc Của Con
               </p>
               <p className="font-serif text-2xl leading-snug text-e26-text mb-5">
-                Có tối bạn đứng ở cửa phòng, nhìn con ngủ. Thương thì thương lắm. Mà vẫn có gì đó
-                chưa gọi được tên. Không phải để sửa con — chỉ là mở thêm một cửa sổ...
+                Có tối bạn đứng ở cửa phòng, nhìn con ngủ. Thương con lắm. Mà vẫn có gì đó chưa
+                gọi được tên. Không phải để sửa con — chỉ là muốn hiểu con thêm một chút...
               </p>
               <Link
                 href="/ban-sac-cua-con"

@@ -1,7 +1,10 @@
 // Section 6 — Essence là gì. Nền ivory, căn giữa. Không ảnh (theo BAN-CHOT —
-// đã bỏ ImageSlot 3:2 cuối section của bản trước). Câu chữ ký AI cuối để
-// riêng, chữ nghiêng — sự thật, không phải lời hứa quá tay: không hạ xuống
-// thành "Kenji đọc", giữ nguyên "Kenji phân tích và viết từ đầu đến cuối".
+// đã bỏ ImageSlot 3:2 cuối section của bản trước).
+// BAN-CHOT-v8 (19/07/2026): bỏ bố cục "3 trụ cụt" (Có hệ thống/Có thứ tự/Có
+// ranh giới), thay bằng văn xuôi liền mạch — tinh thần "nếp nhà". Câu chữ ký
+// cuối để riêng, chữ nghiêng — sự thật, không phải lời hứa quá tay: RANH GIỚI
+// THƯƠNG HIỆU TUYỆT ĐỐI, không hạ xuống thành "đọc/duyệt/rà soát", giữ đúng
+// "Kenji phân tích và viết, từ dòng đầu đến dòng cuối".
 export default function WhatIsEssence() {
   return (
     <section className="relative bg-e26-ivory px-6 py-16 md:py-32">
@@ -17,32 +20,18 @@ export default function WhatIsEssence() {
           (section vốn không ảnh theo BAN-CHOT). Bố cục 3 trụ + chữ ký GIỮ
           NGUYÊN, chỉ đổi từ nền trần sang khối có biên rõ. */}
       <div className="relative z-10 max-w-3xl mx-auto text-center bg-e26-cream-deep px-8 py-14 md:px-16 md:py-20">
-        <h2 className="e26-reveal font-serif font-normal text-[26px] md:text-[36px] leading-snug text-e26-text mb-14">
+        <h2 className="e26-reveal font-serif font-normal text-[26px] md:text-[36px] leading-snug text-e26-text mb-8">
           Essence không mở cửa nào khi người ta chưa đứng vững.
         </h2>
-        <div className="e26-reveal grid md:grid-cols-3 gap-8 md:gap-6 text-center mb-14">
-          <div>
-            <p className="font-serif text-xl text-e26-text mb-2">Có hệ thống.</p>
-            <p className="font-sans text-[15px] leading-[1.6] text-e26-text-2">
-              Lớp vận hành AI hỗ trợ phía sau để quy trình nhịp nhàng, nhưng mọi điểm chạm cốt
-              lõi đều do con người quyết định.
-            </p>
-          </div>
-          <div>
-            <p className="font-serif text-xl text-e26-text mb-2">Có thứ tự.</p>
-            <p className="font-sans text-[15px] leading-[1.6] text-e26-text-2">
-              Việc nào trước, việc nào sau.
-            </p>
-          </div>
-          <div>
-            <p className="font-serif text-xl text-e26-text mb-2">Có ranh giới.</p>
-            <p className="font-sans text-[15px] leading-[1.6] text-e26-text-2">
-              Không giữ được thì không hứa.
-            </p>
-          </div>
-        </div>
+        <p className="e26-reveal font-sans text-[17px] leading-[1.75] text-e26-text-2 mb-8">
+          Ở đây, việc gì cũng có thứ tự của nó — việc nào trước, việc nào sau, không nhảy cóc.
+          Hệ thống phía sau dù mạnh mẽ đến đâu, mọi điểm chạm cốt lõi vẫn luôn được giữ nhịp
+          bởi con người. Ở đây có một ranh giới rất êm: điều gì không giữ được, Essence chọn
+          không hứa.
+        </p>
         <p className="e26-reveal font-serif italic text-lg text-e26-text-2">
-          Các ấn phẩm chuyên sâu gửi đến bạn, Kenji phân tích và viết từ đầu đến cuối.
+          Và mỗi ấn phẩm chuyên sâu gửi đến tay bạn, đều do Kenji phân tích và viết, từ dòng
+          đầu đến dòng cuối.
         </p>
       </div>
     </section>
