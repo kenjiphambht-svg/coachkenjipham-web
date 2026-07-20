@@ -35,7 +35,7 @@ export default function AnDinhAnThinh() {
         {/* Thì thầm — Vai 4: serif italic nhỏ, opacity ~0.75 (dùng token phụ
             text-dark-2 sẵn có thay vì opacity rời để không xung đột với
             transition opacity của .e26-reveal). */}
-        <p className="e26-reveal font-serif italic text-[15px] md:text-base leading-[1.7] text-e26-text-dark-2 mt-8">
+        <p className="e26-reveal font-serif italic text-[17px] md:text-[18px] leading-[1.7] text-e26-text-dark-2 mt-8">
           Chỉ là tối đó, sau một quyết định lớn, bạn vẫn ngủ được ngon giấc. Bữa cơm nhà tự
           nhiên bớt căng. Con chạy vào kể một chuyện dài ngoằng về con kiến ngoài sân — lần này
           bạn nghe hết, mỉm cười, rồi mới gọi con đi rửa tay ăn cơm.
@@ -59,7 +59,7 @@ export default function AnDinhAnThinh() {
         </p>
 
         {/* Cầu — dòng nhỏ, Vai 4 */}
-        <p className="e26-reveal font-serif italic text-[15px] md:text-base leading-[1.7] text-e26-text-dark-2 mt-8">
+        <p className="e26-reveal font-serif italic text-[17px] md:text-[18px] leading-[1.7] text-e26-text-dark-2 mt-8">
           An định không phải đích đến. Nó là một nền đất.
         </p>
 

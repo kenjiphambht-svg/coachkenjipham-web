@@ -31,6 +31,9 @@ const TRUST_LINKS = [
 // kéo sát thêm 1 nấc xuống mt-0.5 (2px) theo đúng tinh thần "sát". Phần lớn
 // độ cao header đo được (119px) đến từ padding ngoài (py-4), không phải gap
 // này — xem HomeHeader's header/nav padding.
+// TINH CHỈNH 20/07/2026 (lần 4) — kéo sát thêm nấc cuối: mt-0.5 (2px) →
+// mt-0 (0px), 2 dòng chạm sát nhau thật sự. KHÔNG đổi h-10/h-12/h-[28px]/
+// h-[34px] của 2 file SVG — chỉ khoảng cách giữa chúng.
 function HeaderLogo() {
   return (
     <span className="flex flex-col items-center">
@@ -42,7 +45,7 @@ function HeaderLogo() {
       <img
         src="/brand/logo/essence-wordmark-minimal-2026.svg"
         alt="Essence Coaching"
-        className="h-[28px] md:h-[34px] w-auto mt-0.5"
+        className="h-[28px] md:h-[34px] w-auto mt-0"
       />
     </span>
   );
@@ -97,8 +100,12 @@ export default function HomeHeader() {
     <header className="relative z-50 bg-e26-ivory border-b border-e26-border px-6">
       {/* TINH CHỈNH 19/07/2026 (lần 4, v8-FINAL) — thu gọn thêm: py-2.5 (10px,
           lần 3) vẫn còn thấy dày → py-1.5 (6px). Áp cùng mức cho cả header
-          cuộn (đây) lẫn tấm phủ menu (bên dưới) để nhất quán. */}
-      <div className="max-w-[1120px] mx-auto flex items-center justify-between py-1.5">
+          cuộn (đây) lẫn tấm phủ menu (bên dưới) để nhất quán.
+          TINH CHỈNH 20/07/2026 (lần 5) — thu hẹp thêm 1 nấc: py-1.5 (6px) →
+          py-1 (4px), CHỈ khung/spacing, KHÔNG đụng kích thước 2 file SVG logo
+          (giữ nguyên h-10/h-12 chữ ký, h-[28px]/h-[34px] wordmark). Áp cùng
+          mức cho cả 2 chỗ (đây + tấm phủ menu bên dưới). */}
+      <div className="max-w-[1120px] mx-auto flex items-center justify-between py-1">
         <Link href="/trang-chu-v2" aria-label="Về trang chủ">
           <HeaderLogo />
         </Link>
@@ -131,7 +138,7 @@ export default function HomeHeader() {
         }`}
       >
         <div className="max-w-[1120px] mx-auto h-full flex flex-col px-6">
-          <div className="flex items-center justify-between py-1.5">
+          <div className="flex items-center justify-between py-1">
             <Link href="/trang-chu-v2" aria-label="Về trang chủ" onClick={(e) => e.stopPropagation()}>
               <HeaderLogo />
             </Link>
