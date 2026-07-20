@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { SEO } from "@/components/SEO";
+import GrainOverlay from "@/components/homepage/GrainOverlay";
 import HomeHeader from "@/components/homepage/HomeHeader";
 import HomeHero from "@/components/homepage/HomeHero";
 import KenjiSection from "@/components/homepage/KenjiSection";
@@ -112,6 +113,7 @@ export default function TrangChuV2Page() {
         />
       </Head>
 
+      <GrainOverlay />
       <HomeHeader />
       <main className="bg-e26-ivory">
         <HomeHero />

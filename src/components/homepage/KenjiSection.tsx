@@ -18,6 +18,9 @@ import ComingLink from "./ComingLink";
 // chiếu lại, bản "Tám năm qua, tôi ngồi cùng người lớn..." đúng, không sót
 // bản cũ), quote "Tôi không sửa..." (Vai 2, 42px, giữ border-l), nhãn ICF
 // (Vai 5), link "chưa mở" → /ve-kenji giữ nguyên toàn bộ.
+// SỬA 21/07/2026 (brief dọn cuối trang chủ, Việc C) — body + link thiếu
+// font-normal nên kế thừa nhầm body{font-weight:300} (di sản, xem
+// globals.css) thay vì 400 luật thương hiệu — đã thêm font-normal rõ ràng.
 export default function KenjiSection() {
   return (
     <section className="relative bg-e26-white px-6 py-16 md:py-28">
@@ -58,7 +61,7 @@ export default function KenjiSection() {
           <p className="e26-reveal font-sans text-xs font-medium tracking-[0.18em] uppercase text-e26-text-2 mb-6">
             Tôi là Kenji Phạm.
           </p>
-          <div className="e26-reveal space-y-5 font-sans text-[18px] leading-[1.9] text-e26-text-2 max-w-xl">
+          <div className="e26-reveal space-y-5 font-sans font-normal text-[18px] leading-[1.9] text-e26-text-2 max-w-xl">
             <p>
               Tám năm qua, tôi ngồi cùng người lớn, lắng nghe những điều họ không nói được với
               ai. Và ngồi cùng ba mẹ, khi họ yêu con nhưng không biết bắt đầu từ đâu.
@@ -82,7 +85,7 @@ export default function KenjiSection() {
           </p>
 
           <p className="e26-reveal mt-6">
-            <ComingLink href="/ve-kenji" className="font-sans text-[17px] underline decoration-e26-black underline-offset-4">
+            <ComingLink href="/ve-kenji" className="font-sans font-normal text-[17px] underline decoration-e26-black underline-offset-4">
               Hành trình và nền tảng của Kenji →
             </ComingLink>
           </p>

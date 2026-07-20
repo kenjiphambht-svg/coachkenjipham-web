@@ -10,6 +10,10 @@ import Link from "next/link";
 // dùng dấu chấm hết câu — đúng Doc). Hover link ĐỔI kỹ thuật: CHỈ đậm chữ +
 // mũi tên nhích phải, KHÔNG gạch chân, KHÔNG đổi màu gold (tránh vượt trần
 // 3 điểm vàng toàn trang — xem AnDinhAnThinh.tsx).
+// SỬA 21/07/2026 (brief dọn cuối trang chủ, Việc C) — link thiếu font-normal
+// ở trạng thái nghỉ nên kế thừa nhầm body{font-weight:300} di sản (xem
+// globals.css) thay vì 400 — đã thêm font-normal, giữ nguyên hover:font-medium
+// cho hiệu ứng "đậm chữ khi hover" đã có.
 export default function NotPromised() {
   return (
     <section className="relative bg-e26-cream px-6 py-28 md:py-40">
@@ -44,7 +48,7 @@ export default function NotPromised() {
         </h2>
         <Link
           href="/dieu-essence-khong-hua"
-          className="group e26-reveal mt-10 inline-flex items-center gap-1.5 font-sans text-[15px] text-e26-text hover:font-medium"
+          className="group e26-reveal mt-10 inline-flex items-center gap-1.5 font-sans font-normal text-[15px] text-e26-text hover:font-medium"
         >
           <span>Đọc đầy đủ</span>
           <span aria-hidden="true" className="inline-block transition-transform duration-300 group-hover:translate-x-1">

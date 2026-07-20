@@ -17,6 +17,17 @@ import ImageSlot from "./ImageSlot";
 //     chủ đích đó, làm đúng theo Doc.
 //   - Câu kết section lên Vai 2 (weight 500, KHÔNG italic — bảng 5 vai chỉ
 //     đánh dấu italic cho quote ④, không áp cho câu kết ⑤).
+// SỬA 21/07/2026 (brief dọn cuối trang chủ, Việc C — rà font 5 vai) — đoạn
+// "chuyện" bên trong 2 thẻ (font-serif text-2xl leading-snug) không khớp bất
+// kỳ vai nào trong 5 vai chuẩn (Vai 2 = 30/42px, Vai 4 = 17-18px) VÀ thiếu
+// biến thể mobile-responsive (24px cố định cả 2 breakpoint) — đúng 2 dấu
+// hiệu brief liệt kê cần sửa. Thêm mobile 22px (md:text-2xl giữ nguyên 24px
+// desktop, không đổi) — mức tối thiểu để có biến thể responsive, không đụng
+// tới cỡ desktop đã ổn định qua nhiều lần đo contrast/layout trước đó.
+// Đồng thời phát hiện (đo computed style thật, không chỉ đọc class): đoạn
+// này + 2 link CTA "Mời bạn vào →" thiếu font-normal nên kế thừa nhầm
+// body{font-weight:300} di sản (xem globals.css) thay vì 400 — đã thêm
+// font-normal rõ ràng cho cả 3.
 export default function TwoStates() {
   return (
     <section className="relative bg-e26-cream px-6 py-16 md:py-32">
@@ -85,7 +96,7 @@ export default function TwoStates() {
               <p className="font-sans text-xs font-medium tracking-[0.18em] uppercase text-e26-text-2 mb-4">
                 Bản Sắc Của Bạn
               </p>
-              <p className="font-serif text-2xl leading-snug text-e26-text-2 mb-5">
+              <p className="font-serif font-normal text-[22px] md:text-2xl leading-snug text-e26-text-2 mb-5">
                 Có một kiểu mệt
                 <br />
                 không nằm ở công việc.
@@ -98,7 +109,7 @@ export default function TwoStates() {
               </p>
               <Link
                 href="/ban-sac-cua-ban"
-                className="font-sans text-[15px] text-e26-text hover:text-e26-gold-deep transition-colors duration-300"
+                className="font-sans font-normal text-[15px] text-e26-text hover:text-e26-gold-deep transition-colors duration-300"
               >
                 Mời bạn vào →
               </Link>
@@ -118,7 +129,7 @@ export default function TwoStates() {
               <p className="font-sans text-xs font-medium tracking-[0.18em] uppercase text-e26-text-2 mb-4">
                 Bản Sắc Của Con
               </p>
-              <p className="font-serif text-2xl leading-snug text-e26-text mb-5">
+              <p className="font-serif font-normal text-[22px] md:text-2xl leading-snug text-e26-text mb-5">
                 Có những tối
                 <br />
                 bạn đứng trước cửa phòng con.
@@ -129,7 +140,7 @@ export default function TwoStates() {
               </p>
               <Link
                 href="/ban-sac-cua-con"
-                className="font-sans text-[15px] text-e26-text hover:text-e26-gold-deep transition-colors duration-300"
+                className="font-sans font-normal text-[15px] text-e26-text hover:text-e26-gold-deep transition-colors duration-300"
               >
                 Mời bạn vào →
               </Link>

@@ -22,6 +22,11 @@
 // cầu ở bước này nên dừng, không cần lên tới trần 0.25) — desktop giữ
 // nguyên 0.13 qua md:opacity-[0.13], đã xác nhận computed style desktop
 // không đổi so với trước.
+// SỬA 21/07/2026 (brief dọn cuối trang chủ, Việc C) — toàn bộ đoạn Vai 3/Vai
+// 4 trong section này (mở đầu, thì thầm, 2 đoạn thân AN ĐỊNH/AN THỊNH, cầu,
+// câu kết) thiếu font-normal nên kế thừa nhầm body{font-weight:300} di sản
+// (xem globals.css) thay vì 400 — đã thêm font-normal rõ ràng cho tất cả.
+// 2 dòng neo "An định."/"An Thịnh." đã có font-medium sẵn, không đổi.
 export default function AnDinhAnThinh() {
   return (
     <section className="relative bg-e26-black px-6 py-24 md:py-40 overflow-hidden">
@@ -35,7 +40,7 @@ export default function AnDinhAnThinh() {
       </span>
       <div className="relative max-w-[640px] mx-auto text-center">
         {/* Nhịp 1 — AN ĐỊNH: câu mở (Vai 3) */}
-        <p className="e26-reveal font-sans text-[18px] leading-[1.9] text-e26-text-dark-2">
+        <p className="e26-reveal font-sans font-normal text-[18px] leading-[1.9] text-e26-text-dark-2">
           Rồi một ngày,
           <br />
           bạn nhận ra mình thở khác.
@@ -44,14 +49,14 @@ export default function AnDinhAnThinh() {
         {/* Thì thầm — Vai 4: serif italic nhỏ, opacity ~0.75 (dùng token phụ
             text-dark-2 sẵn có thay vì opacity rời để không xung đột với
             transition opacity của .e26-reveal). */}
-        <p className="e26-reveal font-serif italic text-[17px] md:text-[18px] leading-[1.7] text-e26-text-dark-2 mt-8">
+        <p className="e26-reveal font-serif italic font-normal text-[17px] md:text-[18px] leading-[1.7] text-e26-text-dark-2 mt-8">
           Chỉ là tối đó, sau một quyết định lớn, bạn vẫn ngủ được ngon giấc. Bữa cơm nhà tự
           nhiên bớt căng. Con chạy vào kể một chuyện dài ngoằng về con kiến ngoài sân — lần này
           bạn nghe hết, mỉm cười, rồi mới gọi con đi rửa tay ăn cơm.
         </p>
 
         {/* Body — Vai 3 */}
-        <p className="e26-reveal font-sans text-[18px] leading-[1.9] text-e26-text-dark-2 mt-10">
+        <p className="e26-reveal font-sans font-normal text-[18px] leading-[1.9] text-e26-text-dark-2 mt-10">
           Không phải vì cuộc sống dễ hơn.
           <br />
           Mà vì giữa điều xảy ra
@@ -68,19 +73,19 @@ export default function AnDinhAnThinh() {
         </p>
 
         {/* Cầu — dòng nhỏ, Vai 4 */}
-        <p className="e26-reveal font-serif italic text-[17px] md:text-[18px] leading-[1.7] text-e26-text-dark-2 mt-8">
+        <p className="e26-reveal font-serif italic font-normal text-[17px] md:text-[18px] leading-[1.7] text-e26-text-dark-2 mt-8">
           An định không phải đích đến. Nó là một nền đất.
         </p>
 
         {/* Nhịp 2 — AN THỊNH: body Vai 3 */}
-        <p className="e26-reveal font-sans text-[18px] leading-[1.9] text-e26-text-dark-2 mt-16">
+        <p className="e26-reveal font-sans font-normal text-[18px] leading-[1.9] text-e26-text-dark-2 mt-16">
           Thành công,
           <br />
           khi bên trong chưa vững,
           <br />
           rất dễ trở thành gánh nặng.
         </p>
-        <p className="e26-reveal font-sans text-[18px] leading-[1.9] text-e26-text-dark-2 mt-6">
+        <p className="e26-reveal font-sans font-normal text-[18px] leading-[1.9] text-e26-text-dark-2 mt-6">
           Khi nền đủ vững,
           <br />
           điều đến sau
@@ -101,7 +106,7 @@ export default function AnDinhAnThinh() {
         {/* Câu kết khối — không nút, Vai 3. SỬA 20/07/2026 (brief sửa lặp
             từ): "Có những cánh cửa..." → "Không phải cánh cửa nào..." —
             Kenji đã duyệt, sẽ đồng bộ vào Doc V9-FINAL sau. */}
-        <p className="e26-reveal font-sans text-[18px] leading-[1.9] text-e26-text-dark-2 mt-16 md:mt-20">
+        <p className="e26-reveal font-sans font-normal text-[18px] leading-[1.9] text-e26-text-dark-2 mt-16 md:mt-20">
           Không phải cánh cửa nào cũng cần mở ngay.
           <br />
           Chỉ cần biết chúng luôn ở đó.

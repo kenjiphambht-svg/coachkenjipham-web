@@ -9,6 +9,9 @@ import ComingLink from "./ComingLink";
 //   - Bố cục đổi từ 2 CỬA song song → 3 CARD (Ghi chép Essence / Ebook /
 //     Khởi đầu). Cả 3 đều "chưa mở" — dùng <ComingLink> (không href), KHÔNG
 //     còn nhãn "(sắp mở)" (luật mới, Kenji 20/07/2026).
+// SỬA 21/07/2026 (brief dọn cuối trang chủ, Việc C) — đoạn intro + tiêu đề
+// card + mô tả card thiếu font-normal nên kế thừa nhầm body{font-weight:300}
+// di sản (xem globals.css) thay vì 400 — đã thêm font-normal rõ ràng.
 // KHÔNG có nút vàng — đúng 3 điểm vàng toàn trang (vệt ③, viền hover ⑤, "An
 // Thịnh" ⑦), không phát sinh vàng thứ 4 ở đây.
 const CARDS = [
@@ -65,7 +68,7 @@ export default function NotesTeaser() {
         <h2 className="e26-reveal font-serif font-medium text-[30px] md:text-[42px] leading-[1.25] text-e26-text mb-8">
           Một góc để quay lại.
         </h2>
-        <p className="e26-reveal font-sans text-[17px] md:text-[18px] leading-[1.9] text-e26-text-2 max-w-xl mx-auto">
+        <p className="e26-reveal font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text-2 max-w-xl mx-auto">
           Có những ngày,
           <br />
           chỉ cần đọc một đoạn ngắn.
@@ -80,12 +83,24 @@ export default function NotesTeaser() {
         </p>
 
         {/* 3 CARD chưa mở — mỗi card là 1 <ComingLink> không href (span mờ),
-            xếp dọc trên mobile, 3 cột trên desktop. */}
-        <div className="mt-14 grid gap-10 md:grid-cols-3 md:gap-8 md:divide-x md:divide-e26-border">
+            xếp dọc trên mobile, 3 cột trên desktop.
+            SỬA 21/07/2026 (brief dọn cuối trang chủ, Việc B) — khung "kính mờ"
+            theo spec Doc V9: radius 28px, viền 1px rgba(0,0,0,.06), nền
+            rgba(255,255,255,.72), backdrop-blur 18px, padding 40px (p-10).
+            Bỏ md:divide-x cũ (đường kẻ dọc giữa cột) — dư thừa khi mỗi card
+            đã có viền riêng, 2 viền cạnh nhau sẽ đá nhau. Giữ nguyên trạng
+            thái "chưa mở" (opacity-45 qua ComingLink không href) — CHỈ thêm
+            khung, không thêm href/hover. Backdrop-blur cần nền phía sau CÓ gì
+            để mờ — card giờ nằm ngay trên ảnh nền + overlay kem 88% của chính
+            section này nên hiệu ứng kính mờ có tác dụng thấy được. */}
+        <div className="mt-14 grid gap-6 md:grid-cols-3">
           {CARDS.map((card) => (
-            <ComingLink key={card.title} className="block md:px-8 md:first:pl-0 md:last:pr-0">
-              <p className="font-serif text-xl text-e26-text mb-3">{card.title}</p>
-              <p className="font-sans text-[15px] leading-[1.7] text-e26-text-2">
+            <ComingLink
+              key={card.title}
+              className="block rounded-[28px] border border-[rgba(0,0,0,0.06)] bg-[rgba(255,255,255,0.72)] p-10 backdrop-blur-[18px]"
+            >
+              <p className="font-serif font-normal text-xl text-e26-text mb-3">{card.title}</p>
+              <p className="font-sans font-normal text-[15px] leading-[1.7] text-e26-text-2">
                 {card.lines.map((line, i) => (
                   <span key={i}>
                     {line}
