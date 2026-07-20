@@ -12,9 +12,11 @@ import ComingLink from "./ComingLink";
 //          DESKTOP: trái, chờm cạnh trái khối (-mr-16 ăn vào khối, khối pl-24
 //          đẩy chữ né).
 //   Ảnh PHỤ (kenji-pouring-tea, rót trà — trước là ảnh chính): NHỎ rõ rệt
-//          (~55% cỡ ảnh chính), đặt THẤP trong khối, ĐỨNG CẠNH câu trích "Tôi
-//          không sửa..." — ảnh và câu trích cùng khu vực thị giác. Một chính
-//          một phụ, chênh cỡ rõ — không hai ảnh ngang cỡ.
+//          (~55% cỡ ảnh chính), đặt THẤP trong khối, cùng khu vực thị giác với
+//          câu trích "Tôi không sửa...". Một chính một phụ, chênh cỡ rõ —
+//          không hai ảnh ngang cỡ. SỬA 20/07/2026: bỏ layout "đứng cạnh" (ảnh
+//          + quote chung hàng) — quote lên 42px (Vai 2, brief V9) bị dồn dòng
+//          trong cột hẹp. Nay ảnh trên, quote dưới, full-width mọi breakpoint.
 // KHÔNG che chữ: khối pt lớn (mobile) / pl lớn (desktop) — đo thật
 // getBoundingClientRect ở 375/595/767/768/1280px.
 // SỬA 20/07/2026 (brief V9-FINAL) — nguồn chữ duy nhất: Google Doc
@@ -68,9 +70,11 @@ export default function KenjiSection() {
             </p>
           </div>
 
-          {/* Ảnh PHỤ (rót trà, nhỏ ~55%) ĐỨNG CẠNH câu trích — cùng khu vực thị
-              giác. MOBILE: ảnh trên, quote dưới (flex-col). SM+: cạnh nhau. */}
-          <div className="mt-10 flex flex-col sm:flex-row sm:items-center gap-6">
+          {/* SỬA 20/07/2026 (brief tăng Vai4 + bật link + header) — Việc D:
+              quote 42px (Vai 2, brief V9) bị dồn dòng khi đứng cạnh ảnh trong
+              cột hẹp (sm:flex-row cũ). Bỏ hẳn sm:flex-row — ảnh trên, quote
+              dưới, full-width ở MỌI breakpoint để quote thở đúng tầm. */}
+          <div className="mt-10 flex flex-col gap-6">
             <figure className="e26-reveal w-[52%] max-w-[230px] shrink-0">
               <ImageSlot
                 ratio="4/5"
@@ -90,7 +94,7 @@ export default function KenjiSection() {
           </p>
 
           <p className="e26-reveal mt-6">
-            <ComingLink className="font-sans text-[17px] underline decoration-e26-black underline-offset-4">
+            <ComingLink href="/ve-kenji" className="font-sans text-[17px] underline decoration-e26-black underline-offset-4">
               Hành trình và nền tảng của Kenji →
             </ComingLink>
           </p>

@@ -46,11 +46,11 @@ export default function WhatIsEssence() {
           dần.
         </p>
         <p className="e26-reveal mb-10">
-          <ComingLink className="font-sans text-[17px] underline decoration-e26-black underline-offset-4">
+          <ComingLink href="/phuong-phap" className="font-sans text-[17px] underline decoration-e26-black underline-offset-4">
             Phương pháp Essence Coaching →
           </ComingLink>
         </p>
-        <p className="e26-reveal font-serif italic text-[15px] md:text-base leading-[1.7] text-e26-text-2">
+        <p className="e26-reveal font-serif italic text-[17px] md:text-[18px] leading-[1.7] text-e26-text-2">
           Và mỗi ấn phẩm chuyên sâu gửi đến tay bạn, đều do Kenji phân tích và viết, từ dòng
           đầu đến dòng cuối.
         </p>
