@@ -32,7 +32,17 @@ h1 em, h2 em, h3 em, h4 em {
   font-weight: 500;
 }
 
-/* Body text — lighter, spacious */
+/* Body text — lighter, spacious. DI SẢN — thuộc hệ thiết kế cũ (đi cùng các
+   biến --cream/--ink/--gold... ngay bên dưới), dùng cho /kidbook và
+   /ai-startup. KHÔNG xoá/đổi trực tiếp ở đây vì rule không có scope riêng
+   (chọn thẳng thẻ <body> dùng chung toàn site) — đổi sẽ ảnh hưởng ngược tới
+   2 route sống đó, ngoài phạm vi mọi brief /trang-chu-v2.
+   GHI NHẬN 21/07/2026 (brief dọn cuối trang chủ, Việc C) — rule 300 này ÂM
+   THẦM lan vào /trang-chu-v2: mọi khối chữ ở đây KHÔNG khai báo rõ
+   font-normal/font-medium sẽ kế thừa 300 thay vì 400 luật thương hiệu yêu
+   cầu (đo computed style thật, không chỉ đọc class — phát hiện hàng loạt
+   đoạn thân bài ③④⑤⑥⑦⑧⑨ đang render 300). ĐÃ SỬA tại từng component bằng
+   cách thêm rõ font-normal — KHÔNG sửa rule này (đúng lý do scope ở trên). */
 body {
   font-weight: 300;
   letter-spacing: 0.01em;
@@ -230,6 +240,35 @@ body {
 .e26-reveal.e26-signature-reveal {
   transform: translateY(10px);
   transition: opacity 800ms cubic-bezier(0.33, 1, 0.68, 1), transform 800ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* === ESSENCE 2026 — grain nền toàn trang (brief "dọn cuối trang chủ") ===
+   Lớp hạt phim rất nhẹ phủ TOÀN TRANG (position:fixed, dưới mọi nội dung chữ,
+   trên mọi nền section — z-index:1 trong khi nền các section đều z-auto và
+   nội dung đều z-10, đã xác nhận qua các section khác trong file) để nền kem
+   không "phẳng digital" (Doc V9 Layer 4). Kỹ thuật: 1 SVG feTurbulence duy
+   nhất mã hoá base64 làm background-image (không thêm request mạng, không
+   thư viện mới) — noise mịn, background-repeat mặc định lát kín màn hình.
+   mix-blend-mode: multiply — ĐÃ THỬ soft-light trước, đo bằng công thức
+   W3C compositing thật (không đoán): soft-light gần như TRIỆT TIÊU hạt ở cả
+   2 đầu thang màu (nền đen VÀ nền kem gần trắng đều làm hạt tự ẩn, do bản
+   chất soft-light "nén" hiệu ứng ở gần 0 và gần 1) — sai mục tiêu vì hạt cần
+   THẤY được trên nền sáng. Đổi sang multiply: chỉ có thể làm TỐI đi (không
+   bao giờ làm sáng lên) — trên nền đen #1A1A1A (gần 0), nhân với bất kỳ hạt
+   nào cũng ra kết quả gần 0 → hạt tự ẩn tự nhiên (đã đo: lệch tối đa ±1-2/255,
+   xem báo cáo); trên nền kem/trắng, hạt tạo lốm đốm tối rõ hơn (đã đo: lệch
+   tối đa quanh -9 đến -13/255 ở opacity 0.08) — đúng hướng "hạt thấy được
+   trên sáng, gần như biến mất trên đen" mà không cần tách file theo section.
+   pointer-events:none để không chặn click/hover xuyên qua. */
+.e26-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.08;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjxmaWx0ZXIgaWQ9J24nPjxmZVR1cmJ1bGVuY2UgdHlwZT0nZnJhY3RhbE5vaXNlJyBiYXNlRnJlcXVlbmN5PScwLjg1JyBudW1PY3RhdmVzPScyJyBzdGl0Y2hUaWxlcz0nc3RpdGNoJy8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9JzEwMCUnIGhlaWdodD0nMTAwJScgZmlsdGVyPSd1cmwoI24pJy8+PC9zdmc+");
+  background-repeat: repeat;
 }
 
 /* === ESSENCE 2026 — landing reveal dòng "Bản Sắc" (fade-up 0.75s / 16px, stagger nhẹ) ===
