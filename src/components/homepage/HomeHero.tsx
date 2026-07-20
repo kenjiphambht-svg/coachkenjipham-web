@@ -3,12 +3,11 @@ import Image from "next/image";
 // Ảnh trang trí (alt rỗng, aria-hidden) — phủ lớp cream ~90% lên trên để chữ
 // hero giữ nguyên độ tương phản đọc được (không đổi màu chữ hiện tại).
 //
-// VIỆC 1 (19/07/2026) — ĐÃ WIRE: Kenji thả `bg-hero-open.png` (1600×896,
-// ~1015KB) — đã xem tận mắt: phòng mờ bokeh, cửa sổ rèm voan bên TRÁI, nắng
-// trái, cùng khí quyển với ảnh Kenji ngồi (kenji-hero-window) — khớp đúng mô
-// tả brief, không phải đoán theo tên. Convert sang webp q80 → chỉ 15.3KB (ảnh
-// mờ nén cực tốt, dưới xa ngưỡng 300KB yêu cầu).
-const HERO_BG_SRC: string | undefined = "/images/home/bg-hero-open.webp";
+// SỬA 20/07/2026 (Light System) — thay bg-hero-open.webp bằng light-01
+// "Morning Soft" (bg-light-hero.webp), theo brief map ảnh→section chính
+// thức. Overlay cream bên dưới đo lại từ đầu cho ảnh mới (xem ghi chú tại
+// thẻ div overlay).
+const HERO_BG_SRC: string | undefined = "/images/home/bg-light-hero.webp";
 
 // Ảnh hero (19/07/2026): Kenji cầm ly trà nhìn ra cửa sổ, KHÔNG nhìn máy.
 // Kenji thả `kenji-hero-window.png.png` (896×1152 ≈ 4:5), đã convert sang webp
@@ -48,7 +47,12 @@ export default function HomeHero() {
       {HERO_BG_SRC && (
         <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
           <Image src={HERO_BG_SRC} alt="" fill className="object-cover" priority />
-          <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_90%,transparent)]" />
+          {/* SỬA 20/07/2026 (Light System) — đo lại contrast cho ảnh mới
+              (canvas, WCAG): dò tăng dần từ 0% → 70% mới đạt ≥4.5:1 cho toàn
+              bộ đoạn thân (desktop 4.56, mobile pass từ 60%). Giảm từ 90%
+              (mức cũ, chưa từng đo thật) xuống 70% — mức thấp nhất đạt được,
+              ảnh hiện rõ hơn trước. */}
+          <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_70%,transparent)]" />
         </div>
       )}
       {/* VIỆC 2 (19/07/2026) — nền hero TAN xuống đen của Kiệt Tác (③) ngay sau.

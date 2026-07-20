@@ -15,11 +15,25 @@ import ComingLink from "./ComingLink";
 export default function WhatIsEssence() {
   return (
     <section className="relative bg-e26-ivory px-6 py-16 md:py-32">
-      {/* SỬA 19/07/2026 — FINAL yêu cầu phủ kem ~88-90% (trước 93-95%/opacity
-          0.05 — quá mờ, không thấy được bằng mắt, bài học từ PR trước). */}
+      {/* SỬA 20/07/2026 (Light System) — thay bg-hero-light.webp (wash mờ
+          0.11) bằng ảnh light-04 "Silence" (bg-light-essence.webp). Đo
+          contrast thật (canvas, WCAG): ảnh trực tiếp cho H2/Sub/Link đạt
+          ngay (9.39 / 3.54 / 8.51, cần ≥3-4.5), nhưng 4 đoạn thân bài (Vai 3,
+          màu e26-text-2) KHÔNG đạt 4.5:1 (2.55-4.03). Dò lớp phủ kem tăng
+          dần 5%/nấc → 70% mới đạt cả desktop (4.56) lẫn mobile (4.75) —
+          nặng hơn "rất nhẹ" kỳ vọng vì màu chữ phụ vốn có trần contrast thấp
+          (chỉ 6.49:1 ngay cả trên nền trắng thuần), không phải lỗi vị trí. */}
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-[0.11]"
-        style={{ backgroundImage: "url(/images/home/bg-hero-light.webp)" }}
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url(/images/home/bg-light-essence.webp)" }}
+        aria-hidden="true"
+      />
+      {/* KHÔNG dùng bg-e26-ivory/70 — bug đã biết (xem HomeHero.tsx): token
+          màu định nghĩa bằng hex thô qua var() khiến Tailwind không generate
+          được modifier "/opacity", lớp phủ sẽ trong suốt hoàn toàn (im lặng,
+          không lỗi build). Dùng color-mix() — kỹ thuật đã kiểm chứng. */}
+      <div
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_70%,transparent)]"
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-3xl mx-auto text-center">
