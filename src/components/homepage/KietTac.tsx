@@ -10,13 +10,13 @@
 // Vệt vàng dưới "kiệt tác" là phần tử thật (span + i), animate scaleX qua
 // class .e26-reveal có sẵn — KHÔNG dùng ::after (GSAP/CSS không animate được
 // pseudo-element theo lỗi đã biết ghi trong brief).
-// SỬA 19/07/2026 — đối chiếu toàn diện với BAN-CHOT-v8.md theo yêu cầu Kenji:
-// đoạn dưới H1 đang có "— kể cả bạn." (di sản từ BAN-CHOT.md cũ trước v8),
-// nhưng v8 (dòng 72-73) đã đổi kết câu bằng dấu "…", KHÔNG có cụm "kể cả
-// bạn." — trả về đúng nguyên văn v8.
-// SỬA 20/07/2026 (brief phân cấp chữ ⑥⑦) — đoạn chữ phụ dưới H1 tăng 1 nấc
-// trên mobile (18px → md:17px, đảo hướng so với thường lệ) cho dễ đọc trên
-// điện thoại buổi tối. H1 và bố cục giữ nguyên, KHÔNG đụng lớp nền.
+// SỬA 20/07/2026 (brief V9-FINAL — typography số hoá + nội dung) — nguồn chữ
+// duy nhất: Google Doc "HOMEPAGE V9-FINAL". Body đổi từ "…kể cả bạn"/dấu "…"
+// (di sản bản cũ) sang đúng nguyên văn Doc: 2 dòng thơ, kết bằng dấu chấm.
+// H1 áp Vai 1 (hệ 5 vai chung toàn trang): 64px desktop / 40px mobile, serif
+// weight 500, line-height 1.15 (trước: 52/32, weight 300/light). Body áp
+// Vai 3 (18px, sans, lh 1.9) — ③ nằm trong nhóm tăng 1 nấc mobile (③④⑤) nên
+// mobile = 18px luôn (không tụt xuống 17px như mặc định Vai 3 ở section khác).
 export default function KietTac() {
   return (
     <section className="relative bg-e26-black px-6 py-24 md:py-32 overflow-hidden">
@@ -26,7 +26,7 @@ export default function KietTac() {
         aria-hidden="true"
       />
       <div className="relative max-w-[880px] mx-auto text-center">
-        <h1 className="e26-reveal font-serif font-light text-[32px] md:text-[52px] leading-[1.2] text-e26-text-dark">
+        <h1 className="e26-reveal font-serif font-medium text-[40px] md:text-[64px] leading-[1.15] text-e26-text-dark">
           Câu chuyện cuộc sống của bạn là một{" "}
           <span className="relative inline-block whitespace-nowrap">
             kiệt tác
@@ -34,8 +34,10 @@ export default function KietTac() {
           </span>
           .
         </h1>
-        <p className="e26-reveal font-sans text-[18px] md:text-[17px] leading-[1.65] text-e26-text-dark-2 mt-8 max-w-lg mx-auto">
-          Không phải vì mọi chương đều đẹp. Mà vì chưa ai đọc nó đủ chậm…
+        <p className="e26-reveal font-sans text-[18px] leading-[1.9] text-e26-text-dark-2 mt-8 max-w-lg mx-auto">
+          Không phải vì mọi chương đều đẹp.
+          <br />
+          Mà vì chưa ai đọc nó đủ chậm.
         </p>
       </div>
     </section>

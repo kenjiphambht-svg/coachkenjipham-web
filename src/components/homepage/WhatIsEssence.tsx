@@ -1,15 +1,17 @@
+import ComingLink from "./ComingLink";
+
 // Section 6 — Essence là gì. Nền ivory, căn giữa. Không ảnh (theo BAN-CHOT —
 // đã bỏ ImageSlot 3:2 cuối section của bản trước).
-// SỬA 20/07/2026 — thay nguyên văn theo brief "Phân cấp chữ + nội dung ⑥⑦ +
-// 2 link nội bộ" (nguồn: Google Doc bản mới nhất). Bản này ĐỔI "Essence chọn
-// không hứa" (cũ) → "Kenji xin phép không hứa" (mới) — KHÔNG còn câu cũ.
-// Thêm lại nhãn cửa phòng (Vai 5) + câu neo mở (Vai 2) — bản trước đã bỏ H2,
-// nay brief yêu cầu có lại, dùng hệ 5 vai thay vì H2 in đậm cũ.
+// SỬA 20/07/2026 (brief V9-FINAL) — nguồn chữ duy nhất: Google Doc "HOMEPAGE
+// V9-FINAL", thay TOÀN BỘ body bằng bản "mái hiên rút gọn" (ngắn hơn nhiều
+// bản trước — bản trước có đoạn "Khi bão trong lòng đang lớn..." + "Kenji
+// xin phép không hứa", Doc mới KHÔNG còn 2 đoạn đó nữa). H2 "Essence là gì?"
+// (có dấu hỏi, đúng nguyên văn) thay cho nhãn nhỏ "ESSENCE LÀ GÌ" viết hoa
+// trước đây — nay [Sub] "Một mái hiên tĩnh lặng." mới là dòng phụ nhỏ hơn.
 // Câu chữ ký cuối để riêng, chữ nghiêng — RANH GIỚI THƯƠNG HIỆU TUYỆT ĐỐI,
 // giữ đúng "phân tích và viết", không hạ xuống "đọc/duyệt/rà soát".
-// Link "Phương pháp Essence Coaching" theo luật "sắp mở" — <span> mờ, không
-// phải <a>/<Link> (trang /phuong-phap chưa dựng, tránh soft 404).
-// Nền mờ bg-hero-light — opacity xem ghi chú tại thẻ div bên dưới.
+// Link "Phương pháp Essence Coaching →" theo luật "chưa mở" MỚI (Kenji
+// 20/07/2026): <ComingLink> không href → span mờ, KHÔNG còn nhãn "(sắp mở)".
 export default function WhatIsEssence() {
   return (
     <section className="relative bg-e26-ivory px-6 py-16 md:py-32">
@@ -21,50 +23,36 @@ export default function WhatIsEssence() {
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-3xl mx-auto text-center">
-        <p className="e26-reveal font-sans text-xs tracking-[0.14em] uppercase text-e26-text-2 mb-4">
-          Essence là gì
-        </p>
-        <p className="e26-reveal font-serif font-normal text-[26px] md:text-[34px] leading-snug text-e26-text mb-8">
+        <h2 className="e26-reveal font-serif font-medium text-[30px] md:text-[42px] leading-[1.25] text-e26-text mb-3">
+          Essence là gì?
+        </h2>
+        <p className="e26-reveal font-serif font-normal text-[20px] md:text-[24px] leading-snug text-e26-text-2 mb-8">
           Một mái hiên tĩnh lặng.
         </p>
-        <p className="e26-reveal font-sans text-[17px] leading-[1.75] text-e26-text-2 mb-6">
-          Khi bão trong lòng đang lớn, hay những lúc bề ngoài êm ru nhưng bên trong lại hoang
-          mang giữa một mớ lý thuyết mơ hồ. Để rồi câu hỏi nhỏ: &quot;Mình thật sự là ai?&quot;
-          vẫn chơ vơ chưa lời đáp.
+        <p className="e26-reveal font-sans text-[17px] md:text-[18px] leading-[1.9] text-e26-text-2 mb-6">
+          Có những giai đoạn, điều chúng ta cần không phải là thêm một phương pháp. Chỉ là một
+          nơi đủ yên để ngồi xuống, thở chậm lại và nhìn rõ điều đang diễn ra bên trong mình.
+          Essence được tạo ra cho khoảnh khắc ấy.
         </p>
-        <p className="e26-reveal font-sans text-[17px] leading-[1.75] text-e26-text-2 mb-6">
-          Người ta thường không cần thêm một mớ lý thuyết hay ai đó hối thúc phải thay đổi.
-          Người ta chỉ cần một mái hiên yên tĩnh để đứng trú. Essence chính là một mái hiên như
-          thế.
+        <p className="e26-reveal font-sans text-[17px] md:text-[18px] leading-[1.9] text-e26-text-2 mb-6">
+          Mọi thứ ở đây đều có thứ tự. Không vội sửa. Không hối thúc thay đổi. Chỉ từng bước đưa
+          bạn trở về trạng thái An định, trước khi đi sâu hơn vào bản sắc thật của mình.
         </p>
-        <p className="e26-reveal font-sans text-[17px] leading-[1.75] text-e26-text-2 mb-6">
-          Cánh cửa này mở ra đón bạn ngay trong lúc ngổn ngang nhất, không đòi hỏi bạn phải
-          vững vàng rồi mới bước vào. Thực chất, Essence là một hệ thống coaching được kiến tạo
-          chỉn chu để đỡ lấy bạn. Việc đầu tiên ở đây không phải là vội vã đi sửa lỗi, mà là cho
-          phép mình ngồi xuống, thở đều nhịp để thân tâm dịu lại.
+        <p className="e26-reveal font-sans text-[17px] md:text-[18px] leading-[1.9] text-e26-text-2 mb-6">
+          Phía sau là một hệ thống được xây dựng chỉn chu. Phía trước vẫn luôn là con người.
         </p>
-        <p className="e26-reveal font-sans text-[17px] leading-[1.75] text-e26-text-2 mb-6">
-          Mọi thứ bên trong đều có lớp lang, có thứ tự: cái gì cần dọn dẹp trước, bước nào
-          thong thả làm sau để bạn không bao giờ cảm thấy bị ngợp. Lớp công nghệ phía sau giống
-          như một người phụ việc lặng lẽ lo liệu những khâu lặp lại mỗi ngày, nhường lại trọn
-          vẹn hơi ấm con người cho những khoảnh khắc bạn cần một điểm tựa nhất.
+        <p className="e26-reveal font-sans text-[17px] md:text-[18px] leading-[1.9] text-e26-text-2 mb-8">
+          Cách Essence vận hành trọn vẹn sẽ được kể trong một cánh cửa riêng, đang được viết
+          dần.
         </p>
-        <p className="e26-reveal font-sans text-[17px] leading-[1.75] text-e26-text-2 mb-8">
-          Chỉ khi bạn đã lấy lại được sự An định, chúng ta mới tiếp tục mở những cánh cửa đi
-          sâu hơn vào bản sắc thật của bạn. Nơi này hiếu khách, nhưng luôn giữ một lằn ranh rất
-          êm: điều gì không làm được, Kenji xin phép không hứa.
+        <p className="e26-reveal mb-10">
+          <ComingLink className="font-sans text-[17px] underline decoration-e26-black underline-offset-4">
+            Phương pháp Essence Coaching →
+          </ComingLink>
         </p>
-        <p className="e26-reveal font-serif italic text-lg text-e26-text-2">
+        <p className="e26-reveal font-serif italic text-[15px] md:text-base leading-[1.7] text-e26-text-2">
           Và mỗi ấn phẩm chuyên sâu gửi đến tay bạn, đều do Kenji phân tích và viết, từ dòng
           đầu đến dòng cuối.
-        </p>
-        <p className="e26-reveal mt-10">
-          <span className="font-sans text-[17px] underline decoration-e26-black underline-offset-4 opacity-45 select-none cursor-default">
-            Cách hệ thống này vận hành → Phương pháp Essence Coaching
-          </span>{" "}
-          <span className="font-sans text-[17px] opacity-45 select-none cursor-default">
-            (sắp mở)
-          </span>
         </p>
       </div>
     </section>

@@ -1,4 +1,5 @@
 import ImageSlot from "./ImageSlot";
+import ComingLink from "./ComingLink";
 
 // Section KENJI LÀ AI — sau khi ĐẢO MẠCH (19/07/2026) đứng ở vị trí ④, NGAY SAU
 // Kiệt Tác (nền đen). Dựng theo hệ KHỐI-LỚP + phương án HAI ẢNH (A):
@@ -14,14 +15,16 @@ import ImageSlot from "./ImageSlot";
 //          (~55% cỡ ảnh chính), đặt THẤP trong khối, ĐỨNG CẠNH câu trích "Tôi
 //          không sửa..." — ảnh và câu trích cùng khu vực thị giác. Một chính
 //          một phụ, chênh cỡ rõ — không hai ảnh ngang cỡ.
-// Câu trích + dòng ICF giữ NGUYÊN chữ. KHÔNG che chữ: khối pt lớn (mobile) /
-// pl lớn (desktop) — đo thật getBoundingClientRect ở 375/595/767/768/1280px.
-// SỬA 20/07/2026 (brief phân cấp chữ ⑥⑦ + 2 link) — câu trích "Tôi không
-// sửa..." là câu neo Vai 2 của section này, nâng cỡ (trước text-2xl cố định,
-// đọc như quote nhỏ bên hông). Dòng ICF (chữ phụ) tăng 1 nấc trên mobile
-// (text-base → md:text-sm, đảo hướng so với thường lệ — chủ đích cho dễ đọc
-// trên điện thoại buổi tối). Thêm link "sắp mở" (luật sắp mở, <span> không
-// href) trỏ /ve-kenji khi trang đó dựng xong.
+// KHÔNG che chữ: khối pt lớn (mobile) / pl lớn (desktop) — đo thật
+// getBoundingClientRect ở 375/595/767/768/1280px.
+// SỬA 20/07/2026 (brief V9-FINAL) — nguồn chữ duy nhất: Google Doc
+// "HOMEPAGE V9-FINAL". Đổi cấu trúc: heading "Tôi là Kenji Phạm." (H2 to)
+// TRƯỚC ĐÂY giờ hạ thành nhãn nhỏ Vai 5 "TÔI LÀ KENJI PHẠM." — câu trích "Tôi
+// không sửa..." lên thay làm neo thị giác chính của section (Vai 2, weight
+// 500, italic theo đúng ngoại lệ ghi trong bảng 5 vai). Body đổi nguyên văn
+// theo Doc. Dòng ICF + link "Hành trình và nền tảng của Kenji →" là Vai 5 —
+// link dùng <ComingLink> (không href) theo luật "chưa mở" mới: KHÔNG còn
+// nhãn "(sắp mở)". Body là Vai 3, ④ nằm trong nhóm tăng 1 nấc mobile (③④⑤).
 export default function KenjiSection() {
   return (
     <section className="bg-e26-white px-6 py-16 md:py-28 relative overflow-visible">
@@ -49,24 +52,19 @@ export default function KenjiSection() {
             MOBILE: -mt-28 kéo khối lên dưới ảnh (ảnh chờm cạnh trên), pt-32 để
             chữ né ảnh. DESKTOP: pl-24 đẩy chữ né phần ảnh chờm sang. --> */}
         <div className="relative z-10 w-full bg-e26-cream-deep -mt-28 px-7 pt-32 pb-10 md:mt-0 md:flex-1 md:pl-24 md:pr-12 md:py-16">
-          <h2 className="e26-reveal font-serif font-normal text-[28px] md:text-[40px] text-e26-text mb-8">
+          <p className="e26-reveal font-sans text-xs font-medium tracking-[0.18em] uppercase text-e26-text-2 mb-6">
             Tôi là Kenji Phạm.
-          </h2>
-          <div className="e26-reveal space-y-5 font-sans text-[17px] leading-[1.65] text-e26-text-2 max-w-xl">
+          </p>
+          <div className="e26-reveal space-y-5 font-sans text-[18px] leading-[1.9] text-e26-text-2 max-w-xl">
             <p>
-              Tám năm nay, việc của tôi là ngồi nghe. Ngồi cùng người lớn — nghe những điều họ
-              không nói được với ai khác. Ngồi cùng ba mẹ — nghe họ lo cho con mà chưa biết lo
-              đúng chỗ nào.
+              Tám năm qua, tôi ngồi cùng người lớn, lắng nghe những điều họ không nói được với
+              ai. Và ngồi cùng ba mẹ, khi họ yêu con nhưng không biết bắt đầu từ đâu.
             </p>
+            <p>Tôi không giúp ai đi nhanh hơn.</p>
             <p>
-              Người tìm đến tôi thường không thiếu phương pháp. Chỉ là tới nơi rồi, cái mệt
-              vẫn còn nguyên đó. Có người ký xong hợp đồng lớn nhất đời mình, ra xe ngồi, tay
-              cầm vô lăng, rồi không biết phải về đâu.
-            </p>
-            <p>Chỗ tôi ngồi xuống không phải chỗ bàn cách đi nhanh hơn.</p>
-            <p>
-              Phần lớn thời gian, tôi không nói gì nhiều. Tôi rót trà. Giữ căn phòng đủ yên, để
-              người đối diện nghe được chính mình.
+              Tôi chỉ giữ cho căn phòng đủ yên,
+              <br />
+              để họ nghe được chính mình.
             </p>
           </div>
 
@@ -81,23 +79,20 @@ export default function KenjiSection() {
               />
             </figure>
             <blockquote className="e26-reveal border-l border-e26-black pl-6">
-              <p className="font-serif italic text-[26px] md:text-[34px] leading-snug text-e26-text max-w-lg">
+              <p className="font-serif italic font-medium text-[30px] md:text-[42px] leading-[1.25] text-e26-text max-w-lg">
                 &quot;Tôi không sửa. Tôi tạo sự An định.&quot;
               </p>
             </blockquote>
           </div>
 
-          <p className="e26-reveal font-sans text-base md:text-sm tracking-[0.08em] uppercase text-e26-text-2 mt-8">
+          <p className="e26-reveal font-sans text-xs font-medium tracking-[0.18em] uppercase text-e26-text-2 mt-8">
             Huấn luyện viên Tâm lý Chiều sâu · Thực hành theo tiêu chuẩn ICF
           </p>
 
           <p className="e26-reveal mt-6">
-            <span className="font-sans text-[17px] underline decoration-e26-black underline-offset-4 opacity-45 select-none cursor-default">
+            <ComingLink className="font-sans text-[17px] underline decoration-e26-black underline-offset-4">
               Hành trình và nền tảng của Kenji →
-            </span>{" "}
-            <span className="font-sans text-[17px] opacity-45 select-none cursor-default">
-              (sắp mở)
-            </span>
+            </ComingLink>
           </p>
         </div>
       </div>

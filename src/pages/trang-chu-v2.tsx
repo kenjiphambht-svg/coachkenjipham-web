@@ -2,6 +2,7 @@ import Head from "next/head";
 import { SEO } from "@/components/SEO";
 import HomeHeader from "@/components/homepage/HomeHeader";
 import HomeHero from "@/components/homepage/HomeHero";
+import SignatureMoment from "@/components/homepage/SignatureMoment";
 import KenjiSection from "@/components/homepage/KenjiSection";
 import KietTac from "@/components/homepage/KietTac";
 import TwoStates from "@/components/homepage/TwoStates";
@@ -10,6 +11,7 @@ import AnDinhAnThinh from "@/components/homepage/AnDinhAnThinh";
 import ImageBridge from "@/components/homepage/ImageBridge";
 import NotPromised from "@/components/homepage/NotPromised";
 import NotesTeaser from "@/components/homepage/NotesTeaser";
+import SignatureEnding from "@/components/homepage/SignatureEnding";
 import HomeFooter from "@/components/homepage/HomeFooter";
 import { useHomeReveal } from "@/components/homepage/useHomeReveal";
 
@@ -18,11 +20,17 @@ import { useHomeReveal } from "@/components/homepage/useHomeReveal";
 // công khai cho Google. Khi duyệt xong, nội dung này sẽ thay thế index.tsx
 // thật và route tạm này sẽ được gỡ (theo Migration Strategy — Phase 0 audit).
 //
+// SỬA 20/07/2026 — nội dung chữ toàn trang đồng bộ theo Google Doc "HOMEPAGE
+// V9-FINAL — NGUỒN SỰ THẬT CHO CHỮ" (brief V9-FINAL). Thêm 2 khối MỚI:
+// Signature Moment (②b, giữa Hero/Kiệt Tác) và Signature Ending (⑨b, trước
+// Footer) — cả hai là 1 câu serif italic căn giữa, không ảnh không nút, chỉ
+// dựng khối tĩnh + fade-in cơ bản (animation/scroll-lock thật để dành PR
+// Light System sau).
 // NỘI DUNG THEO BAN-CHOT.md (16/07/2026). ĐẢO MẠCH 19/07/2026 (Experience
 // Bible): mở cửa → gọi cảm xúc → KHOẢNG LẶNG (Kiệt Tác) → rồi mới Kenji. Thứ
-// tự: Header, Hero, Kiệt Tác (H1 duy nhất, ĐEN), Kenji Là Ai, Hai Cửa, Essence
-// Là Gì, An Định → An Thịnh, cầu nối ảnh, Điều Essence Không Hứa (teaser), Ghi
-// Chép + Lối Ra, Footer.
+// tự: Header, Hero, Signature Moment, Kiệt Tác (H1 duy nhất, ĐEN), Kenji Là
+// Ai, Hai Cửa, Essence Là Gì, An Định → An Thịnh, cầu nối ảnh, Điều Essence
+// Không Hứa (teaser), Một Góc Để Quay Lại, Signature Ending, Footer.
 // Đã bỏ HatMamSection khỏi trang chủ (Hạt Mầm giờ dẫn qua thẻ "Bản Sắc Của
 // Con" ở Hai Cửa) — GIỮ NGUYÊN file HatMamSection.tsx trong repo, không xoá.
 // Nhịp sáng-tối SAU ĐẢO: kem (Hero) → ĐEN (Kiệt Tác) → kem (Kenji, Hai Cửa,
@@ -101,6 +109,7 @@ export default function TrangChuV2Page() {
       <HomeHeader />
       <main className="bg-e26-ivory">
         <HomeHero />
+        <SignatureMoment />
         <KietTac />
         <KenjiSection />
         <TwoStates />
@@ -109,6 +118,7 @@ export default function TrangChuV2Page() {
         <ImageBridge />
         <NotPromised />
         <NotesTeaser />
+        <SignatureEnding />
       </main>
       <HomeFooter />
     </>
