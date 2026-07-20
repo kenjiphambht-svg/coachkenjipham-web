@@ -22,7 +22,15 @@ export default function WhatIsEssence() {
           màu e26-text-2) KHÔNG đạt 4.5:1 (2.55-4.03). Dò lớp phủ kem tăng
           dần 5%/nấc → 70% mới đạt cả desktop (4.56) lẫn mobile (4.75) —
           nặng hơn "rất nhẹ" kỳ vọng vì màu chữ phụ vốn có trần contrast thấp
-          (chỉ 6.49:1 ngay cả trên nền trắng thuần), không phải lỗi vị trí. */}
+          (chỉ 6.49:1 ngay cả trên nền trắng thuần), không phải lỗi vị trí.
+          SỬA 20/07/2026 (brief nền mờ chi tiết) — ảnh light-essence lộ rõ
+          hành lang/cột thu nhỏ theo phối cảnh SUỐT chiều dọc ảnh (không chỉ ở
+          đáy), nên gradient theo vị trí không đủ — tăng overlay tổng thể
+          70%→85% (Bước 3 của brief: tăng dần 5%/nấc tới khi chìm). Ở 85%,
+          hành lang chỉ còn "cảm giác sáng", không còn nhận ra góc phòng/cột —
+          xác nhận bằng mắt trên ảnh chụp thật cả 2 breakpoint. Contrast đo
+          lại tăng theo (luôn tăng khi overlay tăng): desktop 5.49, mobile
+          5.75 — dư dả so với 4.5. */}
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: "url(/images/home/bg-light-essence.webp)" }}
@@ -33,7 +41,7 @@ export default function WhatIsEssence() {
           được modifier "/opacity", lớp phủ sẽ trong suốt hoàn toàn (im lặng,
           không lỗi build). Dùng color-mix() — kỹ thuật đã kiểm chứng. */}
       <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_70%,transparent)]"
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_85%,transparent)]"
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-3xl mx-auto text-center">

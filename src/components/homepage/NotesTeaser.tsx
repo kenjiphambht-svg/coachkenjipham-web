@@ -45,14 +45,20 @@ export default function NotesTeaser() {
           có sẵn của opacity-45 (đo cả trên nền ivory phẳng gốc, không ảnh:
           vẫn chỉ 2.81:1) — không phải do ảnh nền mới, KHÔNG tự ý sửa (ngoài
           phạm vi brief này, cần quyết định riêng của Kenji nếu muốn đổi mức
-          mờ của trạng thái "chưa mở"). */}
+          mờ của trạng thái "chưa mở").
+          SỬA 20/07/2026 (brief nền mờ chi tiết) — ở crop riêng của section
+          này (cao hơn ⑧, khung hình khác), 80% vẫn còn thấy rõ cạnh cột +
+          chân tường ở góc dưới trái/phải (đã xem ảnh chụp thật). Tăng
+          80%→88% (Bước 3) — đạt cả 2 breakpoint: chỉ còn cảm giác sáng.
+          Contrast tăng theo (luôn tăng khi overlay tăng): H2 14.42, đoạn
+          intro 5.47 ở mobile — dư dả so với 4.5. */}
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: "url(/images/home/bg-light-evening.webp)" }}
         aria-hidden="true"
       />
       <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_80%,transparent)]"
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_88%,transparent)]"
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-4xl mx-auto text-center">
