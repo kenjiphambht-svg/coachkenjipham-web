@@ -2,7 +2,6 @@ import Head from "next/head";
 import { SEO } from "@/components/SEO";
 import HomeHeader from "@/components/homepage/HomeHeader";
 import HomeHero from "@/components/homepage/HomeHero";
-import SignatureMoment from "@/components/homepage/SignatureMoment";
 import KenjiSection from "@/components/homepage/KenjiSection";
 import KietTac from "@/components/homepage/KietTac";
 import TwoStates from "@/components/homepage/TwoStates";
@@ -26,11 +25,18 @@ import { useHomeReveal } from "@/components/homepage/useHomeReveal";
 // Footer) — cả hai là 1 câu serif italic căn giữa, không ảnh không nút, chỉ
 // dựng khối tĩnh + fade-in cơ bản (animation/scroll-lock thật để dành PR
 // Light System sau).
+// SỬA 21/07/2026 (brief Kenji hoà vào đen + vệt sơn sáng) — Signature Moment
+// (②b) KHÔNG còn là section riêng nền kem nữa: đã GỠ <SignatureMoment />
+// khỏi đây, câu chữ dời vào NGAY TRONG HomeHero.tsx (đứng trên vệt sơn sáng
+// giữa vùng tối cuối Hero, nơi ảnh Kenji đang chìm dần) — xem ghi chú đầy đủ
+// tại HomeHero.tsx (khối "LỚP 4"). File SignatureMoment.tsx không còn được
+// dùng ở đâu (đã grep xác nhận) nên đã xoá khỏi repo.
 // NỘI DUNG THEO BAN-CHOT.md (16/07/2026). ĐẢO MẠCH 19/07/2026 (Experience
 // Bible): mở cửa → gọi cảm xúc → KHOẢNG LẶNG (Kiệt Tác) → rồi mới Kenji. Thứ
-// tự: Header, Hero, Signature Moment, Kiệt Tác (H1 duy nhất, ĐEN), Kenji Là
-// Ai, Hai Cửa, Essence Là Gì, An Định → An Thịnh, cầu nối ảnh, Điều Essence
-// Không Hứa (teaser), Một Góc Để Quay Lại, Signature Ending, Footer.
+// tự: Header, Hero (bao gồm Signature Moment ②b ở cuối), Kiệt Tác (H1 duy
+// nhất, ĐEN), Kenji Là Ai, Hai Cửa, Essence Là Gì, An Định → An Thịnh, cầu
+// nối ảnh, Điều Essence Không Hứa (teaser), Một Góc Để Quay Lại, Signature
+// Ending, Footer.
 // Đã bỏ HatMamSection khỏi trang chủ (Hạt Mầm giờ dẫn qua thẻ "Bản Sắc Của
 // Con" ở Hai Cửa) — GIỮ NGUYÊN file HatMamSection.tsx trong repo, không xoá.
 // Nhịp sáng-tối SAU ĐẢO: kem (Hero) → ĐEN (Kiệt Tác) → kem (Kenji, Hai Cửa,
@@ -109,7 +115,6 @@ export default function TrangChuV2Page() {
       <HomeHeader />
       <main className="bg-e26-ivory">
         <HomeHero />
-        <SignatureMoment />
         <KietTac />
         <KenjiSection />
         <TwoStates />

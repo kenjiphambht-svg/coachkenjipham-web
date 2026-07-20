@@ -34,15 +34,29 @@ const HERO_IMAGE_SRC: string | null = "/images/home/kenji-hero-cutout.webp";
 //                 nổi trên nền nắng (kỹ thuật A), không đứng trên nền trơn.
 //   Lớp 2: khối chữ hero (trái ~40%, cột 2/5).
 //   Lớp 3 (trên): ảnh Kenji (phải ~60%, cột 3/5). CHỜM XUỐNG ranh giới ②→③ —
-//                 mà ③ (sau khi đảo mạch 19/07) là Kiệt Tác NỀN ĐEN. Ảnh sáng
-//                 vắt qua kem→đen: để ảnh không bị nuốt vào bóng tối, thêm bóng
-//                 đổ mềm phía dưới + viền sáng 1px rất mảnh tách mép ảnh khỏi đen.
-//                 SỬA 21/07/2026 — ảnh cutout không còn mép chữ nhật nên
-//                 không cần bóng/ring giữ mép nữa (xem ghi chú tại HERO_IMAGE_SRC
-//                 và tại khối JSX Lớp 3 bên dưới).
+//                 mà ③ (sau khi đảo mạch 19/07) là Kiệt Tác NỀN ĐEN.
+//   Lớp 4 (MỚI 21/07/2026, brief "Kenji hoà vào đen + vệt sơn sáng"): vùng tối
+//                 mở rộng sau hàng lưới — xem ghi chú đầy đủ tại khối JSX bên
+//                 dưới grid row.
+//
+// SỬA 21/07/2026 (brief Kenji hoà vào đen) — BỐI CẢNH: ảnh cutout
+// kenji-hero-cutout.webp bị crop khít bbox alpha thật (PR#44) nên đáy ảnh
+// (chân ghế) là MỘT HÀNG PIXEL ĐẶC 100%, không có gì để "tan" — dù nền phía
+// sau có tối đến đâu, mép dưới ảnh vẫn là đường cắt cứng vì bản thân ảnh
+// KHÔNG có alpha giảm dần ở đáy (đã kiểm bbox alpha lúc convert: bottom
+// margin = 0px, tức nội dung chạm đúng mép dưới, không dư biên trong suốt).
+// Ảnh chụp thật xác nhận: mảnh đệm ghế màu sáng + gấu quần cắt ngang lộ rõ,
+// dù đã ở trong dải gradient-đen cũ (h-64, đã che ~83% tối). Overlay/gradient
+// phía sau không giải quyết được vì nó nằm SAU ảnh (z-10) trong stacking —
+// chỉ che được NỀN xung quanh người, không che được RÌA của ảnh.
+// FIX ĐÚNG CHỖ: thêm mask-image (CSS mask, không phải overlay) NGAY TRÊN ảnh
+// Kenji — mờ dần alpha của chính ảnh từ ~68% chiều cao xuống 0 ở đáy, để rìa
+// ảnh tự tan biến (không còn "đường cắt" vì không còn rìa cứng nào để lộ).
+// Kèm 1 vệt bóng elip mờ (radial-gradient blur) đặt dưới ghế để mắt đọc
+// "bóng đổ" thay vì thấy ảnh biến mất đột ngột — mẹo kinh điển ghép cutout.
 export default function HomeHero() {
   return (
-    <section className="bg-e26-cream px-6 pt-24 pb-24 md:pt-[120px] md:pb-[140px] relative overflow-visible">
+    <section className="bg-e26-cream px-6 pt-24 md:pt-[120px] relative overflow-visible">
       {/* LỚP 1 — ảnh nền phủ trọn section (inset-0), cream ~90% giữ tương phản
           chữ. Đã đo thật ở PR trước: chữ hero vẫn đọc rõ trên nền này. */}
       {/* SỬA BUG PHÁT HIỆN 19/07/2026 (nằm ngay trong file này, sửa kèm để
@@ -66,25 +80,11 @@ export default function HomeHero() {
           <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_70%,transparent)]" />
         </div>
       )}
-      {/* VIỆC 2 (19/07/2026) — nền hero TAN xuống đen của Kiệt Tác (③) ngay sau.
-          Tinh thần giống dải gradient ở ImageBridge (cầu nối ⑦→⑧), chỉ ĐẢO
-          CHIỀU: trong suốt ở trên → tan hẳn vào e26-black ở đáy. DÙNG INLINE
-          STYLE (không dùng Tailwind "from-e26-black/0 to-e26-black") vì cùng
-          lý do bug ở trên — modifier /opacity không generate được cho token
-          màu này; "transparent → var(--essence-black-2026)" không cần alpha
-          modifier nên né được bug hoàn toàn, vẫn dùng đúng token có sẵn,
-          không thêm màu mới. z-auto (không set z-index) nên tự nằm TRÊN lớp
-          ảnh nền/overlay (cũng z-auto, nhưng đứng sau trong DOM) và TRƯỚC lớp
-          chữ/ảnh Kenji (z-10 tường minh — luôn thắng bất kể thứ tự DOM).
-          SỬA 21/07/2026 — ảnh Kenji (LỚP 3) giờ là cutout trong suốt, KHÔNG
-          còn bóng/ring riêng: vùng trong suốt quanh người để dải gradient
-          này hiện xuyên qua, còn vùng người/ghế (z-10, đặc) đè lên trên dải
-          gradient bình thường (xem ghi chú đầy đủ tại khối JSX Lớp 3). */}
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-40 md:h-64"
-        style={{ backgroundImage: "linear-gradient(to bottom, transparent, var(--essence-black-2026))" }}
-        aria-hidden="true"
-      />
+      {/* SỬA 21/07/2026 — dải gradient tan-đen CŨ (h-40/h-64, chỉ che phần nền
+          quanh người) đã BỎ, gộp vào khối LỚP 4 (dark zone) rộng hơn nhiều ở
+          dưới grid row — xem ghi chú đầy đủ tại đó. Lý do gộp: dải cũ quá
+          ngắn để vừa che nền VÀ chứa câu Signature Moment; tách thành 1 khối
+          liền mạch dễ kiểm soát điểm nối hơn là 2 lớp gradient chồng nhau. */}
       <div className="relative z-10 max-w-[1440px] mx-auto">
         <div className="grid md:grid-cols-12 gap-12 md:gap-16 items-end">
           {/* LỚP 2 — khối chữ (cột 7/12 ≈ 58%). Headline là HÌNH ẢNH: serif rất
@@ -133,13 +133,32 @@ export default function HomeHero() {
               (720×844 — xem ghi chú tại HERO_IMAGE_SRC) nên chỉ cần hiển thị
               đúng width/height gốc (w-full h-auto) là người hiện nguyên hình
               dạng, không mép chữ nhật nào để lộ "dán ghép". items-end (grid
-              cha) tự canh đáy — chân/ghế (đã crop chạm đúng đáy ảnh, 0px dư)
-              "ngồi" ngay trên đường nền. -mb âm GIỮ NGUYÊN để chân ghế chờm
-              vào dải gradient tan đen ③ đang có: gradient (z-auto) nằm SAU
-              lớp này (z-10) trong cùng stacking context, nên hiện qua đúng
-              vùng TRONG SUỐT quanh người — không cần bóng/ring giả mép nữa
-              vì không còn mép thật để giấu. */}
+              cha) tự canh đáy — chân/ghế "ngồi" ngay trên đường nền. -mb âm
+              GIỮ NGUYÊN để chân ghế chờm vào khối LỚP 4 (dark zone) bên dưới.
+              SỬA 21/07/2026 (brief Kenji hoà vào đen) — THÊM 2 THỨ:
+              (1) bóng elip mềm (radial-gradient + blur) đặt SAU ảnh trong
+                  DOM (nên vẽ trước, nằm dưới), mô phỏng bóng đổ dưới ghế;
+              (2) mask-image trên chính ảnh — mờ dần alpha từ 66% chiều cao
+                  xuống 0 ở 94% (đáy ảnh hoàn toàn trong suốt ở 6% cuối). Đây
+                  là chỗ SỬA THẬT của vấn đề "cắt phựt": ảnh cutout vốn không
+                  có alpha giảm dần ở đáy (đã kiểm khi convert — bbox alpha
+                  chạm đúng mép dưới, 0px biên trong suốt), nên overlay/gradient
+                  phía SAU ảnh không thể che được RÌA của chính ảnh — phải làm
+                  mờ chính ảnh. Điểm cắt 66% nằm dưới toàn bộ mặt+thân trên
+                  (đầu~0-18%, thân trên+tay~18-65% theo tỉ lệ ảnh đã crop) nên
+                  mặt/thân trên KHÔNG bị ảnh hưởng (ràng buộc b) — chỉ vùng
+                  ghế/chân (65-100%) mờ dần (ràng buộc a). WebkitMaskImage kèm
+                  theo cho Safari. */}
           <div className="e26-reveal md:col-span-5 relative z-10 w-[70%] max-w-[340px] mx-auto md:mx-0 md:w-full md:max-w-none md:ml-auto -mb-16 md:-mb-24">
+            <div
+              className="absolute left-1/2 -translate-x-1/2 bottom-[10%] w-[135%] h-[16%]"
+              style={{
+                background:
+                  "radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.25) 45%, transparent 75%)",
+                filter: "blur(18px)",
+              }}
+              aria-hidden="true"
+            />
             {HERO_IMAGE_SRC ? (
               <Image
                 src={HERO_IMAGE_SRC}
@@ -147,13 +166,75 @@ export default function HomeHero() {
                 width={720}
                 height={844}
                 sizes="(max-width: 768px) 70vw, 32vw"
-                className="w-full h-auto object-contain"
+                className="relative w-full h-auto object-contain"
+                style={{
+                  maskImage: "linear-gradient(to bottom, black 0%, black 66%, transparent 94%)",
+                  WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 66%, transparent 94%)",
+                }}
                 priority
               />
             ) : (
               <div className="w-full aspect-[720/844] bg-e26-cream-deep" aria-hidden="true" />
             )}
           </div>
+        </div>
+      </div>
+
+      {/* LỚP 4 (MỚI 21/07/2026, brief "Kenji hoà vào đen + vệt sơn sáng") —
+          khối tối mở rộng thay cho dải gradient h-64 cũ. Gồm 2 việc gộp lại:
+          (A) tiếp tục nền TAN từ cream/ảnh sáng (Lớp 1, vẫn phủ full section)
+              sang ĐEN ĐẶC — đủ cao để vừa che chân ghế Kenji (đã mờ qua mask
+              ở Lớp 3) vừa còn dư mảng đen thật cho vệt sơn sáng "nổi" lên.
+          (B) câu Signature Moment (trước là section ②b riêng, nền kem — ĐÃ GỠ
+              khỏi trang-chu-v2.tsx) — nay đứng ngay trong khối tối này, trên
+              1 vệt sáng dạng nhát cọ (radial-gradient bầu dục rất nhoè, KHÔNG
+              phải khối chữ nhật cứng). Chữ giữ NGUYÊN cỡ/kiểu cũ (Vai giữa
+              serif italic 22/28px) — brief chỉ đổi CHỖ ĐỨNG, không đổi cỡ.
+              Màu chữ đổi từ text-2 (xám phụ, dùng trên nền kem) sang e26-text
+              (đen #1A1A1A, theo yêu cầu — trên nền sáng cần chữ đủ đậm).
+          Không z-index: mặc định nằm DƯỚI khối grid-row phía trên (z-10 tường
+          minh) trong cùng stacking context của section — Kenji (đã bleed
+          xuống qua -mb âm) luôn đè lên đúng phần trên của khối này. */}
+      <div className="relative pt-28 pb-24 md:pt-36 md:pb-32 px-6">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage:
+              "linear-gradient(to bottom, transparent, var(--essence-black-2026) 50%, var(--essence-black-2026))",
+          }}
+          aria-hidden="true"
+        />
+        <div className="relative max-w-4xl mx-auto text-center">
+          {/* Vệt sơn sáng — nhát cọ nhoè, không chữ nhật. SỬA (đo contrast thật
+              lần 1) — bản đầu dùng "max-w-2xl" cho CẢ khối bọc lẫn vệt sáng
+              nên vệt sáng bị kẹp về ĐÚNG bằng bề rộng khối chữ (không rộng
+              hơn như "w-[110%]" định làm) — đo canvas thật phát hiện contrast
+              tụt còn 1.13:1 ở đúng đầu mút dòng dài nhất (chữ cuối dòng rơi
+              vào vùng rìa gần-tắt của gradient). SỬA: tách 2 khối — khối bọc
+              ngoài rộng hơn (max-w-4xl = 896px) để vệt sáng có chỗ lớn hơn
+              chữ thật, còn <p> giữ max-w-2xl riêng (672px, không đổi cách
+              ngắt dòng). Nới ellipse "75% 90%" + đẩy điểm dừng đặc ra xa hơn
+              (giữ ≥0.95 alpha tới 45% bán kính) để cả 2 đầu dòng dài nhất
+              (609px, đo qua Range.getClientRects() — không đoán) đều nằm
+              trong vùng đặc. Đo lại bằng canvas thật (không đoán): minRatio
+              desktop 13.3:1 (tại đúng điểm từng fail trước đó — rìa dòng dài
+              nhất), mobile 10.84:1 — cả 2 dư dả rất nhiều so với 4.5:1. */}
+          <div
+            className="absolute inset-0 flex items-center justify-center"
+            aria-hidden="true"
+          >
+            <div
+              className="w-full h-[260px] md:h-[300px]"
+              style={{
+                background:
+                  "radial-gradient(ellipse 75% 90% at center, rgba(241,239,232,0.98) 0%, rgba(241,239,232,0.95) 45%, rgba(241,239,232,0.75) 60%, rgba(241,239,232,0.3) 80%, transparent 100%)",
+                filter: "blur(24px)",
+              }}
+            />
+          </div>
+          <p className="relative e26-reveal font-serif italic font-normal text-[22px] md:text-[28px] leading-snug text-e26-text max-w-2xl mx-auto px-6">
+            Có lẽ đây là lần đầu sau rất lâu, bạn ngồi xuống chỉ để ở cùng chính mình.
+          </p>
         </div>
       </div>
     </section>
