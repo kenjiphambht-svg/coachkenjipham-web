@@ -9,12 +9,20 @@ import Image from "next/image";
 // thẻ div overlay).
 const HERO_BG_SRC: string | undefined = "/images/home/bg-light-hero.webp";
 
-// Ảnh hero (19/07/2026): Kenji cầm ly trà nhìn ra cửa sổ, KHÔNG nhìn máy.
-// Kenji thả `kenji-hero-window.png.png` (896×1152 ≈ 4:5), đã convert sang webp
-// (30.6KB, q82) như quy trình quen. Ô ảnh giữ khung aspect-[4/5] cố định: nếu
-// đổi/gỡ ảnh, đặt HERO_IMAGE_SRC = null để hiện panel kem-đậm phẳng — layout
-// không nhảy (cùng khung 4/5).
-const HERO_IMAGE_SRC: string | null = "/images/home/kenji-hero-window.webp";
+// SỬA 21/07/2026 (brief thay ảnh cutout) — ảnh cũ kenji-hero-window.webp có
+// NỀN PHÒNG riêng, phải bọc khung chữ nhật (aspect-[4/5] + object-cover +
+// overflow-hidden + shadow + ring) để 2 nền (nền ảnh + nền Hero) không đá
+// nhau lộ liễu → vẫn là "dán ghép". Kenji thả ảnh CUTOUT nền trong suốt thật
+// (kenji-hero-cutout.png, đã kiểm alpha channel thật: 68.7% trong suốt hoàn
+// toàn, 28.9% đặc, 2.3% viền anti-alias — không phải nền đen/trắng giả).
+// Phóng to 300% kiểm viền tóc/vai/tay cầm cốc: mượt, không lởm chởm, không
+// viền đen/trắng sót. Đã CROP KHÍT theo bbox alpha thật (896×1152 gốc còn
+// nhiều khoảng trống trong suốt phía trên đầu 26.7% + phải 19.6% → cắt còn
+// 720×844, đúng khít người+ghế, đáy ghế chạm đúng mép dưới ảnh) rồi mới
+// convert webp giữ alpha (sharp, alphaQuality 100) — 44KB. Đặt
+// HERO_IMAGE_SRC = null để hiện panel kem-đậm phẳng cùng tỉ lệ 720/844,
+// layout không nhảy.
+const HERO_IMAGE_SRC: string | null = "/images/home/kenji-hero-cutout.webp";
 
 // SỬA 20/07/2026 (brief V9-FINAL) — chữ + cỡ giữ NGUYÊN (brief xác nhận "đã
 // đúng"), chỉ sửa ngắt dòng thơ ở body cho khớp từng dòng trong Google Doc
@@ -29,6 +37,9 @@ const HERO_IMAGE_SRC: string | null = "/images/home/kenji-hero-window.webp";
 //                 mà ③ (sau khi đảo mạch 19/07) là Kiệt Tác NỀN ĐEN. Ảnh sáng
 //                 vắt qua kem→đen: để ảnh không bị nuốt vào bóng tối, thêm bóng
 //                 đổ mềm phía dưới + viền sáng 1px rất mảnh tách mép ảnh khỏi đen.
+//                 SỬA 21/07/2026 — ảnh cutout không còn mép chữ nhật nên
+//                 không cần bóng/ring giữ mép nữa (xem ghi chú tại HERO_IMAGE_SRC
+//                 và tại khối JSX Lớp 3 bên dưới).
 export default function HomeHero() {
   return (
     <section className="bg-e26-cream px-6 pt-24 pb-24 md:pt-[120px] md:pb-[140px] relative overflow-visible">
@@ -64,9 +75,11 @@ export default function HomeHero() {
           modifier nên né được bug hoàn toàn, vẫn dùng đúng token có sẵn,
           không thêm màu mới. z-auto (không set z-index) nên tự nằm TRÊN lớp
           ảnh nền/overlay (cũng z-auto, nhưng đứng sau trong DOM) và TRƯỚC lớp
-          chữ/ảnh Kenji (z-10 tường minh — luôn thắng bất kể thứ tự DOM). Ảnh
-          Kenji (LỚP 3) vẫn giữ bóng/ring riêng nên mép không bị nuốt dù nằm
-          trên dải đen này. */}
+          chữ/ảnh Kenji (z-10 tường minh — luôn thắng bất kể thứ tự DOM).
+          SỬA 21/07/2026 — ảnh Kenji (LỚP 3) giờ là cutout trong suốt, KHÔNG
+          còn bóng/ring riêng: vùng trong suốt quanh người để dải gradient
+          này hiện xuyên qua, còn vùng người/ghế (z-10, đặc) đè lên trên dải
+          gradient bình thường (xem ghi chú đầy đủ tại khối JSX Lớp 3). */}
       <div
         className="pointer-events-none absolute inset-x-0 bottom-0 h-40 md:h-64"
         style={{ backgroundImage: "linear-gradient(to bottom, transparent, var(--essence-black-2026))" }}
@@ -111,26 +124,35 @@ export default function HomeHero() {
             </div>
           </div>
 
-          {/* LỚP 3 — ảnh Kenji (cột 3/5 ≈ 60%). Ô ảnh giữ aspect-[4/5] cố định
-              (khung không đổi dù ảnh chưa về). CHỜM XUỐNG ranh giới ②→③ (nền đen
-              Kiệt Tác): -mb âm kéo section đen lên dưới đáy ảnh, ảnh (z-10,
-              positioned) vắt lên nền đen. Bóng mềm + ring sáng mảnh giữ ảnh
-              không chìm vào đen. */}
-          <div className="e26-reveal md:col-span-5 relative z-10 w-[88%] ml-auto md:w-full md:ml-0 -mb-16 md:-mb-24">
-            <div className="relative w-full aspect-[4/5] overflow-hidden shadow-[0_28px_70px_-24px_rgba(0,0,0,0.55)] ring-1 ring-white/10">
-              {HERO_IMAGE_SRC ? (
-                <Image
-                  src={HERO_IMAGE_SRC}
-                  alt="Kenji Phạm cầm ly trà, nhìn ra cửa sổ"
-                  fill
-                  sizes="(max-width: 768px) 88vw, 60vw"
-                  className="object-cover"
-                  priority
-                />
-              ) : (
-                <div className="absolute inset-0 bg-e26-cream-deep" aria-hidden="true" />
-              )}
-            </div>
+          {/* LỚP 3 — ảnh Kenji cutout (cột 3/5 ≈ 60%). SỬA 21/07/2026 (brief
+              thay ảnh cutout, Phương án A) — BỎ HẲN khung ảnh chữ nhật cũ:
+              không còn overflow-hidden (không cắt vuông người), không còn
+              shadow-[...] (không đổ bóng tấm ảnh), không còn ring-1
+              ring-white/10 (không viền), không còn aspect-[4/5]+object-cover
+              (ép khung vuông). Ảnh cutout đã crop khít bbox alpha thật
+              (720×844 — xem ghi chú tại HERO_IMAGE_SRC) nên chỉ cần hiển thị
+              đúng width/height gốc (w-full h-auto) là người hiện nguyên hình
+              dạng, không mép chữ nhật nào để lộ "dán ghép". items-end (grid
+              cha) tự canh đáy — chân/ghế (đã crop chạm đúng đáy ảnh, 0px dư)
+              "ngồi" ngay trên đường nền. -mb âm GIỮ NGUYÊN để chân ghế chờm
+              vào dải gradient tan đen ③ đang có: gradient (z-auto) nằm SAU
+              lớp này (z-10) trong cùng stacking context, nên hiện qua đúng
+              vùng TRONG SUỐT quanh người — không cần bóng/ring giả mép nữa
+              vì không còn mép thật để giấu. */}
+          <div className="e26-reveal md:col-span-5 relative z-10 w-[70%] max-w-[340px] mx-auto md:mx-0 md:w-full md:max-w-none md:ml-auto -mb-16 md:-mb-24">
+            {HERO_IMAGE_SRC ? (
+              <Image
+                src={HERO_IMAGE_SRC}
+                alt="Kenji Phạm cầm ly trà, nhìn ra cửa sổ"
+                width={720}
+                height={844}
+                sizes="(max-width: 768px) 70vw, 32vw"
+                className="w-full h-auto object-contain"
+                priority
+              />
+            ) : (
+              <div className="w-full aspect-[720/844] bg-e26-cream-deep" aria-hidden="true" />
+            )}
           </div>
         </div>
       </div>
