@@ -16,6 +16,12 @@ import ImageSlot from "./ImageSlot";
 //          một phụ, chênh cỡ rõ — không hai ảnh ngang cỡ.
 // Câu trích + dòng ICF giữ NGUYÊN chữ. KHÔNG che chữ: khối pt lớn (mobile) /
 // pl lớn (desktop) — đo thật getBoundingClientRect ở 375/595/767/768/1280px.
+// SỬA 20/07/2026 (brief phân cấp chữ ⑥⑦ + 2 link) — câu trích "Tôi không
+// sửa..." là câu neo Vai 2 của section này, nâng cỡ (trước text-2xl cố định,
+// đọc như quote nhỏ bên hông). Dòng ICF (chữ phụ) tăng 1 nấc trên mobile
+// (text-base → md:text-sm, đảo hướng so với thường lệ — chủ đích cho dễ đọc
+// trên điện thoại buổi tối). Thêm link "sắp mở" (luật sắp mở, <span> không
+// href) trỏ /ve-kenji khi trang đó dựng xong.
 export default function KenjiSection() {
   return (
     <section className="bg-e26-white px-6 py-16 md:py-28 relative overflow-visible">
@@ -75,14 +81,23 @@ export default function KenjiSection() {
               />
             </figure>
             <blockquote className="e26-reveal border-l border-e26-black pl-6">
-              <p className="font-serif italic text-2xl leading-snug text-e26-text max-w-lg">
+              <p className="font-serif italic text-[26px] md:text-[34px] leading-snug text-e26-text max-w-lg">
                 &quot;Tôi không sửa. Tôi tạo sự An định.&quot;
               </p>
             </blockquote>
           </div>
 
-          <p className="e26-reveal font-sans text-sm tracking-[0.08em] uppercase text-e26-text-2 mt-8">
+          <p className="e26-reveal font-sans text-base md:text-sm tracking-[0.08em] uppercase text-e26-text-2 mt-8">
             Huấn luyện viên Tâm lý Chiều sâu · Thực hành theo tiêu chuẩn ICF
+          </p>
+
+          <p className="e26-reveal mt-6">
+            <span className="font-sans text-[17px] underline decoration-e26-black underline-offset-4 opacity-45 select-none cursor-default">
+              Hành trình và nền tảng của Kenji →
+            </span>{" "}
+            <span className="font-sans text-[17px] opacity-45 select-none cursor-default">
+              (sắp mở)
+            </span>
           </p>
         </div>
       </div>

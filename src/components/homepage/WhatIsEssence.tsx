@@ -1,12 +1,14 @@
 // Section 6 — Essence là gì. Nền ivory, căn giữa. Không ảnh (theo BAN-CHOT —
 // đã bỏ ImageSlot 3:2 cuối section của bản trước).
-// SỬA 19/07/2026 — theo BAN-CHOT-v8-FINAL.md (thay thế BAN-CHOT-v8.md cũ, có
-// 3 lỗi đã sửa): bản v8 cũ ghi NHẦM "Essence không mở cửa nào..." — đây LÀ
-// LỖI CỦA CHÍNH NGUỒN v8 cũ, không phải lỗi paraphrase. FINAL trả về đúng bản
-// "nếp nhà" gốc từ Google Doc. COPY NGUYÊN VĂN, không gõ lại theo trí nhớ.
-// FINAL KHÔNG còn câu mở in đậm (H2) — đoạn văn bắt đầu thẳng, không tiêu đề
-// phụ. Câu chữ ký cuối để riêng, chữ nghiêng — RANH GIỚI THƯƠNG HIỆU TUYỆT
-// ĐỐI, giữ đúng "phân tích và viết", không hạ xuống "đọc/duyệt/rà soát".
+// SỬA 20/07/2026 — thay nguyên văn theo brief "Phân cấp chữ + nội dung ⑥⑦ +
+// 2 link nội bộ" (nguồn: Google Doc bản mới nhất). Bản này ĐỔI "Essence chọn
+// không hứa" (cũ) → "Kenji xin phép không hứa" (mới) — KHÔNG còn câu cũ.
+// Thêm lại nhãn cửa phòng (Vai 5) + câu neo mở (Vai 2) — bản trước đã bỏ H2,
+// nay brief yêu cầu có lại, dùng hệ 5 vai thay vì H2 in đậm cũ.
+// Câu chữ ký cuối để riêng, chữ nghiêng — RANH GIỚI THƯƠNG HIỆU TUYỆT ĐỐI,
+// giữ đúng "phân tích và viết", không hạ xuống "đọc/duyệt/rà soát".
+// Link "Phương pháp Essence Coaching" theo luật "sắp mở" — <span> mờ, không
+// phải <a>/<Link> (trang /phuong-phap chưa dựng, tránh soft 404).
 // Nền mờ bg-hero-light — opacity xem ghi chú tại thẻ div bên dưới.
 export default function WhatIsEssence() {
   return (
@@ -19,19 +21,50 @@ export default function WhatIsEssence() {
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-3xl mx-auto text-center">
+        <p className="e26-reveal font-sans text-xs tracking-[0.14em] uppercase text-e26-text-2 mb-4">
+          Essence là gì
+        </p>
+        <p className="e26-reveal font-serif font-normal text-[26px] md:text-[34px] leading-snug text-e26-text mb-8">
+          Một mái hiên tĩnh lặng.
+        </p>
         <p className="e26-reveal font-sans text-[17px] leading-[1.75] text-e26-text-2 mb-6">
-          Cánh cửa Essence luôn ở đó, không hối thúc. Chỉ là đôi khi, chúng tôi đợi bạn đứng
-          đủ vững rồi mới mời bạn bước sang căn phòng kế tiếp.
+          Khi bão trong lòng đang lớn, hay những lúc bề ngoài êm ru nhưng bên trong lại hoang
+          mang giữa một mớ lý thuyết mơ hồ. Để rồi câu hỏi nhỏ: &quot;Mình thật sự là ai?&quot;
+          vẫn chơ vơ chưa lời đáp.
+        </p>
+        <p className="e26-reveal font-sans text-[17px] leading-[1.75] text-e26-text-2 mb-6">
+          Người ta thường không cần thêm một mớ lý thuyết hay ai đó hối thúc phải thay đổi.
+          Người ta chỉ cần một mái hiên yên tĩnh để đứng trú. Essence chính là một mái hiên như
+          thế.
+        </p>
+        <p className="e26-reveal font-sans text-[17px] leading-[1.75] text-e26-text-2 mb-6">
+          Cánh cửa này mở ra đón bạn ngay trong lúc ngổn ngang nhất, không đòi hỏi bạn phải
+          vững vàng rồi mới bước vào. Thực chất, Essence là một hệ thống coaching được kiến tạo
+          chỉn chu để đỡ lấy bạn. Việc đầu tiên ở đây không phải là vội vã đi sửa lỗi, mà là cho
+          phép mình ngồi xuống, thở đều nhịp để thân tâm dịu lại.
+        </p>
+        <p className="e26-reveal font-sans text-[17px] leading-[1.75] text-e26-text-2 mb-6">
+          Mọi thứ bên trong đều có lớp lang, có thứ tự: cái gì cần dọn dẹp trước, bước nào
+          thong thả làm sau để bạn không bao giờ cảm thấy bị ngợp. Lớp công nghệ phía sau giống
+          như một người phụ việc lặng lẽ lo liệu những khâu lặp lại mỗi ngày, nhường lại trọn
+          vẹn hơi ấm con người cho những khoảnh khắc bạn cần một điểm tựa nhất.
         </p>
         <p className="e26-reveal font-sans text-[17px] leading-[1.75] text-e26-text-2 mb-8">
-          Nơi này vận hành tĩnh lặng nhưng có một trật tự rõ ràng. Có việc nào cần làm trước,
-          có bước nào thong thả làm sau, để bạn không bị ngợp. Hệ thống phía sau dù mạnh mẽ
-          đến đâu, mọi điểm chạm cốt lõi vẫn luôn được giữ nhịp bởi con người. Ở đây có một
-          ranh giới rất êm: điều gì không giữ được, Essence chọn không hứa.
+          Chỉ khi bạn đã lấy lại được sự An định, chúng ta mới tiếp tục mở những cánh cửa đi
+          sâu hơn vào bản sắc thật của bạn. Nơi này hiếu khách, nhưng luôn giữ một lằn ranh rất
+          êm: điều gì không làm được, Kenji xin phép không hứa.
         </p>
         <p className="e26-reveal font-serif italic text-lg text-e26-text-2">
           Và mỗi ấn phẩm chuyên sâu gửi đến tay bạn, đều do Kenji phân tích và viết, từ dòng
           đầu đến dòng cuối.
+        </p>
+        <p className="e26-reveal mt-10">
+          <span className="font-sans text-[17px] underline decoration-e26-black underline-offset-4 opacity-45 select-none cursor-default">
+            Cách hệ thống này vận hành → Phương pháp Essence Coaching
+          </span>{" "}
+          <span className="font-sans text-[17px] opacity-45 select-none cursor-default">
+            (sắp mở)
+          </span>
         </p>
       </div>
     </section>
