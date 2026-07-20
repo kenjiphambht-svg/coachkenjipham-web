@@ -6,10 +6,17 @@ import ImageSlot from "./ImageSlot";
 // đường biên giữa hai cột (chỉ ở desktop — mobile xếp thường, không chồng,
 // tránh vỡ layout hẹp). Viền vàng quanh thẻ CHỈ hiện khi hover/focus (ĐIỂM
 // VÀNG #2) — không tô sẵn bên nào, đúng cả hai thẻ như nhau.
-// CTA hai bên CỐ Ý lệch giọng — không phải lỗi: "Mời bạn vào" (Bản Sắc Của
-// Bạn) vì đây là chuyện của chính khách, Kenji chủ động mời; "Bạn mở cửa sổ
-// này" (Bản Sắc Của Con) vì chuyện của con thuộc quyền ba mẹ, Kenji đứng
-// ngoài, không thể "mời" ai vào phòng riêng của con họ.
+// SỬA 20/07/2026 (brief V9-FINAL) — nguồn chữ duy nhất: Google Doc
+// "HOMEPAGE V9-FINAL". Đổi so với bản trước:
+//   - BỎ đoạn intro "Nhiều người tới đây rồi mới nhận ra..." — Doc KHÔNG còn
+//     đoạn này, section vào thẳng nhãn → 2 thẻ.
+//   - Nhãn mở section hạ từ H2 to (Vai 2 cũ) xuống nhãn nhỏ Vai 5 "Ở ĐÂY CÓ
+//     HAI CÁNH CỬA." (Doc đánh dấu [Nhãn nhỏ]).
+//   - CTA hai thẻ ĐỔI THÀNH GIỐNG NHAU "Mời bạn vào →" (Doc dùng đúng 1 câu
+//     cho cả 2 thẻ) — bản trước có "lệch giọng" cố ý giữa 2 CTA, nay Doc bỏ
+//     chủ đích đó, làm đúng theo Doc.
+//   - Câu kết section lên Vai 2 (weight 500, KHÔNG italic — bảng 5 vai chỉ
+//     đánh dấu italic cho quote ④, không áp cho câu kết ⑤).
 export default function TwoStates() {
   return (
     <section className="relative bg-e26-cream px-6 py-16 md:py-32">
@@ -25,16 +32,8 @@ export default function TwoStates() {
       />
       <div className="relative z-10 max-w-[1120px] mx-auto">
         <div className="max-w-2xl mb-16 md:mb-20">
-          <p className="e26-reveal font-serif font-normal text-[24px] md:text-[32px] leading-snug text-e26-text mb-6">
+          <p className="e26-reveal font-sans text-xs font-medium tracking-[0.18em] uppercase text-e26-text-2">
             Ở đây có hai cánh cửa.
-          </p>
-          <p className="e26-reveal font-sans text-[17px] leading-[1.65] text-e26-text-2 mb-5">
-            Nhiều người tới đây rồi mới nhận ra: cái nhịp làm mình mệt hôm nay, mình học được
-            từ hồi còn rất nhỏ. Trong một căn bếp nào đó, khi mình hiểu ra — mình im lặng thì
-            nhà mới yên. Và mình đang vô tình dạy lại con y như vậy.
-          </p>
-          <p className="e26-reveal font-sans text-[17px] leading-[1.65] text-e26-text-2">
-            Sau cả hai cánh cửa là cùng một khoảng lặng.
           </p>
         </div>
 
@@ -55,18 +54,25 @@ export default function TwoStates() {
               />
             </figure>
             <div className="relative z-10 -mt-10 bg-e26-cream-deep border border-transparent group-hover:border-e26-gold focus-within:border-e26-gold transition-colors duration-300 px-6 pt-16 pb-8">
-              <p className="font-sans text-base md:text-sm tracking-[0.08em] uppercase text-e26-text-2 mb-4">
+              <p className="font-sans text-xs font-medium tracking-[0.18em] uppercase text-e26-text-2 mb-4">
                 Bản Sắc Của Bạn
               </p>
               <p className="font-serif text-2xl leading-snug text-e26-text-2 mb-5">
-                Có một kiểu mệt không nằm ở công việc. Nó nằm ở chỗ cứ phải gồng lên làm một phiên
-                bản nào đó để mình tồn tại...
+                Có một kiểu mệt
+                <br />
+                không nằm ở công việc.
+                <br />
+                Mà nằm ở việc
+                <br />
+                phải trở thành một phiên bản nào đó
+                <br />
+                để tiếp tục sống.
               </p>
               <Link
                 href="/ban-sac-cua-ban"
-                className="font-sans text-base md:text-[15px] text-e26-text hover:text-e26-gold-deep transition-colors duration-300"
+                className="font-sans text-[15px] text-e26-text hover:text-e26-gold-deep transition-colors duration-300"
               >
-                → Mời bạn vào cửa này
+                Mời bạn vào →
               </Link>
             </div>
           </div>
@@ -81,27 +87,32 @@ export default function TwoStates() {
               />
             </figure>
             <div className="relative z-10 -mt-10 bg-e26-cream-deep border border-transparent group-hover:border-e26-gold focus-within:border-e26-gold transition-colors duration-300 px-6 pt-16 pb-8">
-              <p className="font-sans text-base md:text-sm tracking-[0.08em] uppercase text-e26-text-2 mb-4">
+              <p className="font-sans text-xs font-medium tracking-[0.18em] uppercase text-e26-text-2 mb-4">
                 Bản Sắc Của Con
               </p>
               <p className="font-serif text-2xl leading-snug text-e26-text mb-5">
-                Có tối bạn đứng ở cửa phòng, nhìn con ngủ. Thương con lắm. Mà vẫn có gì đó chưa
-                gọi được tên. Không phải để sửa con — chỉ là muốn hiểu con thêm một chút.
+                Có những tối
+                <br />
+                bạn đứng trước cửa phòng con.
+                <br />
+                Thương con.
+                <br />
+                Nhưng sao khoảng cách ngày càng xa.
               </p>
               <Link
                 href="/ban-sac-cua-con"
-                className="font-sans text-base md:text-[15px] text-e26-text hover:text-e26-gold-deep transition-colors duration-300"
+                className="font-sans text-[15px] text-e26-text hover:text-e26-gold-deep transition-colors duration-300"
               >
-                → Bạn mở cửa sổ này
+                Mời bạn vào →
               </Link>
             </div>
           </div>
         </div>
 
-        {/* Câu chốt cảnh — câu neo Vai 2 của section (SỬA 20/07/2026, brief
-            phân cấp chữ: trước là dòng italic bé cuối section, nay nâng lên
-            cùng thang Vai 2 dùng chung toàn trang). Giữ nguyên vị trí. */}
-        <p className="e26-reveal font-serif italic text-[26px] md:text-[34px] leading-snug text-e26-text mt-16 md:mt-20 max-w-md">
+        {/* Câu chốt cảnh — câu neo Vai 2 của section (bảng 5 vai V9-FINAL:
+            42px desktop / 30px mobile, serif weight 500, KHÔNG italic — chỉ
+            quote ④ được đánh dấu ngoại lệ italic). */}
+        <p className="e26-reveal font-serif font-medium text-[30px] md:text-[42px] leading-[1.25] text-e26-text mt-16 md:mt-20 max-w-lg">
           Bạn biết mình đang đứng gần bên nào hơn.
         </p>
       </div>

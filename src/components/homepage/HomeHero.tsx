@@ -17,6 +17,9 @@ const HERO_BG_SRC: string | undefined = "/images/home/bg-hero-open.webp";
 // không nhảy (cùng khung 4/5).
 const HERO_IMAGE_SRC: string | null = "/images/home/kenji-hero-window.webp";
 
+// SỬA 20/07/2026 (brief V9-FINAL) — chữ + cỡ giữ NGUYÊN (brief xác nhận "đã
+// đúng"), chỉ sửa ngắt dòng thơ ở body cho khớp từng dòng trong Google Doc
+// V9-FINAL (trước đây 2 câu ngắn bị gộp chung 1 dòng ở 2 đoạn).
 // Section 2 — Hero: trạng thái con người, dựng theo hệ KHỐI-LỚP.
 // Nền CREAM (không phải ivory — luật #2). Chữ lớn nhất mắt nhìn thấy nhưng
 // KHÔNG phải heading (H1 duy nhất ở section Kiệt Tác) — dùng <p>, không <h1>.
@@ -85,10 +88,22 @@ export default function HomeHero() {
                 300 vỡ). Màu đen token @65% (color-mix, không mã xám #555, không
                 màu mới). Headline→body 48px (mt-12). */}
             <div className="e26-reveal mt-12 space-y-6 font-sans font-normal text-[18px] md:text-[20px] lg:text-[22px] leading-[1.8] max-w-[540px] text-[color-mix(in_srgb,var(--essence-text-primary-2026)_65%,transparent)]">
-              <p>Bạn vẫn đi làm. Mọi thứ vẫn ổn.</p>
-              <p>Chỉ là đã lâu rồi, bạn chưa thật sự ngồi xuống với chính mình.</p>
+              <p>
+                Bạn vẫn đi làm.
+                <br />
+                Mọi thứ vẫn ổn.
+              </p>
+              <p>
+                Chỉ là đã lâu rồi,
+                <br />
+                bạn chưa thật sự ngồi xuống với chính mình.
+              </p>
               <p>Ở đây, không ai hối thúc bạn phải khá hơn.</p>
-              <p>Chỉ có một khoảng lặng, để bạn nghe lại chính mình.</p>
+              <p>
+                Chỉ có một khoảng lặng,
+                <br />
+                để bạn nghe lại chính mình.
+              </p>
             </div>
           </div>
 
