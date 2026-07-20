@@ -30,14 +30,17 @@ import ComingLink from "./ComingLink";
 export default function KenjiSection() {
   return (
     <section className="bg-e26-white px-6 py-16 md:py-28 relative overflow-visible">
-      {/* VIỆC 3 (19/07/2026) — vật liệu nền dùng chung "vệt nắng" (bg-hero-light),
-          opacity rất thấp trên nền trắng gốc của section — cùng kỹ thuật đã
-          dùng ở KietTac (ảnh mờ trên màu nền, không đổi token). z-auto (không
-          set z-index) nên luôn nằm DƯỚI figure (z-20) và khối chữ (z-10) đã
-          có sẵn — không cần bọc thêm gì. */}
+      {/* SỬA 20/07/2026 (Light System) — thay bg-hero-light.webp (opacity
+          0.05) bằng ảnh light-02 "Floating Light" (bg-light-kenji.webp).
+          KHÔNG cần overlay/dò contrast: TOÀN BỘ chữ trong section nằm trong
+          khối nền đặc bg-e26-cream-deep (div bên dưới, z-10) — ảnh chỉ lộ ra
+          ở viền/khoảng trống ngoài khối (không có chữ nào đứng trực tiếp
+          trên ảnh) nên hiện ảnh full luôn, không rủi ro contrast. z-auto
+          (không set z-index) nên luôn nằm DƯỚI figure (z-20) và khối chữ
+          (z-10) đã có sẵn — không cần bọc thêm gì. */}
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-[0.05]"
-        style={{ backgroundImage: "url(/images/home/bg-hero-light.webp)" }}
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url(/images/home/bg-light-kenji.webp)" }}
         aria-hidden="true"
       />
       <div className="max-w-[1120px] mx-auto flex flex-col md:flex-row md:items-center">

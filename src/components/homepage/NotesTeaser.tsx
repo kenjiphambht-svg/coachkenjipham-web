@@ -34,9 +34,25 @@ const CARDS = [
 export default function NotesTeaser() {
   return (
     <section className="relative bg-e26-ivory px-6 py-16 md:py-28">
+      {/* SỬA 20/07/2026 (Light System) — thay bg-hero-light.webp (opacity
+          0.11) bằng light-05 "Evening Calm" (bg-light-evening.webp), dùng
+          chung với ⑧ NotPromised ngay trước (liền mạch cuối trang). Đo
+          contrast thật: H2 + đoạn intro (Vai 3) cần overlay kem tới 80% mới
+          đạt 4.5:1 ở mobile (desktop chỉ cần 70%, dùng chung 80% cho an
+          toàn cả 2). RIÊNG 3 card "chưa mở" (title + mô tả, opacity-45 qua
+          ComingLink): đã đo — dù overlay 100% (ảnh gần như vô hình) vẫn chỉ
+          đạt ~1.9-2.8:1, KHÔNG BAO GIỜ chạm 4.5:1. Xác nhận đây là đặc tính
+          có sẵn của opacity-45 (đo cả trên nền ivory phẳng gốc, không ảnh:
+          vẫn chỉ 2.81:1) — không phải do ảnh nền mới, KHÔNG tự ý sửa (ngoài
+          phạm vi brief này, cần quyết định riêng của Kenji nếu muốn đổi mức
+          mờ của trạng thái "chưa mở"). */}
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-[0.11]"
-        style={{ backgroundImage: "url(/images/home/bg-hero-light.webp)" }}
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url(/images/home/bg-light-evening.webp)" }}
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_80%,transparent)]"
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-4xl mx-auto text-center">

@@ -13,9 +13,12 @@ import Link from "next/link";
 export default function NotPromised() {
   return (
     <section className="relative bg-e26-cream px-6 py-28 md:py-40">
+      {/* SỬA 20/07/2026 (Light System) — thay bg-hero-light.webp (opacity
+          0.11) bằng light-05 "Evening Calm" (bg-light-evening.webp), dùng
+          chung với ⑨ NotesTeaser ngay sau (liền mạch cuối trang). */}
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-[0.11]"
-        style={{ backgroundImage: "url(/images/home/bg-hero-light.webp)" }}
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url(/images/home/bg-light-evening.webp)" }}
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-[640px] mx-auto text-center">

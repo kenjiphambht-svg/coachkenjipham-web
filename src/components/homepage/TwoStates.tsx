@@ -20,14 +20,21 @@ import ImageSlot from "./ImageSlot";
 export default function TwoStates() {
   return (
     <section className="relative bg-e26-cream px-6 py-16 md:py-32">
-      {/* VIỆC 3 (19/07/2026) — vật liệu nền dùng chung "vệt nắng" (bg-hero-light),
-          opacity rất thấp trên nền cream gốc — cùng kỹ thuật KietTac. z-auto:
-          content bên dưới được nâng lên "relative z-10" để luôn nổi trên (đoạn
-          intro + câu chốt trước đây không có z-index, cần bọc để không bị lớp
-          nền này đè — 2 thẻ card vốn đã có z-10/z-20 riêng, không ảnh hưởng). */}
+      {/* SỬA 20/07/2026 (Light System) — thay bg-hero-light.webp bằng light-03
+          "Window Shadow" (bg-light-hai-cua.webp). Chữ lộ trực tiếp trên ảnh
+          chỉ có nhãn "Ở đây có hai cánh cửa." + câu kết (2 thẻ card có nền
+          đặc riêng, không bị ảnh hưởng). Đo contrast thật: câu kết (Vai 2,
+          đen) dư dả (11+); nhãn (Vai 5, 12px, màu phụ) là điểm nghẽn — cần
+          overlay kem 60% mới đạt 4.5:1 ở cả desktop (4.6) lẫn mobile (pass
+          từ 50%). z-auto: content bên dưới nâng "relative z-10" để nổi trên
+          (2 thẻ card vốn đã có z-10/z-20 riêng, không ảnh hưởng). */}
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-[0.05]"
-        style={{ backgroundImage: "url(/images/home/bg-hero-light.webp)" }}
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url(/images/home/bg-light-hai-cua.webp)" }}
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_60%,transparent)]"
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-[1120px] mx-auto">
