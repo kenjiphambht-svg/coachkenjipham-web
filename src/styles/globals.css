@@ -213,6 +213,25 @@ body {
   }
 }
 
+/* === ESSENCE 2026 — Signature Moment (②b) reveal riêng, CHẬM hơn mặc định ===
+   Brief 21/07/2026 "hiệu ứng Signature Moment" — Doc V9 gốc mô tả khoảnh khắc
+   lặng này cần một nhịp CHẬM hơn tốc độ "hơi thở" 250ms dùng chung toàn trang
+   (quá nhanh cho một khoảnh khắc dừng lại). Bản gốc Doc ghi "khoá cuộn 2 giây"
+   — VI PHẠM luật motion dự án (không auto-scroll/không giữ chân người xem) nên
+   KHÔNG làm; thay vào đó CHỈ chậm timing của transition, vẫn dùng đúng cơ chế
+   IntersectionObserver có sẵn của useHomeReveal (class .e26-reveal, is-visible)
+   — không khoá cuộn, không auto-scroll, ai cuộn nhanh vẫn lướt qua bình thường
+   (transition chỉ chạy NẾU phần tử đã vào viewport, không chặn thao tác cuộn).
+   Dùng chung element (.e26-reveal.e26-signature-reveal) — CSS sau ghi đè
+   duration/easing/khoảng dịch nhờ độ đặc hiệu selector cao hơn, KHÔNG đổi cơ
+   chế opacity/transform gốc. easeOutCubic = cubic-bezier(0.33,1,0.68,1)
+   (giá trị chuẩn easings.net). prefers-reduced-motion: quy tắc !important ở
+   trên (chọn .e26-reveal) vẫn thắng bất kể độ đặc hiệu — không cần lặp lại. */
+.e26-reveal.e26-signature-reveal {
+  transform: translateY(10px);
+  transition: opacity 800ms cubic-bezier(0.33, 1, 0.68, 1), transform 800ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
 /* === ESSENCE 2026 — landing reveal dòng "Bản Sắc" (fade-up 0.75s / 16px, stagger nhẹ) ===
    Dùng chung qua class .hm-reveal cho /an-pham-ban-sac-hat-mam,
    /an-pham-ban-sac-kham-pha VÀ /an-pham-ban-sac-giao-mua (cùng hook
