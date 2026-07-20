@@ -55,7 +55,7 @@ export default function TwoStates() {
               />
             </figure>
             <div className="relative z-10 -mt-10 bg-e26-cream-deep border border-transparent group-hover:border-e26-gold focus-within:border-e26-gold transition-colors duration-300 px-6 pt-16 pb-8">
-              <p className="font-sans text-sm tracking-[0.08em] uppercase text-e26-text-2 mb-4">
+              <p className="font-sans text-base md:text-sm tracking-[0.08em] uppercase text-e26-text-2 mb-4">
                 Bản Sắc Của Bạn
               </p>
               <p className="font-serif text-2xl leading-snug text-e26-text-2 mb-5">
@@ -64,7 +64,7 @@ export default function TwoStates() {
               </p>
               <Link
                 href="/ban-sac-cua-ban"
-                className="font-sans text-[15px] text-e26-text hover:text-e26-gold-deep transition-colors duration-300"
+                className="font-sans text-base md:text-[15px] text-e26-text hover:text-e26-gold-deep transition-colors duration-300"
               >
                 → Mời bạn vào cửa này
               </Link>
@@ -81,7 +81,7 @@ export default function TwoStates() {
               />
             </figure>
             <div className="relative z-10 -mt-10 bg-e26-cream-deep border border-transparent group-hover:border-e26-gold focus-within:border-e26-gold transition-colors duration-300 px-6 pt-16 pb-8">
-              <p className="font-sans text-sm tracking-[0.08em] uppercase text-e26-text-2 mb-4">
+              <p className="font-sans text-base md:text-sm tracking-[0.08em] uppercase text-e26-text-2 mb-4">
                 Bản Sắc Của Con
               </p>
               <p className="font-serif text-2xl leading-snug text-e26-text mb-5">
@@ -90,7 +90,7 @@ export default function TwoStates() {
               </p>
               <Link
                 href="/ban-sac-cua-con"
-                className="font-sans text-[15px] text-e26-text hover:text-e26-gold-deep transition-colors duration-300"
+                className="font-sans text-base md:text-[15px] text-e26-text hover:text-e26-gold-deep transition-colors duration-300"
               >
                 → Bạn mở cửa sổ này
               </Link>
@@ -98,9 +98,10 @@ export default function TwoStates() {
           </div>
         </div>
 
-        {/* Câu chốt cảnh — serif italic, cỡ nhỉnh hơn đoạn thường để nổi lên
-            như câu kết (2.2). Giữ nguyên vị trí (dưới 2 thẻ, mt-16/mt-20). */}
-        <p className="e26-reveal font-serif italic text-[19px] md:text-[24px] leading-snug text-e26-text mt-16 md:mt-20 max-w-md">
+        {/* Câu chốt cảnh — câu neo Vai 2 của section (SỬA 20/07/2026, brief
+            phân cấp chữ: trước là dòng italic bé cuối section, nay nâng lên
+            cùng thang Vai 2 dùng chung toàn trang). Giữ nguyên vị trí. */}
+        <p className="e26-reveal font-serif italic text-[26px] md:text-[34px] leading-snug text-e26-text mt-16 md:mt-20 max-w-md">
           Bạn biết mình đang đứng gần bên nào hơn.
         </p>
       </div>
