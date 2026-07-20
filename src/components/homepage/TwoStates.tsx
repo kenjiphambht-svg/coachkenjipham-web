@@ -27,14 +27,25 @@ export default function TwoStates() {
           đen) dư dả (11+); nhãn (Vai 5, 12px, màu phụ) là điểm nghẽn — cần
           overlay kem 60% mới đạt 4.5:1 ở cả desktop (4.6) lẫn mobile (pass
           từ 50%). z-auto: content bên dưới nâng "relative z-10" để nổi trên
-          (2 thẻ card vốn đã có z-10/z-20 riêng, không ảnh hưởng). */}
+          (2 thẻ card vốn đã có z-10/z-20 riêng, không ảnh hưởng).
+          SỬA 20/07/2026 (brief nền mờ chi tiết) — sàn gạch của ảnh hiện rõ
+          (đường ron gạch) ở khoảng 65-100% chiều cao section (đo trên ảnh
+          chụp thật, không đoán). Phần trên (0-60%, nơi nhãn + 2 card đứng)
+          KHÔNG đổi — vẫn overlay 60% đã đo. Chuyển sang GRADIENT: giữ 60% ở
+          trên, tăng dần lên 92% từ 65% xuống đáy để nhấn chìm đường ron gạch
+          — đồng thời gradient này cũng giúp giảm sàn gạch lộ qua đáy 2 khối
+          card đã làm trong suốt ở Việc B (color-mix 35%, xem bên dưới). */}
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: "url(/images/home/bg-light-hai-cua.webp)" }}
         aria-hidden="true"
       />
       <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_60%,transparent)]"
+        className="absolute inset-0"
+        style={{
+          backgroundImage:
+            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 60%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 60%, transparent) 60%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 85%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 100%)",
+        }}
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-[1120px] mx-auto">
@@ -49,7 +60,17 @@ export default function TwoStates() {
             MÉP TRÊN của card (kỹ thuật B). Viền vàng khi hover GIỮ NGUYÊN
             (điểm vàng #2) — chuyển lên khối card qua group-hover, hiệu ứng
             không đổi. Lệch dọc thẻ 2 (md:mt-20) GIỮ NGUYÊN. Bỏ md:-ml-10 cũ
-            (chờm chéo sang card kia) — nay ảnh chờm mép trên của chính card. */}
+            (chờm chéo sang card kia) — nay ảnh chờm mép trên của chính card.
+            SỬA 20/07/2026 (brief khung trong) — nền card đổi từ cream-deep ĐẶC
+            sang color-mix(...,35%,transparent) để ảnh nền bg-light-hai-cua
+            hiện qua khối card. Đo contrast thật (canvas, WCAG): nhãn (Vai 5,
+            màu phụ e26-text-2) là điểm nghẽn nhưng dư dả bất thường — nền
+            section đã có overlay kem 60% riêng (dòng trên) nên dù card GIẢM
+            xuống 0% (trong suốt hoàn toàn) contrast vẫn không dưới 5.0:1, xa
+            trên trần 4.5:1. Vì WCAG không phải nút thắt ở section này, chọn
+            35% theo tiêu chí thẩm mỹ (Bước 3 fable mode — nhìn bằng mắt):
+            đủ trong để ảnh sáng lộ rõ, vẫn đủ đặc để đọc được là một khối
+            card riêng biệt (không biến mất hẳn, giữ hệ khối-lớp). */}
         <div className="grid md:grid-cols-2 gap-14 md:gap-10">
           {/* Thẻ 1 — Bản Sắc Của Bạn */}
           <div className="e26-reveal group">
@@ -60,7 +81,7 @@ export default function TwoStates() {
                 alt="Căn bếp ivory sáng sớm"
               />
             </figure>
-            <div className="relative z-10 -mt-10 bg-e26-cream-deep border border-transparent group-hover:border-e26-gold focus-within:border-e26-gold transition-colors duration-300 px-6 pt-16 pb-8">
+            <div className="relative z-10 -mt-10 bg-[color-mix(in_srgb,var(--essence-cream-deep-2026)_35%,transparent)] border border-transparent group-hover:border-e26-gold focus-within:border-e26-gold transition-colors duration-300 px-6 pt-16 pb-8">
               <p className="font-sans text-xs font-medium tracking-[0.18em] uppercase text-e26-text-2 mb-4">
                 Bản Sắc Của Bạn
               </p>
@@ -93,7 +114,7 @@ export default function TwoStates() {
                 alt="Hành lang tối nhìn qua khung cửa, đèn ngủ ấm — không có mặt người"
               />
             </figure>
-            <div className="relative z-10 -mt-10 bg-e26-cream-deep border border-transparent group-hover:border-e26-gold focus-within:border-e26-gold transition-colors duration-300 px-6 pt-16 pb-8">
+            <div className="relative z-10 -mt-10 bg-[color-mix(in_srgb,var(--essence-cream-deep-2026)_35%,transparent)] border border-transparent group-hover:border-e26-gold focus-within:border-e26-gold transition-colors duration-300 px-6 pt-16 pb-8">
               <p className="font-sans text-xs font-medium tracking-[0.18em] uppercase text-e26-text-2 mb-4">
                 Bản Sắc Của Con
               </p>
