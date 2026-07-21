@@ -366,28 +366,18 @@ export default function HomeHero() {
           </div>
         </div>
 
-        {/* Phần 1b (brief 21/07 "lan chớm xuống ③") — đuôi mờ của vệt sơn kéo
-            dài qua ranh giới ②→③, chồng lên đầu nền đen ③ một đoạn ngắn rồi
-            tan hẳn. KHÔNG đụng KietTac.tsx (git diff = 0) — toàn bộ hiệu ứng
-            này là 1 phần tử RIÊNG của HomeHero, bleed ra ngoài section qua
-            position:absolute + bottom âm (section có overflow-visible, giống
-            cơ chế -mb âm của ảnh Kenji ở Lớp 3). z-20: vì HomeHero <section>
-            và KietTac <section> đều z-index:auto (không tạo stacking context
-            riêng), một hậu duệ có z-index tường minh sẽ đè lên MỌI nội dung
-            z-auto của section sau nó bất kể thứ tự DOM — đã xác nhận đúng cơ
-            chế này khi Kenji (z-10) đè lên dải gradient (z-auto) ở Lớp 3.
-            Đo thật: ③ có 140px đệm trên trước khi chạm H1 (đo qua
-            getBoundingClientRect, không đoán) — đuôi bleed cao 90px + tan hết
-            ở stop cuối, dư khoảng 50px trước khi tới chữ ③, không chạm. */}
-        <div
-          className="absolute left-1/2 -translate-x-1/2 bottom-[-70px] w-[380px] max-w-[80%] h-[90px] z-20 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(ellipse 60% 100% at center top, rgba(241,239,232,0.32) 0%, rgba(241,239,232,0.14) 45%, transparent 78%)",
-            filter: "blur(22px)",
-          }}
-          aria-hidden="true"
-        />
+        {/* ĐÃ XOÁ 21/07/2026 (brief sửa vệt sáng dư, Việc A) — trước đây ở đây
+            có "Phần 1b" (PR#46): một đuôi mờ SÁNG (radial cream 0.32) của vệt
+            sơn, z-20, bottom-[-70px], cố ý bleed xuống ĐẦU ③ để tan mượt vào
+            nền đen TRƠN của ③ lúc bấy giờ (③ khi ấy CHƯA có ảnh riêng).
+            PR#52 cho ③ ảnh villa + overlay riêng → cơ chế viện trợ cũ này trở
+            thành thừa VÀ gây lỗi: đã đo thật — Hero kết ở y=1328, ③ bắt đầu
+            đúng y=1328, còn đuôi này trải 1308→1398 nên 70px của nó nằm TRONG
+            ③; z-20 của nó đè lên overlay ③ (z-auto) → vẽ một đốm sáng kem lạc
+            chỗ giữa vùng đen, ngay dưới vệt sơn và trên tiêu đề ③ (đã chụp ảnh
+            xác nhận trước khi xoá). Nay ③ tự lo overlay đen đặc từ mép trên
+            nên KHÔNG cần đuôi viện trợ nữa → xoá hẳn, đường nối vẫn mượt (đã
+            chụp lại xác nhận). Xem docs/website/BAI-HOC-KY-THUAT.md mục 1 & 6. */}
       </div>
     </section>
   );

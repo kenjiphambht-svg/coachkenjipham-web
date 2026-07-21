@@ -49,17 +49,27 @@ export default function TwoStates() {
           KHÔNG đổi — vẫn overlay 60% đã đo. Chuyển sang GRADIENT: giữ 60% ở
           trên, tăng dần lên 92% từ 65% xuống đáy để nhấn chìm đường ron gạch
           — đồng thời gradient này cũng giúp giảm sàn gạch lộ qua đáy 2 khối
-          card đã làm trong suốt ở Việc B (color-mix 35%, xem bên dưới). */}
+          card đã làm trong suốt ở Việc B (color-mix 35%, xem bên dưới).
+          SỬA 21/07/2026 (brief Việc F) — thay bg-light-hai-cua.webp bằng
+          haicua-hanhlang.webp: ảnh hành lang villa có ĐÚNG 2 CÁNH CỬA hai bên
+          + cửa sổ sáng cuối hành lang (khớp nghĩa "Hai Cửa"). Convert q90,
+          không banding. ĐO LẠI contrast TỪ ĐẦU trên nền mới (không giả định %
+          cũ còn đúng — đúng yêu cầu brief): worst-case ĐÚNG CHIỀU (pixel TỐI
+          nhất, vì chữ tối/nền sáng — xem BAI-HOC-KY-THUAT.md mục 7) rơi vào
+          chữ trong card: 60%→3.13, 70%→3.64, 78%→4.09, 85%→4.50 ⇒ nâng đáy
+          gradient 60%→87% (và 92%→93% ở đáy) cho dư biên. Mobile đo lại
+          riêng: 4.64. Giữ nguyên cấu trúc "đậm dần về đáy" đã có. ĐÁNH ĐỔI:
+          ở 87% hành lang chỉ còn cảm giác sáng — xem mục 8 file bài học. */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/bg-light-hai-cua.webp)" }}
+        style={{ backgroundImage: "url(/images/home/haicua-hanhlang.webp)" }}
         aria-hidden="true"
       />
       <div
         className="absolute inset-0"
         style={{
           backgroundImage:
-            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 60%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 60%, transparent) 60%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 85%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 100%)",
+            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 87%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 87%, transparent) 60%, color-mix(in srgb, var(--essence-cream-2026) 93%, transparent) 85%, color-mix(in srgb, var(--essence-cream-2026) 93%, transparent) 100%)",
         }}
         aria-hidden="true"
       />
