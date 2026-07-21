@@ -39,9 +39,27 @@
 export default function KietTac() {
   return (
     <section className="relative bg-e26-black px-6 py-24 md:py-32 overflow-hidden">
+      {/* SỬA 21/07/2026 (brief thay nền ③, Việc B) — thay bg-wall-dark.webp
+          (vân tường mờ 13%) bằng kiettac-villa-toi.webp: ảnh hành lang villa
+          ĐÊM (đã tối sẵn, có vệt sáng ấm ở ô cửa giữa-phải). Ảnh hiện RÕ hơn
+          làm hậu cảnh (không còn chỉ 13% vô hình) nhưng vẫn là hậu cảnh —
+          overlay đủ để chữ trắng đọc tuyệt đối. */}
       <div
-        className="absolute inset-0 bg-cover bg-[position:10%_center] md:bg-center opacity-[0.13]"
-        style={{ backgroundImage: "url(/images/home/bg-wall-dark.webp)" }}
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url(/images/home/kiettac-villa-toi.webp)" }}
+        aria-hidden="true"
+      />
+      {/* Overlay GRADIENT (không flat): ĐEN ĐẶC ở đỉnh để MƯỢT với đáy Hero
+          (Việc A kết ở đen đặc + đuôi vệt sơn bleed xuống) — không lộ ranh
+          giữa 2 nền; hạ dần xuống ~58% ở thân để ô cửa villa thấp thoáng le
+          lói phía sau chữ. % đã dò qua đo contrast thật tại vị trí H1/body
+          (xem số đo báo cáo) — chữ trắng đạt xa ngưỡng. */}
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage:
+            "linear-gradient(to bottom, var(--essence-black-2026) 0%, color-mix(in srgb, var(--essence-black-2026) 68%, transparent) 22%, color-mix(in srgb, var(--essence-black-2026) 60%, transparent) 60%, color-mix(in srgb, var(--essence-black-2026) 66%, transparent) 100%)",
+        }}
         aria-hidden="true"
       />
       <div className="relative max-w-[880px] mx-auto text-center">

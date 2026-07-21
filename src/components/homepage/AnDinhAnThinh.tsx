@@ -39,9 +39,19 @@
 export default function AnDinhAnThinh() {
   return (
     <section className="relative bg-e26-black px-6 py-24 md:py-40 overflow-hidden">
+      {/* SỬA 21/07/2026 (brief thay nền ⑦, Việc C) — thay bg-wall-dark.webp
+          bằng andinh-vuon-toi.webp: ảnh hiên villa BAN NGÀY nhìn ra hồ bơi +
+          vườn (ảnh SÁNG, tái dùng). Overlay TỐI ĐẬM biến thành khối đêm huyền
+          ảo — dò từ 75% tăng dần: chọn 82% (xem đo contrast báo cáo) để (a)
+          mặt hồ/vòm còn le lói nhận ra, (b) toàn bộ chữ trắng + gold "An
+          Thịnh" đạt contrast, (c) chữ ma "AN" vẫn đọc được vị trí. */}
       <div
-        className="absolute inset-0 bg-cover bg-[position:10%_center] md:bg-center opacity-[0.20] md:opacity-[0.13]"
-        style={{ backgroundImage: "url(/images/home/bg-wall-dark.webp)" }}
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url(/images/home/andinh-vuon-toi.webp)" }}
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-black-2026)_82%,transparent)]"
         aria-hidden="true"
       />
       <span className="andinh-ghost-an absolute top-6 left-6 md:top-10 md:left-10 font-serif" aria-hidden="true">

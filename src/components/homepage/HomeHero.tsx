@@ -288,12 +288,27 @@ export default function HomeHero() {
           PHÍA TRÊN vệt sơn (giữa chỗ Kenji chìm và câu chữ) tối rõ rệt —
           PR#46 che chưa đủ theo Kenji xem thật. Vệt sơn sáng bên dưới vẫn
           nổi tương phản trên nền tối mới (xác nhận bằng ảnh chụp thật). */}
-      <div className="relative -mx-6 pt-28 pb-24 md:pt-36 md:pb-32 px-6 overflow-visible">
+      {/* SỬA 21/07/2026 (brief hợp nhất vùng tối, Việc A) — NGUYÊN NHÂN THẬT
+          của "vệt sáng ngang qua chân ghế": đo geometry thật — ảnh Kenji mờ
+          dần (mask) từ y≈953 (đặc) tới y≈1024 (trong suốt hẳn), NHƯNG gradient
+          nền cũ chỉ đạt đen đặc ở y≈1048 → tồn tại 1 "cửa sổ sáng" ~953-1048
+          nơi Kenji đã tan mà nền CHƯA đen, để lộ sàn villa sáng (overlay chỉ
+          40%) thành vệt ngang quanh chân ghế; bệ bóng elip nhỏ (974-1014) chỉ
+          che được một phần. HỢP NHẤT: kéo khối tối này LÊN CAO hơn (-mt-16,
+          bù pt +64px để Signature Moment/③ giữ nguyên vị trí) cho ramp
+          transparent→đen DÀI & MƯỢT hơn, và đạt gần-đặc ĐÚNG chỗ Kenji tan
+          (≈1024) nên không còn cửa sổ sáng. text cột phải kết ở y≈847, cách
+          mép trên khối tối mới (~879) 32px + gradient transparent ở đỉnh nên
+          KHÔNG chạm/tối chữ (đã đo + xác nhận ảnh thật). Bệ bóng elip GIỮ lại
+          làm điểm nhấn bóng đổ dưới ghế (đã thử bỏ — thiếu grounding), nhưng
+          giờ nằm TRONG vùng đã đen nên không tạo mảng rời. Stop % tính theo
+          chiều cao khối mới (~413px), tinh chỉnh qua ảnh chụp thật từng nấc. */}
+      <div className="relative -mx-6 -mt-16 pt-44 pb-24 md:pt-52 md:pb-32 px-6 overflow-visible">
         <div
           className="absolute inset-0"
           style={{
             backgroundImage:
-              "linear-gradient(to bottom, transparent, color-mix(in srgb, var(--essence-black-2026) 65%, transparent) 15%, var(--essence-black-2026) 30%, var(--essence-black-2026))",
+              "linear-gradient(to bottom, transparent 0%, color-mix(in srgb, var(--essence-black-2026) 45%, transparent) 10%, color-mix(in srgb, var(--essence-black-2026) 80%, transparent) 20%, var(--essence-black-2026) 30%, var(--essence-black-2026))",
           }}
           aria-hidden="true"
         />
