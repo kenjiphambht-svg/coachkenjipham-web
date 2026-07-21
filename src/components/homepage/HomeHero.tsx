@@ -127,8 +127,14 @@ export default function HomeHero() {
               dòng 1 "Lâu rồi, chưa ai hỏi" cần 622px — cột 40% (≤576px kể cả
               container 1440) KHÔNG chứa nổi → headline vỡ 4 dòng. Ưu tiên QA#4
               (≥72px + ngắt 2 dòng đúng chỗ) nên nới cột chữ lên 58% (712px), ảnh
-              còn 42% (504px) — vẫn lớn, vẫn chờm sang nền đen. */}
-          <div className="md:col-span-7 md:pb-24">
+              còn 42% (504px) — vẫn lớn, vẫn chờm sang nền đen.
+              SỬA 21/07/2026 (brief đảo bố cục) — Kenji ngồi ép sát mép PHẢI
+              khung hình trông gượng ép. Đảo 2 cột bằng md:order (KHÔNG viết
+              lại nội dung/lật ảnh — chỉ đổi vị trí hiển thị): cột chữ này
+              order-2 (hiện bên phải), cột ảnh order-1 (hiện bên trái). Chỉ
+              áp ở md: — mobile vẫn xếp dọc đúng thứ tự DOM gốc (chữ trước,
+              ảnh sau), không đổi. */}
+          <div className="md:col-span-7 md:pb-24 md:order-2">
             <p className="e26-reveal font-serif font-normal text-[42px] md:text-[56px] lg:text-[72px] leading-[1.18] text-e26-text max-w-[680px]">
               Lâu rồi, chưa ai hỏi
               <br className="hidden md:block" /> bạn đang thế nào.
@@ -184,8 +190,21 @@ export default function HomeHero() {
                   (đầu~0-18%, thân trên+tay~18-65% theo tỉ lệ ảnh đã crop) nên
                   mặt/thân trên KHÔNG bị ảnh hưởng (ràng buộc b) — chỉ vùng
                   ghế/chân (65-100%) mờ dần (ràng buộc a). WebkitMaskImage kèm
-                  theo cho Safari. */}
-          <div className="e26-reveal md:col-span-5 relative z-10 w-[70%] max-w-[340px] mx-auto md:mx-0 md:w-full md:max-w-none md:ml-auto -mb-16 md:-mb-24">
+                  theo cho Safari.
+                  SỬA 21/07/2026 (brief đảo bố cục) — cột này thêm md:order-1
+                  (hiện bên trái, xem ghi chú cột chữ). Bỏ md:ml-auto cũ (từng
+                  ép Kenji hết cỡ sang mép PHẢI của cột — khi cột còn nằm bên
+                  phải grid, mép đó trùng luôn mép NGOÀI của cả khung Hero,
+                  gây cảm giác "ép sát mép" brief phản ánh). Đổi md:w-full →
+                  md:w-[82%] (thay vì mx-auto trên full-width, vốn không tạo
+                  khoảng thở vì ảnh đã chiếm hết cột) để ảnh CÓ khoảng thở
+                  thật ở cả 2 bên trong lòng cột — đã xác nhận bằng ảnh chụp
+                  thật: Kenji đứng cạnh 1 cột vòm villa (điểm tựa thị giác),
+                  không chạm mép nào. Bóng elip + mask-image không cần sửa vì
+                  đều định vị THEO khối bọc này (left-1/2 riêng, gradient dọc
+                  riêng), tự động đi theo — đã xác nhận lại bằng ảnh chụp,
+                  không chỉ suy diễn từ code. */}
+          <div className="e26-reveal md:col-span-5 md:order-1 relative z-10 w-[70%] max-w-[340px] mx-auto md:mx-auto md:w-[82%] md:max-w-none -mb-16 md:-mb-24">
             <div
               className="absolute left-1/2 -translate-x-1/2 bottom-[10%] w-[135%] h-[16%]"
               style={{
@@ -247,7 +266,17 @@ export default function HomeHero() {
           Không z-index trên khối nền tối: mặc định nằm DƯỚI khối grid-row
           phía trên (z-10 tường minh) trong cùng stacking context của section
           — Kenji (đã bleed xuống qua -mb âm) luôn đè lên đúng phần trên của
-          khối này. */}
+          khối này.
+          SỬA 21/07/2026 (brief đảo bố cục, Việc 5) — QUYẾT ĐỊNH: GIỮ vệt sơn
+          + câu Signature Moment CĂN GIỮA MÀN HÌNH (text-center trên khối LỚP
+          4 full-bleed), KHÔNG dịch theo vị trí mới của Kenji (giờ ở bên
+          trái). Lý do: (a) LỚP 4 vốn đã là 1 khối full-bleed riêng, không
+          nằm trong 2 cột grid phía trên nên không có ràng buộc kỹ thuật nào
+          buộc phải theo Kenji; (b) xác nhận bằng ảnh chụp thật — căn giữa
+          đọc cân đối rõ hơn hẳn so với hình dung dịch trái theo Kenji (sẽ
+          lệch hẳn về 1 phía, mất cảm giác "khoảnh khắc chung" của câu văn);
+          (c) đúng tinh thần brief tự gợi ý: đây là khoảnh khắc CHUNG, không
+          thuộc riêng vị trí người ngồi. */}
       {/* SỬA 21/07/2026 (brief sửa hướng nhìn..., Việc C) — thêm -mx-6: khối
           này là con trực tiếp của section (px-6) nên trước đây bị bó hẹp
           thiếu 24px mỗi bên → nền villa lộ thành 2 DẢI SÁNG DỌC ở 2 mép màn
