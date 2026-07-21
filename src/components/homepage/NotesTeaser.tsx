@@ -12,12 +12,16 @@ import ComingLink from "./ComingLink";
 // SỬA 21/07/2026 (brief dọn cuối trang chủ, Việc C) — đoạn intro + tiêu đề
 // card + mô tả card thiếu font-normal nên kế thừa nhầm body{font-weight:300}
 // di sản (xem globals.css) thay vì 400 — đã thêm font-normal rõ ràng.
+// SỬA 21/07/2026 (brief tinh gọn câu chữ) — đoạn intro tinh gọn ("những
+// ngày"→"ngày", bỏ "Khi mở," trước câu cuối); card 1 bỏ chữ "ở" thừa
+// ("ở đâu đó"→"đâu đó"). Card Ebook GIỮ NGUYÊN mô tả + CTA "→ Mời bạn đọc"
+// (Quyết định 2). Card Khởi đầu KHÔNG đổi.
 // KHÔNG có nút vàng — đúng 3 điểm vàng toàn trang (vệt ③, viền hover ⑤, "An
 // Thịnh" ⑦), không phát sinh vàng thứ 4 ở đây.
 const CARDS = [
   {
     title: "Ghi chép Essence",
-    lines: ["Những bài viết nhỏ.", "Không để dạy.", "Chỉ để bạn thấy mình", "ở đâu đó trong từng dòng chữ."],
+    lines: ["Những bài viết nhỏ.", "Không để dạy.", "Chỉ để bạn thấy mình", "đâu đó trong từng dòng chữ."],
   },
   {
     title: "Ebook",
@@ -69,17 +73,17 @@ export default function NotesTeaser() {
           Một góc để quay lại.
         </h2>
         <p className="e26-reveal font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text-2 max-w-xl mx-auto">
-          Có những ngày,
+          Có ngày,
           <br />
           chỉ cần đọc một đoạn ngắn.
           <br />
-          Có những ngày,
+          Có ngày,
           <br />
           chỉ cần hiểu mình thêm một chút.
           <br />
           Những cánh cửa này đang được viết dần.
           <br />
-          Khi mở, sẽ luôn có một chỗ để bạn quay về.
+          Sẽ luôn có một chỗ để bạn quay về.
         </p>
 
         {/* 3 CARD chưa mở — mỗi card là 1 <ComingLink> không href (span mờ),

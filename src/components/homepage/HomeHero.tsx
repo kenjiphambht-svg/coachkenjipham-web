@@ -259,7 +259,7 @@ export default function HomeHero() {
                 observer tự bắn khi người dùng thật cuộn chuột trong công cụ
                 này. */}
             <p className="relative e26-reveal e26-signature-reveal font-serif italic font-normal text-[22px] md:text-[28px] leading-snug text-e26-text max-w-[640px] px-8">
-              Có lẽ đây là lần đầu sau rất lâu, bạn ngồi xuống chỉ để ở cùng chính mình.
+              Có lẽ đã rất lâu rồi, bạn mới ngồi xuống chỉ để ở cùng chính mình.
             </p>
           </div>
         </div>

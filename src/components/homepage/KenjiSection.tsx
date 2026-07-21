@@ -21,6 +21,12 @@ import ComingLink from "./ComingLink";
 // SỬA 21/07/2026 (brief dọn cuối trang chủ, Việc C) — body + link thiếu
 // font-normal nên kế thừa nhầm body{font-weight:300} (di sản, xem
 // globals.css) thay vì 400 luật thương hiệu — đã thêm font-normal rõ ràng.
+// SỬA 21/07/2026 (brief tinh gọn câu chữ, Quyết định 1) — BỎ HẲN nhãn ICF
+// ("· Thực hành theo tiêu chuẩn ICF") theo yêu cầu Kenji — ICF sẽ nhắc kỹ ở
+// /ve-kenji và /phuong-phap, không ở trang chủ. Body cũng tinh gọn lại chữ
+// theo bản Kenji sửa (đổi "họ không nói được với ai" → "họ chưa từng nói với
+// ai", đổi "khi họ yêu con nhưng không biết bắt đầu từ đâu" → "nghe những
+// nỗi lo họ chưa biết gọi tên…", đổi "căn phòng" → "không gian").
 export default function KenjiSection() {
   return (
     <section className="relative bg-e26-white px-6 py-16 md:py-28">
@@ -63,12 +69,12 @@ export default function KenjiSection() {
           </p>
           <div className="e26-reveal space-y-5 font-sans font-normal text-[18px] leading-[1.9] text-e26-text-2 max-w-xl">
             <p>
-              Tám năm qua, tôi ngồi cùng người lớn, lắng nghe những điều họ không nói được với
-              ai. Và ngồi cùng ba mẹ, khi họ yêu con nhưng không biết bắt đầu từ đâu.
+              Tám năm qua, tôi ngồi cùng người lớn, lắng nghe những điều họ chưa từng nói với
+              ai. Và ngồi cùng ba mẹ, nghe những nỗi lo họ chưa biết gọi tên…
             </p>
             <p>Tôi không giúp ai đi nhanh hơn.</p>
             <p>
-              Tôi chỉ giữ cho căn phòng đủ yên,
+              Tôi chỉ giữ cho không gian đủ yên,
               <br />
               để họ nghe được chính mình.
             </p>
@@ -81,7 +87,7 @@ export default function KenjiSection() {
           </blockquote>
 
           <p className="e26-reveal font-sans text-xs font-medium tracking-[0.18em] uppercase text-e26-text-2 mt-8">
-            Huấn luyện viên Tâm lý Chiều sâu · Thực hành theo tiêu chuẩn ICF
+            Huấn luyện viên Tâm lý Chiều sâu
           </p>
 
           <p className="e26-reveal mt-6">
