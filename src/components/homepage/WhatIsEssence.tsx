@@ -17,6 +17,10 @@ import ComingLink from "./ComingLink";
 // sản (xem globals.css) thay vì 400 — đã thêm font-normal rõ ràng. Riêng
 // dòng [Sub] "Một mái hiên tĩnh lặng." đã có sẵn font-normal từ trước, không
 // đổi.
+// SỬA 21/07/2026 (brief tinh gọn câu chữ) — thay TOÀN BỘ body bằng bản tinh
+// gọn hơn của Kenji (giữ nguyên 4 mốc ngắt đoạn cũ). Chữ ký cuối tinh gọn
+// phần đầu/cuối câu, GIỮ NGUYÊN cụm ranh giới thương hiệu "Kenji phân tích
+// và viết, từ dòng đầu đến dòng cuối" đúng như brief yêu cầu.
 export default function WhatIsEssence() {
   return (
     <section className="relative bg-e26-ivory px-6 py-16 md:py-32">
@@ -57,20 +61,19 @@ export default function WhatIsEssence() {
           Một mái hiên tĩnh lặng.
         </p>
         <p className="e26-reveal font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text-2 mb-6">
-          Có những giai đoạn, điều chúng ta cần không phải là thêm một phương pháp. Chỉ là một
-          nơi đủ yên để ngồi xuống, thở chậm lại và nhìn rõ điều đang diễn ra bên trong mình.
-          Essence được tạo ra cho khoảnh khắc ấy.
+          Có những giai đoạn, điều ta cần không phải thêm một phương pháp. Chỉ là một nơi đủ
+          yên để ngồi xuống, thở chậm lại, và nhìn rõ điều đang diễn ra bên trong mình. Essence
+          được tạo ra cho khoảnh khắc ấy.
         </p>
         <p className="e26-reveal font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text-2 mb-6">
-          Mọi thứ ở đây đều có thứ tự. Không vội sửa. Không hối thúc thay đổi. Chỉ từng bước đưa
-          bạn trở về trạng thái An định, trước khi đi sâu hơn vào bản sắc thật của mình.
+          Ở đây, mọi thứ đều có thứ tự. Không vội sửa. Không hối thúc thay đổi. Chỉ từng bước
+          đưa bạn trở về trạng thái An định, trước khi đi sâu hơn vào bản sắc thật của mình.
         </p>
         <p className="e26-reveal font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text-2 mb-6">
           Phía sau là một hệ thống được xây dựng chỉn chu. Phía trước vẫn luôn là con người.
         </p>
         <p className="e26-reveal font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text-2 mb-8">
-          Cách Essence vận hành trọn vẹn sẽ được kể trong một cánh cửa riêng, đang được viết
-          dần.
+          Cách Essence vận hành sẽ được kể trong một cánh cửa riêng.
         </p>
         <p className="e26-reveal mb-10">
           <ComingLink href="/phuong-phap" className="font-sans font-normal text-[17px] underline decoration-e26-black underline-offset-4">
@@ -78,8 +81,8 @@ export default function WhatIsEssence() {
           </ComingLink>
         </p>
         <p className="e26-reveal font-serif italic font-normal text-[17px] md:text-[18px] leading-[1.7] text-e26-text-2">
-          Và mỗi ấn phẩm chuyên sâu gửi đến tay bạn, đều do Kenji phân tích và viết, từ dòng
-          đầu đến dòng cuối.
+          Mỗi ấn phẩm chuyên sâu gửi đến bạn đều do Kenji phân tích và viết, từ dòng đầu đến
+          dòng cuối.
         </p>
       </div>
     </section>

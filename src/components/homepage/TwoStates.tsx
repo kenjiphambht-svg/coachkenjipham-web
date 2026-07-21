@@ -28,6 +28,10 @@ import ImageSlot from "./ImageSlot";
 // này + 2 link CTA "Mời bạn vào →" thiếu font-normal nên kế thừa nhầm
 // body{font-weight:300} di sản (xem globals.css) thay vì 400 — đã thêm
 // font-normal rõ ràng cho cả 3.
+// SỬA 21/07/2026 (brief tinh gọn câu chữ) — card 1: "phiên bản nào đó" →
+// "phiên bản khác". Card 2: thêm dấu phẩy sau "Có những tối", bỏ chữ "sao"
+// trong "Nhưng sao khoảng cách...". Nút "Mời bạn vào →" cả 2 thẻ giữ nguyên
+// (brief xác nhận không đổi).
 export default function TwoStates() {
   return (
     <section className="relative bg-e26-cream px-6 py-16 md:py-32">
@@ -103,7 +107,7 @@ export default function TwoStates() {
                 <br />
                 Mà nằm ở việc
                 <br />
-                phải trở thành một phiên bản nào đó
+                phải trở thành một phiên bản khác
                 <br />
                 để tiếp tục sống.
               </p>
@@ -130,13 +134,13 @@ export default function TwoStates() {
                 Bản Sắc Của Con
               </p>
               <p className="font-serif font-normal text-[22px] md:text-2xl leading-snug text-e26-text mb-5">
-                Có những tối
+                Có những tối,
                 <br />
                 bạn đứng trước cửa phòng con.
                 <br />
                 Thương con.
                 <br />
-                Nhưng sao khoảng cách ngày càng xa.
+                Nhưng khoảng cách ngày càng xa.
               </p>
               <Link
                 href="/ban-sac-cua-con"

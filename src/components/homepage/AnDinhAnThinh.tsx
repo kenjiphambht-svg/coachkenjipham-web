@@ -27,6 +27,15 @@
 // câu kết) thiếu font-normal nên kế thừa nhầm body{font-weight:300} di sản
 // (xem globals.css) thay vì 400 — đã thêm font-normal rõ ràng cho tất cả.
 // 2 dòng neo "An định."/"An Thịnh." đã có font-medium sẵn, không đổi.
+// SỬA 21/07/2026 (brief tinh gọn câu chữ) — thì thầm viết lại ngắn hơn; bỏ
+// dấu ":" ở 2 dòng neo "Essence gọi đó là An định."/"An Thịnh." (chỉ bỏ dấu
+// câu, KHÔNG đụng span nhấn to+màu theo sau); "Nó là một nền đất." → "Nó là
+// nền đất."; câu kết thêm "bạn" ("Chỉ cần bạn biết..."). LƯU Ý (fable mode —
+// đối chiếu thực tế trước khi sửa): đoạn "Nhịp giữa" brief mô tả CŨ là "Đó
+// là khi bạn có được một khoảng trống nhỏ xíu..." nhưng file THỰC TẾ đã là
+// "Không phải vì cuộc sống dễ hơn..." từ một brief trước — chỉ khác đúng 1
+// cụm "mình làm" so với MỚI brief muốn ("bạn chọn làm"), đã sửa đúng cụm đó,
+// không áp nhầm toàn bộ CŨ giả định của brief đè lên bản đã đúng sẵn.
 export default function AnDinhAnThinh() {
   return (
     <section className="relative bg-e26-black px-6 py-24 md:py-40 overflow-hidden">
@@ -50,9 +59,9 @@ export default function AnDinhAnThinh() {
             text-dark-2 sẵn có thay vì opacity rời để không xung đột với
             transition opacity của .e26-reveal). */}
         <p className="e26-reveal font-serif italic font-normal text-[17px] md:text-[18px] leading-[1.7] text-e26-text-dark-2 mt-8">
-          Chỉ là tối đó, sau một quyết định lớn, bạn vẫn ngủ được ngon giấc. Bữa cơm nhà tự
-          nhiên bớt căng. Con chạy vào kể một chuyện dài ngoằng về con kiến ngoài sân — lần này
-          bạn nghe hết, mỉm cười, rồi mới gọi con đi rửa tay ăn cơm.
+          Tối đó, sau một quyết định lớn, bạn vẫn ngủ được. Bữa cơm nhà bớt căng. Con chạy vào
+          kể một câu chuyện dài về con kiến ngoài sân. Lần này, bạn nghe hết, mỉm cười. Rồi mới
+          gọi con đi ăn cơm.
         </p>
 
         {/* Body — Vai 3 */}
@@ -61,20 +70,20 @@ export default function AnDinhAnThinh() {
           <br />
           Mà vì giữa điều xảy ra
           <br />
-          và điều mình làm tiếp theo,
+          và điều bạn chọn làm tiếp theo,
           <br />
           đã có một khoảng lặng.
         </p>
 
         {/* Neo — "An định" nhấn giữa câu: lead Vai 2, "An định" ~Vai 1. */}
         <p className="e26-reveal font-serif font-medium text-[30px] md:text-[42px] leading-[1.25] text-e26-text-dark mt-10">
-          Essence gọi đó là:{" "}
+          Essence gọi đó là{" "}
           <span className="text-[40px] md:text-[64px] leading-[1.15]">An định.</span>
         </p>
 
         {/* Cầu — dòng nhỏ, Vai 4 */}
         <p className="e26-reveal font-serif italic font-normal text-[17px] md:text-[18px] leading-[1.7] text-e26-text-dark-2 mt-8">
-          An định không phải đích đến. Nó là một nền đất.
+          An định không phải đích đến. Nó là nền đất.
         </p>
 
         {/* Nhịp 2 — AN THỊNH: body Vai 3 */}
@@ -97,7 +106,7 @@ export default function AnDinhAnThinh() {
             thứ 3 toàn trang), thở rộng trên/dưới để câu đứng một mình như
             đích đến. */}
         <p className="e26-reveal font-serif font-medium text-[30px] md:text-[42px] leading-[1.25] text-e26-text-dark mt-16 md:mt-24">
-          Essence gọi đó là:{" "}
+          Essence gọi đó là{" "}
           <span className="text-e26-gold text-[48px] md:text-[72px] leading-[1.1]">
             An Thịnh.
           </span>
@@ -109,7 +118,7 @@ export default function AnDinhAnThinh() {
         <p className="e26-reveal font-sans font-normal text-[18px] leading-[1.9] text-e26-text-dark-2 mt-16 md:mt-20">
           Không phải cánh cửa nào cũng cần mở ngay.
           <br />
-          Chỉ cần biết chúng luôn ở đó.
+          Chỉ cần bạn biết chúng luôn ở đó.
         </p>
       </div>
     </section>
