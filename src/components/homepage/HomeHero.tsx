@@ -63,9 +63,19 @@ const HERO_IMAGE_SRC: string | null = "/images/home/kenji-hero-cutout.webp";
 // ảnh tự tan biến (không còn "đường cắt" vì không còn rìa cứng nào để lộ).
 // Kèm 1 vệt bóng elip mờ (radial-gradient blur) đặt dưới ghế để mắt đọc
 // "bóng đổ" thay vì thấy ảnh biến mất đột ngột — mẹo kinh điển ghép cutout.
+// SỬA 21/07/2026 (Việc C, phần 2 — nguyên nhân thật của "dải sáng dọc"):
+// overflow-visible → overflow-x-clip trên <section>. Đo thật bằng scrollWidth:
+// trang bị TRÀN NGANG 790px > viewport 768px do 2 phần tử trang trí absolute
+// thò qua mép phải — bóng elip dưới ghế (w-[135%], thò ~22px) và vệt sơn
+// (calc(100%+140px), thò ~6px) — khiến trang CUỘN NGANG được (đo thấy
+// scrollX=11 thật), mọi thứ xô trái để lộ dải nền sáng dọc mép phải. Lỗi này
+// CÓ TỪ PR#45/#46, không phải do -mx-6 mới. overflow-x-clip cắt đúng trục
+// ngang (không tạo scrollbar/scrollable overflow), trục dọc vẫn visible —
+// bleed dọc của Kenji (-mb) và đuôi vệt sơn (bottom -70px xuống ③) không bị
+// ảnh hưởng, đã xác nhận lại bằng ảnh chụp thật.
 export default function HomeHero() {
   return (
-    <section className="bg-e26-cream px-6 pt-24 md:pt-[120px] relative overflow-visible">
+    <section className="bg-e26-cream px-6 pt-24 md:pt-[120px] relative overflow-x-clip">
       {/* LỚP 1 — ảnh nền phủ trọn section (inset-0), cream ~90% giữ tương phản
           chữ. Đã đo thật ở PR trước: chữ hero vẫn đọc rõ trên nền này. */}
       {/* SỬA BUG PHÁT HIỆN 19/07/2026 (nằm ngay trong file này, sửa kèm để
@@ -93,8 +103,13 @@ export default function HomeHero() {
               text-e26-text (giống màu headline, bỏ color-mix 65% cũ — xem
               ghi chú tại khối chữ) → contrast nhảy lên 6.51 ngay ở 15%, 6.89
               ở 20%. Chọn 20% — thấp, villa vẫn rõ, dư dả so với 4.5 (dư ra
-              để an toàn qua các breakpoint/crop khác nhau, không sát ngưỡng). */}
-          <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_20%,transparent)]" />
+              để an toàn qua các breakpoint/crop khác nhau, không sát ngưỡng).
+              SỬA 21/07/2026 (brief sửa hướng nhìn + mờ nền, Việc B) — Kenji
+              xem thật thấy chữ chưa nổi đủ trên nền nhiều chi tiết → tăng
+              20% lên 40% (+20 điểm % đúng brief). Contrast chỉ tăng khi
+              overlay tăng — đã đo lại tại đúng vị trí chữ ở 40%, xem số đo
+              trong báo cáo PR. Villa vẫn nhận ra được bằng mắt (ảnh thật). */}
+          <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_40%,transparent)]" />
         </div>
       )}
       {/* SỬA 21/07/2026 — dải gradient tan-đen CŨ (h-40/h-64, chỉ che phần nền
@@ -180,15 +195,26 @@ export default function HomeHero() {
               }}
               aria-hidden="true"
             />
+            {/* SỬA 21/07/2026 (brief sửa hướng nhìn) — LẬT NGANG ảnh Kenji
+                (scaleX(-1)): sau khi nền villa lật ở PR#49, hướng nhìn cũ của
+                Kenji quay VÀO hành lang trong nhà — lật người để nhìn RA
+                phía vòm/vườn (bên phải sau khi nền lật). Chỉ lật ẢNH NGƯỜI,
+                KHÔNG đụng nền. Mask-image là gradient DỌC (to bottom) nên
+                không bị ảnh hưởng bởi lật ngang; bóng elip dưới ghế là hình
+                đối xứng, đặt theo khối bọc (không theo ảnh) nên giữ nguyên
+                vị trí — cả hai đã xác nhận lại bằng ảnh chụp thật sau lật.
+                Kenji đã chấp nhận hướng sáng người/nền không khớp tuyệt đối,
+                ưu tiên đúng hướng nhìn. */}
             {HERO_IMAGE_SRC ? (
               <Image
                 src={HERO_IMAGE_SRC}
-                alt="Kenji Phạm cầm ly trà, nhìn ra cửa sổ"
+                alt="Kenji Phạm cầm ly trà, nhìn ra khu vườn"
                 width={720}
                 height={844}
                 sizes="(max-width: 768px) 70vw, 32vw"
                 className="relative w-full h-auto object-contain"
                 style={{
+                  transform: "scaleX(-1)",
                   maskImage: "linear-gradient(to bottom, black 0%, black 66%, transparent 94%)",
                   WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 66%, transparent 94%)",
                 }}
@@ -222,12 +248,23 @@ export default function HomeHero() {
           phía trên (z-10 tường minh) trong cùng stacking context của section
           — Kenji (đã bleed xuống qua -mb âm) luôn đè lên đúng phần trên của
           khối này. */}
-      <div className="relative pt-28 pb-24 md:pt-36 md:pb-32 px-6 overflow-visible">
+      {/* SỬA 21/07/2026 (brief sửa hướng nhìn..., Việc C) — thêm -mx-6: khối
+          này là con trực tiếp của section (px-6) nên trước đây bị bó hẹp
+          thiếu 24px mỗi bên → nền villa lộ thành 2 DẢI SÁNG DỌC ở 2 mép màn
+          hình. -mx-6 bù đúng phần padding của section cho lớp gradient tràn
+          sát mép viewport; px-6 giữ nguyên trên chính khối này nên chữ bên
+          trong không đổi vị trí. Đã kiểm cả desktop lẫn mobile bằng ảnh thật.
+          SỬA 21/07/2026 (Việc D) — kéo điểm đen đặc của gradient từ 50% lên
+          sớm hơn hẳn (đen đặc từ 30%, thêm chặng 65% đen ở 15%) để vùng NGAY
+          PHÍA TRÊN vệt sơn (giữa chỗ Kenji chìm và câu chữ) tối rõ rệt —
+          PR#46 che chưa đủ theo Kenji xem thật. Vệt sơn sáng bên dưới vẫn
+          nổi tương phản trên nền tối mới (xác nhận bằng ảnh chụp thật). */}
+      <div className="relative -mx-6 pt-28 pb-24 md:pt-36 md:pb-32 px-6 overflow-visible">
         <div
           className="absolute inset-0"
           style={{
             backgroundImage:
-              "linear-gradient(to bottom, transparent, var(--essence-black-2026) 50%, var(--essence-black-2026))",
+              "linear-gradient(to bottom, transparent, color-mix(in srgb, var(--essence-black-2026) 65%, transparent) 15%, var(--essence-black-2026) 30%, var(--essence-black-2026))",
           }}
           aria-hidden="true"
         />
