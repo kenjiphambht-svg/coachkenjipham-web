@@ -44,14 +44,27 @@ export default function KenjiSection() {
           image). Tăng 45%→58% (Bước 3) — khung cửa chìm gần hết, chỉ còn
           cảm giác sáng, không phá bố cục ảnh chân dung/chữ đã dựng ở Việc A.
           Contrast tăng theo: desktop 5.03/5.13 (nhãn/body), mobile
-          5.61/5.69 — dư dả so với 4.5. */}
+          5.61/5.69 — dư dả so với 4.5.
+          SỬA 21/07/2026 (brief Việc E) — thay bg-light-kenji.webp (Light
+          System trừu tượng) bằng kenji-phong-doc.webp: ảnh phòng đọc villa
+          thật (kệ sách, ghế bành, cửa vòm). Convert q90, không banding.
+          Overlay trắng 58% → 85%: ảnh mới có nhiều vùng TỐI thật (kệ sách,
+          gỗ) ngay dưới cột chữ nên 58% không còn đủ. Dò từ thấp lên theo
+          worst-case ĐÚNG CHIỀU cho chữ tối/nền sáng = pixel TỐI nhất (xem
+          BAI-HOC-KY-THUAT.md mục 7 — lần đầu đo nhầm chiều): 58%→2.33,
+          72%→3.43, 78%→3.98, 85%→4.59 ⇒ 85% là mức thấp nhất đạt ≥4.5.
+          Mobile đo lại riêng: 4.75. Đã thử dò background-position (0/20/35/
+          50/70%) — chênh không đáng kể (2.13-2.22 ở cùng mức) vì ảnh có đốm
+          tối rải khắp, nên giữ bg-center. ĐÁNH ĐỔI ĐÃ BIẾT: ở 85% phòng đọc
+          chỉ còn "cảm giác sáng", không còn nhận ra rõ cảnh — xem
+          BAI-HOC-KY-THUAT.md mục 8, cần Kenji quyết nếu muốn ảnh rõ hơn. */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/bg-light-kenji.webp)" }}
+        style={{ backgroundImage: "url(/images/home/kenji-phong-doc.webp)" }}
         aria-hidden="true"
       />
       <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-white-2026)_58%,transparent)]"
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-white-2026)_85%,transparent)]"
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-[1120px] mx-auto flex flex-col md:flex-row md:items-center gap-10 md:gap-16">

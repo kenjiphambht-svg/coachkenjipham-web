@@ -50,8 +50,21 @@ export default function AnDinhAnThinh() {
         style={{ backgroundImage: "url(/images/home/andinh-vuon-toi.webp)" }}
         aria-hidden="true"
       />
+      {/* SỬA 21/07/2026 (brief Việc C) — overlay từ FLAT 82% đổi thành
+          GRADIENT: giữ nguyên 82% ở phần trên/giữa (đã đo đạt ở PR#52, không
+          đụng), rồi TỐI DẦN về đáy tới 96% để hoà vào ảnh cầu nối
+          (ImageBridge) ngay sau ⑦ — mép trên ảnh cầu nối rất tối (11-13/255,
+          đo ở PR trước) + còn dải gradient đen riêng, trong khi đáy ⑦ ở 82%
+          composite ra ~54/255 → CÓ bước nhảy sáng thật. Ở 96%, đáy ⑦ về
+          ~31/255, sát #1A1A1A (26) nên nối liền mạch. Câu kết "Không phải
+          cánh cửa nào..." nằm trong dải này: nền TỐI HƠN nên contrast chỉ
+          TĂNG (đã đo lại, xem báo cáo). Xem BAI-HOC-KY-THUAT.md mục 1 & 6. */}
       <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-black-2026)_82%,transparent)]"
+        className="absolute inset-0"
+        style={{
+          backgroundImage:
+            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-black-2026) 82%, transparent) 0%, color-mix(in srgb, var(--essence-black-2026) 82%, transparent) 55%, color-mix(in srgb, var(--essence-black-2026) 90%, transparent) 80%, color-mix(in srgb, var(--essence-black-2026) 96%, transparent) 100%)",
+        }}
         aria-hidden="true"
       />
       <span className="andinh-ghost-an absolute top-6 left-6 md:top-10 md:left-10 font-serif" aria-hidden="true">
@@ -85,15 +98,18 @@ export default function AnDinhAnThinh() {
           đã có một khoảng lặng.
         </p>
 
-        {/* Neo — "An định" nhấn giữa câu: lead Vai 2, "An định" ~Vai 1. */}
+        {/* Neo — "An Định" nhấn giữa câu: lead Vai 2, "An Định" ~Vai 1.
+            SỬA 21/07/2026 (brief Việc B) — viết hoa cả 2 chữ "An Định" cho
+            nhất quán với neo cuối "An Thịnh" (đang viết hoa cả 2). CHỈ đổi
+            chữ cái, GIỮ NGUYÊN kỹ thuật nhấn-giữa-câu (span cỡ lớn riêng). */}
         <p className="e26-reveal font-serif font-medium text-[30px] md:text-[42px] leading-[1.25] text-e26-text-dark mt-10">
           Essence gọi đó là{" "}
-          <span className="text-[40px] md:text-[64px] leading-[1.15]">An định.</span>
+          <span className="text-[40px] md:text-[64px] leading-[1.15]">An Định.</span>
         </p>
 
         {/* Cầu — dòng nhỏ, Vai 4 */}
         <p className="e26-reveal font-serif italic font-normal text-[17px] md:text-[18px] leading-[1.7] text-e26-text-dark-2 mt-8">
-          An định không phải đích đến. Nó là nền đất.
+          An Định không phải đích đến. Nó là nền đất.
         </p>
 
         {/* Nhịp 2 — AN THỊNH: body Vai 3 */}
