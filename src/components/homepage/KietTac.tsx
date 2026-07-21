@@ -13,6 +13,9 @@
 // SỬA 20/07/2026 (brief V9-FINAL — typography số hoá + nội dung) — nguồn chữ
 // duy nhất: Google Doc "HOMEPAGE V9-FINAL". Body đổi từ "…kể cả bạn"/dấu "…"
 // (di sản bản cũ) sang đúng nguyên văn Doc: 2 dòng thơ, kết bằng dấu chấm.
+// SỬA 21/07/2026 (brief ghép nền hero villa, Bước 3) — đổi câu body theo bản
+// Kenji gửi, NGUYÊN VĂN kể cả dấu "…" giữa câu 2 ("Mà vì…bạn đã chưa đọc nó
+// đủ chậm."). Không đổi H1, không đổi nền/vệt vàng.
 // H1 áp Vai 1 (hệ 5 vai chung toàn trang): 64px desktop / 40px mobile, serif
 // weight 500, line-height 1.15 (trước: 52/32, weight 300/light). Body áp
 // Vai 3 (18px, sans, lh 1.9) — ③ nằm trong nhóm tăng 1 nấc mobile (③④⑤) nên
@@ -51,9 +54,9 @@ export default function KietTac() {
           .
         </h1>
         <p className="e26-reveal font-sans font-normal text-[18px] leading-[1.9] text-e26-text-dark-2 mt-8 max-w-lg mx-auto">
-          Không phải vì mọi chương đều đẹp.
+          Không phải mọi chương đều đẹp.
           <br />
-          Mà vì đã quá lâu, bạn chưa đọc nó đủ chậm.
+          Mà vì…bạn đã chưa đọc nó đủ chậm.
         </p>
       </div>
     </section>

@@ -3,11 +3,20 @@ import Image from "next/image";
 // Ảnh trang trí (alt rỗng, aria-hidden) — phủ lớp cream ~90% lên trên để chữ
 // hero giữ nguyên độ tương phản đọc được (không đổi màu chữ hiện tại).
 //
-// SỬA 20/07/2026 (Light System) — thay bg-hero-open.webp bằng light-01
-// "Morning Soft" (bg-light-hero.webp), theo brief map ảnh→section chính
-// thức. Overlay cream bên dưới đo lại từ đầu cho ảnh mới (xem ghi chú tại
-// thẻ div overlay).
-const HERO_BG_SRC: string | undefined = "/images/home/bg-light-hero.webp";
+// SỬA 21/07/2026 (brief ghép nền hero villa) — thay bg-light-hero.webp
+// (ảnh Light trừu tượng) bằng hero-hien-vuon.webp — ảnh villa hiên vòm nhìn
+// ra vườn thật Kenji cung cấp. ĐÃ LẬT NGANG (scaleX ngược khi convert qua
+// sharp .flop(), không lật bằng CSS) so với file gốc hero-hien-vuon.png:
+// ảnh gốc sáng từ bên PHẢI (bóng đổ trái) + vườn mở bên TRÁI — lật xong
+// sáng từ bên TRÁI (bóng đổ phải, khớp hướng sáng ảnh Kenji cutout hiện có)
+// + vườn mở dời sang bên PHẢI (đúng vị trí Kenji ngồi trong Hero). Convert
+// webp quality 90 (100KB, đã so 90/95/98/100 — không thấy banding ở vùng
+// trần/tường phẳng nhất kể cả q90, chọn q90 nhẹ nhất mà vẫn sạch, dưới
+// ngưỡng 300-500KB gợi ý vì ảnh này không cần nặng vậy mới giữ được nét).
+// TRIẾT LÝ MỚI (khác hẳn ảnh Light trừu tượng cũ): villa phải RÕ, thấy ánh
+// sáng thật — overlay TỐI THIỂU, không che mờ nặng như overlay 70% cũ. Xem
+// ghi chú tại div overlay bên dưới cho % thật đã đo.
+const HERO_BG_SRC: string | undefined = "/images/home/hero-hien-vuon.webp";
 
 // SỬA 21/07/2026 (brief thay ảnh cutout) — ảnh cũ kenji-hero-window.webp có
 // NỀN PHÒNG riêng, phải bọc khung chữ nhật (aspect-[4/5] + object-cover +
@@ -72,12 +81,20 @@ export default function HomeHero() {
       {HERO_BG_SRC && (
         <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
           <Image src={HERO_BG_SRC} alt="" fill className="object-cover" priority />
-          {/* SỬA 20/07/2026 (Light System) — đo lại contrast cho ảnh mới
-              (canvas, WCAG): dò tăng dần từ 0% → 70% mới đạt ≥4.5:1 cho toàn
-              bộ đoạn thân (desktop 4.56, mobile pass từ 60%). Giảm từ 90%
-              (mức cũ, chưa từng đo thật) xuống 70% — mức thấp nhất đạt được,
-              ảnh hiện rõ hơn trước. */}
-          <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_70%,transparent)]" />
+          {/* SỬA 21/07/2026 (brief ghép nền hero villa) — TRIẾT LÝ MỚI: villa
+              RÕ, overlay tối thiểu (khác hẳn ảnh Light trừu tượng cũ cần phủ
+              70-88%). Đo contrast thật (canvas, WCAG, sample toàn bộ dòng
+              chữ qua Range.getClientRects — không đoán): với màu chữ CŨ
+              (color-mix đen 65%, xem ghi chú tại khối chữ) trần contrast rất
+              thấp trên nền villa (ảnh có chi tiết/độ tương phản thật, không
+              trơn như ảnh Light cũ) — quét 25%→50% chỉ tăng dần 3.55→4.09,
+              không đạt 4.5 dù tăng overlay nhiều, ĐÚNG NGUYÊN NHÂN không nằm
+              ở overlay mà ở chữ bán trong suốt. Đổi màu chữ body sang đặc
+              text-e26-text (giống màu headline, bỏ color-mix 65% cũ — xem
+              ghi chú tại khối chữ) → contrast nhảy lên 6.51 ngay ở 15%, 6.89
+              ở 20%. Chọn 20% — thấp, villa vẫn rõ, dư dả so với 4.5 (dư ra
+              để an toàn qua các breakpoint/crop khác nhau, không sát ngưỡng). */}
+          <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_20%,transparent)]" />
         </div>
       )}
       {/* SỬA 21/07/2026 — dải gradient tan-đen CŨ (h-40/h-64, chỉ che phần nền
@@ -102,9 +119,13 @@ export default function HomeHero() {
               <br className="hidden md:block" /> bạn đang thế nào.
             </p>
             {/* Body: sans WEIGHT 400 (không 300 — luật khoá, chữ Việt có dấu nét
-                300 vỡ). Màu đen token @65% (color-mix, không mã xám #555, không
-                màu mới). Headline→body 48px (mt-12). */}
-            <div className="e26-reveal mt-12 space-y-6 font-sans font-normal text-[18px] md:text-[20px] lg:text-[22px] leading-[1.8] max-w-[540px] text-[color-mix(in_srgb,var(--essence-text-primary-2026)_65%,transparent)]">
+                300 vỡ). Headline→body 48px (mt-12).
+                SỬA 21/07/2026 (brief ghép nền hero villa) — màu đen token
+                @65% (color-mix) CŨ được hiệu chỉnh cho ảnh Light trơn màu cũ,
+                không đạt 4.5:1 trên nền villa mới dù tăng overlay (xem ghi
+                chú tại lớp overlay). Đổi sang text-e26-text (đặc, cùng màu
+                headline) — đã đo lại đạt 6.89:1 ở overlay 20%, dư dả. */}
+            <div className="e26-reveal mt-12 space-y-6 font-sans font-normal text-[18px] md:text-[20px] lg:text-[22px] leading-[1.8] max-w-[540px] text-e26-text">
               <p>
                 Bạn vẫn đi làm.
                 <br />
