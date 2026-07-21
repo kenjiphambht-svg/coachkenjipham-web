@@ -24,13 +24,17 @@ const HERO_BG_SRC: string | undefined = "/images/home/hero-hien-vuon.webp";
 // nhau lộ liễu → vẫn là "dán ghép". Kenji thả ảnh CUTOUT nền trong suốt thật
 // (kenji-hero-cutout.png, đã kiểm alpha channel thật: 68.7% trong suốt hoàn
 // toàn, 28.9% đặc, 2.3% viền anti-alias — không phải nền đen/trắng giả).
-// Phóng to 300% kiểm viền tóc/vai/tay cầm cốc: mượt, không lởm chởm, không
-// viền đen/trắng sót. Đã CROP KHÍT theo bbox alpha thật (896×1152 gốc còn
-// nhiều khoảng trống trong suốt phía trên đầu 26.7% + phải 19.6% → cắt còn
-// 720×844, đúng khít người+ghế, đáy ghế chạm đúng mép dưới ảnh) rồi mới
-// convert webp giữ alpha (sharp, alphaQuality 100) — 44KB. Đặt
-// HERO_IMAGE_SRC = null để hiện panel kem-đậm phẳng cùng tỉ lệ 720/844,
-// layout không nhảy.
+// SỬA 22/07/2026 (brief thay ảnh Kenji chân đầy đủ, Việc A) — Kenji GHI ĐÈ
+// đúng file kenji-hero-cutout.png bằng ảnh MỚI: chân ghế + chân người ĐẦY ĐỦ
+// (không còn cắt cụt). Đã đo alpha bbox thật của ảnh mới (1792×2304 gốc,
+// bbox 335,300→1518,2176): biên dưới bbox có 128px (5.6%) trong suốt HOÀN
+// TOÀN — khác hẳn ảnh cũ (0px, nội dung chạm thẳng mép dưới). Soi cột alpha
+// tại mũi giày (x=1400): 255→247→193→79→10→0 mượt trong ~8px — mũi giày tự
+// thon nhỏ rồi tan vào trong suốt, KHÔNG phải bị hộp chữ nhật cắt cụt giữa
+// chừng. Crop khít theo bbox +6px đệm (tránh cắt sát viền AA) → 1195×1888
+// (tỉ lệ 0.633 — khác hẳn 720×844/0.853 của ảnh cũ, ảnh mới THON HƠN nhiều
+// theo chiều dọc). Convert webp q92, alphaQuality 100 — soi viền tóc + tay
+// cầm cốc phóng to 4x: mượt, không viền đen/trắng sót — 116KB.
 const HERO_IMAGE_SRC: string | null = "/images/home/kenji-hero-cutout.webp";
 
 // SỬA 20/07/2026 (brief V9-FINAL) — chữ + cỡ giữ NGUYÊN (brief xác nhận "đã
@@ -88,9 +92,75 @@ export default function HomeHero() {
           vẫn đọc được là NHỜ ảnh gốc bg-hero-light vốn đã rất sáng, không phải
           nhờ overlay này. NGOÀI SCOPE hôm nay (không sửa): ImageBridge (⑦→⑧)
           dùng đúng pattern lỗi này ở 2 chỗ — đã flag riêng trong báo cáo. */}
+      {/* SỬA 22/07/2026 (brief dời chữ tránh khung cửa sổ, Việc B) — bọc lại
+          layer nền theo max-w-[1440px] + left-1/2/-translate-x-1/2 (thay vì
+          inset-0 full-viewport cũ) để layer nền dùng CHUNG khung toạ độ với
+          khối chữ (dòng ngay dưới cũng max-w-[1440px] mx-auto). LÝ DO: đã đo
+          thật — object-position cố định trên nền full-viewport bị TRÔI lệch
+          so với khối chữ mỗi khi viewport > 1440 (chữ đứng yên trong khung
+          1440 căn giữa, nền lại tính % trên bề ngang TOÀN màn hình đang nới
+          rộng) → cùng 1 giá trị object-position từng đạt ở 1440 (48px lề) lại
+          THỦNG ở 1920 (đo thật: khung vòm chồng lấn chữ ~76px). Bọc nền theo
+          cùng max-w+center thì mọi viewport ≥1440 cho kết quả giống hệt phép
+          đo ở 1440 (khung toạ độ nền = khung toạ độ chữ, không trôi nữa). Dưới
+          1440 (mobile/tablet/lg hẹp) không đổi gì (w-full = 100% viewport như
+          inset-0 cũ, đã xác nhận qua ảnh chụp không đổi ở 768/1024/1280). */}
       {HERO_BG_SRC && (
-        <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-          <Image src={HERO_BG_SRC} alt="" fill className="object-cover" priority />
+        <div
+          className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-full max-w-[1440px] overflow-hidden"
+          aria-hidden="true"
+        >
+          {/* SỬA 22/07/2026 (Việc B) — md:object-[85%_50%]: đo thật khung
+              vòm-cây (canvas color-scan, phát hiện vùng có green-dominance
+              trong dải tối của ảnh, xem BAI-HOC-KY-THUAT.md nếu cần bối cảnh
+              phương pháp) nằm ở x≈610–800 tại 1440 với crop mặc định 50%
+              center — chồng thẳng vào khối chữ (bắt đầu x≈624). Dò
+              65%→78%→85%: 85% đẩy khung vòm về x≈420–576, dưới điểm bắt đầu
+              khối chữ 48px (đo lại bằng canvas sau khi đổi, không giả định).
+              Kenji (ảnh cutout riêng, không thuộc layer này) không bị ảnh
+              hưởng vị trí — chỉ phần VILLA đứng sau anh dịch theo, đã xem ảnh
+              thật xác nhận vẫn đọc được là "tựa cột" (không đổi cột nào anh
+              dựa vào).
+              CHỈ áp dụng từ md: (nơi có bố cục 2 cột cạnh nhau — brief mô tả
+              rõ "khung cửa sổ bên phải" là ngôn ngữ bố cục desktop). Dưới
+              md: (mobile, xếp dọc, chữ trước ảnh sau) GIỮ nguyên crop mặc
+              định — đã đo bằng mắt: ở khung hình mobile (390px), ảnh nền bị
+              phóng đại rất mạnh theo TRỤC DỌC (chiều cao Hero mobile cao hơn
+              nhiều lần bề ngang) nên gần như luôn hiện một phần khung vòm
+              trong dải dọc của khối chữ dù dò object-position ở bất kỳ điểm
+              nào (đã thử 8 mốc 55%→80%, mốc nào cũng còn vệt xanh trong dải
+              chữ — không có điểm nào "sạch" như ở desktop). Đây là TÌNH
+              TRẠNG CÓ SẴN (đã kiểm: crop mặc định 50% cũ cũng vậy, không phải
+              lỗi phát sinh từ đổi này) — không phải vấn đề "dịch chữ" có thể
+              giải quyết được ở bố cục xếp dọc, cần Kenji quyết định hướng
+              khác (vd tăng overlay riêng cho mobile) nếu muốn xử lý tiếp. */}
+          {/* SỬA 22/07/2026 (brief sửa màu ảnh nền, Việc C) — filter
+              saturate(50%) brightness(107%): đo màu thật 4 vùng tường/trần
+              phẳng trên ảnh gốc (canvas, kênh R/G/B) — vùng tường sáng nhất
+              (đại diện rõ nhất) cho R=189.8 G=173.8 B=148 (R-B=41.8, ngả cam
+              rõ). Đã thử hue-rotate kèm theo (-30deg) giảm R-B mạnh hơn
+              (còn 21) nhưng xem ảnh thật thì cây xanh phía sau bị ngả
+              hồng/nhạt màu (hue-rotate xoay TẤT CẢ màu, không riêng vùng cam)
+              — vi phạm đúng điều brief cấm ("không làm ảnh xám/mất sức
+              sống"). Đổi sang saturate-only (không hue-rotate): giảm bão hoà
+              đều làm giảm khoảng cách R-B tự nhiên (không đổi tông màu như
+              hue-rotate) mà cây vẫn xanh thật (đã xem ảnh, không chỉ tin số).
+              saturate(50%)+brightness(107%) đưa vùng tường sáng nhất về
+              R=194.8 G=186.6 B=172.5 (R-B=22.4, giảm 46% so với gốc) — đọc là
+              "trắng ấm" chứ không còn "vàng cam". Chỉ áp lên layer NỀN
+              (Image này), KHÔNG áp lên layer ảnh Kenji (Image riêng, xem bên
+              dưới grid) — da/tóc Kenji giữ nguyên màu gốc, đã xem ảnh thật
+              xác nhận không bị ám lạnh. Contrast đo lại sau khi đổi filter
+              (canvas, WCAG, cùng phương pháp cũ): 7.66–10.87 trên mọi dòng —
+              còn CAO HƠN trước (nền sáng thêm 7% từ brightness). */}
+          <Image
+            src={HERO_BG_SRC}
+            alt=""
+            fill
+            className="object-cover md:object-[85%_50%]"
+            style={{ filter: "saturate(50%) brightness(107%)" }}
+            priority
+          />
           {/* SỬA 21/07/2026 (brief ghép nền hero villa) — TRIẾT LÝ MỚI: villa
               RÕ, overlay tối thiểu (khác hẳn ảnh Light trừu tượng cũ cần phủ
               70-88%). Đo contrast thật (canvas, WCAG, sample toàn bộ dòng
@@ -228,19 +298,19 @@ export default function HomeHero() {
               <Image
                 src={HERO_IMAGE_SRC}
                 alt="Kenji Phạm cầm ly trà, nhìn ra khu vườn"
-                width={720}
-                height={844}
+                width={1195}
+                height={1888}
                 sizes="(max-width: 768px) 70vw, 32vw"
                 className="relative w-full h-auto object-contain"
                 style={{
                   transform: "scaleX(-1)",
-                  maskImage: "linear-gradient(to bottom, black 0%, black 66%, transparent 94%)",
-                  WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 66%, transparent 94%)",
+                  maskImage: "linear-gradient(to bottom, black 0%, black 84%, transparent 99%)",
+                  WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 84%, transparent 99%)",
                 }}
                 priority
               />
             ) : (
-              <div className="w-full aspect-[720/844] bg-e26-cream-deep" aria-hidden="true" />
+              <div className="w-full aspect-[1195/1888] bg-e26-cream-deep" aria-hidden="true" />
             )}
           </div>
         </div>
