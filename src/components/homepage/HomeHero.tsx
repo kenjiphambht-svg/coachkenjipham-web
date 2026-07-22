@@ -310,6 +310,93 @@ export default function HomeHero() {
               }}
               aria-hidden="true"
             />
+            {/* SỬA 22/07/2026 (brief bóng tiếp xúc chân ghế, hết "ghế bay") —
+                BỐI CẢNH: ảnh cutout mới (PR trước) có 2 chân ghế SAU kết thúc
+                rõ nét trên nền sàn sáng, KHÔNG có gì đỡ bên dưới — mắt đọc
+                thành ghế lơ lửng. Bệ bóng elip lớn phía trên (bottom-[10%],
+                rộng 135%) quá tổng quát/mờ để đóng vai "điểm tiếp đất" cho
+                từng chân riêng lẻ. KHÔNG hạ Kenji xuống sâu hơn (brief cấm rõ
+                — sẽ nuốt chi tiết chân người/ống quần đẹp của ảnh mới).
+                ĐO TOẠ ĐỘ THẬT (không đoán): quét alpha channel ảnh gốc (chưa
+                lật) tìm điểm sâu nhất của từng chân ghế lộ trên sàn (ngưỡng
+                alpha>200, quét trong dải 70%-100% chiều cao) — tìm được đúng
+                2 cụm tách biệt (ngoài cụm giày/ống quần chân co không tính,
+                đó là chân NGƯỜI đang co lên, không chạm sàn):
+                  - Cụm 1: x 53.5-63.9%, điểm sâu nhất (x=54.9%, y=97.7%)
+                  - Cụm 2: x 85.6-93.9%, điểm sâu nhất (x=92.4%, y=89.7%)
+                Đã XÁC MINH bằng ảnh chụp thật (vẽ marker tại đúng toạ độ lên
+                ảnh gốc phóng to) — marker rơi đúng đỉnh chân ghế, không lệch.
+                Ảnh hiển thị trên trang bị LẬT NGANG (scaleX(-1) bên dưới) nên
+                toạ độ X hiển thị = 1 - X gốc: cụm 1 → 45.1%, cụm 2 → 7.6%.
+                Y không đổi khi lật ngang (trục dọc). Dùng % (không px tuyệt
+                đối) để bóng bám đúng chân ghế ở MỌI breakpoint — đã kiểm lại
+                mobile, vị trí % giữ nguyên tỉ lệ đúng vì khối bọc + ảnh luôn
+                cùng khung toạ độ (w-full h-auto, không letterbox vì width/
+                height khai báo khớp đúng ảnh thật).
+                MÀU: đo RGB sàn thật tại đúng 2 điểm này trên nền đã qua filter
+                + overlay (canvas, cùng phương pháp đo màu các PR trước) —
+                cụm 1 sàn (215,204,188), cụm 2 sàn (249,249,240) — NHƯNG đó là
+                màu sàn TRƯỚC khi cộng thêm gradient tối LỚP 4. Đo tiếp vị trí
+                2 điểm này SO VỚI khối LỚP 4 (div gradient tối ngay dưới, xem
+                JSX phía sau grid): cả 2 điểm đều rơi VÀO bên trong khối LỚP 4
+                (đo getBoundingClientRect thật) — cụm 2 (89.7%) rơi ở ~24%
+                chiều cao LỚP 4 (gradient ở mức ~88% đen), cụm 1 (97.7%) rơi ở
+                ~35.5% — đã QUA mốc 30% nơi LỚP 4 đặc hẳn 100% đen. Tức là nền
+                thật sau lưng bóng KHÔNG sáng như số đo sàn gốc — cụm 2 composite
+                ra ~(48,47,45), cụm 1 gần như đen tuyền (26,26,26). Vì grid cha
+                có z-10 (thắng LỚP 4 z-auto dù DOM sau), phần ẢNH/BÓNG luôn vẽ
+                ĐÈ lên LỚP 4 tại chỗ chồng lấn — bóng rgba nhạt (0.5, tông
+                rgb(52,47,42) lấy thẳng theo tông sàn gốc) THỬ ĐẦU TIÊN gần như
+                KHÔNG thấy khác biệt khi so ảnh chụp có/không bóng (đã kiểm
+                bằng cách ẩn/hiện rồi chụp lại, phóng to 3x cùng 1 điểm) vì nền
+                đã tối sẵn — nhạt thêm trên nền tối không tạo đủ tương phản.
+                THỬ LẠI: đổi màu lõi sang rgb(20,18,16) (gần đen hơn, vẫn không
+                phải #000 thuần) + tăng alpha core lên 0.92 (cụm 2, nền sáng
+                vừa ~48,47,45, cần độ tương phản thật) và 0.85 (cụm 1, nền gần
+                đen sẵn, vẫn cần nhích để tạo HÌNH DẠNG elip rõ thay vì chỉ dựa
+                vào chênh lệch độ sáng) + nới nhẹ kích thước 9%→11%, 2.6%→3.2%.
+                So ảnh có/không bóng ở bản này (ẩn/hiện, chụp lại đúng 1 điểm):
+                THẤY RÕ một đốm tối hình elip ngay dưới đầu chân ghế trái (điểm
+                cụm 2, nền còn đủ sáng để tương phản rõ) — không còn "gần như
+                vô hình" như thử đầu. Cụm 1 (nền đã gần đen tuyền) cải thiện ít
+                hơn vì bản thân điểm đó gần như đã bị LỚP 4 nuốt hết trước khi
+                thêm bóng — chấp nhận được vì một điểm ĐÃ đen gần tuyệt đối thì
+                không tạo cảm giác "lơ lửng" (mắt không đọc được chi tiết ở đó
+                để so sánh) — vấn đề "ghế bay" chủ yếu nằm ở cụm 2 (đã sửa rõ).
+                HƯỚNG: villa sáng từ bên TRÁI (xem ghi chú HERO_BG_SRC — ảnh đã
+                lật khi convert nên sáng trái/đổ bóng phải) → tâm bóng lệch nhẹ
+                sang PHẢI so với điểm chạm (radial-gradient "at 60% 50%" thay
+                vì center, dịch tâm đậm nhất sang phải trong chính hình bầu
+                dục — không dùng translate lệch tâm để tránh bóng trôi ra khỏi
+                điểm chạm khi resize). Kích thước nhỏ (11% x 3.2% khối bọc) —
+                chỉ nhỉnh hơn tiết diện chân ghế, blur 3px giữ mép mềm nhưng
+                không lan thành mảng to. ẢNH GỐC không có sẵn bóng dưới chân
+                (đã kiểm bbox alpha — chỉ có người+ghế, không có vệt bóng nào
+                khác để phối/tránh chồng). */}
+            <div
+              className="absolute w-[11%] h-[3.2%]"
+              style={{
+                left: "7.6%",
+                top: "89.7%",
+                transform: "translate(-50%, -45%)",
+                background:
+                  "radial-gradient(ellipse at 60% 50%, rgba(20,18,16,0.92) 0%, rgba(20,18,16,0.6) 45%, transparent 80%)",
+                filter: "blur(3px)",
+              }}
+              aria-hidden="true"
+            />
+            <div
+              className="absolute w-[11%] h-[3.2%]"
+              style={{
+                left: "45.1%",
+                top: "97.7%",
+                transform: "translate(-50%, -45%)",
+                background:
+                  "radial-gradient(ellipse at 60% 50%, rgba(20,18,16,0.85) 0%, rgba(20,18,16,0.5) 45%, transparent 80%)",
+                filter: "blur(3px)",
+              }}
+              aria-hidden="true"
+            />
             {/* SỬA 21/07/2026 (brief sửa hướng nhìn) — LẬT NGANG ảnh Kenji
                 (scaleX(-1)): sau khi nền villa lật ở PR#49, hướng nhìn cũ của
                 Kenji quay VÀO hành lang trong nhà — lật người để nhìn RA
