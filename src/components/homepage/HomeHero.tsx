@@ -118,24 +118,30 @@ export default function HomeHero() {
           vẫn đọc được là NHỜ ảnh gốc bg-hero-light vốn đã rất sáng, không phải
           nhờ overlay này. NGOÀI SCOPE hôm nay (không sửa): ImageBridge (⑦→⑧)
           dùng đúng pattern lỗi này ở 2 chỗ — đã flag riêng trong báo cáo. */}
-      {/* SỬA 22/07/2026 (brief dời chữ tránh khung cửa sổ, Việc B) — bọc lại
-          layer nền theo max-w-[1440px] + left-1/2/-translate-x-1/2 (thay vì
-          inset-0 full-viewport cũ) để layer nền dùng CHUNG khung toạ độ với
-          khối chữ (dòng ngay dưới cũng max-w-[1440px] mx-auto). LÝ DO: đã đo
-          thật — object-position cố định trên nền full-viewport bị TRÔI lệch
-          so với khối chữ mỗi khi viewport > 1440 (chữ đứng yên trong khung
-          1440 căn giữa, nền lại tính % trên bề ngang TOÀN màn hình đang nới
-          rộng) → cùng 1 giá trị object-position từng đạt ở 1440 (48px lề) lại
-          THỦNG ở 1920 (đo thật: khung vòm chồng lấn chữ ~76px). Bọc nền theo
-          cùng max-w+center thì mọi viewport ≥1440 cho kết quả giống hệt phép
-          đo ở 1440 (khung toạ độ nền = khung toạ độ chữ, không trôi nữa). Dưới
-          1440 (mobile/tablet/lg hẹp) không đổi gì (w-full = 100% viewport như
-          inset-0 cũ, đã xác nhận qua ảnh chụp không đổi ở 768/1024/1280). */}
+      {/* SỬA 22/07/2026 (brief làm sạch dứt điểm vùng đáy Hero) — BỎ cap
+          max-w-[1440px] trên layer nền, quay về full-bleed inset-0. LỊCH SỬ
+          VÌ SAO CÓ CAP: PR#54 cap nền theo 1440 để object-position không trôi
+          so với khối chữ ở viewport rộng (đo thật hồi đó: 85% đạt ở 1440
+          nhưng khung vòm chồng chữ ~76px ở 1920). TÁC DỤNG PHỤ KHÔNG LƯỜNG:
+          viewport >1440 hở 2 DẢI CREAM DỌC 2 bên (đo thật 22/07: 240px mỗi
+          bên ở 1920) — chính là lỗi "2 dải trắng" Kenji thấy. Đây KHÔNG phải
+          lỗi tràn ngang cũ tái phát (PR#47 overflow-x — nguyên nhân khác
+          hẳn), mà là hệ quả mới của chính PR#54, lọt lưới vì hồi đó chỉ
+          nghiệm thu độ né-chữ của khung vòm, không rà 2 mép màn hình.
+          SỬA TẬN GỐC: nền full-bleed trở lại (hết dải trắng ở MỌI bề rộng) +
+          xử lý bài toán trôi bằng SCALE THEO BẬC viewport thay vì cap khung:
+          ảnh gốc 1920px rộng, object-cover fit theo chiều CAO nên bề rộng vẽ
+          được chỉ ~2000px — toán học không cho phép vừa phủ kín viewport
+          >~1660 vừa giữ khung vòm né cột chữ nếu chỉ pan (đã giải bất đẳng
+          thức bằng số đo thật: hết dư địa pan ở ~1578px). Zoom nhẹ theo bậc
+          (origin-right để khung vòm + vườn dịch TRÁI khi phóng, rời xa cột
+          chữ ở giữa-phải) là cách duy nhất không cần ảnh mới. Các bậc đã
+          kiểm bằng số + ảnh thật: ≥1560 scale 1.10, ≥1800 scale 1.25, ≥2200
+          scale 1.4 — tại mỗi bậc mép phải khung vòm cách mép trái cột chữ
+          ≥45px. Dưới 1560: giữ nguyên pan 85% (dư địa còn đủ, đo tại 1536:
+          lề 14px). */}
       {HERO_BG_SRC && (
-        <div
-          className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-full max-w-[1440px] overflow-hidden"
-          aria-hidden="true"
-        >
+        <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
           {/* SỬA 22/07/2026 (Việc B) — md:object-[85%_50%]: đo thật khung
               vòm-cây (canvas color-scan, phát hiện vùng có green-dominance
               trong dải tối của ảnh, xem BAI-HOC-KY-THUAT.md nếu cần bối cảnh
@@ -183,7 +189,7 @@ export default function HomeHero() {
             src={HERO_BG_SRC}
             alt=""
             fill
-            className="object-cover md:object-[85%_50%]"
+            className="object-cover md:object-[85%_50%] min-[1560px]:origin-right min-[1560px]:scale-110 min-[1800px]:scale-125 min-[2200px]:scale-[1.4]"
             style={{ filter: "saturate(50%) brightness(107%)" }}
             priority
           />
@@ -301,102 +307,19 @@ export default function HomeHero() {
                   riêng), tự động đi theo — đã xác nhận lại bằng ảnh chụp,
                   không chỉ suy diễn từ code. */}
           <div className="e26-reveal md:col-span-5 md:order-1 relative z-10 w-[70%] max-w-[340px] mx-auto md:mx-auto md:w-[82%] md:max-w-none -mb-16 md:-mb-24">
-            <div
-              className="absolute left-1/2 -translate-x-1/2 bottom-[10%] w-[135%] h-[16%]"
-              style={{
-                background:
-                  "radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.25) 45%, transparent 75%)",
-                filter: "blur(18px)",
-              }}
-              aria-hidden="true"
-            />
-            {/* SỬA 22/07/2026 (brief bóng tiếp xúc chân ghế, hết "ghế bay") —
-                BỐI CẢNH: ảnh cutout mới (PR trước) có 2 chân ghế SAU kết thúc
-                rõ nét trên nền sàn sáng, KHÔNG có gì đỡ bên dưới — mắt đọc
-                thành ghế lơ lửng. Bệ bóng elip lớn phía trên (bottom-[10%],
-                rộng 135%) quá tổng quát/mờ để đóng vai "điểm tiếp đất" cho
-                từng chân riêng lẻ. KHÔNG hạ Kenji xuống sâu hơn (brief cấm rõ
-                — sẽ nuốt chi tiết chân người/ống quần đẹp của ảnh mới).
-                ĐO TOẠ ĐỘ THẬT (không đoán): quét alpha channel ảnh gốc (chưa
-                lật) tìm điểm sâu nhất của từng chân ghế lộ trên sàn (ngưỡng
-                alpha>200, quét trong dải 70%-100% chiều cao) — tìm được đúng
-                2 cụm tách biệt (ngoài cụm giày/ống quần chân co không tính,
-                đó là chân NGƯỜI đang co lên, không chạm sàn):
-                  - Cụm 1: x 53.5-63.9%, điểm sâu nhất (x=54.9%, y=97.7%)
-                  - Cụm 2: x 85.6-93.9%, điểm sâu nhất (x=92.4%, y=89.7%)
-                Đã XÁC MINH bằng ảnh chụp thật (vẽ marker tại đúng toạ độ lên
-                ảnh gốc phóng to) — marker rơi đúng đỉnh chân ghế, không lệch.
-                Ảnh hiển thị trên trang bị LẬT NGANG (scaleX(-1) bên dưới) nên
-                toạ độ X hiển thị = 1 - X gốc: cụm 1 → 45.1%, cụm 2 → 7.6%.
-                Y không đổi khi lật ngang (trục dọc). Dùng % (không px tuyệt
-                đối) để bóng bám đúng chân ghế ở MỌI breakpoint — đã kiểm lại
-                mobile, vị trí % giữ nguyên tỉ lệ đúng vì khối bọc + ảnh luôn
-                cùng khung toạ độ (w-full h-auto, không letterbox vì width/
-                height khai báo khớp đúng ảnh thật).
-                MÀU: đo RGB sàn thật tại đúng 2 điểm này trên nền đã qua filter
-                + overlay (canvas, cùng phương pháp đo màu các PR trước) —
-                cụm 1 sàn (215,204,188), cụm 2 sàn (249,249,240) — NHƯNG đó là
-                màu sàn TRƯỚC khi cộng thêm gradient tối LỚP 4. Đo tiếp vị trí
-                2 điểm này SO VỚI khối LỚP 4 (div gradient tối ngay dưới, xem
-                JSX phía sau grid): cả 2 điểm đều rơi VÀO bên trong khối LỚP 4
-                (đo getBoundingClientRect thật) — cụm 2 (89.7%) rơi ở ~24%
-                chiều cao LỚP 4 (gradient ở mức ~88% đen), cụm 1 (97.7%) rơi ở
-                ~35.5% — đã QUA mốc 30% nơi LỚP 4 đặc hẳn 100% đen. Tức là nền
-                thật sau lưng bóng KHÔNG sáng như số đo sàn gốc — cụm 2 composite
-                ra ~(48,47,45), cụm 1 gần như đen tuyền (26,26,26). Vì grid cha
-                có z-10 (thắng LỚP 4 z-auto dù DOM sau), phần ẢNH/BÓNG luôn vẽ
-                ĐÈ lên LỚP 4 tại chỗ chồng lấn — bóng rgba nhạt (0.5, tông
-                rgb(52,47,42) lấy thẳng theo tông sàn gốc) THỬ ĐẦU TIÊN gần như
-                KHÔNG thấy khác biệt khi so ảnh chụp có/không bóng (đã kiểm
-                bằng cách ẩn/hiện rồi chụp lại, phóng to 3x cùng 1 điểm) vì nền
-                đã tối sẵn — nhạt thêm trên nền tối không tạo đủ tương phản.
-                THỬ LẠI: đổi màu lõi sang rgb(20,18,16) (gần đen hơn, vẫn không
-                phải #000 thuần) + tăng alpha core lên 0.92 (cụm 2, nền sáng
-                vừa ~48,47,45, cần độ tương phản thật) và 0.85 (cụm 1, nền gần
-                đen sẵn, vẫn cần nhích để tạo HÌNH DẠNG elip rõ thay vì chỉ dựa
-                vào chênh lệch độ sáng) + nới nhẹ kích thước 9%→11%, 2.6%→3.2%.
-                So ảnh có/không bóng ở bản này (ẩn/hiện, chụp lại đúng 1 điểm):
-                THẤY RÕ một đốm tối hình elip ngay dưới đầu chân ghế trái (điểm
-                cụm 2, nền còn đủ sáng để tương phản rõ) — không còn "gần như
-                vô hình" như thử đầu. Cụm 1 (nền đã gần đen tuyền) cải thiện ít
-                hơn vì bản thân điểm đó gần như đã bị LỚP 4 nuốt hết trước khi
-                thêm bóng — chấp nhận được vì một điểm ĐÃ đen gần tuyệt đối thì
-                không tạo cảm giác "lơ lửng" (mắt không đọc được chi tiết ở đó
-                để so sánh) — vấn đề "ghế bay" chủ yếu nằm ở cụm 2 (đã sửa rõ).
-                HƯỚNG: villa sáng từ bên TRÁI (xem ghi chú HERO_BG_SRC — ảnh đã
-                lật khi convert nên sáng trái/đổ bóng phải) → tâm bóng lệch nhẹ
-                sang PHẢI so với điểm chạm (radial-gradient "at 60% 50%" thay
-                vì center, dịch tâm đậm nhất sang phải trong chính hình bầu
-                dục — không dùng translate lệch tâm để tránh bóng trôi ra khỏi
-                điểm chạm khi resize). Kích thước nhỏ (11% x 3.2% khối bọc) —
-                chỉ nhỉnh hơn tiết diện chân ghế, blur 3px giữ mép mềm nhưng
-                không lan thành mảng to. ẢNH GỐC không có sẵn bóng dưới chân
-                (đã kiểm bbox alpha — chỉ có người+ghế, không có vệt bóng nào
-                khác để phối/tránh chồng). */}
-            <div
-              className="absolute w-[11%] h-[3.2%]"
-              style={{
-                left: "7.6%",
-                top: "89.7%",
-                transform: "translate(-50%, -45%)",
-                background:
-                  "radial-gradient(ellipse at 60% 50%, rgba(20,18,16,0.92) 0%, rgba(20,18,16,0.6) 45%, transparent 80%)",
-                filter: "blur(3px)",
-              }}
-              aria-hidden="true"
-            />
-            <div
-              className="absolute w-[11%] h-[3.2%]"
-              style={{
-                left: "45.1%",
-                top: "97.7%",
-                transform: "translate(-50%, -45%)",
-                background:
-                  "radial-gradient(ellipse at 60% 50%, rgba(20,18,16,0.85) 0%, rgba(20,18,16,0.5) 45%, transparent 80%)",
-                filter: "blur(3px)",
-              }}
-              aria-hidden="true"
-            />
+            {/* SỬA 22/07/2026 (brief làm sạch dứt điểm vùng đáy Hero) — XOÁ
+                HẲN 3 LỚP BÓNG RỜI RẠC từng nằm ở đây: (1) bệ bóng elip lớn
+                (PR#45, blur 18px, che đường cắt của ẢNH CŨ vốn bị cắt cụt —
+                ảnh mới có chân đầy đủ nên hết lý do tồn tại), (2)+(3) hai
+                contact shadow theo %-toạ-độ từng chân ghế (PR#56 — vá đúng
+                triệu chứng nhưng sai tầng: nền sau chân đã nằm trong vùng
+                gradient LỚP 4, bóng phải "đấu" với gradient nên mãi không đủ
+                thuyết phục). GIẢI PHÁP MỚI: không đỡ chân bằng bóng nữa mà
+                cho toàn bộ điểm tiếp đất CHÌM HẲN vào vùng tối — LỚP 4 đổi
+                sang px-stops đạt đen đặc ở đúng cao độ mọi chân ghế/giày
+                (xem ghi chú tại LỚP 4). Vùng đáy Hero từ 6 lớp (bệ bóng +
+                2 contact shadow + mask ảnh + gradient + vệt sơn) còn 3 lớp
+                (mask ảnh + gradient + vệt sơn). */}
             {/* SỬA 21/07/2026 (brief sửa hướng nhìn) — LẬT NGANG ảnh Kenji
                 (scaleX(-1)): sau khi nền villa lật ở PR#49, hướng nhìn cũ của
                 Kenji quay VÀO hành lang trong nhà — lật người để nhìn RA
@@ -486,12 +409,34 @@ export default function HomeHero() {
           làm điểm nhấn bóng đổ dưới ghế (đã thử bỏ — thiếu grounding), nhưng
           giờ nằm TRONG vùng đã đen nên không tạo mảng rời. Stop % tính theo
           chiều cao khối mới (~413px), tinh chỉnh qua ảnh chụp thật từng nấc. */}
-      <div className="relative -mx-6 -mt-16 pt-44 pb-24 md:pt-52 md:pb-32 px-6 overflow-visible">
+      {/* SỬA 22/07/2026 (brief làm sạch dứt điểm vùng đáy Hero) — gradient đổi
+          từ %-stops sang PX-STOPS, vì lý do đo được: chân ghế/giày neo theo
+          KHOẢNG CÁCH PX cố định tính từ mép trên khối này (ảnh bleed -mb-24 +
+          khối -mt-16 → đáy ảnh luôn = mép trên + 160px ở md, +128px mobile),
+          trong khi %-stops lại co giãn theo CHIỀU CAO KHỐI (thay đổi khi chỉnh
+          pt/pb hoặc giữa desktop/mobile) — hai hệ quy chiếu lệch nhau chính là
+          lý do các PR trước cứ chỉnh gradient xong chân lại rơi ra ngoài vùng
+          tối ở breakpoint khác. Đo cao độ thật của mọi điểm tiếp đất (từ mép
+          trên khối): chân ghế sau ~95-100px (md 1440/1920 lẫn mobile 390 —
+          đã tính theo tỉ lệ ảnh từng breakpoint), chân ghế trước ~146px, giày
+          người ~148-154px. Ramp mới: trong suốt 0 → đen đặc 90px (45% @28px,
+          80% @52px, 96% @74px) — mốc 90px chọn SAU khi đo lại trên mobile:
+          chân ghế sau rơi đúng 95.4px, mốc thử đầu 95px chỉ dư 0.4px (quá
+          sát, dễ vỡ vì rounding) → hạ 90px cho mọi điểm tiếp đất dư biên
+          ≥5px trong vùng đen đặc 100%, chân "chìm hẳn trong tối" đúng nghĩa,
+          không cần bóng đỡ. Chữ body kết ở ~32px TRÊN mép khối này (đo 1440/1920)
+          nên đầu ramp trong suốt không chạm chữ. pt tăng 44→56 (mobile) và
+          52→72 (md): tạo dải đen DÀY thật sự giữa giày và vệt sơn Signature —
+          đo trước khi sửa: mép loé sáng của vệt sơn (tính cả blur 20px) chạm
+          y giày chỉ cách ~24px → chính là lỗi "giày đạp lên vệt sáng"; sau khi
+          tăng pt + thu lề vệt sơn (140→100px), khoảng đen giữa giày và mép
+          loé ≥50px ở md (đo lại sau sửa, xem báo cáo). */}
+      <div className="relative -mx-6 -mt-16 pt-56 pb-24 md:pt-72 md:pb-32 px-6 overflow-visible">
         <div
           className="absolute inset-0"
           style={{
             backgroundImage:
-              "linear-gradient(to bottom, transparent 0%, color-mix(in srgb, var(--essence-black-2026) 45%, transparent) 10%, color-mix(in srgb, var(--essence-black-2026) 80%, transparent) 20%, var(--essence-black-2026) 30%, var(--essence-black-2026))",
+              "linear-gradient(to bottom, transparent 0px, color-mix(in srgb, var(--essence-black-2026) 45%, transparent) 28px, color-mix(in srgb, var(--essence-black-2026) 80%, transparent) 52px, color-mix(in srgb, var(--essence-black-2026) 96%, transparent) 74px, var(--essence-black-2026) 90px, var(--essence-black-2026) 100%)",
           }}
           aria-hidden="true"
         />
@@ -504,8 +449,13 @@ export default function HomeHero() {
                 cọ. Ellipse cao/hẹp hơn bản cũ (62% 82%, thay 75% 90%) + rút
                 chiều cao (170/190px, thay 260/300px) để tỉ lệ thuôn dài hơn,
                 đúng dáng "nhát cọ quẹt ngang" thay vì mảng tròn to. */}
+            {/* SỬA 22/07/2026 (brief làm sạch đáy Hero) — thu lề nhát cọ
+                140→100px: mép loé bên trái (sau blur) từng lan tới dưới giày
+                Kenji ở md, cùng với pt tăng ở khối cha là cặp sửa cho lỗi
+                "giày đạp lên vệt sáng". Chữ Signature vẫn nằm trọn trong lõi
+                sáng của ellipse (chữ 609px < lõi ~62% của 709px + lề). */}
             <div
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%+140px)] h-[170px] md:h-[190px] pointer-events-none"
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%+100px)] h-[170px] md:h-[190px] pointer-events-none"
               style={{
                 background:
                   "radial-gradient(ellipse 62% 82% at center, rgba(241,239,232,0.98) 0%, rgba(241,239,232,0.94) 40%, rgba(241,239,232,0.65) 62%, rgba(241,239,232,0.22) 82%, transparent 100%)",
