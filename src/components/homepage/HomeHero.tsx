@@ -16,7 +16,17 @@ import Image from "next/image";
 // TRIẾT LÝ MỚI (khác hẳn ảnh Light trừu tượng cũ): villa phải RÕ, thấy ánh
 // sáng thật — overlay TỐI THIỂU, không che mờ nặng như overlay 70% cũ. Xem
 // ghi chú tại div overlay bên dưới cho % thật đã đo.
-const HERO_BG_SRC: string | undefined = "/images/home/hero-hien-vuon.webp";
+// SỬA 22/07/2026 (brief ghép Kenji vào nền Hero mới) — thay hero-hien-vuon
+// bằng hero-hien-vuon1: villa NGOÀI TRỜI (vườn hồ nước/rêu TRÁI, tường trắng
+// + vòm GIỮA x≈620-780/1672, hiên gỗ mái che + bàn thấp PHẢI, nắng vàng chéo
+// từ trái). Convert webp q92 (314KB) — đã so PNG gốc vs webp phóng to 2x tại
+// vùng trời gradient mịn (rủi ro banding cao nhất): không banding. Đo màu
+// thật: trắng dưới nắng (140,131,111) R-B=+29 — tông vàng ấm là ĐẶC TRƯNG
+// THẬT của ảnh, không phải cast lỗi → KHÔNG áp filter khử-cam như ảnh cũ
+// (saturate50/brightness107 là thuốc kê riêng cho ảnh cũ, đã gỡ). Ảnh này
+// KHÔNG lật (khác ảnh cũ phải .flop()): bố cục gốc đã đúng chiều cần —
+// chỗ ngồi (hiên gỗ) bên phải, vườn bên trái.
+const HERO_BG_SRC: string | undefined = "/images/home/hero-hien-vuon1.webp";
 
 // SỬA 21/07/2026 (brief thay ảnh cutout) — ảnh cũ kenji-hero-window.webp có
 // NỀN PHÒNG riêng, phải bọc khung chữ nhật (aspect-[4/5] + object-cover +
@@ -185,14 +195,17 @@ export default function HomeHero() {
               xác nhận không bị ám lạnh. Contrast đo lại sau khi đổi filter
               (canvas, WCAG, cùng phương pháp cũ): 7.66–10.87 trên mọi dòng —
               còn CAO HƠN trước (nền sáng thêm 7% từ brightness). */}
-          <Image
-            src={HERO_BG_SRC}
-            alt=""
-            fill
-            className="object-cover md:object-[85%_50%] min-[1560px]:origin-right min-[1560px]:scale-110 min-[1800px]:scale-125 min-[2200px]:scale-[1.4]"
-            style={{ filter: "saturate(50%) brightness(107%)" }}
-            priority
-          />
+          {/* SỬA 22/07/2026 (brief nền mới) — BỎ cả object-[85%] lẫn các bậc
+              zoom min-[1560/1800/2200] (đều là nghiệm cho BÀI TOÁN CŨ: khung
+              vòm ảnh cũ né cột chữ bên phải). Bố cục mới: chữ TRÁI / Kenji
+              PHẢI, không còn ràng buộc né-vòm → crop center 50% mặc định là
+              đủ (đã đo: tại 1440, cột chữ trái rơi vào vùng vườn/tường orig
+              x≈257-682, cột Kenji phải rơi đúng khoang hiên gỗ orig
+              x≈1008-1374; tại 1920 pan range chỉ còn 91px nên gần như thấy
+              trọn ảnh; ≥2000 cover chuyển fit-theo-rộng, luôn phủ kín — hết
+              lớp lang breakpoint đặc biệt, không còn nguy cơ dải trắng vì
+              cover không bao giờ hở). BỎ filter khử-cam (xem HERO_BG_SRC). */}
+          <Image src={HERO_BG_SRC} alt="" fill className="object-cover" priority />
           {/* SỬA 21/07/2026 (brief ghép nền hero villa) — TRIẾT LÝ MỚI: villa
               RÕ, overlay tối thiểu (khác hẳn ảnh Light trừu tượng cũ cần phủ
               70-88%). Đo contrast thật (canvas, WCAG, sample toàn bộ dòng
@@ -211,7 +224,26 @@ export default function HomeHero() {
               20% lên 40% (+20 điểm % đúng brief). Contrast chỉ tăng khi
               overlay tăng — đã đo lại tại đúng vị trí chữ ở 40%, xem số đo
               trong báo cáo PR. Villa vẫn nhận ra được bằng mắt (ảnh thật). */}
-          <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_40%,transparent)]" />
+          {/* SỬA 22/07/2026 (brief nền mới) — overlay từ PHẲNG cream 40% đổi
+              thành GRADIENT NGANG: đậm bên TRÁI (nơi khối chữ mới đứng, nền
+              vườn có vùng bóng râm tối ~(58,62,62) — đã tính: cần veil ≥~47%
+              để chữ đen 4.5:1 trên điểm tối nhất, chọn 62% cho dư biên; giữ
+              62% suốt 0-38% bề ngang = trọn cột chữ tại 1440) rồi nhạt dần
+              về PHẢI (16% từ 72%) để hiên gỗ + nắng vàng — linh hồn của ảnh
+              mới — hiện rõ sau lưng Kenji thay vì bị màn kem đè phẳng. Số %
+              đo lại bằng canvas WCAG sau khi áp (xem báo cáo PR). */}
+          {/* Mobile (<md): chữ trải GẦN HẾT bề ngang nên gradient ngang không
+              bảo vệ nổi mép phải (đo thật 390px: worst 2.54 tại vùng cây bên
+              phải) → dùng lớp PHẲNG 62% riêng cho mobile, gradient chỉ bật
+              từ md trở lên (nơi chữ gói trong ~38% bên trái). */}
+          <div className="absolute inset-0 md:hidden bg-[color-mix(in_srgb,var(--essence-cream-2026)_62%,transparent)]" />
+          <div
+            className="absolute inset-0 hidden md:block"
+            style={{
+              backgroundImage:
+                "linear-gradient(to right, color-mix(in srgb, var(--essence-cream-2026) 62%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 62%, transparent) 38%, color-mix(in srgb, var(--essence-cream-2026) 38%, transparent) 55%, color-mix(in srgb, var(--essence-cream-2026) 16%, transparent) 72%, color-mix(in srgb, var(--essence-cream-2026) 16%, transparent) 100%)",
+            }}
+          />
         </div>
       )}
       {/* SỬA 21/07/2026 — dải gradient tan-đen CŨ (h-40/h-64, chỉ che phần nền
@@ -236,7 +268,12 @@ export default function HomeHero() {
               order-2 (hiện bên phải), cột ảnh order-1 (hiện bên trái). Chỉ
               áp ở md: — mobile vẫn xếp dọc đúng thứ tự DOM gốc (chữ trước,
               ảnh sau), không đổi. */}
-          <div className="md:col-span-7 md:pb-24 md:order-2">
+          {/* SỬA 22/07/2026 (brief nền mới) — BỎ md:order-2/order-1 của cặp
+              cột (thêm từ PR#51 khi Kenji cần đứng TRÁI cạnh cột vòm ảnh cũ):
+              ảnh mới có chỗ ngồi thật (hiên gỗ) bên PHẢI nên trả 2 cột về
+              đúng thứ tự DOM — chữ trái, Kenji phải. Mobile không đổi (vẫn
+              xếp dọc chữ trước ảnh sau như cũ). */}
+          <div className="md:col-span-7 md:pb-24">
             <p className="e26-reveal font-serif font-normal text-[42px] md:text-[56px] lg:text-[72px] leading-[1.18] text-e26-text max-w-[680px]">
               Lâu rồi, chưa ai hỏi
               <br className="hidden md:block" /> bạn đang thế nào.
@@ -306,7 +343,15 @@ export default function HomeHero() {
                   đều định vị THEO khối bọc này (left-1/2 riêng, gradient dọc
                   riêng), tự động đi theo — đã xác nhận lại bằng ảnh chụp,
                   không chỉ suy diễn từ code. */}
-          <div className="e26-reveal md:col-span-5 md:order-1 relative z-10 w-[70%] max-w-[340px] mx-auto md:mx-auto md:w-[82%] md:max-w-none -mb-16 md:-mb-24">
+          {/* SỬA 22/07/2026 (brief nền mới) — md:w-[82%] → md:w-[60%]: đo trên
+              ảnh chụp thật ở 82%, Kenji ngồi "lọt trong khoang hiên" nhưng cao
+              gần kín trần khoang (~85% chiều cao khoang, trong khi người ngồi
+              ~1.3m dưới trần ~3m chỉ nên ~45%) → tỉ lệ tố cáo dán ghép. Thu
+              còn 60% + dịch nhẹ sang phải (md:mr-[4%]) cho anh ngồi sâu vào
+              khoang hiên gần bàn thấp, khớp phối cảnh sàn gỗ. items-end +
+              -mb giữ nguyên nên đáy ảnh vẫn neo đúng cao độ cũ — chân vẫn
+              chìm trong vùng đen PR#57 (không hồi quy). */}
+          <div className="e26-reveal md:col-span-5 relative z-10 w-[70%] max-w-[340px] mx-auto md:ml-auto md:mr-[9%] md:w-[60%] md:max-w-none -mb-16 md:-mb-24">
             {/* SỬA 22/07/2026 (brief làm sạch dứt điểm vùng đáy Hero) — XOÁ
                 HẲN 3 LỚP BÓNG RỜI RẠC từng nằm ở đây: (1) bệ bóng elip lớn
                 (PR#45, blur 18px, che đường cắt của ẢNH CŨ vốn bị cắt cụt —
@@ -320,16 +365,22 @@ export default function HomeHero() {
                 (xem ghi chú tại LỚP 4). Vùng đáy Hero từ 6 lớp (bệ bóng +
                 2 contact shadow + mask ảnh + gradient + vệt sơn) còn 3 lớp
                 (mask ảnh + gradient + vệt sơn). */}
-            {/* SỬA 21/07/2026 (brief sửa hướng nhìn) — LẬT NGANG ảnh Kenji
-                (scaleX(-1)): sau khi nền villa lật ở PR#49, hướng nhìn cũ của
-                Kenji quay VÀO hành lang trong nhà — lật người để nhìn RA
-                phía vòm/vườn (bên phải sau khi nền lật). Chỉ lật ẢNH NGƯỜI,
-                KHÔNG đụng nền. Mask-image là gradient DỌC (to bottom) nên
-                không bị ảnh hưởng bởi lật ngang; bóng elip dưới ghế là hình
-                đối xứng, đặt theo khối bọc (không theo ảnh) nên giữ nguyên
-                vị trí — cả hai đã xác nhận lại bằng ảnh chụp thật sau lật.
-                Kenji đã chấp nhận hướng sáng người/nền không khớp tuyệt đối,
-                ưu tiên đúng hướng nhìn. */}
+            {/* SỬA 21/07/2026 (brief sửa hướng nhìn) — từng LẬT NGANG ảnh
+                Kenji (scaleX(-1)) để nhìn ra vòm/vườn bên phải của ẢNH CŨ.
+                SỬA 22/07/2026 (brief nền mới) — BỎ LẬT: Kenji giờ ngồi bên
+                PHẢI (hiên gỗ), vườn/hồ nước ở bên TRÁI ảnh mới → ảnh gốc
+                (mặt quay trái, đã kiểm trực tiếp từ PR trước) tự đúng hướng
+                nhìn, không cần lật nữa. Phía SÁNG trên người sau khi bỏ lật:
+                nguồn sáng ảnh mới đến từ TRÁI, mặt Kenji quay trái = phía
+                sáng của ảnh gốc (chụp sáng từ phía mặt) — đỡ lệch hơn phương
+                án giữ lật; tiền lệ PR#50: Kenji chấp nhận sáng người/nền
+                không khớp tuyệt đối, ưu tiên đúng hướng nhìn.
+                ÁM ẤM THEO NỀN MỚI (filter dưới): đo thật — áo Kenji trắng
+                LẠNH (246,249,253 / R-B=-7) giữa cảnh mà trắng dưới nắng ám
+                vàng R-B=+29 → đây là "tell" dán ghép rõ nhất về màu. sepia
+                nhẹ + hạ sáng nhẹ kéo trắng áo về cùng họ ấm với cảnh; mức %
+                dò bằng mắt qua ảnh chụp (so áo cạnh gỗ nắng), không chỉ
+                theo số. */}
             {HERO_IMAGE_SRC ? (
               <Image
                 src={HERO_IMAGE_SRC}
@@ -339,7 +390,7 @@ export default function HomeHero() {
                 sizes="(max-width: 768px) 70vw, 32vw"
                 className="relative w-full h-auto object-contain"
                 style={{
-                  transform: "scaleX(-1)",
+                  filter: "sepia(0.18) saturate(1.04) brightness(0.97)",
                   maskImage: "linear-gradient(to bottom, black 0%, black 88%, transparent 99%)",
                   WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 88%, transparent 99%)",
                 }}
