@@ -102,14 +102,40 @@ export default function KenjiSection() {
           cho dư biên. TÁCH overlay theo breakpoint (mobile 55% / desktop 48%)
           — cách biệt nhỏ hơn nhiều so với ảnh cũ (58%→85%, cách 27 điểm %)
           vì ảnh mới đã sạch chi tiết tối sẵn, không cần bù nhiều theo
-          breakpoint. */}
+          breakpoint.
+          SỬA 22/07/2026 (brief tăng mờ ④, chỉ giữ vệt nắng, Việc B) — Kenji
+          muốn TĂNG overlay để chỉ còn "cảm giác vệt nắng", không còn "cảm
+          giác căn phòng". PHÁT HIỆN QUA ĐO PIXEL (không chỉ dò bằng mắt):
+          quét luminance dọc theo mép hộp-niche (x≈420-520 tại y=300/500) cho
+          bước nhảy ~204→251 (~47 đơn vị) — GẦN NHƯ CÙNG ĐỘ LỚN với bước nhảy
+          của chính vệt nắng tại mép nó (~200→247, ~47 đơn vị, quét dọc x≈
+          1350-1900 tại y=500/700/900). Hai chi tiết này vốn CÙNG BẬC tương
+          phản trong ảnh gốc → về mặt toán học, MỌI overlay giữ được vệt nắng
+          cũng sẽ giữ luôn mép hộp/góc tường ở cùng mức độ (không có điểm dừng
+          nào tách biệt được 2 thứ). Xem ảnh so sánh 63/68/72/75/80/82/85/88/90%
+          (canvas render, không phải screenshot): 63-72% vẫn RÕ hộp/lưới sàn —
+          chưa đạt. Từ 80% trở lên viền hộp mới đủ mềm để đọc là "quầng sáng"
+          thay vì "kiến trúc"; lưới sàn (vốn chỉ là gợn nhẹ vài đơn vị, KHÁC
+          hẳn mép hộp) đã mờ hẳn từ 75%. Chọn 85%: viền hộp chỉ còn quầng mờ
+          (không còn đọc là góc phòng), lưới sàn biến mất, vệt nắng vẫn còn là
+          1 dải sáng chéo nhận ra được (yếu hơn ở mức thấp nhưng còn hiện diện
+          — không tự triệt tiêu, đã xem ảnh xác nhận không rơi vào trường hợp
+          "quá tay" brief cảnh báo). MOBILE: đo lại bg-cover thấy vùng hiển thị
+          THỰC TẾ trên khung dọc hẹp chỉ là phần GIỮA ảnh gốc (natural x≈771-
+          1148/1920) — vệt nắng (nằm ở x≈1750-1920) NẰM NGOÀI khung hình mobile
+          hoàn toàn, không có gì để giữ. Vì vậy overlay mobile chỉ cần đạt mục
+          tiêu "không còn kiến trúc" (không có ràng buộc giữ vệt nắng) — dùng
+          chung 85% cho cả 2 breakpoint (đã xem ảnh mobile ở 85%: phẳng gần
+          như tuyệt đối, không còn dấu vết phòng). Contrast đo lại tại 85%
+          (desktop): body 5.89, label1 6.14, label2 5.98, quote 15.96, link
+          18.48 — dư dả rất nhiều so với 4.5 (mobile vốn đã dư dả từ 55% nên
+          không cần đo lại ở 85%, chắc chắn còn cao hơn). */}
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: "url(/images/home/kenji-phong-doc1.webp)" }}
         aria-hidden="true"
       />
-      <div className="absolute inset-0 md:hidden bg-[color-mix(in_srgb,var(--essence-white-2026)_55%,transparent)]" aria-hidden="true" />
-      <div className="absolute inset-0 hidden md:block bg-[color-mix(in_srgb,var(--essence-white-2026)_48%,transparent)]" aria-hidden="true" />
+      <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-white-2026)_85%,transparent)]" aria-hidden="true" />
       <div className="relative z-10 max-w-[1120px] mx-auto flex flex-col md:flex-row md:items-center gap-10 md:gap-16">
         <figure className="e26-reveal w-full max-w-[360px] mx-auto md:mx-0 md:w-[40%] md:max-w-none shrink-0">
           <ImageSlot

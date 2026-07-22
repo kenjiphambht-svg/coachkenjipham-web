@@ -1,12 +1,7 @@
 // Section 4 — Kiệt Tác. H1 DUY NHẤT của trang chủ (theo BAN-CHOT — hero ở
 // section 2 KHÔNG được gắn heading, chỉ section này). Nền đen, đứng một mình.
-// Nền ảnh /images/home/bg-wall-dark.webp (16:9) — dùng CSS background-image
-// (không phải <Image>) để nếu ảnh chưa có, không hiện icon vỡ: nền vẫn là
-// khối đen thuần cho tới khi Kenji cung cấp ảnh thật.
-// TINH CHỈNH 19/07/2026: độ phủ đen 94% (opacity 0.06) gần như không thấy vân
-// tường → giảm còn phủ đen ~87% (opacity 0.13) để vân tường/góc phòng thấp
-// thoáng lộ ra, vẫn đủ tối giữ vai "khối tối" (nền vẫn bg-e26-black solid,
-// chỉ lớp ảnh trang trí tăng độ hiện — đã đo tương phản chữ trắng vẫn đọc rõ).
+// Nền vẫn bg-e26-black solid, lớp ảnh trang trí phủ lên trên (xem ghi chú tại
+// JSX cho ảnh + overlay hiện tại).
 // Vệt vàng dưới "kiệt tác" là phần tử thật (span + i), animate scaleX qua
 // class .e26-reveal có sẵn — KHÔNG dùng ::after (GSAP/CSS không animate được
 // pseudo-element theo lỗi đã biết ghi trong brief).
@@ -20,30 +15,12 @@
 // weight 500, line-height 1.15 (trước: 52/32, weight 300/light). Body áp
 // Vai 3 (18px, sans, lh 1.9) — ③ nằm trong nhóm tăng 1 nấc mobile (③④⑤) nên
 // mobile = 18px luôn (không tụt xuống 17px như mặc định Vai 3 ở section khác).
-// SỬA 20/07/2026 (brief nền vân tường vô hình mobile) — bg-wall-dark.webp
-// (1024×576, 16:9) trên khung mobile dọc hẹp: cover luôn bị chiều CAO ép
-// (container mobile hẹp hơn tỉ lệ ảnh rất nhiều), khiến bg-center (50%) rơi
-// đúng vào vùng tường phẳng nhất giữa ảnh — gần như vô hình dù opacity đã
-// đúng 0.13. Đã dò bằng script mô phỏng phép chiếu cover (sample lưới màu
-// composite so với #1A1A1A) + xác nhận lại bằng canvas vẽ đúng ảnh thật
-// trong browser: vùng trái ảnh (bright light-strip + nhiều vết nứt) cho độ
-// lệch màu cao nhất, đỉnh ở background-position-x ≈ 0-15%. Chọn 10% (an
-// toàn, tránh mép sáng ngay biên 0%). CHỈ áp cho mobile (md:bg-center giữ
-// nguyên vị trí gốc) — desktop KHÔNG đổi gì, đã xác nhận computed style vẫn
-// "50% 50%" / opacity 0.13 y hệt trước. Component AnDinhAnThinh.tsx (⑦)
-// cùng ảnh, cùng vấn đề, cùng vị trí X — nhưng KHÁC opacity mobile (xem ghi
-// chú ở đó) vì container ⑦ cao gấp ~3.4 lần ③, buộc cover phóng đại ảnh tới
-// 2.53x (so với ③ chỉ ~0.75x, gần như không phóng đại) — độ phóng đại lớn
-// làm mờ chi tiết vân tường, cần bù thêm opacity mới đạt ngưỡng nhìn thấy
-// được bằng mắt (đã xác nhận qua ảnh chụp thật, không chỉ qua số đo).
 export default function KietTac() {
   return (
     <section className="relative bg-e26-black px-6 py-24 md:py-32 overflow-hidden">
-      {/* SỬA 21/07/2026 (brief thay nền ③, Việc B) — thay bg-wall-dark.webp
-          (vân tường mờ 13%) bằng kiettac-villa-toi.webp: ảnh hành lang villa
-          ĐÊM (đã tối sẵn, có vệt sáng ấm ở ô cửa giữa-phải). Ảnh hiện RÕ hơn
-          làm hậu cảnh (không còn chỉ 13% vô hình) nhưng vẫn là hậu cảnh —
-          overlay đủ để chữ trắng đọc tuyệt đối. */}
+      {/* Nền kiettac-villa-toi.webp: ảnh hành lang villa ĐÊM (đã tối sẵn, có
+          vệt sáng ấm ở ô cửa giữa-phải) — hậu cảnh có overlay đủ để chữ
+          trắng đọc tuyệt đối. */}
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: "url(/images/home/kiettac-villa-toi.webp)" }}
