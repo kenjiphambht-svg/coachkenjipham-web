@@ -482,12 +482,37 @@ export default function HomeHero() {
           y giày chỉ cách ~24px → chính là lỗi "giày đạp lên vệt sáng"; sau khi
           tăng pt + thu lề vệt sơn (140→100px), khoảng đen giữa giày và mép
           loé ≥50px ở md (đo lại sau sửa, xem báo cáo). */}
+      {/* SỬA 22/07/2026 (brief thu gọn vùng tối) — Kenji thấy dải xám lem lên
+          vườn/vòm trên nền MỚI (PR#58). Đo lại: mép trên khối tối ở 59.3%
+          chiều cao section, ramp cũ bắt đầu MỜ NGAY TỪ MÉP (45% đen chỉ sau
+          28px) — hợp với ảnh cũ nhưng lem lên cảnh đẹp của ảnh mới. Đồng
+          thời PR#58 đã THU NHỎ Kenji (82%→60%) nên điểm tiếp đất tụt SÂU
+          hơn mốc PR#57 tính: đo lại ở md — chân ghế sau +116px (1440/1920,
+          nông nhất trong dải md; 768 là +135, 1024 là +127), tức mốc đen
+          90px đang DƯ ~26px phía trên. TÁCH RAMP THEO BREAKPOINT (điều
+          PR#57 chưa cần vì khi đó 2 breakpoint trùng nhu cầu ~95px):
+          - MOBILE giữ NGUYÊN stops cũ (đen đặc 90px) — mobile tip vẫn ở
+            +95.5px (ảnh mobile không đổi scale ở PR#58), không có dư địa
+            hạ, và mobile cũng không bị kêu haze.
+          - md+: đẩy điểm bắt đầu mờ xuống 0→55px (trong suốt hoàn toàn tới
+            55px = trả lại ~55px cảnh villa phía trên), nén ramp còn 53px,
+            đen đặc ở 108px — chân sau +116 vẫn dư biên 8px trong đen 100%
+            (tiêu chuẩn ≥5px như PR#57). Cả 2 mục tiêu brief cùng đạt:
+            vườn rõ hơn + chân vẫn chìm, xác nhận bằng ảnh chụp + số đo. */}
       <div className="relative -mx-6 -mt-16 pt-56 pb-24 md:pt-72 md:pb-32 px-6 overflow-visible">
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 md:hidden"
           style={{
             backgroundImage:
               "linear-gradient(to bottom, transparent 0px, color-mix(in srgb, var(--essence-black-2026) 45%, transparent) 28px, color-mix(in srgb, var(--essence-black-2026) 80%, transparent) 52px, color-mix(in srgb, var(--essence-black-2026) 96%, transparent) 74px, var(--essence-black-2026) 90px, var(--essence-black-2026) 100%)",
+          }}
+          aria-hidden="true"
+        />
+        <div
+          className="absolute inset-0 hidden md:block"
+          style={{
+            backgroundImage:
+              "linear-gradient(to bottom, transparent 0px, transparent 55px, color-mix(in srgb, var(--essence-black-2026) 40%, transparent) 80px, color-mix(in srgb, var(--essence-black-2026) 85%, transparent) 97px, var(--essence-black-2026) 108px, var(--essence-black-2026) 100%)",
           }}
           aria-hidden="true"
         />
