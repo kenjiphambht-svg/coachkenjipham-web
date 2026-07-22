@@ -35,6 +35,32 @@ const HERO_BG_SRC: string | undefined = "/images/home/hero-hien-vuon.webp";
 // (tỉ lệ 0.633 — khác hẳn 720×844/0.853 của ảnh cũ, ảnh mới THON HƠN nhiều
 // theo chiều dọc). Convert webp q92, alphaQuality 100 — soi viền tóc + tay
 // cầm cốc phóng to 4x: mượt, không viền đen/trắng sót — 116KB.
+// SỬA 22/07/2026 (brief thay cutout mới + lật hướng nhìn, Bước 0-3) — Kenji
+// GHI ĐÈ LẦN NỮA đúng file này bằng ảnh MỚI HẲN: dáng ngồi khác (bắt chéo
+// chân, ghế bành có tay vịn), nét cao hơn rõ rệt (2800×3600 gốc, so với
+// 1792×2304 bản trước — ~1.56x theo chiều dài cạnh). Đã kiểm: alpha thật
+// (77.9% trong suốt, 21.1% đặc, 1.05% viền AA — không phải nền giả), viền
+// tóc + tay áo phóng to 3x mượt, không lởm chởm. Crop bbox+8px đệm →
+// 2122×2806 (tỉ lệ 0.756, khác hẳn 1195×1888/0.633 bản trước — ảnh mới RỘNG
+// HƠN theo tỉ lệ, không thon dài bằng). Convert webp q95 (nâng từ q92 —
+// brief yêu cầu ưu tiên nét, ảnh gốc cũng nét hơn nên xứng đáng mức nén cao
+// hơn) — so ảnh gốc PNG vs webp phóng to 3x tại vùng tóc: không phân biệt
+// được sai khác, không mất chi tiết vải/tóc — 313KB (hợp lý cho ảnh priority
+// LCP ở độ phân giải này, Next/Image vẫn tạo srcset nhỏ hơn cho màn hình
+// thường). HƯỚNG NHÌN: ảnh gốc (chưa lật) mặt quay sang TRÁI (đã xem trực
+// tiếp, không đoán) — cùng hướng với ảnh cũ trước khi lật ở PR#49. Khung
+// vòm-vườn (đo lại tại 1440px sau PR#54: villa dịch object-position 85%)
+// vẫn nằm bên PHẢI cột Kenji (đã đo: cột Kenji track kết thúc x≈518, khung
+// vòm bắt đầu x≈420 — chồng vào nửa phải cột Kenji rồi lấn tiếp ra ngoài) →
+// scaleX(-1) HIỆN CÓ vẫn đúng hướng cần, GIỮ NGUYÊN (không lật mù theo suy
+// đoán — đã xác nhận bằng ảnh chụp thật sau khi gắn ảnh mới: Kenji nhìn
+// sang phải, đúng phía khung vườn). MÀU DA: đo RGB thật vùng trán (R=197.5
+// G=166.3 B=153.0, R-B=44.5) và má (R=195.5 G=159.4 B=148.0, R-B=47.5) —
+// so với ảnh chân dung đối chứng đã dùng ổn định trên site (kenji-portrait
+// .webp, R-B đo được 74.5-77.2, ẤM HƠN NHIỀU) thì ảnh cutout mới còn TRUNG
+// TÍNH HƠN, không lệch hồng/cam như brief lo ngại → KHÔNG áp filter da (đã
+// đo, đạt, không cần chỉnh — đúng tinh thần "không filter phòng hờ không
+// cần thiết" brief yêu cầu).
 const HERO_IMAGE_SRC: string | null = "/images/home/kenji-hero-cutout.webp";
 
 // SỬA 20/07/2026 (brief V9-FINAL) — chữ + cỡ giữ NGUYÊN (brief xác nhận "đã
@@ -298,19 +324,19 @@ export default function HomeHero() {
               <Image
                 src={HERO_IMAGE_SRC}
                 alt="Kenji Phạm cầm ly trà, nhìn ra khu vườn"
-                width={1195}
-                height={1888}
+                width={2122}
+                height={2806}
                 sizes="(max-width: 768px) 70vw, 32vw"
                 className="relative w-full h-auto object-contain"
                 style={{
                   transform: "scaleX(-1)",
-                  maskImage: "linear-gradient(to bottom, black 0%, black 84%, transparent 99%)",
-                  WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 84%, transparent 99%)",
+                  maskImage: "linear-gradient(to bottom, black 0%, black 88%, transparent 99%)",
+                  WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 88%, transparent 99%)",
                 }}
                 priority
               />
             ) : (
-              <div className="w-full aspect-[1195/1888] bg-e26-cream-deep" aria-hidden="true" />
+              <div className="w-full aspect-[2122/2806] bg-e26-cream-deep" aria-hidden="true" />
             )}
           </div>
         </div>
