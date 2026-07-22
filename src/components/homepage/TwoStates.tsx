@@ -59,17 +59,61 @@ export default function TwoStates() {
           chữ trong card: 60%→3.13, 70%→3.64, 78%→4.09, 85%→4.50 ⇒ nâng đáy
           gradient 60%→87% (và 92%→93% ở đáy) cho dư biên. Mobile đo lại
           riêng: 4.64. Giữ nguyên cấu trúc "đậm dần về đáy" đã có. ĐÁNH ĐỔI:
-          ở 87% hành lang chỉ còn cảm giác sáng — xem mục 8 file bài học. */}
+          ở 87% hành lang chỉ còn cảm giác sáng — xem mục 8 file bài học.
+          SỬA 22/07/2026 (brief thay nền ⑤, Việc C) — thay haicua-hanhlang.webp
+          (hành lang 2 cửa, bị đánh giá "rất rối") bằng haicua-hanhlang1.webp:
+          không gian trắng tối giản, khe sáng hẹp trái nhìn ra biển + cửa mở
+          phải có nắng hắt vào, sàn phản chiếu mờ KHÔNG có vân gạch rõ (khác
+          hẳn ảnh cũ) — không banding (đã zoom 2x vùng trời/biển, mượt nhất
+          trong ảnh), giữ nguyên webp gốc Kenji thả (88KB, chất lượng đã đủ).
+          ĐO LẠI overlay TỪ ĐẦU (không tái dùng gradient 87%→93% cũ — ảnh khác
+          hẳn, không còn vân gạch cần nhấn chìm nên KHÔNG cần gradient, dùng
+          overlay PHẲNG): nhãn "Ở đây có hai cánh cửa." là điểm nghẽn (câu kết
+          + cả 2 card đều dư dả hơn nhiều, xem số đo dưới) — desktop 32% là
+          ngưỡng thấp nhất đạt ≥4.5 (đo 32%→4.51), chọn 35% cho dư biên. Mobile
+          đo lại riêng (bg-cover phóng đại khác — mục 1, ở section này scale
+          lại theo CHIỀU RỘNG do section rất cao): ngưỡng thấp nhất 40% (đo
+          40%→4.50), chọn 45% cho dư biên. Contrast tại mức chọn (desktop 35%
+          / mobile 45%): nhãn 4.55/4.59+, câu kết 10.9+/10+, card1 body/label
+          4.8+/5.3+, card2 body/label 11+/5+ — toàn bộ dư dả. Đã xem ảnh chụp
+          thật: ở 35%, không gian vẫn đọc "sạch, tối giản" đúng tinh thần ảnh
+          mới — KHÔNG mờ đục lại như ảnh cũ (87-93%), khe sáng trái + cửa mở
+          phải vẫn rõ ràng là 2 điểm sáng phân biệt (khớp nghĩa "Hai Cửa" của
+          section này). Đã kiểm 2 biên: nối ④ (Kenji) phía trên và ⑥ Essence
+          phía dưới — không lộ ranh giới đột ngột (xem báo cáo PR). */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/haicua-hanhlang.webp)" }}
+        style={{ backgroundImage: "url(/images/home/haicua-hanhlang1.webp)" }}
+        aria-hidden="true"
+      />
+      {/* SỬA 22/07/2026 (brief thay nền ⑤, kiểm 2 biên) — phẳng 35%/45% đọc rất
+          sạch ở phần trên (nhãn + 2 card + câu kết, 0-85% chiều cao), nhưng
+          đo lại mép DƯỚI thì lộ seam thật với ⑥ Essence phía sau: đáy ⑤ (ảnh
+          gốc ấm, chỉ phủ 35%) composite ra ~(207,200,184), trong khi đỉnh ⑥
+          (ảnh riêng + overlay ivory 85%) là ~(240,238,234) — chênh ~35 đơn vị
+          mỗi kênh, đủ để thấy 1 dải ấm hơn ngay trước khi chuyển sang ⑥ (xem
+          ảnh chụp báo cáo). KHÔNG lộ ở biên TRÊN với ④ (243,242,240 → 218,
+          209,188 là đúng nhịp đổi tông trắng→kem đã có sẵn của toàn trang,
+          không phải seam lạ). Sửa: gradient CHỈ tăng ở 15% cuối (85%→100%,
+          đo thật: card+câu kết kết thúc ở 91.3% desktop/96.4% mobile — ramp
+          bắt đầu tại 85% vẫn có thể chạm nhẹ dưới câu kết, nhưng tăng overlay
+          không bao giờ làm giảm contrast chữ tối/nền sáng nên an toàn), từ
+          35%/45% lên 92% để khớp gần đúng tông đỉnh ⑥. % dùng chung 2 breakpoint
+          (không cần tách theo px-anchor như HomeHero — ở đây không có lớp nào
+          neo theo bleed cố định, thuần ảnh nền + chữ trôi bình thường). */}
+      <div
+        className="absolute inset-0 md:hidden"
+        style={{
+          backgroundImage:
+            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 45%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 45%, transparent) 85%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 100%)",
+        }}
         aria-hidden="true"
       />
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 hidden md:block"
         style={{
           backgroundImage:
-            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 87%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 87%, transparent) 60%, color-mix(in srgb, var(--essence-cream-2026) 93%, transparent) 85%, color-mix(in srgb, var(--essence-cream-2026) 93%, transparent) 100%)",
+            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 35%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 35%, transparent) 85%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 100%)",
         }}
         aria-hidden="true"
       />

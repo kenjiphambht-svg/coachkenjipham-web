@@ -12,16 +12,6 @@
 //     Thịnh." (nhấn giữa câu, "An Thịnh" TO NHẤT section + gold #E0C068 —
 //     ĐIỂM VÀNG THỨ 3 toàn trang, Kenji đã duyệt) → câu kết khối, không nút.
 // Chữ ma "AN" góc trái trên GIỮ NGUYÊN (quyết định cũ).
-// SỬA 20/07/2026 (brief nền vân tường vô hình mobile) — xem ghi chú đầy đủ
-// ở KietTac.tsx (③, cùng ảnh bg-wall-dark.webp, cùng vấn đề). Container ⑦
-// mobile cao ~1460px (gấp ~3.4 lần ③ ~430px vì nhiều nội dung hơn) → cover
-// buộc phóng đại ảnh 2.53x (so với ③ chỉ ~0.75x — gần như không phóng đại).
-// Ở mức phóng đại này, opacity 0.13 + vị trí 10% vẫn cho vân tường quá mờ
-// (đã chụp ảnh thật kiểm chứng, đúng tinh thần Bước 3 của brief — không chỉ
-// tin số đo). Tăng opacity mobile lên 0.20 (dò tăng dần 0.13→0.20, đạt yêu
-// cầu ở bước này nên dừng, không cần lên tới trần 0.25) — desktop giữ
-// nguyên 0.13 qua md:opacity-[0.13], đã xác nhận computed style desktop
-// không đổi so với trước.
 // SỬA 21/07/2026 (brief dọn cuối trang chủ, Việc C) — toàn bộ đoạn Vai 3/Vai
 // 4 trong section này (mở đầu, thì thầm, 2 đoạn thân AN ĐỊNH/AN THỊNH, cầu,
 // câu kết) thiếu font-normal nên kế thừa nhầm body{font-weight:300} di sản
@@ -39,12 +29,11 @@
 export default function AnDinhAnThinh() {
   return (
     <section className="relative bg-e26-black px-6 py-24 md:py-40 overflow-hidden">
-      {/* SỬA 21/07/2026 (brief thay nền ⑦, Việc C) — thay bg-wall-dark.webp
-          bằng andinh-vuon-toi.webp: ảnh hiên villa BAN NGÀY nhìn ra hồ bơi +
+      {/* Nền andinh-vuon-toi.webp: ảnh hiên villa BAN NGÀY nhìn ra hồ bơi +
           vườn (ảnh SÁNG, tái dùng). Overlay TỐI ĐẬM biến thành khối đêm huyền
-          ảo — dò từ 75% tăng dần: chọn 82% (xem đo contrast báo cáo) để (a)
-          mặt hồ/vòm còn le lói nhận ra, (b) toàn bộ chữ trắng + gold "An
-          Thịnh" đạt contrast, (c) chữ ma "AN" vẫn đọc được vị trí. */}
+          ảo — 82% (xem đo contrast báo cáo) để (a) mặt hồ/vòm còn le lói
+          nhận ra, (b) toàn bộ chữ trắng + gold "An Thịnh" đạt contrast, (c)
+          chữ ma "AN" vẫn đọc được vị trí. */}
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: "url(/images/home/andinh-vuon-toi.webp)" }}
