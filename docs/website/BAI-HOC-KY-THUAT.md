@@ -98,6 +98,24 @@ Không chỉ kiểm bên trong section — phải kiểm điểm nối với sec
   gradient tối dần về đáy (82% → 96%), đo lại đáy ⑦ còn ~31/255, sát
   `#1A1A1A` (26) nên nối liền mạch. Đo xác nhận 2 mốc trùng nhau: đáy ⑦ =
   đầu cầu nối = y 6368, không hở khe.
+- **Case PR#57 (22/07):** PR#54 cap layer nền Hero theo `max-w-[1440px]` để
+  chống trôi object-position — nghiệm thu khi đó CHỈ theo tiêu chí của brief
+  đó (khung vòm né chữ), không rà 2 mép màn hình → viewport >1440 hở **2 dải
+  cream dọc 240px mỗi bên** mà không ai thấy cho tới khi Kenji xem trên màn
+  rộng. Sửa tận gốc: nền full-bleed trở lại + zoom theo bậc viewport
+  (`min-[1560px]:scale-110`, origin-right...) vì ảnh gốc 1920px không đủ rộng
+  để vừa phủ kín vừa giữ bố cục chỉ bằng pan (đã giải bằng số: hết dư địa ở
+  ~1578px). **BÀI HỌC:** "2 biên" không chỉ là biên trên/dưới của section —
+  còn là 2 MÉP TRÁI-PHẢI ở viewport RỘNG HƠN mốc thiết kế; và fix cho một
+  brief phải rà lại bằng checklist đầy đủ của các brief trước, không chỉ
+  tiêu chí của brief đang làm.
+- **Case PR#57 (22/07, bài học kiến trúc):** vùng đáy Hero từng qua ~6 PR vá
+  nối tiếp (mask, bệ bóng, contact shadow, kéo gradient...) — mỗi lớp vá dùng
+  MỘT HỆ QUY CHIẾU KHÁC (bóng theo % ảnh, gradient theo % chiều cao khối,
+  ảnh neo theo px bleed) nên chỉnh lớp này lệch lớp kia. Sửa dứt điểm = đổi
+  gradient sang **px-stops tính từ mép trên khối** (cùng hệ quy chiếu với
+  điểm neo px của ảnh) rồi XOÁ 3 lớp bóng (6 lớp → 3 lớp). Khi thấy mình vá
+  cùng một vùng lần thứ 3, dừng lại tìm hệ quy chiếu chung thay vì thêm lớp.
 
 ---
 
