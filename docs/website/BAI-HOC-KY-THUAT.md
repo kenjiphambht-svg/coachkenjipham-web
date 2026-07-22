@@ -26,6 +26,24 @@ lực ở X, lớp B chỉ đạt trạng thái cuối ở Y≠X → khoảng X-
   `z-auto` → đuôi vẽ ĐÈ lên overlay ③. Sửa: xoá hẳn đuôi (③ tự lo overlay).
   **BÀI HỌC PHỤ:** đổi ảnh/overlay 1 section → rà lại section LIỀN KỀ xem có cơ
   chế nào đang "viện trợ" cho nó dựa trên trạng thái CŨ không.
+- **Case PR#58→#59 (22/07):** đổi SCALE ảnh Kenji trong Hero (82%→60%, brief
+  ghép nền villa) dịch điểm chạm chân/ghế XUỐNG SÂU HƠN (+116px tại md, so với
+  mốc ~95px PR#57 đã đo cho scale CŨ) — nhưng lớp gradient tối (LỚP 4) vẫn giữ
+  nguyên mốc "đen đặc ở 90px" đo cho vị trí cũ, không ai cập nhật lại vì brief
+  đổi scale không nhắc tới gradient. Kết quả: dư ~26px vùng ramp-mờ nằm chồng
+  lên cảnh villa phía trên, đọc như một dải sương/xám lem lên vườn. Sửa: đo lại
+  điểm chạm THẬT sau khi đổi scale (không dùng lại số đo cũ), TÁCH ramp theo
+  breakpoint (mobile không đổi scale nên giữ nguyên mốc cũ; md+ dùng mốc mới:
+  mờ hoàn toàn tới 55px để trả cảnh, đen đặc ở 108px sao cho chân +116px vẫn dư
+  biên ≥5px trong đen — chuẩn của PR#57).
+  **BÀI HỌC:** đổi SCALE/POSITION của BẤT KỲ lớp nào trong 1 khung ghép nhiều
+  lớp → phải liệt kê HẾT các lớp KHÁC đang tham chiếu toạ độ của lớp đó (bóng,
+  gradient che, mask...) và xác nhận lại TỪNG lớp, không chỉ lớp bị đổi trực
+  tiếp — hệ quy chiếu chung (mục này, xem case PR#57 "kiến trúc" bên dưới) chỉ
+  giải quyết trôi giữa breakpoint, KHÔNG tự động giải quyết trôi do đổi scale.
+  **Checklist:** sau khi đổi scale/position của 1 lớp, liệt kê mọi lớp khác
+  đang phụ thuộc toạ độ của nó, rồi xác nhận lại TỪNG lớp bằng đo/ảnh thật —
+  không giả định lớp phụ thuộc vẫn đúng chỉ vì hệ quy chiếu (px-stops) không đổi.
 
 ---
 
@@ -87,10 +105,19 @@ Giữ cả file `.png` gốc cạnh `.webp` (quy ước đã dùng từ PR#44/#4
 
 ---
 
-## 6. KHI ĐỔI ẢNH NỀN 1 SECTION, LUÔN KIỂM CẢ 2 BIÊN (TRÊN VÀ DƯỚI)
+## 6. ĐỔI BẤT KỲ THAM SỐ HÌNH HỌC NÀO CỦA 1 LỚP → KIỂM CẢ 2 BIÊN + MỌI LỚP PHỤ THUỘC
 
-Không chỉ kiểm bên trong section — phải kiểm điểm nối với section **TRƯỚC** và
-**SAU**, vì section liền kề có thể có cơ chế giả định trạng thái cũ (xem mục 1).
+Không chỉ khi đổi ẢNH NỀN 1 section — BẤT KỲ thay đổi hình học nào (scale,
+position, margin/bleed, crop) của BẤT KỲ lớp nào trong 1 vùng ghép nhiều lớp
+đều cần rà đủ 2 việc:
+
+- **(a)** điểm nối với section **TRƯỚC** và **SAU**, vì section liền kề có thể
+  có cơ chế giả định trạng thái cũ (xem mục 1);
+- **(b)** mọi lớp KHÁC đang phụ thuộc toạ độ của lớp vừa đổi (bóng, gradient
+  che, mask) — đổi scale/position không tự động kéo các lớp phụ thuộc đó cập
+  nhật theo, dù hệ quy chiếu (vd px-stops) đã đúng chuẩn (xem case PR#58→#59,
+  mục 1: đổi scale ảnh Kenji không đụng tới gradient, nhưng gradient vẫn cần
+  đo lại vì điểm nó che đã dịch chuyển).
 
 - **Case PR#53 (21/07):** đáy ⑦ ở overlay phẳng 82% composite ra ~54/255, trong
   khi ảnh cầu nối ngay sau (`ImageBridge`) có mép trên rất tối (11–13/255) →
