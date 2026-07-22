@@ -24,25 +24,31 @@ import ComingLink from "./ComingLink";
 export default function WhatIsEssence() {
   return (
     <section className="relative bg-e26-ivory px-6 py-16 md:py-32">
-      {/* SỬA 20/07/2026 (Light System) — thay bg-hero-light.webp (wash mờ
-          0.11) bằng ảnh light-04 "Silence" (bg-light-essence.webp). Đo
-          contrast thật (canvas, WCAG): ảnh trực tiếp cho H2/Sub/Link đạt
-          ngay (9.39 / 3.54 / 8.51, cần ≥3-4.5), nhưng 4 đoạn thân bài (Vai 3,
-          màu e26-text-2) KHÔNG đạt 4.5:1 (2.55-4.03). Dò lớp phủ kem tăng
-          dần 5%/nấc → 70% mới đạt cả desktop (4.56) lẫn mobile (4.75) —
-          nặng hơn "rất nhẹ" kỳ vọng vì màu chữ phụ vốn có trần contrast thấp
-          (chỉ 6.49:1 ngay cả trên nền trắng thuần), không phải lỗi vị trí.
-          SỬA 20/07/2026 (brief nền mờ chi tiết) — ảnh light-essence lộ rõ
-          hành lang/cột thu nhỏ theo phối cảnh SUỐT chiều dọc ảnh (không chỉ ở
-          đáy), nên gradient theo vị trí không đủ — tăng overlay tổng thể
-          70%→85% (Bước 3 của brief: tăng dần 5%/nấc tới khi chìm). Ở 85%,
-          hành lang chỉ còn "cảm giác sáng", không còn nhận ra góc phòng/cột —
-          xác nhận bằng mắt trên ảnh chụp thật cả 2 breakpoint. Contrast đo
-          lại tăng theo (luôn tăng khi overlay tăng): desktop 5.49, mobile
-          5.75 — dư dả so với 4.5. */}
+      {/* SỬA 22/07/2026 (brief thay nền ⑥, Việc B) — thay bg-light-essence.webp
+          (Light System trừu tượng, hành lang/cột phối cảnh) bằng
+          essence-la-gi.webp: ảnh zen thật Kenji thả (cây nhỏ + đá cuội + bệ gỗ
+          tròn + tường trắng + vách gỗ nan phải, 1000×800). Đổi tên file theo
+          quy tắc mục 5 sổ tay (bỏ dấu/khoảng trắng: "essence la gì.webp" →
+          "essence-la-gi.webp"). Không banding ở vùng tường phẳng dù chỉ
+          1000×800 gốc (đã zoom đúng tỉ lệ cover thật 1.425x tại 1440 — vẫn nét,
+          không cần convert lại).
+          ĐO LẠI overlay TỪ ĐẦU (không giữ 85% cũ — ảnh khác hẳn): H2/Sub/Link
+          dư dả ngay cả không overlay (13-17 ở mọi mức). Điểm nghẽn thật là
+          THÂN BÀI + CHỮ KÝ (Vai 3/4, màu phụ e26-text-2) — và đây là ca lạ:
+          đo darkest-pixel-in-rect cho RGB gần (0,0,0) (bóng gốc cây, không
+          phải vách gỗ nan như đoán ban đầu — đã xác minh vị trí pixel thật,
+          không đoán) khiến contrast KHÔNG tăng đơn điệu: 0%→1.64 giảm dần
+          xuống ~1.0 quanh 20-30% (điểm bóng và màu chữ trùng độ sáng) rồi mới
+          tăng lại khi overlay đủ mạnh kéo bóng sáng vượt qua chữ — 87% là
+          ngưỡng thấp nhất đạt lại ≥4.5 (thân bài 4.58, chữ ký 4.58). Mobile đo
+          riêng cho cùng kết quả (87%). Chọn 88% dùng CHUNG 1 mức cho cả 2
+          breakpoint (dư biên nhỏ, không cần tách vì 2 số đo trùng nhau). Đã
+          xem ảnh chụp ở 88%: cảnh zen vẫn đọc được rõ ràng (cây, đá, bệ gỗ,
+          vách nan) — không mờ đục như ảnh Light System cũ, vì bản thân ảnh
+          mới đã sáng/sạch sẵn, 88% chỉ đủ để dìm đúng 1 điểm bóng tối. */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/bg-light-essence.webp)" }}
+        style={{ backgroundImage: "url(/images/home/essence-la-gi.webp)" }}
         aria-hidden="true"
       />
       {/* KHÔNG dùng bg-e26-ivory/70 — bug đã biết (xem HomeHero.tsx): token
@@ -50,7 +56,7 @@ export default function WhatIsEssence() {
           được modifier "/opacity", lớp phủ sẽ trong suốt hoàn toàn (im lặng,
           không lỗi build). Dùng color-mix() — kỹ thuật đã kiểm chứng. */}
       <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_85%,transparent)]"
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_88%,transparent)]"
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-3xl mx-auto text-center">

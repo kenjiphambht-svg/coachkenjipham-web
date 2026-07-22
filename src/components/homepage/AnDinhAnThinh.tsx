@@ -26,34 +26,57 @@
 // "Không phải vì cuộc sống dễ hơn..." từ một brief trước — chỉ khác đúng 1
 // cụm "mình làm" so với MỚI brief muốn ("bạn chọn làm"), đã sửa đúng cụm đó,
 // không áp nhầm toàn bộ CŨ giả định của brief đè lên bản đã đúng sẵn.
+// SỬA 22/07/2026 (brief thay nền ⑦ + tăng cỡ chữ nghiêng, Việc D) — 2 đoạn
+// "thì thầm"/"cầu" (Vai 4, font-serif italic) tăng từ 17px/18px lên 21px/23px
+// (+25%, đúng tỉ lệ brief yêu cầu) cho dễ đọc hơn trên nền ảnh mới tối hơn ở
+// vùng chữ. Đã xem lại cả 2 breakpoint: không vỡ dòng xấu (line-height 1.7
+// vẫn đủ giãn, đoạn dài nhất "Tối đó, sau một quyết định lớn..." vẫn ngắt
+// dòng tự nhiên trong max-w-[640px], không tràn/không rối).
 export default function AnDinhAnThinh() {
   return (
     <section className="relative bg-e26-black px-6 py-24 md:py-40 overflow-hidden">
-      {/* Nền andinh-vuon-toi.webp: ảnh hiên villa BAN NGÀY nhìn ra hồ bơi +
-          vườn (ảnh SÁNG, tái dùng). Overlay TỐI ĐẬM biến thành khối đêm huyền
-          ảo — 82% (xem đo contrast báo cáo) để (a) mặt hồ/vòm còn le lói
-          nhận ra, (b) toàn bộ chữ trắng + gold "An Thịnh" đạt contrast, (c)
-          chữ ma "AN" vẫn đọc được vị trí. */}
+      {/* SỬA 22/07/2026 (brief thay nền ⑦, Việc C) — thay andinh-vuon-toi.webp
+          (hiên villa BAN NGÀY, cần overlay đen 82-96% để giả ban đêm) bằng
+          an-dinh-toi.webp: ảnh Kenji thả THẬT SỰ chụp/dựng BAN ĐÊM (lối đi lát
+          đá dưới trăng dẫn vào villa trắng, cây thông silhouette, mặt trăng ló
+          sau tán lá — EXIF gốc: title "villa tối - 1", tác giả Kenji Phạm,
+          tạo 2026-07-22). Đổi tên file theo quy tắc mục 5 sổ tay (khắc phục
+          luôn lỗi gõ dấu "an-ding-tôi.png" → "an-dinh-toi.png/.webp"). Convert
+          webp q90 (65KB) — đã zoom 2x vùng trời/trăng (gradient mượt nhất,
+          rủi ro banding cao nhất): không banding.
+          Ý NGHĨA KHÁC HẲN ảnh cũ: ảnh mới đã TỐI SẴN (không cần overlay giả
+          đêm) — chỉ cần đủ overlay để chữ đọc được, ảnh vẫn giữ được chiều sâu
+          thật của cảnh đêm thay vì lớp đen phẳng đè lên ảnh ngày.
+          ĐO LẠI overlay TỪ ĐẦU (không giữ 82-96% cũ — ảnh khác bản chất, số cũ
+          vô nghĩa): worst-case ĐÚNG CHIỀU cho chữ sáng/nền tối (pixel SÁNG
+          nhất, mục 7) — hầu hết chữ đã dư dả ngay cả không overlay (9-16 ở
+          nhiều dòng) vì cảnh vốn tối. Điểm nghẽn thật: "câu mở" (Rồi một
+          ngày…, cần ≥4.5) và neo gold "An Thịnh." (cần ≥3, chữ lớn Vai 1) —
+          cả 2 đều rơi đúng vùng trời/tán lá sáng nhất. Desktop: câu mở đạt 4.5
+          ở 28%; mobile (đo riêng, phóng đại khác — mục 1): câu mở đạt 4.5 ở
+          36%. Chọn 38% CHUNG cho cả 2 breakpoint (câu mở desktop 5.9, mobile
+          4.9 — dư biên cả hai; gold "An Thịnh" 5+ ở cả hai, dư rất nhiều so
+          với ngưỡng 3). KHÔNG cần gradient đậm dần về đáy như ảnh cũ: đáy ⑦ ở
+          38% flat composite ra ~(14,19,23), ImageBridge (⑧) ngay sau đã đo lại
+          mép trên ~(15,15,13) — 2 mốc lệch chỉ ~1-10 đơn vị/kênh, không cần
+          gradient riêng để hoà (khác hẳn ảnh cũ vốn cần gradient 82%→96% vì
+          ảnh ngày ở 82% vẫn còn sáng ~54/255, hở seam thật với ⑧).
+          VỊ TRÍ (background-position): đã dò 5 mốc ngang (20/35/50/65/80%) ở
+          mobile (khung dọc hẹp, cover chỉ hiện 1 dải giữa ảnh theo chiều
+          rộng) — mốc mặc định 50% (center) đã cho bố cục cân đối nhất (trăng
+          + tán cây phía trên, villa + lối đi phía dưới, đọc được trọn vẹn
+          "về nhà ban đêm") — GIỮ bg-center, không cần dò lệch vì không có vấn
+          đề gì cần sửa (khác case bg-wall-dark cũ vốn near-invisible ở
+          center). Chữ ma "AN" (opacity 0.09, thuần trang trí — không cần đạt
+          WCAG) đã xem lại bằng mắt: vẫn nhận ra hình dạng/vị trí trên nền
+          mới. */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/andinh-vuon-toi.webp)" }}
+        style={{ backgroundImage: "url(/images/home/an-dinh-toi.webp)" }}
         aria-hidden="true"
       />
-      {/* SỬA 21/07/2026 (brief Việc C) — overlay từ FLAT 82% đổi thành
-          GRADIENT: giữ nguyên 82% ở phần trên/giữa (đã đo đạt ở PR#52, không
-          đụng), rồi TỐI DẦN về đáy tới 96% để hoà vào ảnh cầu nối
-          (ImageBridge) ngay sau ⑦ — mép trên ảnh cầu nối rất tối (11-13/255,
-          đo ở PR trước) + còn dải gradient đen riêng, trong khi đáy ⑦ ở 82%
-          composite ra ~54/255 → CÓ bước nhảy sáng thật. Ở 96%, đáy ⑦ về
-          ~31/255, sát #1A1A1A (26) nên nối liền mạch. Câu kết "Không phải
-          cánh cửa nào..." nằm trong dải này: nền TỐI HƠN nên contrast chỉ
-          TĂNG (đã đo lại, xem báo cáo). Xem BAI-HOC-KY-THUAT.md mục 1 & 6. */}
       <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage:
-            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-black-2026) 82%, transparent) 0%, color-mix(in srgb, var(--essence-black-2026) 82%, transparent) 55%, color-mix(in srgb, var(--essence-black-2026) 90%, transparent) 80%, color-mix(in srgb, var(--essence-black-2026) 96%, transparent) 100%)",
-        }}
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-black-2026)_38%,transparent)]"
         aria-hidden="true"
       />
       <span className="andinh-ghost-an absolute top-6 left-6 md:top-10 md:left-10 font-serif" aria-hidden="true">
@@ -70,7 +93,7 @@ export default function AnDinhAnThinh() {
         {/* Thì thầm — Vai 4: serif italic nhỏ, opacity ~0.75 (dùng token phụ
             text-dark-2 sẵn có thay vì opacity rời để không xung đột với
             transition opacity của .e26-reveal). */}
-        <p className="e26-reveal font-serif italic font-normal text-[17px] md:text-[18px] leading-[1.7] text-e26-text-dark-2 mt-8">
+        <p className="e26-reveal font-serif italic font-normal text-[21px] md:text-[23px] leading-[1.7] text-e26-text-dark-2 mt-8">
           Tối đó, sau một quyết định lớn, bạn vẫn ngủ được. Bữa cơm nhà bớt căng. Con chạy vào
           kể một câu chuyện dài về con kiến ngoài sân. Lần này, bạn nghe hết, mỉm cười. Rồi mới
           gọi con đi ăn cơm.
@@ -97,7 +120,7 @@ export default function AnDinhAnThinh() {
         </p>
 
         {/* Cầu — dòng nhỏ, Vai 4 */}
-        <p className="e26-reveal font-serif italic font-normal text-[17px] md:text-[18px] leading-[1.7] text-e26-text-dark-2 mt-8">
+        <p className="e26-reveal font-serif italic font-normal text-[21px] md:text-[23px] leading-[1.7] text-e26-text-dark-2 mt-8">
           An Định không phải đích đến. Nó là nền đất.
         </p>
 
