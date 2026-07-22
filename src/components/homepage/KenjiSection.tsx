@@ -57,16 +57,59 @@ export default function KenjiSection() {
           50/70%) — chênh không đáng kể (2.13-2.22 ở cùng mức) vì ảnh có đốm
           tối rải khắp, nên giữ bg-center. ĐÁNH ĐỔI ĐÃ BIẾT: ở 85% phòng đọc
           chỉ còn "cảm giác sáng", không còn nhận ra rõ cảnh — xem
-          BAI-HOC-KY-THUAT.md mục 8, cần Kenji quyết nếu muốn ảnh rõ hơn. */}
+          BAI-HOC-KY-THUAT.md mục 8, cần Kenji quyết nếu muốn ảnh rõ hơn.
+          SỬA 22/07/2026 (brief dọn Hero + thay nền ④, Việc C) — thay
+          kenji-phong-doc.webp (phòng đọc villa, kệ sách + ghế bành + cửa
+          vòm, đánh đổi contrast ở mục 8 trên) bằng kenji-phong-doc1.webp:
+          ảnh Draw Things AI THẬT SỰ trừu tượng (prompt gốc đọc trong EXIF:
+          "almost empty frame, only subtle gradations of white ivory and
+          cream light... no objects, no furniture... no texture", negative
+          prompt loại trừ đúng "brown, sepia, amber") — chỉ còn 1 góc tường
+          + trần hắt sáng mềm, sàn phản chiếu mờ, KHÔNG còn kệ sách/ghế/cửa
+          vòm nào để cạnh tranh với chữ.
+          PHÁT HIỆN + SỬA THÊM (ngoài yêu cầu gốc của brief, nhưng cần thiết):
+          ảnh gốc Kenji thả có 1 vệt CHÉO màu nâu đậm (RGB~78,58,40, lum~61)
+          ở góc trên-phải — rõ ràng là lỗi render AI (mâu thuẫn chính prompt
+          gốc "no room details, no texture"), KHÔNG phải chi tiết kiến trúc
+          cố ý (đã zoom xem trực tiếp: không khớp bất kỳ đường nét hợp lý nào,
+          chỉ là 1 vết nứt/seam ngẫu nhiên). Vệt này rơi ĐÚNG vào cột chữ body
+          (đo được: đè lên đúng dòng đầu đoạn 1) nên MỘT MÌNH nó kéo overlay
+          cần thiết lên tới ~80-85% (tính bằng công thức blend ngược) — quay
+          lại đúng mức nặng của ảnh cũ, PHẢN LẠI mục đích chọn ảnh nhẹ hơn.
+          Đã RETOUCH: blur cục bộ (sigma 120) trong đúng bbox thật của vệt
+          (đo qua scan toàn ảnh, lum<90: bbox x1397-1780/y0-268), feather vào
+          vùng xung quanh (vốn chỉ là gradient trơn nên inpaint an toàn, rủi
+          ro thấp) — đã xem lại ảnh sau retouch phóng to 2x: vệt biến mất
+          hoàn toàn (lum<90 count: 0 sau sửa, so với ~2282 trước), góc phải
+          giờ đối xứng tự nhiên với góc trái (vốn có đường nối kiến trúc mờ
+          tương tự). File gốc CHƯA sửa được giữ tại
+          kenji-phong-doc1-original.png (không xoá) để đối chiếu/rollback nếu
+          Kenji muốn xem lại. Convert webp q90 (28KB) — đã zoom 2x lại vùng
+          gradient mượt nhất sau retouch: không banding.
+          LƯU Ý THẬT (không tô hồng): ảnh vẫn còn 1 dải sàn gạch mờ với vệt
+          kẻ ngang rất nhạt — không "tuyệt đối không texture" như prompt gốc
+          yêu cầu, nhưng khác hẳn mức độ so với kệ sách/ghế bành cũ (không
+          phải vật thể nhận diện được).
+          OVERLAY ĐO LẠI TỪ ĐẦU sau retouch (không tái dùng 85% cũ — ảnh khác
+          hẳn, số cũ không còn nghĩa lý): dò từ 10% tăng dần, worst-case đúng
+          chiều (pixel TỐI nhất, mục 7) tại vị trí thật của label/body/quote/
+          link. Label (nhãn) + quote + link đều dư dả ngay từ 10-15%. Body
+          (màu phụ e26-text-2, ràng buộc chặt nhất) là mức quyết định: desktop
+          47% là ngưỡng thấp nhất đạt ≥4.5 (đo 47%→4.51), chọn 48% cho dư biên
+          nhỏ. MOBILE đo lại riêng (bg-cover phóng đại khác — mục 1): nhãn thứ
+          2 ("Huấn luyện viên...") là ràng buộc chặt nhất trên mobile (không
+          phải body như desktop), ngưỡng thấp nhất 53% (đo 53%→4.51), chọn 55%
+          cho dư biên. TÁCH overlay theo breakpoint (mobile 55% / desktop 48%)
+          — cách biệt nhỏ hơn nhiều so với ảnh cũ (58%→85%, cách 27 điểm %)
+          vì ảnh mới đã sạch chi tiết tối sẵn, không cần bù nhiều theo
+          breakpoint. */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/kenji-phong-doc.webp)" }}
+        style={{ backgroundImage: "url(/images/home/kenji-phong-doc1.webp)" }}
         aria-hidden="true"
       />
-      <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-white-2026)_85%,transparent)]"
-        aria-hidden="true"
-      />
+      <div className="absolute inset-0 md:hidden bg-[color-mix(in_srgb,var(--essence-white-2026)_55%,transparent)]" aria-hidden="true" />
+      <div className="absolute inset-0 hidden md:block bg-[color-mix(in_srgb,var(--essence-white-2026)_48%,transparent)]" aria-hidden="true" />
       <div className="relative z-10 max-w-[1120px] mx-auto flex flex-col md:flex-row md:items-center gap-10 md:gap-16">
         <figure className="e26-reveal w-full max-w-[360px] mx-auto md:mx-0 md:w-[40%] md:max-w-none shrink-0">
           <ImageSlot

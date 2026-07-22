@@ -1,7 +1,8 @@
 import Image from "next/image";
 
-// Ảnh trang trí (alt rỗng, aria-hidden) — phủ lớp cream ~90% lên trên để chữ
-// hero giữ nguyên độ tương phản đọc được (không đổi màu chữ hiện tại).
+// Ảnh trang trí nền Hero (alt rỗng, aria-hidden). Overlay hiện tại: gradient
+// ngang cream 62%→16% (desktop) / phẳng 62% (mobile) — xem chi tiết % + lý do
+// tại khối JSX overlay bên dưới, không phải con số cố định ghi ở đây.
 //
 // SỬA 21/07/2026 (brief ghép nền hero villa) — thay bg-light-hero.webp
 // (ảnh Light trừu tượng) bằng hero-hien-vuon.webp — ảnh villa hiên vòm nhìn
@@ -79,8 +80,9 @@ const HERO_IMAGE_SRC: string | null = "/images/home/kenji-hero-cutout.webp";
 // Section 2 — Hero: trạng thái con người, dựng theo hệ KHỐI-LỚP.
 // Nền CREAM (không phải ivory — luật #2). Chữ lớn nhất mắt nhìn thấy nhưng
 // KHÔNG phải heading (H1 duy nhất ở section Kiệt Tác) — dùng <p>, không <h1>.
-//   Lớp 1 (dưới): ảnh bg-hero-open phủ TRỌN section + lớp cream ~90% → chữ
-//                 nổi trên nền nắng (kỹ thuật A), không đứng trên nền trơn.
+//   Lớp 1 (dưới): ảnh HERO_BG_SRC phủ TRỌN section + overlay cream (gradient
+//                 ngang desktop / phẳng mobile, % thật xem tại JSX) → chữ nổi
+//                 trên nền nắng (kỹ thuật A), không đứng trên nền trơn.
 //   Lớp 2: khối chữ hero (trái ~40%, cột 2/5).
 //   Lớp 3 (trên): ảnh Kenji (phải ~60%, cột 3/5). CHỜM XUỐNG ranh giới ②→③ —
 //                 mà ③ (sau khi đảo mạch 19/07) là Kiệt Tác NỀN ĐEN.
@@ -116,8 +118,9 @@ const HERO_IMAGE_SRC: string | null = "/images/home/kenji-hero-cutout.webp";
 export default function HomeHero() {
   return (
     <section className="bg-e26-cream px-6 pt-24 md:pt-[120px] relative overflow-x-clip">
-      {/* LỚP 1 — ảnh nền phủ trọn section (inset-0), cream ~90% giữ tương phản
-          chữ. Đã đo thật ở PR trước: chữ hero vẫn đọc rõ trên nền này. */}
+      {/* LỚP 1 — ảnh nền phủ trọn section (inset-0) + overlay cream (gradient
+          ngang desktop / phẳng mobile, % thật xem tại JSX overlay bên dưới).
+          Đã đo thật: chữ hero đọc rõ trên nền này. */}
       {/* SỬA BUG PHÁT HIỆN 19/07/2026 (nằm ngay trong file này, sửa kèm để
           Việc 1/2 hoạt động đúng): overlay từng viết "bg-e26-cream/90" —
           KHÔNG BAO GIỜ thực sự render (đã đo computed style: backgroundColor
@@ -152,49 +155,6 @@ export default function HomeHero() {
           lề 14px). */}
       {HERO_BG_SRC && (
         <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-          {/* SỬA 22/07/2026 (Việc B) — md:object-[85%_50%]: đo thật khung
-              vòm-cây (canvas color-scan, phát hiện vùng có green-dominance
-              trong dải tối của ảnh, xem BAI-HOC-KY-THUAT.md nếu cần bối cảnh
-              phương pháp) nằm ở x≈610–800 tại 1440 với crop mặc định 50%
-              center — chồng thẳng vào khối chữ (bắt đầu x≈624). Dò
-              65%→78%→85%: 85% đẩy khung vòm về x≈420–576, dưới điểm bắt đầu
-              khối chữ 48px (đo lại bằng canvas sau khi đổi, không giả định).
-              Kenji (ảnh cutout riêng, không thuộc layer này) không bị ảnh
-              hưởng vị trí — chỉ phần VILLA đứng sau anh dịch theo, đã xem ảnh
-              thật xác nhận vẫn đọc được là "tựa cột" (không đổi cột nào anh
-              dựa vào).
-              CHỈ áp dụng từ md: (nơi có bố cục 2 cột cạnh nhau — brief mô tả
-              rõ "khung cửa sổ bên phải" là ngôn ngữ bố cục desktop). Dưới
-              md: (mobile, xếp dọc, chữ trước ảnh sau) GIỮ nguyên crop mặc
-              định — đã đo bằng mắt: ở khung hình mobile (390px), ảnh nền bị
-              phóng đại rất mạnh theo TRỤC DỌC (chiều cao Hero mobile cao hơn
-              nhiều lần bề ngang) nên gần như luôn hiện một phần khung vòm
-              trong dải dọc của khối chữ dù dò object-position ở bất kỳ điểm
-              nào (đã thử 8 mốc 55%→80%, mốc nào cũng còn vệt xanh trong dải
-              chữ — không có điểm nào "sạch" như ở desktop). Đây là TÌNH
-              TRẠNG CÓ SẴN (đã kiểm: crop mặc định 50% cũ cũng vậy, không phải
-              lỗi phát sinh từ đổi này) — không phải vấn đề "dịch chữ" có thể
-              giải quyết được ở bố cục xếp dọc, cần Kenji quyết định hướng
-              khác (vd tăng overlay riêng cho mobile) nếu muốn xử lý tiếp. */}
-          {/* SỬA 22/07/2026 (brief sửa màu ảnh nền, Việc C) — filter
-              saturate(50%) brightness(107%): đo màu thật 4 vùng tường/trần
-              phẳng trên ảnh gốc (canvas, kênh R/G/B) — vùng tường sáng nhất
-              (đại diện rõ nhất) cho R=189.8 G=173.8 B=148 (R-B=41.8, ngả cam
-              rõ). Đã thử hue-rotate kèm theo (-30deg) giảm R-B mạnh hơn
-              (còn 21) nhưng xem ảnh thật thì cây xanh phía sau bị ngả
-              hồng/nhạt màu (hue-rotate xoay TẤT CẢ màu, không riêng vùng cam)
-              — vi phạm đúng điều brief cấm ("không làm ảnh xám/mất sức
-              sống"). Đổi sang saturate-only (không hue-rotate): giảm bão hoà
-              đều làm giảm khoảng cách R-B tự nhiên (không đổi tông màu như
-              hue-rotate) mà cây vẫn xanh thật (đã xem ảnh, không chỉ tin số).
-              saturate(50%)+brightness(107%) đưa vùng tường sáng nhất về
-              R=194.8 G=186.6 B=172.5 (R-B=22.4, giảm 46% so với gốc) — đọc là
-              "trắng ấm" chứ không còn "vàng cam". Chỉ áp lên layer NỀN
-              (Image này), KHÔNG áp lên layer ảnh Kenji (Image riêng, xem bên
-              dưới grid) — da/tóc Kenji giữ nguyên màu gốc, đã xem ảnh thật
-              xác nhận không bị ám lạnh. Contrast đo lại sau khi đổi filter
-              (canvas, WCAG, cùng phương pháp cũ): 7.66–10.87 trên mọi dòng —
-              còn CAO HƠN trước (nền sáng thêm 7% từ brightness). */}
           {/* SỬA 22/07/2026 (brief nền mới) — BỎ cả object-[85%] lẫn các bậc
               zoom min-[1560/1800/2200] (đều là nghiệm cho BÀI TOÁN CŨ: khung
               vòm ảnh cũ né cột chữ bên phải). Bố cục mới: chữ TRÁI / Kenji
@@ -350,7 +310,12 @@ export default function HomeHero() {
               còn 60% + dịch nhẹ sang phải (md:mr-[4%]) cho anh ngồi sâu vào
               khoang hiên gần bàn thấp, khớp phối cảnh sàn gỗ. items-end +
               -mb giữ nguyên nên đáy ảnh vẫn neo đúng cao độ cũ — chân vẫn
-              chìm trong vùng đen PR#57 (không hồi quy). */}
+              chìm trong vùng đen PR#57 (không hồi quy).
+              SỬA 22/07/2026 (Việc A, rà code chết) — đổi này bỏ sót cập nhật
+              `sizes` trên Image bên dưới (còn ghi "32vw", con số đo từ hồi
+              82%) → đã đo lại thật bằng getBoundingClientRect tại 1440
+              (22.6vw) và 1920 (17.6vw, co lại vì cột bị cap max-w-1440), sửa
+              về 24vw (đủ dư, không undersize gây mờ ảnh priority/LCP). */}
           <div className="e26-reveal md:col-span-5 relative z-10 w-[70%] max-w-[340px] mx-auto md:ml-auto md:mr-[9%] md:w-[60%] md:max-w-none -mb-16 md:-mb-24">
             {/* SỬA 22/07/2026 (brief làm sạch dứt điểm vùng đáy Hero) — XOÁ
                 HẲN 3 LỚP BÓNG RỜI RẠC từng nằm ở đây: (1) bệ bóng elip lớn
@@ -387,7 +352,7 @@ export default function HomeHero() {
                 alt="Kenji Phạm cầm ly trà, nhìn ra khu vườn"
                 width={2122}
                 height={2806}
-                sizes="(max-width: 768px) 70vw, 32vw"
+                sizes="(max-width: 768px) 70vw, 24vw"
                 className="relative w-full h-auto object-contain"
                 style={{
                   filter: "sepia(0.18) saturate(1.04) brightness(0.97)",
