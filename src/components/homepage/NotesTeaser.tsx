@@ -45,8 +45,10 @@ const CARDS: { title: string; lines: string[]; cta?: string; note?: string }[] =
 ];
 
 export default function NotesTeaser() {
+  // id để mục menu "Một góc để quay lại" (HomeHeader) cuộn tới được — xem MT4.
+  // scroll-mt-24 chừa chỗ cho header dính khi anchor nhảy tới.
   return (
-    <section className="relative bg-e26-ivory px-6 py-16 md:py-28">
+    <section id="mot-goc-de-quay-lai" className="relative scroll-mt-24 bg-e26-ivory px-6 py-16 md:py-28">
       {/* SỬA 22/07/2026 (brief thay nền ⑧⑨, Việc C) — thay bg-light-evening.webp
           (dùng CHUNG với ⑧) bằng ghi-chep-essence.webp: ảnh THẬT Kenji thả
           riêng cho ⑨ — bàn gỗ có tách trà + sổ tay, rèm lụa bay, nhìn ra vườn
@@ -88,13 +90,39 @@ export default function NotesTeaser() {
           ivory82 cũ về luminance pixel tối → intro đo được 4.92 ≥ 4.90,
           KHÔNG hồi quy, trong khi composite vẫn warm ~+13 hue gold (ấm hơn
           hẳn +10 trung tính cũ). */}
+      {/* SỬA 23/07/2026 (brief ⑨ TRONG hơn + ẤM hơn, MT2+MT3) — Kenji xem thật:
+          veil 88% "quá ĐẶC, nuốt mất cảnh phòng đọc (bàn, tách trà, sổ tay, rèm,
+          cây)", màu "xám lạnh + còn ám hồng". [88% ở khối trên GIỜ LỖI THỜI.]
+          Đảo hướng: GIẢM veil để lộ cảnh + kéo tông ấm. Đo composite khi giảm
+          veil: veil càng NHẸ thì R/B càng tiến về cầu nối (55%→1.155 vs 70%→
+          1.110) VÀ càng ấm — tức "trong hơn" phục vụ luôn "ấm hơn" + "liền dòng
+          màu" (MT3). Ràng buộc là contrast intro (Vai 3, chữ phụ, yếu nhất):
+          dò live 88→70→62% — 62% cho intro vẫn ≥4.5 mà cảnh phòng hiện rõ.
+          sepia 0.4→0.5: ép hue vàng-gỗ mạnh hơn, khử sạch hồng (pink −3.4→−3.8),
+          R/B gần như không đổi. Kết quả: cảnh đọc được, tông vàng ấm khớp ⑧ +
+          cầu nối, hết hồng/xám lạnh. Contrast đo live cả 2 breakpoint (xem báo
+          cáo). bg-center giữ nguyên.
+          VEIL GRADIENT (không phẳng) — mấu chốt MT2: flat mà đủ trong để thấy
+          cảnh thì intro (Vai 3, chữ phụ yếu nhất) tụt <4.5 (62%→3.63, cả 78%
+          →4.41 vẫn thiếu). Giải bằng gradient dọc (lesson mục 8): NẶNG 84% ở
+          nửa TRÊN (0–47% chiều cao — nơi H2+intro nằm, đo thật intro desktop
+          0.24–0.47 / mobile 0.11–0.27, đều trong vùng nặng) → NHẸ 48% ở ĐÁY
+          (nơi bàn+tách trà+ghế+rèm nằm, không có chữ nền) để lộ rõ cảnh. Card
+          nằm trên kính trắng .72 nên vẫn đọc tốt dù veil đáy nhẹ. Đo live cả 2
+          breakpoint: intro 4.73/4.75, H2 12.4, card min 4.66/4.76 — đều ≥4.5,
+          KHÔNG hồi quy chuẩn đọc. Vùng chữ vẫn kín (84%≈mức cũ) nên "trong hơn"
+          đến từ nửa dưới lộ cảnh — đúng ý Kenji (thấy phòng đọc). */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/ghi-chep-essence.webp)", filter: "sepia(0.4)" }}
+        style={{ backgroundImage: "url(/images/home/ghi-chep-essence.webp)", filter: "sepia(0.5)" }}
         aria-hidden="true"
       />
       <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_88%,transparent)]"
+        className="absolute inset-0"
+        style={{
+          backgroundImage:
+            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 84%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 84%, transparent) 47%, color-mix(in srgb, var(--essence-cream-2026) 52%, transparent) 60%, color-mix(in srgb, var(--essence-cream-2026) 48%, transparent) 100%)",
+        }}
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-4xl mx-auto text-center">

@@ -15,8 +15,13 @@ import Link from "next/link";
 // globals.css) thay vì 400 — đã thêm font-normal, giữ nguyên hover:font-medium
 // cho hiệu ứng "đậm chữ khi hover" đã có.
 export default function NotPromised() {
+  // SỬA 23/07/2026 (brief ⑧ thoáng + mờ hơn, MT1) — desktop cao thêm ~30%
+  // (md:py-40=160px → md:py-[232px]) cho khung vòm có khoảng thở rõ trên/dưới,
+  // hết cảm giác bị bó chạm 2 mép. MOBILE giữ py-28 (Kenji xác nhận mobile đang
+  // ổn — KHÔNG đổi). overflow-hidden để cắt gọn lớp ảnh blur (đã phóng -inset-10
+  // chống quầng mép, xem lớp ảnh).
   return (
-    <section className="relative bg-e26-cream px-6 py-28 md:py-40">
+    <section className="relative overflow-hidden bg-e26-cream px-6 py-28 md:py-[232px]">
       {/* SỬA 22/07/2026 (brief thay nền ⑧⑨, Việc C) — thay bg-light-evening.webp
           (Light System trừu tượng, dùng CHUNG với ⑨) bằng essence-khong-hua.webp:
           ảnh THẬT Kenji thả riêng cho ⑧ — phòng trắng tối giản, 2 khung vòm
@@ -33,37 +38,24 @@ export default function NotPromised() {
           tông cream của section, không phải yêu cầu kỹ thuật. Đã xem ảnh
           chụp thật ở 20%: vẫn giữ trọn "khoảng trắng LÀ hình ảnh" — 2 khung
           vòm rõ ràng, không có chi tiết nào cần che. */}
-      {/* SỬA 23/07/2026 (brief thống nhất tông toàn tuyến) — 2 sửa ở lớp ảnh này:
-          (1) CROP: bg-center cắt cụt ĐỈNH VÒM lớn ở giữa trên desktop (section
-          rất ngang 1425×488 / ảnh 1920×1088 → cover tràn dọc ~319px, center cắt
-          ~160px trên nên đỉnh vòm bị phẳng — đã render đúng crop thật xác nhận).
-          Đổi sang bg-[center_15%] (dịch khung xuống, lộ thêm phần trên) → đỉnh
-          vòm hiện TRỌN, còn khoảng thở phía trên, không lộ trần. MOBILE (375×362)
-          cover khớp ĐÚNG chiều cao (không tràn dọc) nên position-Y vô hiệu ở
-          mobile — vòm mobile vẫn trọn như cũ, không hồi quy (đã render xác nhận).
-          (2) TÔNG: ảnh gốc là outlier ẤM-OLIVE nhất tuyến (composite warm +28,
-          pink −5 — ngả cam/olive so với gam kem chuẩn +11..+14). saturate(0.5)
-          kéo về warm +15, khớp họ kem của ④⑤⑨ mà KHÔNG cần tăng overlay (giữ
-          vòm sáng rõ). Đo tại tầng hiển thị, không đụng file gốc. */}
-      {/* SỬA 23/07/2026 (brief chậm hiệu ứng + kéo tông ấm, MT3+MT4) — 2 sửa tiếp:
-          (1) CROP: bg-[center_15%] của PR#64 chỉ được tune ở width 1425 — giải
-          hình học với toạ độ đỉnh vòm THẬT (y=82/1088, quét pixel xác định):
-          ở width 1920 cut-top = 15%×600px = 90px > 82px → đỉnh vòm VẪN bị cắt
-          trên màn rộng (đúng điều Kenji thấy; đúng bài học PR#57 mục 6 — "2
-          biên" gồm cả viewport rộng hơn mốc thiết kế). Fix bất biến: bg-top →
-          cut-top = 0 ở MỌI width, đỉnh vòm + dải trần luôn hiện trọn. Mobile
-          cover khớp đúng chiều cao nên bg-top ≡ hành vi cũ, không hồi quy.
-          (2) TÔNG: Kenji nhận xét ⑧ "nhạt và lạnh" so với ảnh cầu nối phía
-          trên — saturate(0.5) của PR#64 là khử SAI HƯỚNG (làm nhạt thay vì
-          làm ấm; "olive" là suy diễn của phiên trước, không phải nhận xét của
-          Kenji). Đổi sang sepia(0.3): kéo hue về vàng-gỗ, composite
-          (215,203,178) có tỉ lệ nhiệt R/B = 1.208 — TRÙNG tỉ lệ R/B của ảnh
-          cầu nối (1.206, đo vùng sàn gỗ + ghế) → cuộn từ ghế xuống ⑧ là một
-          dòng màu liên tục. sepia chỉ làm SÁNG pixel sáng (ma trận tổng >1)
-          nên contrast chữ tối/nền sáng không giảm (đã đo lại live). */}
+      {/* NỀN ⑧ — trạng thái hiện hành (gộp lịch sử PR#63-65, bỏ mô tả lỗi thời):
+          - CROP `bg-top`: cut-top = 0 ở MỌI width desktop → đỉnh vòm + dải trần
+            luôn hiện trọn (thay bg-[center_15%] của PR#64 vốn chỉ đúng ở 1 width;
+            toạ độ đỉnh vòm thật y=82/1088). Mobile cover khớp đúng chiều cao nên
+            bg-top ≡ center, không hồi quy.
+          - TÔNG `sepia(0.3)`: kéo hue về vàng-gỗ, composite R/B 1.195 ≈ cầu nối
+            1.20 → liền dòng màu với ảnh ghế phía trên (mốc thẩm mỹ Kenji chỉ).
+          SỬA 23/07/2026 (brief ⑧ mờ hơn, MT1): THÊM `blur(16px)` — Kenji muốn
+          nền "chỉ còn ánh sáng + hình khối lớn, không đọc được đường viền kiến
+          trúc sắc nét". blur là đúng công cụ (khác tăng overlay chỉ làm nhạt màu
+          mà cạnh vẫn sắc). blur lấy mẫu tràn ra ngoài hộp → quầng trong suốt ở
+          mép; chống bằng `-inset-10` (phóng lớp ảnh ra 40px mỗi phía, >16px
+          blur) + section overflow-hidden cắt gọn. blur KHÔNG đổi mean màu nên
+          R/B vẫn khớp cầu nối (MT3 không bị ảnh hưởng). Overlay giữ 20% — sau
+          blur chữ càng dư contrast (đo lại live xác nhận). */}
       <div
-        className="absolute inset-0 bg-cover bg-top"
-        style={{ backgroundImage: "url(/images/home/essence-khong-hua.webp)", filter: "sepia(0.3)" }}
+        className="absolute -inset-10 bg-cover bg-top"
+        style={{ backgroundImage: "url(/images/home/essence-khong-hua.webp)", filter: "sepia(0.3) blur(16px)" }}
         aria-hidden="true"
       />
       <div
