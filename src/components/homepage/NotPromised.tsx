@@ -15,13 +15,11 @@ import Link from "next/link";
 // globals.css) thay vì 400 — đã thêm font-normal, giữ nguyên hover:font-medium
 // cho hiệu ứng "đậm chữ khi hover" đã có.
 export default function NotPromised() {
-  // SỬA 23/07/2026 (brief ⑧ thoáng + mờ hơn, MT1) — desktop cao thêm ~30%
-  // (md:py-40=160px → md:py-[232px]) cho khung vòm có khoảng thở rõ trên/dưới,
-  // hết cảm giác bị bó chạm 2 mép. MOBILE giữ py-28 (Kenji xác nhận mobile đang
-  // ổn — KHÔNG đổi). overflow-hidden để cắt gọn lớp ảnh blur (đã phóng -inset-10
-  // chống quầng mép, xem lớp ảnh).
+  // Section cao thêm ~30% desktop (md:py-[232px], MT1 PR#66) cho khung vòm có
+  // khoảng thở trên/dưới. MOBILE giữ py-28. (overflow-hidden đã bỏ cùng blur ở
+  // brief hệ màu chung 23/07 — không còn lớp ảnh phóng -inset cần cắt.)
   return (
-    <section className="relative overflow-hidden bg-e26-cream px-6 py-28 md:py-[232px]">
+    <section className="relative bg-e26-cream px-6 py-28 md:py-[232px]">
       {/* SỬA 22/07/2026 (brief thay nền ⑧⑨, Việc C) — thay bg-light-evening.webp
           (Light System trừu tượng, dùng CHUNG với ⑨) bằng essence-khong-hua.webp:
           ảnh THẬT Kenji thả riêng cho ⑧ — phòng trắng tối giản, 2 khung vòm
@@ -53,13 +51,20 @@ export default function NotPromised() {
           blur) + section overflow-hidden cắt gọn. blur KHÔNG đổi mean màu nên
           R/B vẫn khớp cầu nối (MT3 không bị ảnh hưởng). Overlay giữ 20% — sau
           blur chữ càng dư contrast (đo lại live xác nhận). */}
+      {/* SỬA 23/07/2026 (brief HỆ MÀU CHUNG) — 2 sửa:
+          (1) BỎ blur(16px) (Kenji chốt: ⑧ rõ như ⑨, đảo lại PR#66) + filter
+          sepia(0.3)→sepia(0.4) dùng CHUNG grade toàn dải. Không còn blur nên bỏ
+          -inset-10 → về inset-0 (không còn quầng mép để chống). Giữ bg-top (vòm
+          trọn mọi width) + section vẫn cao (khoảng thở vòm — MT1 PR#66 giữ).
+          (2) veil 20%→55%: nâng để ⑧ ngang mức làm-rõ của ⑨ (~48-52%) thay vì
+          quá trong (20% cũ lệch hẳn khỏi dải). H2 chữ lớn vẫn 10+ (đo live). */}
       <div
-        className="absolute -inset-10 bg-cover bg-top"
-        style={{ backgroundImage: "url(/images/home/essence-khong-hua.webp)", filter: "sepia(0.3) blur(16px)" }}
+        className="absolute inset-0 bg-cover bg-top"
+        style={{ backgroundImage: "url(/images/home/essence-khong-hua.webp)", filter: "sepia(0.4)" }}
         aria-hidden="true"
       />
       <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_20%,transparent)]"
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_55%,transparent)]"
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-[640px] mx-auto text-center">

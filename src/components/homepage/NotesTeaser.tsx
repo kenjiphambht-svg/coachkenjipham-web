@@ -114,7 +114,7 @@ export default function NotesTeaser() {
           đến từ nửa dưới lộ cảnh — đúng ý Kenji (thấy phòng đọc). */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/ghi-chep-essence.webp)", filter: "sepia(0.5)" }}
+        style={{ backgroundImage: "url(/images/home/ghi-chep-essence.webp)", filter: "sepia(0.4)" }}
         aria-hidden="true"
       />
       <div

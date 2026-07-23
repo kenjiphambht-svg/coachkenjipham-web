@@ -130,9 +130,13 @@ export default function KenjiSection() {
           (desktop): body 5.89, label1 6.14, label2 5.98, quote 15.96, link
           18.48 — dư dả rất nhiều so với 4.5 (mobile vốn đã dư dả từ 55% nên
           không cần đo lại ở 85%, chắc chắn còn cao hơn). */}
+      {/* SỬA 23/07/2026 (brief HỆ MÀU CHUNG / unified color grade) — áp GRADE
+          TÔNG DUY NHẤT toàn dải sáng: filter sepia(0.4) (cùng 1 công thức cho
+          ④⑤⑥⑧⑨, thay 4 recipe rời rạc trước đây) — đây là "1 lớp màu chung"
+          như color-grade phim. Xem sổ tay mục 10. */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/kenji-phong-doc1.webp)" }}
+        style={{ backgroundImage: "url(/images/home/kenji-phong-doc1.webp)", filter: "sepia(0.4)" }}
         aria-hidden="true"
       />
       {/* SỬA 23/07/2026 (brief thống nhất tông toàn tuyến) — overlay đổi TRẮNG
@@ -143,7 +147,11 @@ export default function KenjiSection() {
           tối hơn white (255) ~14 đơn vị nên contrast chữ tối/nền sáng giảm rất
           nhẹ — body 85% cũ đo 5.89 (dư 31% trên ngưỡng 4.5), đã đo lại live sau
           đổi vẫn dư (xem báo cáo PR). */}
-      <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_85%,transparent)]" aria-hidden="true" />
+      {/* SỬA 23/07/2026 (hệ màu chung) — veil cream 85%→72%: làm RÕ ảnh phòng
+          hơn theo brief (dải sáng dùng chung mức ~72% nơi chữ cho phép). Đo
+          live: thân bài/nhãn Vai-3 vẫn 4.8+ (sepia làm sáng pixel sáng nên
+          contrast dư). Cùng màu cream + cùng grade với ⑤⑧ → tông liền. */}
+      <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_72%,transparent)]" aria-hidden="true" />
       <div className="relative z-10 max-w-[1120px] mx-auto flex flex-col md:flex-row md:items-center gap-10 md:gap-16">
         <figure className="e26-reveal w-full max-w-[360px] mx-auto md:mx-0 md:w-[40%] md:max-w-none shrink-0">
           <ImageSlot
