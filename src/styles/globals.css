@@ -245,9 +245,12 @@ body {
    mãi mãi và chỉ opacity từng animate. Thêm rule .is-visible (0,3,0) bên
    dưới để transform về none đúng như mọi phần tử reveal khác. Đồng thời
    tăng 10px→12px cho chuyển động dễ nhận thấy hơn (brief cho phép 10-15px). */
+/* SỬA 23/07/2026 (brief chậm hiệu ứng 20%) — 800ms → 960ms (+20%): Kenji cảm
+   nhận nhịp hiện còn nhanh cho một khoảnh khắc dừng lại. Giữ nguyên easing/
+   khoảng dịch/cơ chế. */
 .e26-reveal.e26-signature-reveal {
   transform: translateY(12px);
-  transition: opacity 800ms cubic-bezier(0.33, 1, 0.68, 1), transform 800ms cubic-bezier(0.33, 1, 0.68, 1);
+  transition: opacity 960ms cubic-bezier(0.33, 1, 0.68, 1), transform 960ms cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 .e26-reveal.e26-signature-reveal.is-visible {
@@ -348,10 +351,12 @@ body {
   transform-origin: left center;
 }
 
+/* SỬA 23/07/2026 (brief chậm hiệu ứng 20%) — 500ms → 600ms (+20%): vệt quét
+   thong thả hơn theo cảm nhận Kenji. Giữ nguyên easing/scaleX/origin. */
 .gold-brush-line.e26-reveal {
   opacity: 1;
   transform: rotate(-0.7deg) scaleX(0);
-  transition: transform 500ms ease-out;
+  transition: transform 600ms ease-out;
 }
 
 .gold-brush-line.e26-reveal.is-visible {

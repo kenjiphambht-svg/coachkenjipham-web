@@ -55,8 +55,16 @@ export default function WhatIsEssence() {
           màu định nghĩa bằng hex thô qua var() khiến Tailwind không generate
           được modifier "/opacity", lớp phủ sẽ trong suốt hoàn toàn (im lặng,
           không lỗi build). Dùng color-mix() — kỹ thuật đã kiểm chứng. */}
+      {/* SỬA 23/07/2026 (brief quét ám màu toàn tuyến, MT2) — ivory 88% →
+          cream 92%: quét composite toàn tuyến cho thấy ⑥ là section NHẠT nhất
+          (warm +5, giữa ④ +11 và ⑤ +14) — đọc hơi "bạc" so với họ vàng-kem.
+          Đổi veil sang cream (ấm hơn) + nâng 88→92% cho composite warm +10,
+          nhập họ. Về contrast: điểm nghẽn của ⑥ là pixel bóng gần-đen (xem
+          ghi chú trên) — composite pixel đó tại cream92 = 0.08×0+0.92×241 ≈
+          222, so với ivory88 = 0.12×0+0.88×250 ≈ 220: SÁNG HƠN nhẹ → contrast
+          chữ tối chỉ tăng, không giảm (đã đo lại live cả 2 breakpoint). */}
       <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_88%,transparent)]"
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_92%,transparent)]"
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-3xl mx-auto text-center">
