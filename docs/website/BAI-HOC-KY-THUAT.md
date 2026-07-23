@@ -278,3 +278,48 @@ cửa sổ hở giữa 2 overlay); đây là **opacity-reveal để lộ NỀN S
 Sửa: bỏ `.e26-reveal` ở khung full-bleed nằm giữa 2 vùng tối (ảnh chuyển tiếp
 không cần fade-up). **Quy tắc: đừng đặt reveal (opacity 0→1) lên khối mà nền
 trang phía sau nó SÁNG hơn hẳn khối đó** — sẽ chớp nền sáng khi chưa reveal.
+
+---
+
+## 11. GIỚI HẠN VEIL THẬT NẰM Ở MÀU CHỮ, KHÔNG PHẢI Ở ẢNH — 3 VÒNG ẢNH MỚI VẪN CẦN VEIL ~87-90%
+
+**Case PR#69→70→71 (23-24/07) — ⑥⑨ đã đổi ảnh nền 3 VÒNG liên tiếp** (v1 gốc →
+v2 FLUX Kenji tạo → v3 FLUX "sáng đều, sắc nét hơn"), mỗi vòng ảnh nguồn đo
+được SÁNG HẲN LÊN (điểm tối nhất ⑥: gần-đen (6,5,4) ở v2 → (37,20,8) ở v3;
+⑨: (54,39,20) → (71,55,36)) — nhưng ngưỡng veil an toàn (đo binary-search
+đúng 4.5:1) hầu như KHÔNG đổi: vẫn kẹt ở 87-90% cho cả 2 section, mỗi vòng chỉ
+nhích được 1-3 điểm %.
+
+**Nguyên nhân đo được (giải ngược phương trình WCAG), không phải giả thuyết:**
+màu chữ thân bài `text-e26-text-2` = rgb(95,94,90), luminance tương đối
+(sRGB) ≈ **0.112**. Với công thức contrast `(L_bg+0.05)/(L_text+0.05) ≥ 4.5`
+(nền sáng hơn chữ), giải ra:
+
+```
+L_bg ≥ 4.5 × (L_text + 0.05) − 0.05 ≈ 0.678
+```
+
+0.678 là luminance GẦN TRẮNG TUYỆT ĐỐI (trắng thuần = 1.0). Nghĩa là: **bất kỳ
+ảnh nền nào** (trừ khi ảnh đã gần-trắng sẵn) đặt dưới khối chữ dùng màu này đều
+cần veil đủ nặng để kéo composite luminance lên ~0.68 — không liên quan ảnh
+tối hay sáng, sắc nét hay mờ. Đây là **giới hạn THIẾT KẾ (màu chữ quá yếu),
+không phải giới hạn ẢNH** — nối tiếp phát hiện mục 8/10 (ảnh có mảng đen dưới
+chữ không dùng được) nhưng đi xa hơn: ngay cả ảnh đã HẾT mảng đen tuyệt đối
+vẫn không thoát được veil nặng, vì gốc rễ nằm ở phía chữ chứ không phải phía
+ảnh.
+
+**Hệ quả cho việc xin ảnh mới:** nếu mục tiêu là "hạ veil xuống ngang mức
+④⑤⑧ (55-65%)", xin thêm ảnh mới v4, v5... sẽ LẶP LẠI kết quả này — cải thiện
+thị giác (ảnh nét/ấm hơn ở cùng % overlay vẫn nhìn RÕ HƠN thấy được bằng mắt,
+đã xác nhận qua render so sánh thật) nhưng số đo % sẽ luôn kẹt ở 87-90%.
+**Cách duy nhất hạ được ngưỡng này về mặt toán học là đổi màu chữ** (làm
+`text-e26-text-2` tối hơn, luminance thấp hơn 0.112) — đây là quyết định
+thẩm mỹ/thương hiệu riêng, CHƯA đặt ra với Kenji, không tự ý đổi màu chữ toàn
+tuyến chỉ vì lý do này.
+
+**Case PR#71 (24/07, vòng 3) — áp dụng:** ⑥ `essence-la-gi-v3.webp` veil
+chốt **90%** (ngưỡng binary-search 88.7% desktop / 89.2% mobile, cộng biên an
+toàn); ⑨ `ghi-chep-essence-v3.webp` gradient vùng nặng chốt **87%** (ngưỡng
+86.6% desktop / 79.9% mobile). File ảnh v1/v2 của cả 2 section đã xoá khỏi
+`public/images/home/` (orphan xác nhận qua grep `url()/src=` nghiêm ngặt, xem
+mục 5).

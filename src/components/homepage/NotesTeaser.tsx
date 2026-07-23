@@ -106,25 +106,31 @@ export default function NotesTeaser() {
           (grade chung, không cần sepia(0.5) như bản trước vì ảnh mới đã đủ ấm
           sẵn). Kenji xác nhận muốn merge để xem trực tiếp dù chưa đạt mục tiêu
           "hạ veil dễ dàng" (đã báo đúng mẫu CẦN ẢNH MỚI trước khi merge). */}
-      {/* SỬA 23/07/2026 (brief "⑥⑨ trong hơn 20%") — Kenji muốn rõ hơn nữa.
-          Nhị phân chính xác ngưỡng contrast=4.50 cho vùng nặng (nơi intro/H2
-          nằm): ra 87.8% — nghĩa là TỐI ĐA chỉ giảm được ~2.2 điểm % (90→88)
-          nếu giữ đúng chuẩn đọc 4.5:1, vì nếp gấp rèm tối (RGB 54,39,20) nằm
-          ngay dưới đoạn intro. Đã dựng ảnh so sánh CÓ CHỮ THẬT ở 3 mức 90/85/
-          72% cho Kenji xem — Kenji CHỌN phương án AN TOÀN TỐI ĐA (không đánh
-          đổi chuẩn đọc), không chọn đẩy sâu tới ~72%. 90%→88% (dư biên nhỏ so
-          ngưỡng đo 87.8%), giữ nguyên mid 58%/light 48% (đã đủ nhẹ, không phải
-          điểm nghẽn). */}
+      {/* SỬA 23/07/2026 (brief "⑥⑨ trong hơn 20%") — 90%→88% trên bản v2, Kenji
+          chọn AN TOÀN TỐI ĐA. Xem lịch sử đầy đủ ở BAI-HOC-KY-THUAT.md mục 11.
+          SỬA 24/07/2026 (brief thay ảnh ⑨ vòng 3) — thay ghi-chep-essence-v2
+          bằng ghi-chep-essence-v3.webp: ảnh FLUX MỚI Kenji tạo, cùng bố cục
+          (bàn gỗ + sổ mở + tách trà + rèm + cửa sổ nhìn ra vườn) nhưng tường
+          phải SÁNG ĐỀU, rèm hết nếp gấp tối cục bộ (RGB 54,39,20 của bản v2).
+          PHÁT HIỆN (giống ⑥): dù ảnh mới sáng hơn nhiều (điểm tối nhất giờ
+          (71,55,36) so với (54,39,20) bản v2), ngưỡng vùng nặng cần vẫn
+          ~86.6-87.8% (gần như không đổi so với v2's 87.8%) — vì gốc rễ là
+          MÀU CHỮ text-e26-text-2 yếu (xem giải thích đầy đủ ở WhatIsEssence.tsx
+          + sổ tay mục 11), không phải bản thân ảnh. Vẫn cải thiện thị giác rõ
+          rệt cùng % (đã xem render). Chốt vùng nặng 87% (an toàn cả 2 breakpoint
+          — mobile chỉ cần 79.9% do crop hẹp hơn, desktop cần 86.6%, dùng mốc
+          cao hơn + dư biên nhỏ), giữ mid 58%/light 48% (chưa từng là điểm
+          nghẽn). */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/ghi-chep-essence-v2.webp)", filter: "sepia(0.4)" }}
+        style={{ backgroundImage: "url(/images/home/ghi-chep-essence-v3.webp)", filter: "sepia(0.4)" }}
         aria-hidden="true"
       />
       <div
         className="absolute inset-0"
         style={{
           backgroundImage:
-            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 88%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 88%, transparent) 47%, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 60%, color-mix(in srgb, var(--essence-cream-2026) 48%, transparent) 100%)",
+            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 87%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 87%, transparent) 47%, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 60%, color-mix(in srgb, var(--essence-cream-2026) 48%, transparent) 100%)",
         }}
         aria-hidden="true"
       />
