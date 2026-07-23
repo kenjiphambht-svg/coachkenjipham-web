@@ -17,26 +17,29 @@ import Link from "next/link";
 export default function NotPromised() {
   return (
     <section className="relative bg-e26-cream px-6 py-28 md:py-40">
-      {/* SỬA 20/07/2026 (Light System) — thay bg-hero-light.webp (opacity
-          0.11) bằng light-05 "Evening Calm" (bg-light-evening.webp), dùng
-          chung với ⑨ NotesTeaser ngay sau (liền mạch cuối trang). */}
+      {/* SỬA 22/07/2026 (brief thay nền ⑧⑨, Việc C) — thay bg-light-evening.webp
+          (Light System trừu tượng, dùng CHUNG với ⑨) bằng essence-khong-hua.webp:
+          ảnh THẬT Kenji thả riêng cho ⑧ — phòng trắng tối giản, 2 khung vòm
+          (1 nhỏ trái, 1 lớn giữa), ánh sáng ấm hắt qua, sàn phản chiếu sạch
+          (không vân đá/baseboard rõ như ảnh cũ). ⑧ và ⑨ từ nay dùng 2 ảnh
+          RIÊNG, không chung 1 file nữa. Không banding (webp gốc Kenji thả,
+          77KB, đã zoom 2x vùng vòm sáng nhất: mượt).
+          ĐO LẠI overlay TỪ ĐẦU (không giữ 82% cũ — ảnh khác hẳn, số cũ vô
+          nghĩa): ảnh mới đã rất sáng/sạch sẵn (không còn vấn đề "chân tường
+          nhận diện được" của ảnh cũ) nên H2 + link đạt ≥4.5:1 NGAY CẢ Ở 0%
+          overlay (H2 4.74 ở mobile — điểm chặt nhất, link 16+ ở mọi mức).
+          Chọn 20% (không phải mức tối thiểu 0%) THUẦN VÌ THẨM MỸ — dư biên
+          contrast rất nhiều (H2 6.21 ở 20%) và tạo cảm giác gắn kết nhẹ với
+          tông cream của section, không phải yêu cầu kỹ thuật. Đã xem ảnh
+          chụp thật ở 20%: vẫn giữ trọn "khoảng trắng LÀ hình ảnh" — 2 khung
+          vòm rõ ràng, không có chi tiết nào cần che. */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/bg-light-evening.webp)" }}
+        style={{ backgroundImage: "url(/images/home/essence-khong-hua.webp)" }}
         aria-hidden="true"
       />
-      {/* SỬA 20/07/2026 (brief nền mờ chi tiết) — trước đây KHÔNG có overlay
-          (0%, H2/link tự đạt contrast). Nhưng ở 0% ảnh lộ rất rõ góc
-          tường/chân tường vân đá cẩm thạch (baseboard) + cạnh cột — đúng
-          kiểu "góc phòng nhận diện được" brief muốn tránh. Chi tiết rải khắp
-          ảnh (không riêng đáy) nên tăng overlay tổng thể theo Bước 3, dò từ
-          0%: 45% (vẫn rõ chân tường) → 65% (đỡ hơn nhưng còn viền cột) → 75%
-          (đạt trên desktop, mobile còn hơi rõ do crop cao hơn) → 82% (đạt cả
-          2 breakpoint bằng mắt: chỉ còn "cảm giác sáng", vệt nắng chéo vẫn
-          đẹp). Contrast chỉ tăng khi overlay tăng (không cần đo lại từ đầu)
-          — xác nhận nhanh: H2 11.61, link 14.99 ở overlay này (desktop). */}
       <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_82%,transparent)]"
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_20%,transparent)]"
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-[640px] mx-auto text-center">
@@ -46,9 +49,14 @@ export default function NotPromised() {
         <h2 className="e26-reveal font-serif font-medium text-[30px] md:text-[42px] leading-[1.25] text-e26-text">
           Nhiều lời rất dễ nói. Essence chọn không nói.
         </h2>
+        {/* SỬA 22/07/2026 (brief hover vàng cho link, Việc D) — thêm
+            hover:text-e26-gold-deep + transition-colors duration-300, đúng
+            pattern đã có ở TwoStates.tsx. Giữ nguyên hover:font-medium + mũi
+            tên dịch phải đã có. Hover-only, KHÔNG tính vào 3 điểm vàng
+            thường trực. */}
         <Link
           href="/dieu-essence-khong-hua"
-          className="group e26-reveal mt-10 inline-flex items-center gap-1.5 font-sans font-normal text-[15px] text-e26-text hover:font-medium"
+          className="group e26-reveal mt-10 inline-flex items-center gap-1.5 font-sans font-normal text-[15px] text-e26-text hover:font-medium hover:text-e26-gold-deep transition-colors duration-300"
         >
           <span>Đọc đầy đủ</span>
           <span aria-hidden="true" className="inline-block transition-transform duration-300 group-hover:translate-x-1">

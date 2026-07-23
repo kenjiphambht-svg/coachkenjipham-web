@@ -69,14 +69,47 @@ export default function AnDinhAnThinh() {
           đề gì cần sửa (khác case bg-wall-dark cũ vốn near-invisible ở
           center). Chữ ma "AN" (opacity 0.09, thuần trang trí — không cần đạt
           WCAG) đã xem lại bằng mắt: vẫn nhận ra hình dạng/vị trí trên nền
-          mới. */}
+          mới.
+          SỬA 22/07/2026 (brief làm tối ⑦ trung tính, Việc B) — Kenji xem thật
+          thấy kết quả "vẫn sáng và ám xanh" dù overlay đen 38% đã đo contrast
+          đạt. NGUYÊN NHÂN ĐO ĐƯỢC (không đoán): overlay ĐEN thuần là phép
+          nhân (composite = raw×(1-alpha)) — phép nhân KHÔNG đổi TỈ LỆ giữa
+          các kênh màu, chỉ thu nhỏ biên độ. Quét lưới 25 điểm mẫu trên ảnh
+          gốc: vùng trời/trăng có B-R tới +34/255 (RGB thật 77,98,111 tại 1
+          điểm) — tăng overlay lên bao nhiêu, tỉ lệ B/R vẫn giữ nguyên, chỉ có
+          giá trị tuyệt đối nhỏ lại (ở 38%: B-R còn 21 — vẫn đủ để mắt đọc ra
+          "xanh", đúng phản ánh của Kenji, KHÔNG phải lỗi biến màu hay đo sai
+          contrast). Tính thử: để tự riêng overlay đen kéo B-R xuống <5 cần
+          overlay ≥85% — sẽ xoá sạch toàn bộ chi tiết cảnh đêm (ngược mục tiêu
+          giữ villa/lối đi "le lói nhận ra" đã chốt ở Việc C).
+          GIẢI PHÁP: filter `saturate(0.3)` áp lên layer ẢNH (trước khi
+          overlay đen chồng lên) — kỹ thuật cùng họ với filter khử-cam đã
+          dùng ở HomeHero.tsx, nhưng ở đây là khử-XANH bằng giảm bão hoà thay
+          vì hue-rotate (ảnh đêm không có "tông cam sai" để xoay, chỉ có
+          chênh lệch bão hoà giữa vùng trời xanh và phần còn lại trung tính —
+          giảm bão hoà đều là đúng công cụ). Đã tính bằng công thức ma trận
+          saturate() chuẩn W3C rồi đo lại qua canvas thật (không chỉ tính
+          tay): saturate(0.3) + overlay 38% đưa B-R lớn nhất (25 điểm mẫu lưới
+          canvas thật) xuống còn 6/255 — coi là trung tính (dưới ngưỡng nhận
+          biết bằng mắt ở độ sáng thấp này).
+          NHÂN TIỆN LÀM TỐI HƠN theo đúng tên brief ("làm tối ⑦ AN ĐỊNH hơn"):
+          tăng overlay 38%→50% (vẫn giữ saturate(0.3) — max B-R không đổi
+          nhiều theo overlay vì tỉ lệ giữ nguyên, đo lại được 5-6/255 ở mọi
+          mức 38-55%, xem báo cáo). Contrast đo lại ở 50% (canvas thật, cả 2
+          breakpoint): câu mở desktop 7.27/mobile 6.55, gold "An Thịnh"
+          desktop 6.61/mobile 6.61 — dư dả hơn hẳn mức 38% cũ, KHÔNG đụng span
+          gold nên vẫn đúng 1/3 điểm vàng. Seam đáy ⑦ đo lại ở 50%: (13,15,16)
+          so với đỉnh ImageBridge (15,15,13) — vẫn khớp tốt, thậm chí sát hơn
+          mức 38% cũ. Ảnh so sánh trước/sau (sharp render tại đúng tỉ lệ
+          cover): sky/trăng rõ ràng bớt ám xanh, tổng thể tối/tĩnh hơn — xem
+          báo cáo PR. */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/an-dinh-toi.webp)" }}
+        style={{ backgroundImage: "url(/images/home/an-dinh-toi.webp)", filter: "saturate(0.3)" }}
         aria-hidden="true"
       />
       <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-black-2026)_38%,transparent)]"
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-black-2026)_50%,transparent)]"
         aria-hidden="true"
       />
       <span className="andinh-ghost-an absolute top-6 left-6 md:top-10 md:left-10 font-serif" aria-hidden="true">

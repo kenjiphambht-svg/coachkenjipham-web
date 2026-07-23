@@ -172,8 +172,12 @@ export default function KenjiSection() {
             Huấn luyện viên Tâm lý Chiều sâu
           </p>
 
+          {/* SỬA 22/07/2026 (brief hover vàng cho link, Việc D) — thêm
+              hover:text-e26-gold-deep + transition-colors duration-300, đúng
+              pattern đã có ở TwoStates.tsx ("Mời bạn vào →"). Hover-only,
+              KHÔNG tính vào 3 điểm vàng thường trực (luật đã có từ trước). */}
           <p className="e26-reveal mt-6">
-            <ComingLink href="/ve-kenji" className="font-sans font-normal text-[17px] underline decoration-e26-black underline-offset-4">
+            <ComingLink href="/ve-kenji" className="font-sans font-normal text-[17px] text-e26-text underline decoration-e26-black underline-offset-4 hover:text-e26-gold-deep transition-colors duration-300">
               Hành trình và nền tảng của Kenji →
             </ComingLink>
           </p>

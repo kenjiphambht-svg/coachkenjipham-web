@@ -41,31 +41,34 @@ const CARDS = [
 export default function NotesTeaser() {
   return (
     <section className="relative bg-e26-ivory px-6 py-16 md:py-28">
-      {/* SỬA 20/07/2026 (Light System) — thay bg-hero-light.webp (opacity
-          0.11) bằng light-05 "Evening Calm" (bg-light-evening.webp), dùng
-          chung với ⑧ NotPromised ngay trước (liền mạch cuối trang). Đo
-          contrast thật: H2 + đoạn intro (Vai 3) cần overlay kem tới 80% mới
-          đạt 4.5:1 ở mobile (desktop chỉ cần 70%, dùng chung 80% cho an
-          toàn cả 2). RIÊNG 3 card "chưa mở" (title + mô tả, opacity-45 qua
-          ComingLink): đã đo — dù overlay 100% (ảnh gần như vô hình) vẫn chỉ
-          đạt ~1.9-2.8:1, KHÔNG BAO GIỜ chạm 4.5:1. Xác nhận đây là đặc tính
-          có sẵn của opacity-45 (đo cả trên nền ivory phẳng gốc, không ảnh:
-          vẫn chỉ 2.81:1) — không phải do ảnh nền mới, KHÔNG tự ý sửa (ngoài
-          phạm vi brief này, cần quyết định riêng của Kenji nếu muốn đổi mức
-          mờ của trạng thái "chưa mở").
-          SỬA 20/07/2026 (brief nền mờ chi tiết) — ở crop riêng của section
-          này (cao hơn ⑧, khung hình khác), 80% vẫn còn thấy rõ cạnh cột +
-          chân tường ở góc dưới trái/phải (đã xem ảnh chụp thật). Tăng
-          80%→88% (Bước 3) — đạt cả 2 breakpoint: chỉ còn cảm giác sáng.
-          Contrast tăng theo (luôn tăng khi overlay tăng): H2 14.42, đoạn
-          intro 5.47 ở mobile — dư dả so với 4.5. */}
+      {/* SỬA 22/07/2026 (brief thay nền ⑧⑨, Việc C) — thay bg-light-evening.webp
+          (dùng CHUNG với ⑧) bằng ghi-chep-essence.webp: ảnh THẬT Kenji thả
+          riêng cho ⑨ — bàn gỗ có tách trà + sổ tay, rèm lụa bay, nhìn ra vườn
+          qua khung cửa kính — đúng cảm giác "một góc để quay lại". ⑧ và ⑨ từ
+          nay dùng 2 ảnh RIÊNG. Convert PNG gốc Kenji thả → webp q90 (184KB,
+          đã zoom 2x vùng tường bên phải — gradient mượt nhất, có texture vữa
+          tự nhiên che rủi ro banding: không banding).
+          ĐO LẠI overlay TỪ ĐẦU (không giữ 88% cũ — ảnh khác hẳn): đoạn intro
+          (Vai 3, màu phụ e26-text-2) là điểm nghẽn chặt nhất — desktop đạt
+          4.5 ở 72%, mobile ở 75% (đo riêng, phóng đại khác — mục 1). Chọn
+          78% dùng chung cho dư biên cả 2 (desktop 4.85, mobile 4.76). H2 dư
+          dả rất nhiều ở mọi mức (11-14). Đã xem ảnh chụp thật ở 78%: bàn +
+          tách trà + sổ tay + rèm + vườn vẫn nhận ra mờ mờ đúng cảm giác "góc
+          viết/đọc", không mờ đục hoàn toàn.
+          RIÊNG 3 card "chưa mở" (title + mô tả, opacity-45 qua ComingLink):
+          đã đo lại trên ảnh MỚI — vẫn cùng giới hạn đã ghi nhận trước đây (dù
+          overlay 100%, chỉ đạt ~1.9-2.8:1, KHÔNG BAO GIỜ chạm 4.5:1). Đây là
+          đặc tính có sẵn của chính opacity-45 (đo trên nền phẳng không ảnh
+          cũng chỉ ~2.81:1) — không phải do ảnh nền, KHÔNG tự ý sửa (quyết
+          định riêng của Kenji nếu muốn đổi mức mờ trạng thái "chưa mở", ngoài
+          phạm vi brief này). */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/bg-light-evening.webp)" }}
+        style={{ backgroundImage: "url(/images/home/ghi-chep-essence.webp)" }}
         aria-hidden="true"
       />
       <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_88%,transparent)]"
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_78%,transparent)]"
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-4xl mx-auto text-center">

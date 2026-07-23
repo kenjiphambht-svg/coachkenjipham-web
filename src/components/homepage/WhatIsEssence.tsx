@@ -81,12 +81,19 @@ export default function WhatIsEssence() {
         <p className="e26-reveal font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text-2 mb-8">
           Cách Essence vận hành sẽ được kể trong một cánh cửa riêng.
         </p>
+        {/* SỬA 22/07/2026 (brief hover vàng cho link, Việc D) — thêm
+            hover:text-e26-gold-deep + transition-colors duration-300, đúng
+            pattern đã có ở TwoStates.tsx. Hover-only, KHÔNG tính vào 3 điểm
+            vàng thường trực. */}
         <p className="e26-reveal mb-10">
-          <ComingLink href="/phuong-phap" className="font-sans font-normal text-[17px] underline decoration-e26-black underline-offset-4">
+          <ComingLink href="/phuong-phap" className="font-sans font-normal text-[17px] text-e26-text underline decoration-e26-black underline-offset-4 hover:text-e26-gold-deep transition-colors duration-300">
             Phương pháp Essence Coaching →
           </ComingLink>
         </p>
-        <p className="e26-reveal font-serif italic font-normal text-[17px] md:text-[18px] leading-[1.7] text-e26-text-2">
+        {/* SỬA 22/07/2026 (brief tăng cỡ chữ ký ⑥, Việc A) — 17px/18px →
+            20px/22px (+20%), dễ đọc hơn cho câu chữ ký cuối section. Giữ
+            nguyên font-serif italic, màu, line-height. */}
+        <p className="e26-reveal font-serif italic font-normal text-[20px] md:text-[22px] leading-[1.7] text-e26-text-2">
           Mỗi ấn phẩm chuyên sâu gửi đến bạn đều do Kenji phân tích và viết, từ dòng đầu đến
           dòng cuối.
         </p>
