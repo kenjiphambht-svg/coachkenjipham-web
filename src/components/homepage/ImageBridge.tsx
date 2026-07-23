@@ -12,8 +12,17 @@
 // thêm dải đen mỏng làm insurance cho liền mạch tuyệt đối.
 export default function ImageBridge() {
   return (
+    // SỬA 23/07/2026 (brief bug vệt trắng chớp ⑦→cầu nối) — BỎ class e26-reveal.
+    // NGUYÊN NHÂN ĐO ĐƯỢC (không đoán): e26-reveal đặt opacity:0 khi phần tử chưa
+    // vào khung hình; opacity:0 làm TRONG SUỐT cả nền bg-e26-black của chính khung
+    // này → nền <main> (bg-e26-ivory = rgb 250,249,247) lộ qua = một vệt SÁNG xen
+    // giữa ⑦ (tối) và ảnh cầu nối (tối), thấy rõ ngay trước khi ảnh fade vào. Ảnh
+    // cầu nối là dải chuyển tiếp full-bleed, KHÔNG cần fade-up; bỏ reveal → khung
+    // luôn hiện (bg-black + 2 gradient mép tự lo seam), hết vệt sáng. (Khác 2 case
+    // mục 1 sổ tay: đây là opacity-reveal để lộ nền dưới, không phải lệch điểm dừng
+    // gradient.)
     <div
-      className="e26-reveal relative w-full aspect-[4/5] md:aspect-[21/9] overflow-hidden bg-e26-black"
+      className="relative w-full aspect-[4/5] md:aspect-[21/9] overflow-hidden bg-e26-black"
       role="img"
       aria-label="Ánh sáng chuyển từ tối sang sáng — cửa sổ đón bình minh, ghế trống trong căn phòng lặng"
     >

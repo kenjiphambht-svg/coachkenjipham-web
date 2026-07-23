@@ -235,3 +235,46 @@ width lộ dải ảnh khác, pixel sáng (trăng 210-244) chui xuống dưới 
 width này mà không ở width kia. Số đo contrast của MỘT width không suy ra
 được width khác — phải đo từng breakpoint thật (đã là luật mục 1, case này
 là bằng chứng thêm ở chiều contrast).
+
+---
+
+## 10. HỆ MÀU CHUNG (UNIFIED COLOR GRADE) — DỪNG VÁ TỪNG SECTION, DỰNG 1 LỚP GRADE
+
+**Case PR#67 (23/07) — bài học kiến trúc màu, giống tinh thần PR#57:** Sau
+PR#63→66 chỉnh màu từng section RỜI RẠC (mỗi ảnh 1 filter riêng: `saturate(0.6)`
+ở ⑤, `sepia(0.3)+blur` ở ⑧, `sepia(0.5)` ở ⑨, không filter ở ④⑥) + mỗi overlay
+1 mức khác nhau → "đuổi theo từng chỗ lệch", chỉnh xong chỗ này chỗ khác lại
+lệch tương đối vì KHÔNG có 1 chuẩn tham chiếu chung. Sửa dứt điểm = dựng **1
+GRADE DUY NHẤT** áp cả dải sáng ④⑤⑥⑧⑨ (như LUT phim):
+- **1 filter chung:** `sepia(0.4)` cho MỌI ảnh dải sáng (thay 4 recipe rời).
+  sepia ép mọi hue về vàng-gỗ ~40° → tông đồng bộ tự động, không cần đo-khử
+  từng ảnh nữa.
+- **1 màu veil chung:** `cream-2026` (#F1EFE8) mọi section.
+- **Khi đổi ảnh mới cho section nào:** chỉ cần thả vào, grade chung tự kéo tông
+  — KHÔNG chỉnh màu riêng lẻ từng ảnh nữa (đó là gốc rễ bệnh lệch màu lặp lại).
+
+**GIẢM LỚP (đo trước/sau):** overlay div dải sáng 6→5 (gộp 2 gradient breakpoint
+của ⑤ thành 1); filter recipe 4→1; bỏ luôn blur(16px)+`-inset-10`+overflow-hidden
+của ⑧. Nguyên tắc: dựng hệ = BỚT lớp, không phải thêm 1 lớp đè lên đống cũ.
+
+**GIỚI HẠN THẬT — không phải mọi ảnh nhập được hệ "làm rõ":** `cường độ veil`
+KHÔNG thể đồng nhất tuyệt đối vì contrast từng section khác nhau. Đo được: ⑥
+`essence-la-gi` có **pixel ĐEN THUẦN (0,0,0) ngay dưới chữ ký + thân bài Vai-3
+yếu** (màu 95,94,90) → cần ~90-92% veil mới giữ ≥4.5 (ở 65% tụt 2.34). Đen thì
+grade/sepia KHÔNG nâng được (đen bất biến qua ma trận sepia), chỉ overlay nâng.
+→ ⑥ KHÔNG lộ ảnh +20% như ⑧⑨ được. **Quy tắc: ảnh có mảng đen gắt dưới vùng
+chữ = không dùng được cho section chữ-nhiều/chữ-yếu; cần ảnh nền sáng-đều dưới
+khối chữ** (nối tiếp mục 8). Xử lý: grade vẫn áp cho ⑥ (đồng tông), veil giữ
+cao TẠM, chờ ảnh ⑥ mới (Kenji cấp) rồi mới làm rõ. Các section còn lại
+(④⑤⑧⑨) làm rõ theo brief.
+
+**Case PR#67 — VỆT SÁNG CHỚP DO REVEAL LỘ NỀN DƯỚI (dạng lỗi mới, khác mục 1):**
+cuộn ⑦(tối)→ảnh cầu nối(tối) thấy 1 vệt TRẮNG chớp ngang. Nguyên nhân đo được:
+`ImageBridge` mang class `.e26-reveal` (opacity:0 khi chưa vào khung hình);
+opacity:0 làm TRONG SUỐT cả nền `bg-black` của chính khung → nền `<main>`
+(`bg-e26-ivory` = 250,249,247) lộ qua = vệt sáng giữa 2 khối tối, chớp lên
+trước khi ảnh fade vào. **Khác 2 case mục 1** (đó là lệch điểm-dừng gradient /
+cửa sổ hở giữa 2 overlay); đây là **opacity-reveal để lộ NỀN SÁNG phía sau**.
+Sửa: bỏ `.e26-reveal` ở khung full-bleed nằm giữa 2 vùng tối (ảnh chuyển tiếp
+không cần fade-up). **Quy tắc: đừng đặt reveal (opacity 0→1) lên khối mà nền
+trang phía sau nó SÁNG hơn hẳn khối đó** — sẽ chớp nền sáng khi chưa reveal.

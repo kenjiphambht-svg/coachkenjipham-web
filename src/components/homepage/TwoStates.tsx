@@ -87,39 +87,23 @@ export default function TwoStates() {
           +14, khớp họ kem của ④⑧⑨. Đặt filter ở LỚP ẢNH (không phải lớp overlay
           gradient bên dưới) nên chỉ đổi tông ảnh, không đụng độ mờ/contrast của
           các gradient kem đã tuned. Đo tại tầng hiển thị, không đụng file gốc. */}
+      {/* SỬA 23/07/2026 (brief HỆ MÀU CHUNG) — filter saturate(0.6)→sepia(0.4):
+          dùng CÙNG grade tông với ④⑥⑧⑨ (1 công thức duy nhất toàn dải). */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/haicua-hanhlang1.webp)", filter: "saturate(0.6)" }}
+        style={{ backgroundImage: "url(/images/home/haicua-hanhlang1.webp)", filter: "sepia(0.4)" }}
         aria-hidden="true"
       />
-      {/* SỬA 22/07/2026 (brief thay nền ⑤, kiểm 2 biên) — phẳng 35%/45% đọc rất
-          sạch ở phần trên (nhãn + 2 card + câu kết, 0-85% chiều cao), nhưng
-          đo lại mép DƯỚI thì lộ seam thật với ⑥ Essence phía sau: đáy ⑤ (ảnh
-          gốc ấm, chỉ phủ 35%) composite ra ~(207,200,184), trong khi đỉnh ⑥
-          (ảnh riêng + overlay ivory 85%) là ~(240,238,234) — chênh ~35 đơn vị
-          mỗi kênh, đủ để thấy 1 dải ấm hơn ngay trước khi chuyển sang ⑥ (xem
-          ảnh chụp báo cáo). KHÔNG lộ ở biên TRÊN với ④ (243,242,240 → 218,
-          209,188 là đúng nhịp đổi tông trắng→kem đã có sẵn của toàn trang,
-          không phải seam lạ). Sửa: gradient CHỈ tăng ở 15% cuối (85%→100%,
-          đo thật: card+câu kết kết thúc ở 91.3% desktop/96.4% mobile — ramp
-          bắt đầu tại 85% vẫn có thể chạm nhẹ dưới câu kết, nhưng tăng overlay
-          không bao giờ làm giảm contrast chữ tối/nền sáng nên an toàn), từ
-          35%/45% lên 92% để khớp gần đúng tông đỉnh ⑥. % dùng chung 2 breakpoint
-          (không cần tách theo px-anchor như HomeHero — ở đây không có lớp nào
-          neo theo bleed cố định, thuần ảnh nền + chữ trôi bình thường). */}
+      {/* SỬA 23/07/2026 (hệ màu chung) — GỘP 2 lớp overlay gradient (mobile 45%
+          / desktop 35%, mỗi breakpoint 1 div) thành 1 div DÙNG CHUNG: giảm số
+          lớp toàn trang. Đỉnh 72% (khớp mức làm-rõ chung của ④⑧), ramp về 90%
+          ở 15% cuối để khớp đỉnh ⑥ (⑥ tạm giữ 92% chờ ảnh mới) — giữ liền seam
+          ⑤→⑥. Không cần tách breakpoint vì 72% đủ đọc cho cả 2 (đo live ≥5.3). */}
       <div
-        className="absolute inset-0 md:hidden"
+        className="absolute inset-0"
         style={{
           backgroundImage:
-            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 45%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 45%, transparent) 85%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 100%)",
-        }}
-        aria-hidden="true"
-      />
-      <div
-        className="absolute inset-0 hidden md:block"
-        style={{
-          backgroundImage:
-            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 35%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 35%, transparent) 85%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 100%)",
+            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 72%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 72%, transparent) 85%, color-mix(in srgb, var(--essence-cream-2026) 90%, transparent) 100%)",
         }}
         aria-hidden="true"
       />

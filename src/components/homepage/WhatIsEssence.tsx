@@ -46,23 +46,27 @@ export default function WhatIsEssence() {
           xem ảnh chụp ở 88%: cảnh zen vẫn đọc được rõ ràng (cây, đá, bệ gỗ,
           vách nan) — không mờ đục như ảnh Light System cũ, vì bản thân ảnh
           mới đã sáng/sạch sẵn, 88% chỉ đủ để dìm đúng 1 điểm bóng tối. */}
+      {/* SỬA 23/07/2026 (brief HỆ MÀU CHUNG) — thêm filter sepia(0.4): CÙNG grade
+          tông với ④⑤⑧⑨ (1 công thức toàn dải). sepia không đụng contrast của ⑥
+          (điểm nghẽn là pixel ĐEN THUẦN 0,0,0 dưới chữ ký/thân bài Vai-3 — đen
+          bất biến qua sepia). */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/essence-la-gi.webp)" }}
+        style={{ backgroundImage: "url(/images/home/essence-la-gi.webp)", filter: "sepia(0.4)" }}
         aria-hidden="true"
       />
       {/* KHÔNG dùng bg-e26-ivory/70 — bug đã biết (xem HomeHero.tsx): token
           màu định nghĩa bằng hex thô qua var() khiến Tailwind không generate
           được modifier "/opacity", lớp phủ sẽ trong suốt hoàn toàn (im lặng,
           không lỗi build). Dùng color-mix() — kỹ thuật đã kiểm chứng. */}
-      {/* SỬA 23/07/2026 (brief quét ám màu toàn tuyến, MT2) — ivory 88% →
-          cream 92%: quét composite toàn tuyến cho thấy ⑥ là section NHẠT nhất
-          (warm +5, giữa ④ +11 và ⑤ +14) — đọc hơi "bạc" so với họ vàng-kem.
-          Đổi veil sang cream (ấm hơn) + nâng 88→92% cho composite warm +10,
-          nhập họ. Về contrast: điểm nghẽn của ⑥ là pixel bóng gần-đen (xem
-          ghi chú trên) — composite pixel đó tại cream92 = 0.08×0+0.92×241 ≈
-          222, so với ivory88 = 0.12×0+0.88×250 ≈ 220: SÁNG HƠN nhẹ → contrast
-          chữ tối chỉ tăng, không giảm (đã đo lại live cả 2 breakpoint). */}
+      {/* Veil cream 92% — GIỮ NGUYÊN (brief hệ màu chung, Kenji chốt phương án 3):
+          ⑥ là section DUY NHẤT không thể làm rõ ảnh +20% như ⑧⑨ — đo thật: ảnh
+          essence-la-gi có pixel ĐEN THUẦN (0,0,0) ngay dưới chữ ký + thân bài
+          Vai-3 (màu 95,94,90, yếu), cần ~90-92% veil mới giữ contrast ≥4.5 (ở
+          90% chỉ 4.51, ở 65% tụt 2.34). Đen thì grade/sepia không nâng được,
+          chỉ overlay nâng. Kenji quyết: ⑥ TẠM giữ veil hiện tại, chờ ảnh mới
+          (không có bóng đen gắt dưới vùng chữ) rồi mới làm rõ. Vẫn áp grade
+          sepia(0.4) cho ⑥ (tông đồng bộ toàn dải), chỉ opacity giữ cao. */}
       <div
         className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_92%,transparent)]"
         aria-hidden="true"
