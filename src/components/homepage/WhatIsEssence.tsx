@@ -42,32 +42,34 @@ export default function WhatIsEssence() {
           khi lên production). Filter sepia(0.4) CÙNG grade tông với ④⑤⑧⑨. */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/essence-la-gi-v2.webp)", filter: "sepia(0.4)" }}
+        style={{ backgroundImage: "url(/images/home/essence-la-gi-v3.webp)", filter: "sepia(0.4)" }}
         aria-hidden="true"
       />
       {/* KHÔNG dùng bg-e26-ivory/70 — bug đã biết (xem HomeHero.tsx): token
           màu định nghĩa bằng hex thô qua var() khiến Tailwind không generate
           được modifier "/opacity", lớp phủ sẽ trong suốt hoàn toàn (im lặng,
           không lỗi build). Dùng color-mix() — kỹ thuật đã kiểm chứng. */}
-      {/* SỬA 23/07/2026 (brief "⑥⑨ trong hơn 20%") — Kenji muốn thấy ảnh rõ hơn
-          nữa. Đã THỬ 3 hướng trước khi chỉnh số:
-          (1) Gradient NGANG (nặng trái/nhẹ phải, tận dụng chữ trải x23-77% mà
-          cột bóng cây chỉ ở x25-27%): quét mịn 50 cột (2%/cột) cho thấy KHÔNG
-          có "hành lang sạch" — hầu hết x0-58% đều có điểm cực tối (luminance
-          4-28), và ngay cả x62-100% vẫn chỉ 27-47 (không đủ sáng). Vô hiệu.
-          (2) `contrast(0.4)` (nén biên độ sáng-tối của ảnh, kéo bóng lên gần
-          trung điểm): chỉ hạ được xuống ~85% veil (từ 92%), và làm ảnh mất
-          hẳn chiều sâu nắng (nhìn phẳng/xám) — đổi không đáng.
-          (3) Giảm alpha thẳng: nhị phân chính xác ngưỡng contrast=4.50 (canvas
-          live) ra 89.4% — tức TỐI ĐA chỉ giảm được ~2.6 điểm % dù dùng cách gì,
-          vì có 1 điểm chữ (đoạn thân bài, trùng đúng bóng cây) chạm RGB gần-đen
-          tuyệt đối (6,5,4) mà không filter tầng hiển thị nào nâng nổi.
-          Đã dựng ảnh so sánh CÓ CHỮ THẬT (canvas + SVG overlay, không chỉ số
-          liệu) ở 3 mức 92/85/74% cho Kenji xem — Kenji CHỌN phương án AN TOÀN
-          TỐI ĐA (giữ đúng chuẩn đọc 4.5:1, không đánh đổi), không chọn đẩy sâu
-          tới ~74% (dù vẫn đọc được bằng mắt, sẽ có 1-2 dòng dưới chuẩn AA).
-          92%→90% (dư biên nhỏ so với ngưỡng đo 89.4%) — cải thiện thật, đo
-          live contrast: xem báo cáo. */}
+      {/* SỬA 23/07/2026 (brief "⑥⑨ trong hơn 20%") — 3 hướng thử trên bản v2,
+          Kenji chọn AN TOÀN TỐI ĐA (92%→90%, giữ đúng chuẩn đọc 4.5:1). Xem
+          lịch sử đầy đủ ở BAI-HOC-KY-THUAT.md mục 11.
+          SỬA 24/07/2026 (brief thay ảnh ⑥ vòng 3) — thay essence-la-gi-v2.webp
+          bằng essence-la-gi-v3.webp: ảnh FLUX MỚI Kenji tạo, cùng bố cục (cây
+          phong xanh 2 tán, đá cuội, bệ gỗ tròn, vách gỗ nan) nhưng SÁNG ĐỀU và
+          SẮC NÉT hơn hẳn — bóng cây giờ ngắn gọn dưới gốc, hết dải tối kéo dài
+          x20-45%/y30-91% của 2 bản trước.
+          PHÁT HIỆN QUAN TRỌNG (đo canvas live, giải phương trình ngược): dù
+          ảnh mới hết pixel gần-đen tuyệt đối (điểm tối nhất giờ (37,20,8), so
+          với (6,5,4) bản v2), ngưỡng veil cần vẫn ~88.7-89.2% (gần NHƯ KHÔNG
+          đổi so với v2's 89.4%) — vì gốc rễ thật không phải "ảnh tối" mà là
+          chính MÀU CHỮ text-e26-text-2 (95,94,90) quá yếu: luminance màu chữ
+          ~0.112, cần composite đạt luminance ≥0.678 (gần trắng tuyệt đối) để
+          đạt tỉ lệ 4.5:1 — bất kỳ ảnh nào (trừ khi gần-trắng sẵn) đều cần veil
+          nặng tương tự. Đây là giới hạn THIẾT KẾ (màu chữ), không phải giới
+          hạn ảnh — ghi sổ tay mục 11.
+          Vẫn CẢI THIỆN THỊ GIÁC RÕ RỆT dù % gần như không đổi: ảnh gốc giờ
+          sáng/nét hơn nhiều nên ở CÙNG % overlay chi tiết cây/đá/vách hiện rõ
+          hơn hẳn v2 (đã xem render so sánh). Chốt 90% (an toàn cả 2 breakpoint
+          — mobile cần 89.2%, desktop 88.7%). Contrast đo live: xem báo cáo PR. */}
       <div
         className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_90%,transparent)]"
         aria-hidden="true"
