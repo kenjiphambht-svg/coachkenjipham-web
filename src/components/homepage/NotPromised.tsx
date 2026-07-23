@@ -33,9 +33,21 @@ export default function NotPromised() {
           tông cream của section, không phải yêu cầu kỹ thuật. Đã xem ảnh
           chụp thật ở 20%: vẫn giữ trọn "khoảng trắng LÀ hình ảnh" — 2 khung
           vòm rõ ràng, không có chi tiết nào cần che. */}
+      {/* SỬA 23/07/2026 (brief thống nhất tông toàn tuyến) — 2 sửa ở lớp ảnh này:
+          (1) CROP: bg-center cắt cụt ĐỈNH VÒM lớn ở giữa trên desktop (section
+          rất ngang 1425×488 / ảnh 1920×1088 → cover tràn dọc ~319px, center cắt
+          ~160px trên nên đỉnh vòm bị phẳng — đã render đúng crop thật xác nhận).
+          Đổi sang bg-[center_15%] (dịch khung xuống, lộ thêm phần trên) → đỉnh
+          vòm hiện TRỌN, còn khoảng thở phía trên, không lộ trần. MOBILE (375×362)
+          cover khớp ĐÚNG chiều cao (không tràn dọc) nên position-Y vô hiệu ở
+          mobile — vòm mobile vẫn trọn như cũ, không hồi quy (đã render xác nhận).
+          (2) TÔNG: ảnh gốc là outlier ẤM-OLIVE nhất tuyến (composite warm +28,
+          pink −5 — ngả cam/olive so với gam kem chuẩn +11..+14). saturate(0.5)
+          kéo về warm +15, khớp họ kem của ④⑤⑨ mà KHÔNG cần tăng overlay (giữ
+          vòm sáng rõ). Đo tại tầng hiển thị, không đụng file gốc. */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/essence-khong-hua.webp)" }}
+        className="absolute inset-0 bg-cover bg-[center_15%]"
+        style={{ backgroundImage: "url(/images/home/essence-khong-hua.webp)", filter: "saturate(0.5)" }}
         aria-hidden="true"
       />
       <div
