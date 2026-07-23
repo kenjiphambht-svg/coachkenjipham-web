@@ -106,6 +106,15 @@ export default function NotesTeaser() {
           (grade chung, không cần sepia(0.5) như bản trước vì ảnh mới đã đủ ấm
           sẵn). Kenji xác nhận muốn merge để xem trực tiếp dù chưa đạt mục tiêu
           "hạ veil dễ dàng" (đã báo đúng mẫu CẦN ẢNH MỚI trước khi merge). */}
+      {/* SỬA 23/07/2026 (brief "⑥⑨ trong hơn 20%") — Kenji muốn rõ hơn nữa.
+          Nhị phân chính xác ngưỡng contrast=4.50 cho vùng nặng (nơi intro/H2
+          nằm): ra 87.8% — nghĩa là TỐI ĐA chỉ giảm được ~2.2 điểm % (90→88)
+          nếu giữ đúng chuẩn đọc 4.5:1, vì nếp gấp rèm tối (RGB 54,39,20) nằm
+          ngay dưới đoạn intro. Đã dựng ảnh so sánh CÓ CHỮ THẬT ở 3 mức 90/85/
+          72% cho Kenji xem — Kenji CHỌN phương án AN TOÀN TỐI ĐA (không đánh
+          đổi chuẩn đọc), không chọn đẩy sâu tới ~72%. 90%→88% (dư biên nhỏ so
+          ngưỡng đo 87.8%), giữ nguyên mid 58%/light 48% (đã đủ nhẹ, không phải
+          điểm nghẽn). */}
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: "url(/images/home/ghi-chep-essence-v2.webp)", filter: "sepia(0.4)" }}
@@ -115,7 +124,7 @@ export default function NotesTeaser() {
         className="absolute inset-0"
         style={{
           backgroundImage:
-            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 90%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 90%, transparent) 47%, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 60%, color-mix(in srgb, var(--essence-cream-2026) 48%, transparent) 100%)",
+            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 88%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 88%, transparent) 47%, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 60%, color-mix(in srgb, var(--essence-cream-2026) 48%, transparent) 100%)",
         }}
         aria-hidden="true"
       />

@@ -49,13 +49,27 @@ export default function WhatIsEssence() {
           màu định nghĩa bằng hex thô qua var() khiến Tailwind không generate
           được modifier "/opacity", lớp phủ sẽ trong suốt hoàn toàn (im lặng,
           không lỗi build). Dùng color-mix() — kỹ thuật đã kiểm chứng. */}
-      {/* Veil cream 92% — GIỮ NGUYÊN mức cũ dù đã đổi ảnh (xem ghi chú trên):
-          ảnh mới vẫn cần veil cao ngang mức cũ để giữ contrast ≥4.5 (đo live
-          92%→4.77 cả 2 breakpoint). ⑥ vẫn là section DUY NHẤT không lộ ảnh
-          +20% được như ⑧⑨ — đây là giới hạn CẤU TRÚC ảnh (bóng đổ đúng chỗ
-          chữ), không phải overlay chưa đủ dò. */}
+      {/* SỬA 23/07/2026 (brief "⑥⑨ trong hơn 20%") — Kenji muốn thấy ảnh rõ hơn
+          nữa. Đã THỬ 3 hướng trước khi chỉnh số:
+          (1) Gradient NGANG (nặng trái/nhẹ phải, tận dụng chữ trải x23-77% mà
+          cột bóng cây chỉ ở x25-27%): quét mịn 50 cột (2%/cột) cho thấy KHÔNG
+          có "hành lang sạch" — hầu hết x0-58% đều có điểm cực tối (luminance
+          4-28), và ngay cả x62-100% vẫn chỉ 27-47 (không đủ sáng). Vô hiệu.
+          (2) `contrast(0.4)` (nén biên độ sáng-tối của ảnh, kéo bóng lên gần
+          trung điểm): chỉ hạ được xuống ~85% veil (từ 92%), và làm ảnh mất
+          hẳn chiều sâu nắng (nhìn phẳng/xám) — đổi không đáng.
+          (3) Giảm alpha thẳng: nhị phân chính xác ngưỡng contrast=4.50 (canvas
+          live) ra 89.4% — tức TỐI ĐA chỉ giảm được ~2.6 điểm % dù dùng cách gì,
+          vì có 1 điểm chữ (đoạn thân bài, trùng đúng bóng cây) chạm RGB gần-đen
+          tuyệt đối (6,5,4) mà không filter tầng hiển thị nào nâng nổi.
+          Đã dựng ảnh so sánh CÓ CHỮ THẬT (canvas + SVG overlay, không chỉ số
+          liệu) ở 3 mức 92/85/74% cho Kenji xem — Kenji CHỌN phương án AN TOÀN
+          TỐI ĐA (giữ đúng chuẩn đọc 4.5:1, không đánh đổi), không chọn đẩy sâu
+          tới ~74% (dù vẫn đọc được bằng mắt, sẽ có 1-2 dòng dưới chuẩn AA).
+          92%→90% (dư biên nhỏ so với ngưỡng đo 89.4%) — cải thiện thật, đo
+          live contrast: xem báo cáo. */}
       <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_92%,transparent)]"
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_90%,transparent)]"
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-3xl mx-auto text-center">
