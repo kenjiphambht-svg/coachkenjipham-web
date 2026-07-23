@@ -11,10 +11,19 @@ const PRODUCT_LINKS = [
   { href: "/ban-sac-cua-con", label: "Bản Sắc Của Con" },
 ];
 
+// SỬA 23/07/2026 (brief bổ sung mục menu ⑨, MT4) — thêm "Một góc để quay lại".
+// Section ⑨ nằm TRÊN trang chủ (không có route trang riêng — 3 card còn "chưa
+// mở"), nên trỏ ANCHOR tới section: href đầy đủ "/trang-chu-v2#..." để chạy
+// đúng CẢ khi đang ở trang khác dùng chung Header (10 trang) — bấm sẽ về trang
+// chủ rồi cuộn tới ⑨. Đặt ngay SAU "Điều Essence không hứa" (⑧) và TRƯỚC "Liên
+// hệ" — đúng thứ tự mạch cuộn trang (⑧ rồi ⑨), giữ Liên hệ ở cuối theo lệ.
+// (Lưu ý: menu vốn đã bỏ anchor #essence/#hat-mam/#ghi-chep theo BAN-CHOT; đây
+// là anchor DUY NHẤT được thêm lại theo yêu cầu đích danh của Kenji cho ⑨.)
 const TRUST_LINKS = [
   { href: "/ve-kenji", label: "Về Kenji" },
   { href: "/phuong-phap", label: "Phương pháp" },
   { href: "/dieu-essence-khong-hua", label: "Điều Essence không hứa" },
+  { href: "/trang-chu-v2#mot-goc-de-quay-lai", label: "Một góc để quay lại" },
   { href: "/lien-he", label: "Liên hệ" },
 ];
 
@@ -166,6 +175,7 @@ export default function HomeHeader() {
                   key={link.href}
                   ref={i === 0 ? firstLinkRef : undefined}
                   href={link.href}
+                  onClick={() => setOpen(false)}
                   className="font-serif font-normal text-[32px] md:text-[44px] leading-tight text-e26-text hover:text-e26-gold-deep transition-colors duration-300 min-h-11"
                 >
                   {link.label}
@@ -180,6 +190,7 @@ export default function HomeHeader() {
                 <Link
                   key={link.href}
                   href={link.href}
+                  onClick={() => setOpen(false)}
                   className="font-serif font-normal text-[32px] md:text-[44px] leading-tight text-e26-text hover:text-e26-gold-deep transition-colors duration-300 min-h-11"
                 >
                   {link.label}
