@@ -45,9 +45,25 @@ export default function NotPromised() {
           pink −5 — ngả cam/olive so với gam kem chuẩn +11..+14). saturate(0.5)
           kéo về warm +15, khớp họ kem của ④⑤⑨ mà KHÔNG cần tăng overlay (giữ
           vòm sáng rõ). Đo tại tầng hiển thị, không đụng file gốc. */}
+      {/* SỬA 23/07/2026 (brief chậm hiệu ứng + kéo tông ấm, MT3+MT4) — 2 sửa tiếp:
+          (1) CROP: bg-[center_15%] của PR#64 chỉ được tune ở width 1425 — giải
+          hình học với toạ độ đỉnh vòm THẬT (y=82/1088, quét pixel xác định):
+          ở width 1920 cut-top = 15%×600px = 90px > 82px → đỉnh vòm VẪN bị cắt
+          trên màn rộng (đúng điều Kenji thấy; đúng bài học PR#57 mục 6 — "2
+          biên" gồm cả viewport rộng hơn mốc thiết kế). Fix bất biến: bg-top →
+          cut-top = 0 ở MỌI width, đỉnh vòm + dải trần luôn hiện trọn. Mobile
+          cover khớp đúng chiều cao nên bg-top ≡ hành vi cũ, không hồi quy.
+          (2) TÔNG: Kenji nhận xét ⑧ "nhạt và lạnh" so với ảnh cầu nối phía
+          trên — saturate(0.5) của PR#64 là khử SAI HƯỚNG (làm nhạt thay vì
+          làm ấm; "olive" là suy diễn của phiên trước, không phải nhận xét của
+          Kenji). Đổi sang sepia(0.3): kéo hue về vàng-gỗ, composite
+          (215,203,178) có tỉ lệ nhiệt R/B = 1.208 — TRÙNG tỉ lệ R/B của ảnh
+          cầu nối (1.206, đo vùng sàn gỗ + ghế) → cuộn từ ghế xuống ⑧ là một
+          dòng màu liên tục. sepia chỉ làm SÁNG pixel sáng (ma trận tổng >1)
+          nên contrast chữ tối/nền sáng không giảm (đã đo lại live). */}
       <div
-        className="absolute inset-0 bg-cover bg-[center_15%]"
-        style={{ backgroundImage: "url(/images/home/essence-khong-hua.webp)", filter: "saturate(0.5)" }}
+        className="absolute inset-0 bg-cover bg-top"
+        style={{ backgroundImage: "url(/images/home/essence-khong-hua.webp)", filter: "sepia(0.3)" }}
         aria-hidden="true"
       />
       <div

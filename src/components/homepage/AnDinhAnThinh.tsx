@@ -103,13 +103,32 @@ export default function AnDinhAnThinh() {
           mức 38% cũ. Ảnh so sánh trước/sau (sharp render tại đúng tỉ lệ
           cover): sky/trăng rõ ràng bớt ám xanh, tổng thể tối/tĩnh hơn — xem
           báo cáo PR. */}
+      {/* SỬA 23/07/2026 (brief quét ám màu toàn tuyến, MT2) — Kenji xem màn thật
+          VẪN thấy ám xanh ở saturate(0.3) (30% chroma còn lại của trời trăng
+          vẫn đọc ra "xanh" trên khối tối lớn), và muốn TỐI + MỜ hơn nữa rõ
+          rệt. Giải pháp dứt điểm về mặt toán: saturate(0) TRIỆT chroma về 0 ở
+          MỌI pixel (B-R = 0 tuyệt đối, không còn tồn tại pixel xanh nào để
+          nhận ra) + sepia(0.12) trả lại một lớp ấm ĐỀU rất nhẹ (B-R âm nhẹ
+          đồng nhất — "đen trung tính hơi ấm", khớp ngôn ngữ vàng-kem toàn
+          trang, không bao giờ lệch về lạnh). Overlay 50%→78%: tối + mờ hơn
+          rõ rệt theo đúng brief, villa/lối đi vẫn le lói (ô cửa sáng 210 →
+          composite 66 vs nền 26 — vẫn là điểm sáng nhận ra rõ).
+          MỨC CHỐT 78% (dò 65→72→78 bằng canvas live): worst-case TRƯỢT THEO
+          WIDTH (bài học mục 6 — mỗi width cover lộ dải ảnh khác): desktop
+          có pixel ~146 dưới câu mở (65% cho 4.36 — fail; 72% cho 5.0);
+          nhưng MOBILE crop lộ pixel sáng 210 dưới câu mở → 72% chỉ còn
+          4.01 — fail tiếp. 78% mới đạt cả 2: mobile câu mở 4.75 (điểm nghẽn
+          toàn section), desktop ~5.9, gold "An Thịnh" 7.2+ cả 2 breakpoint,
+          mọi dòng khác 6-15.8. Dùng CHUNG 78% cho 2 breakpoint (một số duy
+          nhất, đơn giản hơn tách — nguyên tắc PR#57). Seam đáy ⑦ ở 78% càng
+          sát đen ImageBridge hơn mức 50% cũ. */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/an-dinh-toi.webp)", filter: "saturate(0.3)" }}
+        style={{ backgroundImage: "url(/images/home/an-dinh-toi.webp)", filter: "saturate(0) sepia(0.12)" }}
         aria-hidden="true"
       />
       <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-black-2026)_50%,transparent)]"
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-black-2026)_78%,transparent)]"
         aria-hidden="true"
       />
       <span className="andinh-ghost-an absolute top-6 left-6 md:top-10 md:left-10 font-serif" aria-hidden="true">

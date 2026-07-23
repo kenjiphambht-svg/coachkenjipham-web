@@ -197,21 +197,41 @@ tầng hiển thị (không đụng file gốc): ⑤ `saturate(0.6)`, ⑧ `satur
 - **warm = R − B** (dương = ấm/vàng; âm = lạnh/xanh).
 - **pink = (R+B)/2 − G** (dương = ám hồng/tím; âm = ngả lục/olive; ~0 = vàng-gold cân).
 
-**GAM CHUẨN trang chủ (đích khi đổi ảnh mới — đo composite):**
-- Section SÁNG (④⑤⑥⑧⑨): **warm +8..+15, pink −3..0**. Ngoài dải này là outlier.
-- Section TỐI (③⑦): **warm −2..+6, pink ~0** (trung tính hơi ấm; ⑦ từng ám xanh
-  −7, đã kéo về −1 bằng `saturate(0.3)` — xem PR#62).
+**GAM CHUẨN trang chủ — BẢN SỬA 23/07 (PR#65), thay bảng PR#64:**
 
-**BÀI HỌC / QUY TRÌNH PHÒNG NGỪA:** mỗi khi thay ẢNH NỀN 1 section, sau khi đo
-contrast (mục 7) phải ĐO THÊM composite warm/pink của ảnh MỚI và so với bảng gam
-chuẩn trên. Nếu lệch ra ngoài dải → hiệu chỉnh filter NGAY trong cùng PR đó,
-đừng để dồn thành "lệch cả tuyến" phát hiện muộn. Xếp ảnh cạnh nhau (filmstrip
-composite) để soi bằng mắt là cách nhanh nhất thấy outlier.
+**Case PR#65 (23/07) — NEO SAI MỐC:** bảng gam PR#64 lấy đích là "đa số thống
+kê" của các ảnh đang có (warm +8..+15) và coi ⑤⑧ (+21/+28) là outlier cần GIẢM
+bão hoà. Kenji xem thật: ⑧⑨ sau chỉnh thành "NHẠT và LẠNH, mất chất villa" —
+tức đích đúng là TÔNG VÀNG ẤM CỦA ẢNH MỐC (cầu nối sàn gỗ + ghế, ảnh Kenji
+khen đẹp), không phải mức trung bình của các ảnh. **NGUYÊN TẮC MỚI: gam chuẩn
+phải neo vào ẢNH MỐC THẨM MỸ do Kenji chỉ định, đo bằng TỈ LỆ NHIỆT R/B (bất
+biến theo độ sáng), không neo vào trung bình thống kê.** Mốc hiện hành: ảnh
+cầu nối `window-first-light` — **R/B ≈ 1.21, hue ~40-47° (vàng-gỗ)**.
 
-**2 tính chất filter cần nhớ khi hiệu chỉnh (đã kiểm chứng bằng canvas thật):**
-- `saturate()` **bảo toàn luma TUYỆT ĐỐI** (ma trận chỉ co chrominance quanh trục
-  luma) → giảm bão hoà để dịu olive/orange KHÔNG làm đổi contrast chữ. An toàn nhất.
-- `hue-rotate()` **KHÔNG bảo toàn luma tuyệt đối** → dùng để xoay hồng→vàng nhưng
-  phải đo lại contrast; nếu tụt (case ⑨: 4.85→4.67) thì bù bằng +overlay
-  (⑨: 78%→82%, intro về 4.9). Overlay ĐEN THUẦN là phép nhân, KHÔNG khử được
-  hue-cast — chỉ filter mới khử được (xem PR#62 mục ⑦).
+- Section SÁNG (④⑤⑥⑧⑨): warm DƯƠNG RÕ, hue vàng-gold (pink âm nhẹ), R/B
+  hướng về 1.1-1.2 ở vùng ảnh lộ nhiều (⑧ sepia(0.3): R/B 1.208 ≈ cầu nối
+  1.206). Veil dùng CREAM (ấm), tránh ivory/white gần-trắng cho section cần
+  giữ chất villa — veil gần-trắng là nguồn "bạc/lạnh" thứ hai ngoài ảnh.
+- Section TỐI (③⑦): đen trung tính → hơi ấm. ⑦ chốt bằng
+  `saturate(0) sepia(0.12)`: saturate(0) TRIỆT chroma mọi pixel (không thể
+  còn ám xanh về mặt toán), sepia(0.12) phủ lại lớp ấm đều.
+
+**QUY TRÌNH PHÒNG NGỪA (giữ từ PR#64, sửa mốc):** mỗi khi thay ảnh nền, sau
+contrast (mục 7) đo thêm composite + so R/B với ảnh mốc; lệch → filter ngay
+trong cùng PR. Filmstrip composite xếp cạnh nhau để soi mắt.
+
+**3 tính chất filter cần nhớ (đã kiểm chứng bằng canvas thật):**
+- `saturate()` **bảo toàn luma TUYỆT ĐỐI** → chỉnh bão hoà không đổi contrast.
+- `hue-rotate()` **KHÔNG bảo toàn luma** → phải đo lại contrast, bù overlay nếu
+  tụt (case ⑨ PR#64: 4.85→4.67, bù 78→82%).
+- `sepia()` là filter TẠO ẤM + khử hồng/olive cùng lúc (ép mọi hue về vàng-gỗ
+  ~40°) — cùng họ sepia(0.18) của ảnh Kenji ở Hero; làm SÁNG nhẹ pixel sáng
+  (tổng hàng ma trận >1) nên chữ-tối/nền-sáng chỉ lợi, nhưng chữ-sáng/nền-tối
+  phải đo lại. Overlay ĐEN THUẦN không khử được hue-cast (PR#62).
+
+**Case PR#65 — WORST-CASE PIXEL TRƯỢT THEO WIDTH (bổ sung mục 6/7):** ⑦ đạt
+5.0 ở desktop-width nhưng FAIL 4.01 ở mobile cùng overlay — cover-crop mỗi
+width lộ dải ảnh khác, pixel sáng (trăng 210-244) chui xuống dưới câu chữ ở
+width này mà không ở width kia. Số đo contrast của MỘT width không suy ra
+được width khác — phải đo từng breakpoint thật (đã là luật mục 1, case này
+là bằng chứng thêm ở chiều contrast).
