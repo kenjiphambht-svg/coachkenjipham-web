@@ -81,9 +81,15 @@ export default function TwoStates() {
           phải vẫn rõ ràng là 2 điểm sáng phân biệt (khớp nghĩa "Hai Cửa" của
           section này). Đã kiểm 2 biên: nối ④ (Kenji) phía trên và ⑥ Essence
           phía dưới — không lộ ranh giới đột ngột (xem báo cáo PR). */}
+      {/* SỬA 23/07/2026 (brief thống nhất tông toàn tuyến) — ảnh gốc là 1 trong
+          2 outlier ẤM-OLIVE nhất tuyến (composite warm +21, pink −5 — ngả beige/
+          khaki ngả lục so với gam kem chuẩn +11..+14). saturate(0.6) kéo về warm
+          +14, khớp họ kem của ④⑧⑨. Đặt filter ở LỚP ẢNH (không phải lớp overlay
+          gradient bên dưới) nên chỉ đổi tông ảnh, không đụng độ mờ/contrast của
+          các gradient kem đã tuned. Đo tại tầng hiển thị, không đụng file gốc. */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/haicua-hanhlang1.webp)" }}
+        style={{ backgroundImage: "url(/images/home/haicua-hanhlang1.webp)", filter: "saturate(0.6)" }}
         aria-hidden="true"
       />
       {/* SỬA 22/07/2026 (brief thay nền ⑤, kiểm 2 biên) — phẳng 35%/45% đọc rất

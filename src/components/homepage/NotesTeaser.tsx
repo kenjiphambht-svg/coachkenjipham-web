@@ -55,6 +55,10 @@ export default function NotesTeaser() {
           dả rất nhiều ở mọi mức (11-14). Đã xem ảnh chụp thật ở 78%: bàn +
           tách trà + sổ tay + rèm + vườn vẫn nhận ra mờ mờ đúng cảm giác "góc
           viết/đọc", không mờ đục hoàn toàn.
+          SỬA 23/07/2026 (brief thống nhất tông) — nâng 78%→82%: filter hue-rotate
+          mới thêm (xem khối dưới) không bảo toàn luma tuyệt đối như saturate, làm
+          intro tụt 4.85→4.67 (vẫn đạt nhưng HỒI QUY nhẹ so mốc cũ). +4% overlay
+          bù lại: đo live sau đổi intro về ~4.9 cả 2 breakpoint (không hồi quy).
           RIÊNG 3 card "chưa mở" (title + mô tả, opacity-45 qua ComingLink):
           đã đo lại trên ảnh MỚI — vẫn cùng giới hạn đã ghi nhận trước đây (dù
           overlay 100%, chỉ đạt ~1.9-2.8:1, KHÔNG BAO GIỜ chạm 4.5:1). Đây là
@@ -62,13 +66,21 @@ export default function NotesTeaser() {
           cũng chỉ ~2.81:1) — không phải do ảnh nền, KHÔNG tự ý sửa (quyết
           định riêng của Kenji nếu muốn đổi mức mờ trạng thái "chưa mở", ngoài
           phạm vi brief này). */}
+      {/* SỬA 23/07/2026 (brief thống nhất tông toàn tuyến) — khử ÁM HỒNG/ĐÀO của
+          tường vữa (đã phóng ảnh thô xác nhận: tường ngả rosy/peach ở vùng bóng,
+          R trội hơn G — "hồng" chứ không phải "vàng-gold" R≈G). hue-rotate(10deg)
+          nghiêng sắc từ hồng-đỏ về vàng-gold; saturate(0.8) làm dịu để không còn
+          đọc là "ám hồng". Kết quả composite vùng tường về pink âm (ngả gold) +
+          warm ~+11, khớp gam chuẩn toàn tuyến. Filter ở tầng hiển thị, không đụng
+          file gốc. Vườn xanh (góc trái, nhỏ + phủ ivory 78%) gần như không đổi
+          cảm nhận qua hue-rotate nhẹ này (đã xem ảnh xác nhận). */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/ghi-chep-essence.webp)" }}
+        style={{ backgroundImage: "url(/images/home/ghi-chep-essence.webp)", filter: "saturate(0.8) hue-rotate(10deg)" }}
         aria-hidden="true"
       />
       <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_78%,transparent)]"
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_82%,transparent)]"
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-4xl mx-auto text-center">

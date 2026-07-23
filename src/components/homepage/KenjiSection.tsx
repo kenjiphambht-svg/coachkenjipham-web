@@ -135,7 +135,15 @@ export default function KenjiSection() {
         style={{ backgroundImage: "url(/images/home/kenji-phong-doc1.webp)" }}
         aria-hidden="true"
       />
-      <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-white-2026)_85%,transparent)]" aria-hidden="true" />
+      {/* SỬA 23/07/2026 (brief thống nhất tông toàn tuyến) — overlay đổi TRẮNG
+          (white-2026 #FFFFFF) → KEM (cream-2026 #F1EFE8), GIỮ nguyên 85%. Lý do:
+          xếp cạnh 9 ảnh nền, ④ là band SÁNG-LẠNH nhất (trắng lâm sàng, composite
+          warm chỉ +3) — chỏi khỏi họ vàng-kem của toàn trang. Đổi phủ sang kem
+          kéo composite lên warm +11, khớp gam chuẩn (+11..+14). Cream (241) chỉ
+          tối hơn white (255) ~14 đơn vị nên contrast chữ tối/nền sáng giảm rất
+          nhẹ — body 85% cũ đo 5.89 (dư 31% trên ngưỡng 4.5), đã đo lại live sau
+          đổi vẫn dư (xem báo cáo PR). */}
+      <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_85%,transparent)]" aria-hidden="true" />
       <div className="relative z-10 max-w-[1120px] mx-auto flex flex-col md:flex-row md:items-center gap-10 md:gap-16">
         <figure className="e26-reveal w-full max-w-[360px] mx-auto md:mx-0 md:w-[40%] md:max-w-none shrink-0">
           <ImageSlot
