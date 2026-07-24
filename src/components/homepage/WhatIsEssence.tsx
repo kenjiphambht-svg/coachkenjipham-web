@@ -40,9 +40,52 @@ export default function WhatIsEssence() {
           ~55-65%, không đạt — đã báo Kenji đúng mẫu "CẦN ẢNH MỚI", nhưng
           Kenji xác nhận muốn merge để xem trực tiếp, sẽ đánh giá bằng mắt sau
           khi lên production). Filter sepia(0.4) CÙNG grade tông với ④⑤⑧⑨. */}
+      {/* SỬA 24/07/2026 (brief "khung cửa sổ làm trọng tâm + hết cháy ⑥") —
+          2 thay đổi trên CHÍNH FILE ẢNH essence-la-gi-v3.webp (không phải CSS):
+          (1) khung cửa sổ shoji (x0-190/1920) là chi tiết đẹp nhất ảnh nhưng bị
+          mobile crop đẩy ra ngoài hoàn toàn (center-crop mặc định chỉ thấy
+          x747-1171 — đúng dải sọc gỗ dọc, xem dò position bên dưới);
+          (2) đo pixel xác nhận vùng kính cửa sổ (y100-400/1088, tức y9-37%
+          section) CHÁY THẬT ở ảnh gốc — không phải lỗi veil: WCAG luminance
+          trung bình 0.73, p90 0.99 (gần trắng) dù raw RGB chưa clip cứng
+          (R 90th-pct=246/255, 99th=253/255 — vẫn còn dải chi tiết nén chặt).
+          Nén highlight TOÀN ẢNH (không mask cục bộ — tránh lỗi rìa đã gặp khi
+          sửa mặt Kenji ở Hero): kênh nào >160 bị kéo về 160+phần dư×0.30. Đã
+          soi sọc gỗ + sàn + bàn vùng khác: không đổi (chỉ pixel sáng bị nén).
+          background-position đổi center → left (bg-cover, KHÔNG zoom): đã thử
+          zoom 118% trước — kéo scale ảnh lên 10.8%, làm bóng cây tối (vốn là
+          nút thắt contrast) dạt sang đúng vị trí đoạn p2, contrast tụt còn
+          4.54 (sát ngưỡng 4.5, mất hết biên an toàn PR#72). Bỏ zoom, CHỈ đổi
+          position: cover mặc định vốn cắt trái 58px nguồn (center) — đổi
+          sang left (0%) bỏ hẳn phần cắt trái, khung cửa sổ hiện từ mép x=0,
+          không đụng chiều dọc (cover khớp đúng boxH nên không crop dọc dù đổi
+          position) → không dịch chuyển bóng cây tối, contrast giữ nguyên mức
+          PR#72. Đổi trọng số sọc-gỗ-vs-cửa-sổ trên desktop CHỈ đạt được rất
+          nhẹ theo cách này (đã báo đánh đổi cho Kenji trong phiếu, xem PR). */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/essence-la-gi-v3.webp)", filter: "sepia(0.4)" }}
+        className="absolute inset-0 bg-cover hidden md:block"
+        style={{
+          backgroundImage: "url(/images/home/essence-la-gi-v3.webp)",
+          backgroundPosition: "left top",
+          filter: "sepia(0.4)",
+        }}
+        aria-hidden="true"
+      />
+      {/* SỬA 24/07/2026 — MOBILE dùng position khác hẳn desktop (dò riêng theo
+          mục 1 sổ tay): center mặc định lộ ra x747-1171/1920 = dải sọc gỗ dọc
+          thuần, khung cửa sổ (x0-190) bị đẩy hẳn ra ngoài vùng hiển thị. Dò
+          background-position-x = 0% (left) để khung cửa sổ + góc cây/đá cuội
+          (x0-425, hết dư địa dò vì boxW=375 tại scale mobile 0.883 → 1 khung
+          hiển thị rộng 425px nguồn) lọt trọn vùng hiển thị — không cần zoom
+          (mobile không có vấn đề "sọc gỗ chiếm chỗ" như desktop, vì center cũ
+          vốn đã toàn sọc gỗ, đổi hẳn position là đủ). */}
+      <div
+        className="absolute inset-0 bg-cover md:hidden"
+        style={{
+          backgroundImage: "url(/images/home/essence-la-gi-v3.webp)",
+          backgroundPosition: "left top",
+          filter: "sepia(0.4)",
+        }}
         aria-hidden="true"
       />
       {/* KHÔNG dùng bg-e26-ivory/70 — bug đã biết (xem HomeHero.tsx): token
@@ -74,19 +117,32 @@ export default function WhatIsEssence() {
           breakpoint (giống lý do HomeHero LỚP 4 tách mobile/desktop).
           THÍ NGHIỆM — CHƯA MERGE: đây là brief yêu cầu Kenji tự xem ảnh chụp
           rồi quyết giữ hay revert, không tự merge theo mục 4 (xem PR). */}
+      {/* SỬA 24/07/2026 (brief "khung cửa sổ làm trọng tâm") — MỞ dải veil
+          đầu section (trước đây phẳng 92% suốt 0-27%/0-16%, che kín khung cửa
+          sổ) xuống 50% (ngang mức thân bài, "ngưỡng mở" theo mục tiêu brief),
+          CHỈ giữ dải hẹp 92% đúng quanh vị trí Sub (dòng vẫn giữ màu yếu theo
+          PR#72 — không đổi). Đo lại xác nhận: dải hẹp 26-32%(desktop)/14-19%
+          (mobile) vẫn đủ phủ trọn worst-pixel Sub (y26.9%/15.8%) với biên
+          ≥+3.3pp — không hồi quy PR#72. H2 (16-22% desktop, dùng text-e26-text
+          mạnh — luôn dư dả) giờ nằm trong dải mở 50%, không vấn đề. */}
       <div
         className="absolute inset-0 hidden md:block"
         style={{
           backgroundImage:
-            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 27%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 36%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 65%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 76%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 100%)",
+            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 20%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 26%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 32%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 36%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 65%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 76%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 100%)",
         }}
         aria-hidden="true"
       />
+      {/* SỬA 24/07/2026 — mobile dùng vùng nhẹ 58% (không phải 50% như desktop):
+          đổi background-position (0%,0%) để lộ khung cửa sổ kéo theo đúng cột
+          bóng thân cây tối hơn vào đúng vùng thân bài (đo lại: p1 cần 51.0%,
+          p2 cần 51.9% — 50% cũ FAIL, đã xác nhận contrast 4.37/4.24 trước khi
+          sửa). 58% cho dư biên ~6pp, đo lại xác nhận PASS bên dưới. */}
       <div
         className="absolute inset-0 md:hidden"
         style={{
           backgroundImage:
-            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 16%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 26%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 78%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 86%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 100%)",
+            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 10%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 14%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 19%, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 26%, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 78%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 86%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 100%)",
         }}
         aria-hidden="true"
       />
