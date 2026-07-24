@@ -4,8 +4,8 @@ import StoryboardSlot from "./StoryboardSlot";
 
 export function Lang90Kenji() {
   return (
-    <section className="bg-e26-cream px-6 py-20 md:py-32">
-      <div className="mx-auto grid max-w-[1040px] gap-14 md:grid-cols-[0.72fr_minmax(0,1fr)] md:items-start">
+    <section className="bg-e26-cream px-6 py-24 md:py-36">
+      <div className="mx-auto grid max-w-[1080px] gap-16 md:grid-cols-[0.8fr_minmax(0,1fr)] md:gap-20 md:items-start">
         <div className="md:col-start-2 md:row-start-1">
           <Lang90Reveal>
             <p className={sectionLabelClass}>Người ngồi phía đối diện</p>
@@ -21,7 +21,7 @@ export function Lang90Kenji() {
             <p>Đã có một giai đoạn trong đời...</p>
           </Lang90Reveal>
         </div>
-        <StoryboardSlot id="SB-02" className="-mt-2 aspect-[4/5] md:sticky md:top-10 md:col-start-1 md:row-span-2 md:row-start-1" />
+        <StoryboardSlot id="SB-02" tone="paper" className="-mt-2 aspect-[4/5] md:sticky md:top-10 md:col-start-1 md:row-span-2 md:row-start-1" />
         <Lang90Reveal delay="short" className={`${bodyClass} md:col-start-2 md:row-start-2 space-y-8`}>
           <p>
             tôi một mình nuôi hai con,<br />
@@ -93,14 +93,14 @@ const journeySteps = [
 
 export function Lang90Journey() {
   return (
-    <section className="bg-e26-ivory px-6 py-20 md:py-32">
-      <div className="mx-auto max-w-[720px]">
+    <section className="bg-e26-ivory px-6 py-24 md:py-36">
+      <div className="mx-auto max-w-[680px]">
         <Lang90Reveal>
           <p className={sectionLabelClass}>Trong 90 phút, chúng ta đi từ đâu đến đâu</p>
           <h2 className={`${headingClass} mt-7`}>Không có một kịch bản cố định cho tất cả mọi người.</h2>
           <p className={`mt-8 ${bodyClass}`}>Nhưng cuộc trò chuyện thường đi qua ba nhịp tự nhiên.</p>
         </Lang90Reveal>
-        <div className="mt-16 space-y-16 md:mt-20 md:space-y-20">
+        <div className="mt-20 space-y-20 md:mt-24 md:space-y-24">
           {journeySteps.map((step, index) => (
             <Lang90Reveal key={step.title} delay={index % 2 === 0 ? "none" : "short"}>
               <div className="border-t border-e26-border pt-7">
@@ -113,7 +113,7 @@ export function Lang90Journey() {
           ))}
         </div>
       </div>
-      <StoryboardSlot id="SB-03" className="mt-16 min-h-[32vh] w-full md:mt-24 md:min-h-[50vh]" />
+      <StoryboardSlot id="SB-03" tone="dawn" className="mt-20 min-h-[34svh] w-full md:mt-28 md:min-h-[52svh]" />
     </section>
   );
 }

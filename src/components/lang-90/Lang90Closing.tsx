@@ -15,16 +15,16 @@ import StoryboardSlot from "./StoryboardSlot";
 
 export function Lang90Scope() {
   return (
-    <section className="bg-e26-black px-6 py-20 md:py-32">
-      <div className="mx-auto max-w-[720px]">
+    <section className="bg-e26-cream-deep px-6 py-24 md:py-36">
+      <div className="mx-auto max-w-[680px]">
         <Lang90Reveal>
-          <p className={darkSectionLabelClass}>Phạm vi của Lặng</p>
-          <h2 className="mt-7 font-serif text-[30px] font-medium italic leading-[1.25] text-e26-text-dark md:text-[42px]">
+          <p className={sectionLabelClass}>Phạm vi của Lặng</p>
+          <h2 className={`${headingClass} mt-7`}>
             Có những lúc, cách tôn trọng một người nhất<br />
             là không nhận họ vào sai cánh cửa.
           </h2>
         </Lang90Reveal>
-        <Lang90Reveal delay="short" className="mt-12 space-y-8 font-sans text-[17px] font-normal leading-[1.9] text-e26-text-dark-2 md:text-[18px]">
+        <Lang90Reveal delay="short" className={`mt-12 ${bodyClass} space-y-8`}>
           <p>Lặng dành cho những lúc bạn cần làm chậm điều đang quá nhiều, nhìn rõ một phản ứng hoặc vòng lặp chính và mở lại khoảng để tự lựa chọn.</p>
           <p>Phiên không thay thế hỗ trợ y tế hoặc chuyên môn sức khỏe tâm thần.</p>
           <p>
@@ -32,7 +32,7 @@ export function Lang90Scope() {
             Không phải vì câu chuyện của bạn chưa đủ quan trọng.<br />
             Mà vì tôi không muốn bạn nhận sai loại hỗ trợ vào lúc đang cần một điều khác.
           </p>
-          <p className="border-l border-e26-gold pl-6 text-e26-text-dark">
+          <p className="border-l border-e26-border pl-6 text-e26-text">
             Nếu bạn đang ở trong tình trạng khẩn cấp hoặc có nguy cơ làm tổn thương bản thân hay người khác, hãy ưu tiên liên hệ ngay với một người thân đáng tin, cơ sở y tế hoặc dịch vụ khẩn cấp tại nơi bạn đang sống.
           </p>
         </Lang90Reveal>
@@ -43,8 +43,8 @@ export function Lang90Scope() {
 
 export function Lang90Value() {
   return (
-    <section className="bg-e26-white px-6 py-20 md:py-32">
-      <div className="mx-auto max-w-[720px]">
+    <section className="bg-e26-ivory px-6 py-24 md:py-36">
+      <div className="mx-auto max-w-[680px]">
         <Lang90Reveal>
           <p className={sectionLabelClass}>Giá trị của Lặng</p>
         </Lang90Reveal>
@@ -82,13 +82,13 @@ const sessionDetails: Array<{ label: string; value: ReactNode }> = [
 
 export function Lang90Offer() {
   return (
-    <section className="bg-e26-cream px-6 py-20 md:py-32">
+    <section className="bg-e26-cream px-6 py-24 md:py-36">
       <div className="mx-auto max-w-[1040px]">
         <Lang90Reveal>
           <p className={sectionLabelClass}>Thông tin phiên</p>
           <h2 className={`${headingClass} mt-7`}>Phiên Lặng</h2>
         </Lang90Reveal>
-        <div className="mt-12 grid gap-14 md:grid-cols-[minmax(0,1fr)_0.72fr] md:items-start">
+        <div className="mt-14 grid gap-16 md:grid-cols-[minmax(0,1fr)_0.72fr] md:gap-20 md:items-start">
           <div>
             <Lang90Reveal delay="short" className="border-y border-e26-border">
               {sessionDetails.map(({ label, value }) => (
@@ -100,7 +100,7 @@ export function Lang90Offer() {
             </Lang90Reveal>
             <Lang90Reveal delay="short" className={`mt-10 ${bodyClass} space-y-5`}>
               <p>Trong đó có:</p>
-              <ul className="space-y-3 border-l border-e26-gold pl-6">
+              <ul className="space-y-3 border-l border-e26-border pl-6">
                 <li>vấn đề chính đã được nhìn rõ</li>
                 <li>phản ứng hoặc vòng lặp cần tiếp tục quan sát</li>
                 <li>điều cần ghi nhớ sau phiên</li>
@@ -120,7 +120,7 @@ export function Lang90Offer() {
               </p>
             </Lang90Reveal>
           </div>
-          <StoryboardSlot id="SB-04" className="aspect-[5/4]" />
+          <StoryboardSlot id="SB-04" tone="paper" className="aspect-[5/4]" />
         </div>
       </div>
     </section>
@@ -129,8 +129,8 @@ export function Lang90Offer() {
 
 export function Lang90NextStep() {
   return (
-    <section className="bg-e26-ivory px-6 py-20 md:py-32">
-      <div className="mx-auto max-w-[720px]">
+    <section className="bg-e26-white px-6 py-24 md:py-36">
+      <div className="mx-auto max-w-[680px]">
         <Lang90Reveal>
           <p className={sectionLabelClass}>Bước tiếp theo</p>
           <h2 className={`${headingClass} mt-7`}>Bước tiếp theo chưa phải đặt lịch.</h2>
@@ -145,7 +145,7 @@ export function Lang90NextStep() {
           </p>
           <div>
             <p>Sáu câu hỏi giúp tôi hiểu:</p>
-            <ul className="mt-5 space-y-3 border-l border-e26-gold pl-6">
+            <ul className="mt-5 space-y-3 border-l border-e26-border pl-6">
               <li>điều gì đang đưa bạn đến đây</li>
               <li>bạn đang ở trạng thái nào</li>
               <li>bạn mong điều gì từ cuộc gặp</li>
@@ -184,7 +184,7 @@ export function Lang90Closing() {
   return (
     <>
       <Lang90Faq />
-      <StoryboardSlot id="SB-05" className="min-h-[28vh] w-full md:min-h-[45vh]" />
+      <StoryboardSlot id="SB-05" tone="closing" className="min-h-[30svh] w-full md:min-h-[48svh]" />
       <Lang90Footer>
         <Lang90Reveal>
           <p className={darkSectionLabelClass}>Đóng thư</p>
@@ -203,7 +203,7 @@ export function Lang90Closing() {
             <p>Có câu hỏi trước khi bắt đầu?</p>
             <a
               href="mailto:contact@coachkenjipham.com"
-              className="mt-5 inline-block text-e26-text-dark transition-colors hover:text-e26-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold"
+              className="mt-5 inline-block text-e26-text-dark transition-colors hover:text-e26-text-dark-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-e26-text-dark-2"
             >
               contact@coachkenjipham.com
             </a>

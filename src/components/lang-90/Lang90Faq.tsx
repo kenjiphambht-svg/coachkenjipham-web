@@ -45,8 +45,8 @@ export default function Lang90Faq() {
   const baseId = useId();
 
   return (
-    <section className="bg-e26-ivory px-6 py-20 md:py-32">
-      <div className="mx-auto max-w-[720px]">
+    <section className="bg-e26-cream-deep px-6 py-24 md:py-36">
+      <div className="mx-auto max-w-[680px]">
         <h2 className={headingClass}>Trước khi bạn đi</h2>
         <div className="mt-12 border-t border-e26-border">
           {faqItems.map((item, index) => {
@@ -60,7 +60,7 @@ export default function Lang90Faq() {
                     onClick={() => setOpenIndex(open ? null : index)}
                     aria-expanded={open}
                     aria-controls={panelId}
-                    className="flex min-h-16 w-full items-center justify-between gap-6 py-6 text-left font-serif text-[22px] font-medium leading-snug text-e26-text transition-colors hover:text-e26-gold-deep focus:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold-deep focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory"
+                    className="flex min-h-16 w-full items-center justify-between gap-6 py-7 text-left font-serif text-[22px] font-medium leading-snug text-e26-text transition-colors hover:text-e26-text-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-e26-text-2 focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream-deep"
                   >
                     <span>{item.question}</span>
                     <span aria-hidden="true" className="font-sans text-xl font-normal">
@@ -68,11 +68,18 @@ export default function Lang90Faq() {
                     </span>
                   </button>
                 </h3>
-                <div id={panelId} hidden={!open} className="pb-7 pr-8">
-                  <div className={`${bodyClass} space-y-4`}>
+                <div
+                  id={panelId}
+                  className={`grid transition-[grid-template-rows,opacity] duration-500 ease-out motion-reduce:transition-none ${
+                    open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className={`${bodyClass} space-y-4 pb-8 pr-8`}>
                     {item.answer.map((paragraph) => (
                       <p key={paragraph}>{paragraph}</p>
                     ))}
+                    </div>
                   </div>
                 </div>
               </div>

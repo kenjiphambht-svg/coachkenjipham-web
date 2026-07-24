@@ -13,7 +13,7 @@ export const headingClass =
 
 export function Lang90Header() {
   return (
-    <header className="relative z-10 px-6 pt-7 md:pt-10">
+    <header className="relative z-10 bg-e26-black px-6 pt-7 md:pt-10">
       <p className="mx-auto max-w-6xl font-sans text-[9px] font-medium uppercase tracking-[0.14em] text-e26-text-dark-2 sm:text-[12px] sm:tracking-[0.18em]">
         Kenji Phạm · Essence Coach · Sài Gòn
       </p>
@@ -23,7 +23,7 @@ export function Lang90Header() {
 
 export function Lang90Footer({ children }: { children: ReactNode }) {
   return (
-    <footer className="bg-e26-black px-6 py-16 md:py-20">
+    <footer className="bg-e26-black px-6 py-20 md:py-28">
       <div className="mx-auto max-w-[720px] text-center">{children}</div>
     </footer>
   );

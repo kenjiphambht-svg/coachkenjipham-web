@@ -9,26 +9,25 @@ import StoryboardSlot from "./StoryboardSlot";
 
 export function Lang90Hero() {
   return (
-    <section className="relative overflow-hidden bg-e26-black px-6 pb-20 pt-20 md:pb-32 md:pt-28">
-      <div aria-hidden="true" className="absolute inset-0 opacity-70">
-        <div className="absolute inset-x-0 bottom-0 h-[58%] bg-[linear-gradient(180deg,transparent,rgba(241,239,232,0.16))]" />
-      </div>
-      <div className="relative mx-auto max-w-[920px]">
+    <section className="relative flex min-h-[92svh] overflow-hidden bg-e26-black px-6 py-16 md:min-h-[94svh] md:py-24">
+      <StoryboardSlot id="SB-HERO" tone="hero" className="absolute inset-0" />
+      <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,rgba(26,26,26,0.08),rgba(26,26,26,0.18)_52%,rgba(26,26,26,0.72))]" />
+      <div className="relative mx-auto flex w-full max-w-[1080px] flex-col justify-end pb-3 md:pb-10">
         <Lang90Reveal>
           <p className={darkSectionLabelClass}>Lặng</p>
         </Lang90Reveal>
-        <Lang90Reveal delay="short" className="mt-8 max-w-4xl">
-          <h1 className="font-serif text-[40px] font-medium leading-[1.15] text-e26-text-dark md:text-[64px]">
+        <Lang90Reveal delay="short" className="mt-8 max-w-[880px]">
+          <h1 className="max-w-[820px] font-serif text-[43px] font-medium leading-[1.1] text-e26-text-dark sm:text-[52px] md:text-[72px]">
             Khi đầu óc đã tính đủ mọi đường,<br />
             nhưng bạn vẫn không biết đâu là bước của mình.
           </h1>
         </Lang90Reveal>
-        <Lang90Reveal delay="long" className="mt-10 max-w-2xl">
-          <p className="font-sans text-[17px] font-normal leading-[1.9] text-e26-text-dark-2 md:text-[18px]">
+        <Lang90Reveal delay="long" className="mt-12 max-w-[620px]">
+          <p className="font-sans text-[17px] font-normal leading-[1.85] text-e26-text-dark-2 md:text-[19px]">
             Một lần ngồi xuống đủ lâu để tiếng ồn bớt đi —<br />
             và điều bạn thật sự nghĩ bắt đầu hiện ra.
           </p>
-          <p className="mt-8 font-sans text-[12px] font-medium uppercase tracking-[0.18em] text-e26-text-dark-2">
+          <p className="mt-9 font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-e26-text-dark-2 md:text-[12px] md:tracking-[0.18em]">
             90 phút · 1:1 cùng Kenji Phạm · Trực tuyến hoặc tại Sài Gòn
           </p>
         </Lang90Reveal>
@@ -39,8 +38,8 @@ export function Lang90Hero() {
 
 export function Lang90Recognition() {
   return (
-    <section className="bg-e26-black px-6 py-20 md:py-32">
-      <div className="mx-auto max-w-[720px]">
+    <section className="bg-e26-black px-6 py-24 md:py-36">
+      <div className="mx-auto max-w-[680px]">
         <Lang90Reveal>
           <p className={darkSectionLabelClass}>Bạn có đang ở đây không</p>
           <h2 className="mt-7 font-serif text-[30px] font-medium italic leading-[1.25] text-e26-text-dark md:text-[42px]">
@@ -70,9 +69,9 @@ export function Lang90Recognition() {
           </div>
         </Lang90Reveal>
       </div>
-      <StoryboardSlot id="SB-01" className="mt-16 min-h-[34vh] w-full md:mt-24 md:min-h-[54vh]" />
-      <div className="mx-auto max-w-[720px]">
-        <Lang90Reveal delay="long" className="mt-16 md:mt-24">
+      <StoryboardSlot id="SB-01" tone="night" className="mt-20 min-h-[36svh] w-full md:mt-28 md:min-h-[56svh]" />
+      <div className="mx-auto max-w-[680px]">
+        <Lang90Reveal delay="long" className="mt-20 md:mt-28">
           <p className="font-serif text-[30px] font-medium italic leading-[1.25] text-e26-text-dark md:text-[42px]">
             Điều bạn cần lúc này có thể không phải thêm một câu trả lời.<br />
             Mà là một khoảng đủ yên<br />
@@ -86,8 +85,8 @@ export function Lang90Recognition() {
 
 export function Lang90Definition() {
   return (
-    <section className="bg-e26-white px-6 py-20 md:py-32">
-      <div className="mx-auto max-w-[720px]">
+    <section className="bg-e26-cream-deep px-6 py-24 md:py-36">
+      <div className="mx-auto max-w-[680px]">
         <Lang90Reveal>
           <h2 className={sectionLabelClass}>Lặng không phải một cuộc trò chuyện để thấy nhẹ đi rồi thôi</h2>
         </Lang90Reveal>
