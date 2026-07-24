@@ -50,28 +50,44 @@ export default function WhatIsEssence() {
           được modifier "/opacity", lớp phủ sẽ trong suốt hoàn toàn (im lặng,
           không lỗi build). Dùng color-mix() — kỹ thuật đã kiểm chứng. */}
       {/* SỬA 23/07/2026 (brief "⑥⑨ trong hơn 20%") — 3 hướng thử trên bản v2,
-          Kenji chọn AN TOÀN TỐI ĐA (92%→90%, giữ đúng chuẩn đọc 4.5:1). Xem
-          lịch sử đầy đủ ở BAI-HOC-KY-THUAT.md mục 11.
-          SỬA 24/07/2026 (brief thay ảnh ⑥ vòng 3) — thay essence-la-gi-v2.webp
-          bằng essence-la-gi-v3.webp: ảnh FLUX MỚI Kenji tạo, cùng bố cục (cây
-          phong xanh 2 tán, đá cuội, bệ gỗ tròn, vách gỗ nan) nhưng SÁNG ĐỀU và
-          SẮC NÉT hơn hẳn — bóng cây giờ ngắn gọn dưới gốc, hết dải tối kéo dài
-          x20-45%/y30-91% của 2 bản trước.
-          PHÁT HIỆN QUAN TRỌNG (đo canvas live, giải phương trình ngược): dù
-          ảnh mới hết pixel gần-đen tuyệt đối (điểm tối nhất giờ (37,20,8), so
-          với (6,5,4) bản v2), ngưỡng veil cần vẫn ~88.7-89.2% (gần NHƯ KHÔNG
-          đổi so với v2's 89.4%) — vì gốc rễ thật không phải "ảnh tối" mà là
-          chính MÀU CHỮ text-e26-text-2 (95,94,90) quá yếu: luminance màu chữ
-          ~0.112, cần composite đạt luminance ≥0.678 (gần trắng tuyệt đối) để
-          đạt tỉ lệ 4.5:1 — bất kỳ ảnh nào (trừ khi gần-trắng sẵn) đều cần veil
-          nặng tương tự. Đây là giới hạn THIẾT KẾ (màu chữ), không phải giới
-          hạn ảnh — ghi sổ tay mục 11.
-          Vẫn CẢI THIỆN THỊ GIÁC RÕ RỆT dù % gần như không đổi: ảnh gốc giờ
-          sáng/nét hơn nhiều nên ở CÙNG % overlay chi tiết cây/đá/vách hiện rõ
-          hơn hẳn v2 (đã xem render so sánh). Chốt 90% (an toàn cả 2 breakpoint
-          — mobile cần 89.2%, desktop 88.7%). Contrast đo live: xem báo cáo PR. */}
+          Kenji chọn AN TOÀN TỐI ĐA (92%→90%, giữ đúng chuẩn đọc 4.5:1).
+          SỬA 24/07/2026 (brief thay ảnh ⑥ vòng 3) — v2→v3, ảnh sáng/nét hơn
+          nhưng veil vẫn kẹt ~90% vì gốc rễ là MÀU CHỮ yếu, không phải ảnh —
+          xem BAI-HOC-KY-THUAT.md mục 11.
+          SỬA 24/07/2026 (brief "thử bỏ veil, đổi màu chữ") — THÍ NGHIỆM
+          THẨM MỸ theo đúng luật mục 11: đậm màu CHỈ đoạn thân bài (4 <p> Vai
+          3 bên dưới, text-e26-text-2 → text-e26-text đặc, cùng màu H2, luminance
+          0.112→0.0104) để tự đạt 4.5:1 mà không cần veil dày. PHÁT HIỆN khi đo:
+          dòng [Sub] "Một mái hiên tĩnh lặng." và câu chữ ký cuối VẪN giữ
+          text-e26-text-2 nguyên (brief yêu cầu KHÔNG đổi 2 dòng này) — cả 2 lại
+          nằm ĐÚNG trong vùng bóng cây tối nhất ảnh (Sub sát dưới H2, chữ ký ở
+          đáy), nên dù thân bài đậm cỡ nào, veil PHẲNG toàn section vẫn bị kẹt
+          sàn ~89.3% (đo: Sub cần 88.7-88.2%, chữ ký cần 88.2-89.3% cả 2
+          breakpoint) — thân bài không phải nút thắt duy nhất nữa.
+          GIẢI PHÁP: đổi sang VEIL GRADIENT dọc (kỹ thuật đã có ở ⑨, mục 8) thay
+          vì phẳng — NẶNG 92% ở dải Sub (đầu) + dải chữ ký (cuối, đều dư biên
+          ≥2.7pp so 88.2-89.3% cần), NHẸ 50% ở dải giữa (đúng vùng 4 đoạn thân
+          bài đã đậm màu — dư biên nhỏ nhất +9.7pp desktop/+19.3pp mobile tại
+          đoạn 1, dư biên lớn ở đoạn 2-4 vì càng xuống ảnh càng sáng). 50% ngang
+          tầm ⑧ (55%). Mốc % ramp tách riêng desktop/mobile (2 khối bên dưới)
+          vì vị trí Sub/thân bài/chữ ký lệch hẳn theo tỉ lệ chiều cao ở mỗi
+          breakpoint (giống lý do HomeHero LỚP 4 tách mobile/desktop).
+          THÍ NGHIỆM — CHƯA MERGE: đây là brief yêu cầu Kenji tự xem ảnh chụp
+          rồi quyết giữ hay revert, không tự merge theo mục 4 (xem PR). */}
       <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_90%,transparent)]"
+        className="absolute inset-0 hidden md:block"
+        style={{
+          backgroundImage:
+            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 27%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 36%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 65%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 76%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 100%)",
+        }}
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-0 md:hidden"
+        style={{
+          backgroundImage:
+            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 16%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 26%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 78%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 86%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 100%)",
+        }}
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-3xl mx-auto text-center">
@@ -81,19 +97,22 @@ export default function WhatIsEssence() {
         <p className="e26-reveal font-serif font-normal text-[20px] md:text-[24px] leading-snug text-e26-text-2 mb-8">
           Một mái hiên tĩnh lặng.
         </p>
-        <p className="e26-reveal font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text-2 mb-6">
+        {/* SỬA 24/07/2026 (brief "thử bỏ veil, đổi màu chữ") — 4 đoạn thân bài
+            (CHỈ 4 đoạn này, không phải Sub/chữ ký) đổi text-e26-text-2 →
+            text-e26-text: xem lý do đầy đủ tại khối overlay veil phía trên. */}
+        <p className="e26-reveal font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text mb-6">
           Có những giai đoạn, điều ta cần không phải thêm một phương pháp. Chỉ là một nơi đủ
           yên để ngồi xuống, thở chậm lại, và nhìn rõ điều đang diễn ra bên trong mình. Essence
           được tạo ra cho khoảnh khắc ấy.
         </p>
-        <p className="e26-reveal font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text-2 mb-6">
+        <p className="e26-reveal font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text mb-6">
           Ở đây, mọi thứ đều có thứ tự. Không vội sửa. Không hối thúc thay đổi. Chỉ từng bước
           đưa bạn trở về trạng thái An định, trước khi đi sâu hơn vào bản sắc thật của mình.
         </p>
-        <p className="e26-reveal font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text-2 mb-6">
+        <p className="e26-reveal font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text mb-6">
           Phía sau là một hệ thống được xây dựng chỉn chu. Phía trước vẫn luôn là con người.
         </p>
-        <p className="e26-reveal font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text-2 mb-8">
+        <p className="e26-reveal font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text mb-8">
           Cách Essence vận hành sẽ được kể trong một cánh cửa riêng.
         </p>
         {/* SỬA 22/07/2026 (brief hover vàng cho link, Việc D) — thêm
