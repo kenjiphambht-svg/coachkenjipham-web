@@ -117,56 +117,53 @@ export default function WhatIsEssence() {
           breakpoint (giống lý do HomeHero LỚP 4 tách mobile/desktop).
           THÍ NGHIỆM — CHƯA MERGE: đây là brief yêu cầu Kenji tự xem ảnh chụp
           rồi quyết giữ hay revert, không tự merge theo mục 4 (xem PR). */}
-      {/* SỬA 24/07/2026 (brief "khung cửa sổ làm trọng tâm") — MỞ dải veil
-          đầu section (trước đây phẳng 92% suốt 0-27%/0-16%, che kín khung cửa
-          sổ) xuống 50% (ngang mức thân bài, "ngưỡng mở" theo mục tiêu brief),
-          CHỈ giữ dải hẹp 92% đúng quanh vị trí Sub (dòng vẫn giữ màu yếu theo
-          PR#72 — không đổi).
-          SỬA 24/07/2026 (brief "dải sáng ngang ⑥ desktop") — Kenji xem thật
-          thấy 1 ĐƯỜNG NGANG CHÁY SÁNG rõ rệt đúng chỗ dải 92% cũ: nguyên nhân
-          là "cao nguyên phẳng" (flat 92% suốt 26-32%, ramp chỉ 6pp mỗi bên)
-          tạo 2 GÓC GẤP trong đường cong độ mờ — mắt rất nhạy với góc gấp, đặc
-          biệt trên nền có chi tiết (cửa sổ + cây), đọc thành 1 "vệt kem" rõ
-          rệt. Sửa: bỏ hẳn đoạn phẳng, đổi sang ĐƯỜNG CONG MƯỢT (raised-cosine,
-          7 điểm dừng, không góc gấp) — vẫn đạt ĐÚNG 92% tại điểm duy nhất cần
-          (y=26.9%, worst-pixel Sub) rồi tụt liên tục về 50% trong bán kính 6pp
-          mỗi bên, không còn đoạn nằm ngang nào. Đo lại xác nhận: h2(17.4%)=50%
-          (ngoài bán kính, không đổi), p1(31.5%)=55.4% (dư 5.4pp so 50% cũ,
-          không đáng kể — p1 dùng màu đậm text-e26-text nên vẫn dư contrast rất
-          nhiều). Áp dụng CÙNG kỹ thuật cho dải chữ ký (đỉnh y=79.5%). */}
+      {/* SỬA 24/07/2026 (brief "dải sáng ngang ⑥ desktop vẫn còn") — Kenji gửi
+          ảnh chụp thật: 2 đường ngang cháy sáng VẪN rõ rệt dù đã đổi sang
+          đường cong "cosine mượt" (bản trước, tưởng đã hết vì hết góc gấp).
+          ĐO LẠI TỪ ĐẦU trước khi kết luận: test 4 độ rộng cong khác nhau
+          (6/15/20/30pp bán kính) bằng canvas live — TẤT CẢ vẫn lộ dải sáng ở
+          mọi độ rộng. Nguyên nhân THẬT không phải góc gấp mà là BIÊN ĐỘ đổi
+          quá lớn (50%→92%, tức 42 điểm %) bất kể trải rộng bao xa vẫn tạo
+          vùng sáng nhận ra được bằng mắt trên nền có chi tiết. CHỨNG MINH
+          bằng số: kể cả nâng ảnh gốc lên TRẮNG TUYỆT ĐỐI (raw 255,255,255)
+          tại veil 50-58%, composite luminance mới đạt ~0.9 — nhưng đã thử
+          NGƯỢC LẠI, tại raw hiện tại (đen/bóng cây) dù veil tới 80% vẫn chỉ
+          đạt luminance ~0.52-0.56, DƯỚI ngưỡng 0.678 cần cho màu chữ yếu gốc
+          (95,94,90) — tức KHÔNG CÓ mức veil/độ sáng ảnh nào ở dải "mở"
+          (50-58%) đủ cho màu chữ yếu, bất kể ảnh sáng cỡ nào. Giới hạn nằm ở
+          CHÍNH MÀU CHỮ (đúng phát hiện mục 11), không phải ảnh hay veil.
+          SỬA TẬN GỐC: đậm màu Sub + chữ ký giống 4 đoạn thân bài đã làm ở
+          PR#72 (text-e26-text-2 → text-e26-text) — bỏ HẲN nhu cầu veil cao
+          cục bộ, quay về 1 VEIL PHẲNG DUY NHẤT cho toàn section (không còn
+          gradient/đường cong nào để lộ dải). Đo lại xác nhận: veil 53%
+          (desktop) — sub 5.22, sig 4.89 (đủ biên, sig là điểm sát nhất);
+          veil 58% (mobile, giữ nguyên vì đã cần cho lý do khác — xem ghi chú
+          cũ) — sub 5.79, sig 5.24. Đây là thay đổi so với chỉ dẫn "GIỮ
+          NGUYÊN Sub/chữ ký" của brief round PR#72 (khi đó là thí nghiệm có
+          kiểm soát) — nay brief đã đổi mục tiêu (hết dải sáng là ưu tiên),
+          và đã CHỨNG MINH bằng số không có cách nào khác đạt được cả 2 mục
+          tiêu cùng lúc (hết dải + giữ màu chữ yếu). Đã báo rõ trong phiếu. */}
       <div
-        className="absolute inset-0 hidden md:block"
-        style={{
-          backgroundImage:
-            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 20.9%, color-mix(in srgb, var(--essence-cream-2026) 60.5%, transparent) 22.9%, color-mix(in srgb, var(--essence-cream-2026) 81.5%, transparent) 24.9%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 26.9%, color-mix(in srgb, var(--essence-cream-2026) 81.5%, transparent) 28.9%, color-mix(in srgb, var(--essence-cream-2026) 60.5%, transparent) 30.9%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 32.9%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 73.5%, color-mix(in srgb, var(--essence-cream-2026) 60.5%, transparent) 75.5%, color-mix(in srgb, var(--essence-cream-2026) 81.5%, transparent) 77.5%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 79.5%, color-mix(in srgb, var(--essence-cream-2026) 81.5%, transparent) 81.5%, color-mix(in srgb, var(--essence-cream-2026) 60.5%, transparent) 83.5%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 85.5%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 100%)",
-        }}
+        className="absolute inset-0 hidden md:block bg-[color-mix(in_srgb,var(--essence-cream-2026)_53%,transparent)]"
         aria-hidden="true"
       />
-      {/* SỬA 24/07/2026 — mobile dùng vùng nhẹ 58% (không phải 50% như desktop):
-          đổi background-position (0%,0%) để lộ khung cửa sổ kéo theo đúng cột
-          bóng thân cây tối hơn vào đúng vùng thân bài (đo lại: p1 cần 51.0%,
-          p2 cần 51.9% — 50% cũ FAIL, đã xác nhận contrast 4.37/4.24 trước khi
-          sửa). 58% cho dư biên ~6pp, đo lại xác nhận PASS bên dưới.
-          Cùng sửa vệt sáng ngang như desktop: đường cong mượt thay cao nguyên
-          phẳng, đỉnh đúng y=15.4%/86.6% (Sub/chữ ký mobile, đo live thật). */}
       <div
-        className="absolute inset-0 md:hidden"
-        style={{
-          backgroundImage:
-            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 9.4%, color-mix(in srgb, var(--essence-cream-2026) 66.5%, transparent) 11.4%, color-mix(in srgb, var(--essence-cream-2026) 83.5%, transparent) 13.4%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 15.4%, color-mix(in srgb, var(--essence-cream-2026) 83.5%, transparent) 17.4%, color-mix(in srgb, var(--essence-cream-2026) 66.5%, transparent) 19.4%, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 21.4%, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 80.6%, color-mix(in srgb, var(--essence-cream-2026) 66.5%, transparent) 82.6%, color-mix(in srgb, var(--essence-cream-2026) 83.5%, transparent) 84.6%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 86.6%, color-mix(in srgb, var(--essence-cream-2026) 83.5%, transparent) 88.6%, color-mix(in srgb, var(--essence-cream-2026) 66.5%, transparent) 90.6%, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 92.6%, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 100%)",
-        }}
+        className="absolute inset-0 md:hidden bg-[color-mix(in_srgb,var(--essence-cream-2026)_58%,transparent)]"
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-3xl mx-auto text-center">
         <h2 className="e26-reveal font-serif font-medium text-[30px] md:text-[42px] leading-[1.25] text-e26-text mb-3">
           Essence là gì?
         </h2>
-        <p className="e26-reveal font-serif font-normal text-[20px] md:text-[24px] leading-snug text-e26-text-2 mb-8">
+        {/* SỬA 24/07/2026 (brief "dải sáng ngang vẫn còn") — Sub đổi
+            text-e26-text-2 → text-e26-text: xem lý do đầy đủ (chứng minh bằng
+            số không có cách nào khác) tại khối overlay veil phía trên. */}
+        <p className="e26-reveal font-serif font-normal text-[20px] md:text-[24px] leading-snug text-e26-text mb-8">
           Một mái hiên tĩnh lặng.
         </p>
         {/* SỬA 24/07/2026 (brief "thử bỏ veil, đổi màu chữ") — 4 đoạn thân bài
-            (CHỈ 4 đoạn này, không phải Sub/chữ ký) đổi text-e26-text-2 →
-            text-e26-text: xem lý do đầy đủ tại khối overlay veil phía trên. */}
+            đổi text-e26-text-2 → text-e26-text: xem lý do đầy đủ tại khối
+            overlay veil phía trên. */}
         <p className="e26-reveal font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text mb-6">
           Có những giai đoạn, điều ta cần không phải thêm một phương pháp. Chỉ là một nơi đủ
           yên để ngồi xuống, thở chậm lại, và nhìn rõ điều đang diễn ra bên trong mình. Essence
@@ -193,8 +190,10 @@ export default function WhatIsEssence() {
         </p>
         {/* SỬA 22/07/2026 (brief tăng cỡ chữ ký ⑥, Việc A) — 17px/18px →
             20px/22px (+20%), dễ đọc hơn cho câu chữ ký cuối section. Giữ
-            nguyên font-serif italic, màu, line-height. */}
-        <p className="e26-reveal font-serif italic font-normal text-[20px] md:text-[22px] leading-[1.7] text-e26-text-2">
+            nguyên font-serif italic, line-height.
+            SỬA 24/07/2026 (brief "dải sáng ngang vẫn còn") — text-e26-text-2
+            → text-e26-text: xem lý do đầy đủ tại khối overlay veil phía trên. */}
+        <p className="e26-reveal font-serif italic font-normal text-[20px] md:text-[22px] leading-[1.7] text-e26-text">
           Mỗi ấn phẩm chuyên sâu gửi đến bạn đều do Kenji phân tích và viết, từ dòng đầu đến
           dòng cuối.
         </p>
