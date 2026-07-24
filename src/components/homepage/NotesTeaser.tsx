@@ -90,46 +90,88 @@ export default function NotesTeaser() {
           ivory82 cũ về luminance pixel tối → intro đo được 4.92 ≥ 4.90,
           KHÔNG hồi quy, trong khi composite vẫn warm ~+13 hue gold (ấm hơn
           hẳn +10 trung tính cũ). */}
-      {/* SỬA 23/07/2026 (brief ⑨ TRONG hơn + ẤM hơn, MT2+MT3) — Kenji xem thật:
-          veil 88% "quá ĐẶC, nuốt mất cảnh phòng đọc (bàn, tách trà, sổ tay, rèm,
-          cây)", màu "xám lạnh + còn ám hồng". [88% ở khối trên GIỜ LỖI THỜI.]
-          Đảo hướng: GIẢM veil để lộ cảnh + kéo tông ấm. Đo composite khi giảm
-          veil: veil càng NHẸ thì R/B càng tiến về cầu nối (55%→1.155 vs 70%→
-          1.110) VÀ càng ấm — tức "trong hơn" phục vụ luôn "ấm hơn" + "liền dòng
-          màu" (MT3). Ràng buộc là contrast intro (Vai 3, chữ phụ, yếu nhất):
-          dò live 88→70→62% — 62% cho intro vẫn ≥4.5 mà cảnh phòng hiện rõ.
-          sepia 0.4→0.5: ép hue vàng-gỗ mạnh hơn, khử sạch hồng (pink −3.4→−3.8),
-          R/B gần như không đổi. Kết quả: cảnh đọc được, tông vàng ấm khớp ⑧ +
-          cầu nối, hết hồng/xám lạnh. Contrast đo live cả 2 breakpoint (xem báo
-          cáo). bg-center giữ nguyên.
-          VEIL GRADIENT (không phẳng) — mấu chốt MT2: flat mà đủ trong để thấy
-          cảnh thì intro (Vai 3, chữ phụ yếu nhất) tụt <4.5 (62%→3.63, cả 78%
-          →4.41 vẫn thiếu). Giải bằng gradient dọc (lesson mục 8): NẶNG 84% ở
-          nửa TRÊN (0–47% chiều cao — nơi H2+intro nằm, đo thật intro desktop
-          0.24–0.47 / mobile 0.11–0.27, đều trong vùng nặng) → NHẸ 48% ở ĐÁY
-          (nơi bàn+tách trà+ghế+rèm nằm, không có chữ nền) để lộ rõ cảnh. Card
-          nằm trên kính trắng .72 nên vẫn đọc tốt dù veil đáy nhẹ. Đo live cả 2
-          breakpoint: intro 4.73/4.75, H2 12.4, card min 4.66/4.76 — đều ≥4.5,
-          KHÔNG hồi quy chuẩn đọc. Vùng chữ vẫn kín (84%≈mức cũ) nên "trong hơn"
-          đến từ nửa dưới lộ cảnh — đúng ý Kenji (thấy phòng đọc). */}
+      {/* SỬA 23/07/2026 (brief thay ảnh ⑨ vòng 2) — thay ghi-chep-essence.webp
+          (ảnh cũ, nửa trên lạnh: vườn xanh + rèm trắng) bằng
+          ghi-chep-essence-v2.webp: ảnh FLUX MỚI Kenji tạo (cozy japandi
+          reading nook, bàn gỗ + tách trà + sổ mở + ghế GIỮ NGUYÊN, rèm giờ
+          vàng ấm bao quanh cửa sổ thay vì trắng-lạnh — raw R/B 1.57, ấm hơn cả
+          mốc ⑧ 1.2-1.3).
+          ĐÃ ĐO LẠI: ảnh mới vẫn còn 1 điểm tối cục bộ ở nếp gấp rèm (RGB
+          54,39,20 tại x56%,y39% — trong vùng H2/intro) dù nền tổng thể ấm hơn
+          nhiều. Với overlay PHẲNG cần 88% mới đạt contrast ≥4.5 (tệ hơn mức cũ
+          84% ở gradient). GIỮ CƠ CHẾ GRADIENT (lesson mục 8, không đổi kỹ
+          thuật): nâng vùng NẶNG 84%→90% (bù điểm tối cục bộ mới), giữ NHẸ 48%
+          ở đáy (bàn+tách trà+ghế đã ấm đúng tông, không cần che thêm). Đo live
+          cả 2 breakpoint với gradient mới: xem báo cáo. sepia(0.4) giữ nguyên
+          (grade chung, không cần sepia(0.5) như bản trước vì ảnh mới đã đủ ấm
+          sẵn). Kenji xác nhận muốn merge để xem trực tiếp dù chưa đạt mục tiêu
+          "hạ veil dễ dàng" (đã báo đúng mẫu CẦN ẢNH MỚI trước khi merge). */}
+      {/* SỬA 23/07/2026 (brief "⑥⑨ trong hơn 20%") — 90%→88% trên bản v2, Kenji
+          chọn AN TOÀN TỐI ĐA. Xem lịch sử đầy đủ ở BAI-HOC-KY-THUAT.md mục 11.
+          SỬA 24/07/2026 (brief thay ảnh ⑨ vòng 3) — thay ghi-chep-essence-v2
+          bằng ghi-chep-essence-v3.webp: ảnh FLUX MỚI Kenji tạo, cùng bố cục
+          (bàn gỗ + sổ mở + tách trà + rèm + cửa sổ nhìn ra vườn) nhưng tường
+          phải SÁNG ĐỀU, rèm hết nếp gấp tối cục bộ (RGB 54,39,20 của bản v2).
+          PHÁT HIỆN (giống ⑥): dù ảnh mới sáng hơn nhiều (điểm tối nhất giờ
+          (71,55,36) so với (54,39,20) bản v2), ngưỡng vùng nặng cần vẫn
+          ~86.6-87.8% (gần như không đổi so với v2's 87.8%) — vì gốc rễ là
+          MÀU CHỮ text-e26-text-2 yếu (xem giải thích đầy đủ ở WhatIsEssence.tsx
+          + sổ tay mục 11), không phải bản thân ảnh. Vẫn cải thiện thị giác rõ
+          rệt cùng % (đã xem render). Chốt vùng nặng 87% (an toàn cả 2 breakpoint
+          — mobile chỉ cần 79.9% do crop hẹp hơn, desktop cần 86.6%, dùng mốc
+          cao hơn + dư biên nhỏ), giữ mid 58%/light 48% (chưa từng là điểm
+          nghẽn).
+          SỬA 24/07/2026 (brief "thử bỏ veil, đổi màu chữ") — THÍ NGHIỆM: đoạn
+          intro (Vai 3, duy nhất dùng text-e26-text-2 gắn với nền section — 3
+          card có nền kính riêng, không phụ thuộc veil này) đổi sang
+          text-e26-text đặc (luminance 0.112→0.0104, xem lý do đầy đủ ở
+          WhatIsEssence.tsx + sổ tay mục 11). KHÁC ⑥: ⑨ không có "Sub/chữ ký"
+          nào khác còn giữ màu yếu gắn với nền này → không bị kẹt sàn, GOM
+          GRADIENT 3 mốc về 1 VEIL PHẲNG. Đo lại từ đầu: intro cần 39.8%
+          desktop / 17.6% mobile ở màu mới — chốt 45% (dư biên +5.2pp desktop,
+          rất dư ở mobile). Thấp hơn cả ⑧ (55%). H2 luôn dư dả (không đổi).
+          THÍ NGHIỆM — CHƯA MERGE, xem PR. */}
+      {/* SỬA 24/07/2026 (brief "khung cửa sổ làm trọng tâm") — desktop giữ
+          bg-center (đo: center hiện đã show gần trọn ảnh x69-1851/1920, khung
+          cửa sổ x380-820 đã nằm giữa khung hình rõ ràng — không cần đổi).
+          MOBILE đổi hẳn: center mặc định lộ x800-1121/1920 (đúng nếp rèm phải
+          + mảng tường trống, khung cửa sổ x380-820 hoàn toàn khuất) — dò
+          background-position-x 27% để dải hiển thị (rộng ~321px nguồn) canh
+          giữa đúng khung cửa sổ (tâm cửa sổ x≈600). */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/ghi-chep-essence.webp)", filter: "sepia(0.4)" }}
+        className="absolute inset-0 bg-cover bg-center hidden md:block"
+        style={{ backgroundImage: "url(/images/home/ghi-chep-essence-v3.webp)", filter: "sepia(0.4)" }}
         aria-hidden="true"
       />
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 bg-cover md:hidden"
         style={{
-          backgroundImage:
-            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 84%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 84%, transparent) 47%, color-mix(in srgb, var(--essence-cream-2026) 52%, transparent) 60%, color-mix(in srgb, var(--essence-cream-2026) 48%, transparent) 100%)",
+          backgroundImage: "url(/images/home/ghi-chep-essence-v3.webp)",
+          backgroundPosition: "27% top",
+          filter: "sepia(0.4)",
         }}
+        aria-hidden="true"
+      />
+      {/* SỬA 24/07/2026 — đổi position mobile kéo theo pixel tối hơn (nếp
+          rèm/khung gỗ) vào đúng vùng đoạn intro: đo lại cần 46.0% (so 39.8%
+          desktop cũ) — 45% chung FAIL trên mobile (contrast đo được 4.38).
+          Tách veil mobile 52% (dư biên ~6pp), giữ desktop 45% (không đổi, vị
+          trí ảnh desktop không đổi nên số cũ vẫn đúng). */}
+      <div
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_45%,transparent)] hidden md:block"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_52%,transparent)] md:hidden"
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-4xl mx-auto text-center">
         <h2 className="e26-reveal font-serif font-medium text-[30px] md:text-[42px] leading-[1.25] text-e26-text mb-8">
           Một góc để quay lại.
         </h2>
-        <p className="e26-reveal font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text-2 max-w-xl mx-auto">
+        {/* SỬA 24/07/2026 (brief "thử bỏ veil, đổi màu chữ") — text-e26-text-2
+            → text-e26-text: xem lý do đầy đủ tại khối overlay veil phía trên. */}
+        <p className="e26-reveal font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text max-w-xl mx-auto">
           Có ngày,
           <br />
           chỉ cần đọc một đoạn ngắn.
@@ -156,16 +198,33 @@ export default function NotesTeaser() {
             desktop (md+); mobile xếp dọc 1 cột nên so le vô nghĩa, giữ đều.
             Khung "kính mờ" giữ nguyên spec Doc V9 (radius 28, viền .06, nền
             trắng .72, blur 18px, p-10). */}
+        {/* SỬA 24/07/2026 (brief "bỏ nền trắng 3 card") — Kenji xem thật muốn
+            card TRONG SUỐT, thấy được ảnh bàn/cửa sổ phía sau, bỏ khối "kính
+            mờ" đục cũ (nền trắng .72). ĐO TRƯỚC KHI SỬA (không đoán): nếu bỏ
+            hẳn nền + giữ màu mô tả cũ (text-e26-text-2, yếu) → contrast rớt
+            còn 1.39-1.78 (test trực tiếp bằng canvas live) — không đọc được.
+            2 THAY ĐỔI cần đi cùng nhau:
+            (1) Đậm màu mô tả text-e26-text-2 → text-e26-text (giống pattern
+            đã dùng cho thân bài ⑥⑨ ở PR#72) — cùng lý luận: luminance
+            0.112→0.0104 đủ tự đạt chuẩn ở veil nhẹ hơn nhiều.
+            (2) Nền trắng hạ .72 → .18 (không bỏ hẳn 0%): đo được sau khi đậm
+            màu, 2/3 card đã đạt 4.5:1 ngay ở 0% (chỉ nhờ section veil 45%/52%
+            có sẵn), riêng card Ebook (nền tối hơn 2 card kia) cần thêm ~10%
+            phủ trắng mới đạt — chọn 18% cho cả 3 card (đồng nhất, dư biên).
+            KHÔNG còn backdrop-blur (nền gần như trong suốt nên blur không còn
+            tác dụng thị giác đáng kể, bỏ luôn cho card thật sự "mỏng"). CTA
+            "Mời bạn đọc" + nhãn "sắp mở" GIỮ opacity-50 mờ trang trí (chủ ý,
+            không tính chuẩn WCAG — đã ghi rõ từ MT5, không đổi). */}
         <div className="mt-14 grid gap-6 md:grid-cols-3">
           {CARDS.map((card, idx) => (
             <div
               key={card.title}
-              className={`rounded-[28px] border border-[rgba(0,0,0,0.06)] bg-[rgba(255,255,255,0.72)] p-10 backdrop-blur-[18px] cursor-default select-none ${
+              className={`rounded-[28px] border border-[rgba(0,0,0,0.06)] bg-[rgba(255,255,255,0.18)] p-10 cursor-default select-none ${
                 ["md:mt-0", "md:mt-12", "md:mt-5"][idx]
               }`}
             >
               <p className="font-serif font-normal text-xl text-e26-text mb-3">{card.title}</p>
-              <p className="font-sans font-normal text-[15px] leading-[1.7] text-e26-text-2">
+              <p className="font-sans font-normal text-[15px] leading-[1.7] text-e26-text">
                 {card.lines.map((line, i) => (
                   <span key={i}>
                     {line}
