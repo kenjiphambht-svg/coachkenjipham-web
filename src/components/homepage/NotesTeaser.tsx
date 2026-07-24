@@ -131,13 +131,38 @@ export default function NotesTeaser() {
           desktop / 17.6% mobile ở màu mới — chốt 45% (dư biên +5.2pp desktop,
           rất dư ở mobile). Thấp hơn cả ⑧ (55%). H2 luôn dư dả (không đổi).
           THÍ NGHIỆM — CHƯA MERGE, xem PR. */}
+      {/* SỬA 24/07/2026 (brief "khung cửa sổ làm trọng tâm") — desktop giữ
+          bg-center (đo: center hiện đã show gần trọn ảnh x69-1851/1920, khung
+          cửa sổ x380-820 đã nằm giữa khung hình rõ ràng — không cần đổi).
+          MOBILE đổi hẳn: center mặc định lộ x800-1121/1920 (đúng nếp rèm phải
+          + mảng tường trống, khung cửa sổ x380-820 hoàn toàn khuất) — dò
+          background-position-x 27% để dải hiển thị (rộng ~321px nguồn) canh
+          giữa đúng khung cửa sổ (tâm cửa sổ x≈600). */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center hidden md:block"
         style={{ backgroundImage: "url(/images/home/ghi-chep-essence-v3.webp)", filter: "sepia(0.4)" }}
         aria-hidden="true"
       />
       <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_45%,transparent)]"
+        className="absolute inset-0 bg-cover md:hidden"
+        style={{
+          backgroundImage: "url(/images/home/ghi-chep-essence-v3.webp)",
+          backgroundPosition: "27% top",
+          filter: "sepia(0.4)",
+        }}
+        aria-hidden="true"
+      />
+      {/* SỬA 24/07/2026 — đổi position mobile kéo theo pixel tối hơn (nếp
+          rèm/khung gỗ) vào đúng vùng đoạn intro: đo lại cần 46.0% (so 39.8%
+          desktop cũ) — 45% chung FAIL trên mobile (contrast đo được 4.38).
+          Tách veil mobile 52% (dư biên ~6pp), giữ desktop 45% (không đổi, vị
+          trí ảnh desktop không đổi nên số cũ vẫn đúng). */}
+      <div
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_45%,transparent)] hidden md:block"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_52%,transparent)] md:hidden"
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-4xl mx-auto text-center">
