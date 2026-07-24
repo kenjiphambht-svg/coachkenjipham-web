@@ -76,9 +76,9 @@ export default function Lang90Faq() {
                 >
                   <div className="overflow-hidden">
                     <div className={`${bodyClass} space-y-4 pb-8 pr-8`}>
-                    {item.answer.map((paragraph) => (
-                      <p key={paragraph}>{paragraph}</p>
-                    ))}
+                      {item.answer.map((paragraph) => (
+                        <p key={paragraph}>{paragraph}</p>
+                      ))}
                     </div>
                   </div>
                 </div>

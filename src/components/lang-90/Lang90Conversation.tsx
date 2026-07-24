@@ -100,7 +100,7 @@ export function Lang90Journey() {
           <h2 className={`${headingClass} mt-7`}>Không có một kịch bản cố định cho tất cả mọi người.</h2>
           <p className={`mt-8 ${bodyClass}`}>Nhưng cuộc trò chuyện thường đi qua ba nhịp tự nhiên.</p>
         </Lang90Reveal>
-        <div className="mt-20 space-y-20 md:mt-24 md:space-y-24">
+        <div className="mt-16 space-y-12 md:mt-20 md:space-y-16">
           {journeySteps.map((step, index) => (
             <Lang90Reveal key={step.title} delay={index % 2 === 0 ? "none" : "short"}>
               <div className="border-t border-e26-border pt-7">

@@ -23,7 +23,7 @@ export function Lang90Header() {
 
 export function Lang90Footer({ children }: { children: ReactNode }) {
   return (
-    <footer className="bg-e26-black px-6 py-20 md:py-28">
+    <footer className="bg-e26-black px-6 py-16 md:py-[90px]">
       <div className="mx-auto max-w-[720px] text-center">{children}</div>
     </footer>
   );

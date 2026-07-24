@@ -19,8 +19,6 @@ export default function StoryboardSlot({ id, tone = "paper", className = "" }: S
       aria-hidden="true"
       data-storyboard-slot={id}
       className={`relative isolate overflow-hidden ${tonalFields[tone]} before:absolute before:inset-0 before:content-[''] after:absolute after:inset-0 after:content-[''] ${className}`}
-    >
-      <div className="absolute inset-0 border border-transparent transition-transform duration-1000 ease-out motion-reduce:transition-none" />
-    </div>
+    />
   );
 }

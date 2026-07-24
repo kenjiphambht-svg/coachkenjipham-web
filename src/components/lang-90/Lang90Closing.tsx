@@ -88,7 +88,7 @@ export function Lang90Offer() {
           <p className={sectionLabelClass}>Thông tin phiên</p>
           <h2 className={`${headingClass} mt-7`}>Phiên Lặng</h2>
         </Lang90Reveal>
-        <div className="mt-14 grid gap-16 md:grid-cols-[minmax(0,1fr)_0.72fr] md:gap-20 md:items-start">
+        <div className="mt-14 grid gap-16 lg:grid-cols-[minmax(0,1fr)_0.65fr] lg:gap-20 lg:items-start">
           <div>
             <Lang90Reveal delay="short" className="border-y border-e26-border">
               {sessionDetails.map(({ label, value }) => (
@@ -120,7 +120,7 @@ export function Lang90Offer() {
               </p>
             </Lang90Reveal>
           </div>
-          <StoryboardSlot id="SB-04" tone="paper" className="aspect-[5/4]" />
+          <StoryboardSlot id="SB-04" tone="paper" className="aspect-[5/4] w-full" />
         </div>
       </div>
     </section>
@@ -184,7 +184,7 @@ export function Lang90Closing() {
   return (
     <>
       <Lang90Faq />
-      <StoryboardSlot id="SB-05" tone="closing" className="min-h-[30svh] w-full md:min-h-[48svh]" />
+      <StoryboardSlot id="SB-05" tone="closing" className="min-h-[24svh] w-full md:min-h-[36svh]" />
       <Lang90Footer>
         <Lang90Reveal>
           <p className={darkSectionLabelClass}>Đóng thư</p>
