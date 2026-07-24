@@ -49,120 +49,33 @@ export default function NotesTeaser() {
   // scroll-mt-24 chừa chỗ cho header dính khi anchor nhảy tới.
   return (
     <section id="mot-goc-de-quay-lai" className="relative scroll-mt-24 bg-e26-ivory px-6 py-16 md:py-28">
-      {/* SỬA 22/07/2026 (brief thay nền ⑧⑨, Việc C) — thay bg-light-evening.webp
-          (dùng CHUNG với ⑧) bằng ghi-chep-essence.webp: ảnh THẬT Kenji thả
-          riêng cho ⑨ — bàn gỗ có tách trà + sổ tay, rèm lụa bay, nhìn ra vườn
-          qua khung cửa kính — đúng cảm giác "một góc để quay lại". ⑧ và ⑨ từ
-          nay dùng 2 ảnh RIÊNG. Convert PNG gốc Kenji thả → webp q90 (184KB,
-          đã zoom 2x vùng tường bên phải — gradient mượt nhất, có texture vữa
-          tự nhiên che rủi ro banding: không banding).
-          ĐO LẠI overlay TỪ ĐẦU (không giữ 88% cũ — ảnh khác hẳn): đoạn intro
-          (Vai 3, màu phụ e26-text-2) là điểm nghẽn chặt nhất — desktop đạt
-          4.5 ở 72%, mobile ở 75% (đo riêng, phóng đại khác — mục 1). Chọn
-          78% dùng chung cho dư biên cả 2 (desktop 4.85, mobile 4.76). H2 dư
-          dả rất nhiều ở mọi mức (11-14). Đã xem ảnh chụp thật ở 78%: bàn +
-          tách trà + sổ tay + rèm + vườn vẫn nhận ra mờ mờ đúng cảm giác "góc
-          viết/đọc", không mờ đục hoàn toàn.
-          SỬA 23/07/2026 (brief thống nhất tông) — nâng 78%→82%: filter hue-rotate
-          mới thêm (xem khối dưới) không bảo toàn luma tuyệt đối như saturate, làm
-          intro tụt 4.85→4.67 (vẫn đạt nhưng HỒI QUY nhẹ so mốc cũ). +4% overlay
-          bù lại: đo live sau đổi intro về ~4.9 cả 2 breakpoint (không hồi quy).
-          [LỖI THỜI 23/07/2026] Đoạn ghi chú cũ về giới hạn contrast của 3 card
-          opacity-45 đã HẾT hiệu lực: Kenji quyết định (brief MT5) đảo luật mờ
-          cho riêng 3 card này — card giờ rõ 100%, contrast đạt chuẩn thật,
-          xem ghi chú tại khối card bên dưới. */}
-      {/* SỬA 23/07/2026 (brief kéo tông ấm + quét ám màu, MT2+MT4) — Kenji xem
-          màn thật: ⑨ VẪN còn ám hồng sau saturate(0.8) hue-rotate(10deg) của
-          PR#64, và cả ⑧⑨ "nhạt, lạnh" so với tông vàng-gỗ của ảnh cầu nối.
-          Đổi chiến thuật 2 tầng:
-          (1) ẢNH: sepia(0.4) thay cho cặp cũ — sepia ÉP mọi hue về vàng-gỗ
-          (~40°) theo cấu trúc ma trận, hồng không thể sống sót (khác hue-rotate
-          10° chỉ xoay nhẹ), đồng thời CHÍNH NÓ là filter tạo ấm (cùng họ
-          sepia(0.18) đã dùng cho ảnh Kenji ở Hero).
-          (2) VEIL: ivory (250,249,247 — gần trắng trung tính, warm +3) là
-          nguyên nhân "lạnh" thứ hai: phủ 82% màu gần-trắng thì ảnh có ấm mấy
-          composite vẫn bạc. Đổi veil sang CREAM (241,239,232, warm +9) 80%.
-          Kết quả composite vùng tường: (220,214,203) warm +17 (cũ +10), cả
-          khung warm +17 — cùng chiều nhiệt với cầu nối (R/B > 1), hết hồng
-          (pink −2.3). MỨC VEIL CHỐT 88% (dò 80→84→86→88 bằng canvas live):
-          veil cream TỐI hơn ivory ~12 đơn vị ở pixel tối nên 80% làm intro
-          tụt 4.46 (< mốc 4.90 cũ = hồi quy, không nhận); 88% cream ≈
-          ivory82 cũ về luminance pixel tối → intro đo được 4.92 ≥ 4.90,
-          KHÔNG hồi quy, trong khi composite vẫn warm ~+13 hue gold (ấm hơn
-          hẳn +10 trung tính cũ). */}
-      {/* SỬA 23/07/2026 (brief thay ảnh ⑨ vòng 2) — thay ghi-chep-essence.webp
-          (ảnh cũ, nửa trên lạnh: vườn xanh + rèm trắng) bằng
-          ghi-chep-essence-v2.webp: ảnh FLUX MỚI Kenji tạo (cozy japandi
-          reading nook, bàn gỗ + tách trà + sổ mở + ghế GIỮ NGUYÊN, rèm giờ
-          vàng ấm bao quanh cửa sổ thay vì trắng-lạnh — raw R/B 1.57, ấm hơn cả
-          mốc ⑧ 1.2-1.3).
-          ĐÃ ĐO LẠI: ảnh mới vẫn còn 1 điểm tối cục bộ ở nếp gấp rèm (RGB
-          54,39,20 tại x56%,y39% — trong vùng H2/intro) dù nền tổng thể ấm hơn
-          nhiều. Với overlay PHẲNG cần 88% mới đạt contrast ≥4.5 (tệ hơn mức cũ
-          84% ở gradient). GIỮ CƠ CHẾ GRADIENT (lesson mục 8, không đổi kỹ
-          thuật): nâng vùng NẶNG 84%→90% (bù điểm tối cục bộ mới), giữ NHẸ 48%
-          ở đáy (bàn+tách trà+ghế đã ấm đúng tông, không cần che thêm). Đo live
-          cả 2 breakpoint với gradient mới: xem báo cáo. sepia(0.4) giữ nguyên
-          (grade chung, không cần sepia(0.5) như bản trước vì ảnh mới đã đủ ấm
-          sẵn). Kenji xác nhận muốn merge để xem trực tiếp dù chưa đạt mục tiêu
-          "hạ veil dễ dàng" (đã báo đúng mẫu CẦN ẢNH MỚI trước khi merge). */}
-      {/* SỬA 23/07/2026 (brief "⑥⑨ trong hơn 20%") — 90%→88% trên bản v2, Kenji
-          chọn AN TOÀN TỐI ĐA. Xem lịch sử đầy đủ ở BAI-HOC-KY-THUAT.md mục 11.
-          SỬA 24/07/2026 (brief thay ảnh ⑨ vòng 3) — thay ghi-chep-essence-v2
-          bằng ghi-chep-essence-v3.webp: ảnh FLUX MỚI Kenji tạo, cùng bố cục
-          (bàn gỗ + sổ mở + tách trà + rèm + cửa sổ nhìn ra vườn) nhưng tường
-          phải SÁNG ĐỀU, rèm hết nếp gấp tối cục bộ (RGB 54,39,20 của bản v2).
-          PHÁT HIỆN (giống ⑥): dù ảnh mới sáng hơn nhiều (điểm tối nhất giờ
-          (71,55,36) so với (54,39,20) bản v2), ngưỡng vùng nặng cần vẫn
-          ~86.6-87.8% (gần như không đổi so với v2's 87.8%) — vì gốc rễ là
-          MÀU CHỮ text-e26-text-2 yếu (xem giải thích đầy đủ ở WhatIsEssence.tsx
-          + sổ tay mục 11), không phải bản thân ảnh. Vẫn cải thiện thị giác rõ
-          rệt cùng % (đã xem render). Chốt vùng nặng 87% (an toàn cả 2 breakpoint
-          — mobile chỉ cần 79.9% do crop hẹp hơn, desktop cần 86.6%, dùng mốc
-          cao hơn + dư biên nhỏ), giữ mid 58%/light 48% (chưa từng là điểm
-          nghẽn).
-          SỬA 24/07/2026 (brief "thử bỏ veil, đổi màu chữ") — THÍ NGHIỆM: đoạn
-          intro (Vai 3, duy nhất dùng text-e26-text-2 gắn với nền section — 3
-          card có nền kính riêng, không phụ thuộc veil này) đổi sang
-          text-e26-text đặc (luminance 0.112→0.0104, xem lý do đầy đủ ở
-          WhatIsEssence.tsx + sổ tay mục 11). KHÁC ⑥: ⑨ không có "Sub/chữ ký"
-          nào khác còn giữ màu yếu gắn với nền này → không bị kẹt sàn, GOM
-          GRADIENT 3 mốc về 1 VEIL PHẲNG. Đo lại từ đầu: intro cần 39.8%
-          desktop / 17.6% mobile ở màu mới — chốt 45% (dư biên +5.2pp desktop,
-          rất dư ở mobile). Thấp hơn cả ⑧ (55%). H2 luôn dư dả (không đổi).
-          THÍ NGHIỆM — CHƯA MERGE, xem PR. */}
-      {/* SỬA 24/07/2026 (brief "khung cửa sổ làm trọng tâm") — desktop giữ
-          bg-center (đo: center hiện đã show gần trọn ảnh x69-1851/1920, khung
-          cửa sổ x380-820 đã nằm giữa khung hình rõ ràng — không cần đổi).
-          MOBILE đổi hẳn: center mặc định lộ x800-1121/1920 (đúng nếp rèm phải
-          + mảng tường trống, khung cửa sổ x380-820 hoàn toàn khuất) — dò
-          background-position-x 27% để dải hiển thị (rộng ~321px nguồn) canh
-          giữa đúng khung cửa sổ (tâm cửa sổ x≈600). */}
+      {/* SỬA 25/07/2026 (brief "Essence Lightscape" v04) — thay hẳn
+          ghi-chep-essence-v3.webp (bàn gỗ + tách trà + sổ tay + rèm + cửa sổ
+          vườn, cần gradient veil 87%→58%→48% vì nếp rèm tối cục bộ — xem
+          BAI-HOC-KY-THUAT.md mục 11 nếu cần bối cảnh lịch sử) bằng
+          ghi-chep-essence-v4.webp: ảnh FLUX.2 [klein] 9B MỚI — tường + ánh
+          sáng qua rèm mỏng, gần như trống, KHÔNG còn bàn/tách trà/sổ tay nên
+          không còn điểm tối cục bộ nào cần gradient bù riêng. 1728×960.
+          Banding: plateau midtone dài nhất 11px, không đáng kể.
+          Bỏ hẳn cặp div desktop/mobile riêng (position 27% top từng dò cho
+          khung cửa sổ ảnh cũ) — ảnh mới không có chi tiết cụ thể cần canh,
+          dùng 1 bg-cover bg-center chung cho cả 2 breakpoint, đơn giản hoá
+          tối đa (cùng cách đã làm ở ⑥).
+          OVERLAY: đo lại từ đầu qua canvas live — H2/intro (text-e26-text đậm,
+          giữ từ PR#75) đạt 4.5:1 ở mức thấp hơn hẳn 45-52% cũ vì ảnh sáng đều
+          hơn nhiều. Điểm nghẽn là H2 desktop (cần 15.9%). Chọn 24% CHUNG cho
+          cả 2 breakpoint (desktop 5.18, mobile 10.6+ — mobile dư rất nhiều vì
+          crop cover ở đó rơi vào vùng sáng hơn). Không còn gradient — 1 VEIL
+          PHẲNG duy nhất, đủ vì ảnh không có vùng tối cục bộ cần che riêng. 3
+          card (nền rgba trắng 0.18 + section veil) vẫn dư contrast rất nhiều
+          (10-17) ở mức mới, không cần đổi độ trong suốt của card. */}
       <div
-        className="absolute inset-0 bg-cover bg-center hidden md:block"
-        style={{ backgroundImage: "url(/images/home/ghi-chep-essence-v3.webp)", filter: "sepia(0.4)" }}
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url(/images/home/ghi-chep-essence-v4.webp)", filter: "sepia(0.4)" }}
         aria-hidden="true"
       />
       <div
-        className="absolute inset-0 bg-cover md:hidden"
-        style={{
-          backgroundImage: "url(/images/home/ghi-chep-essence-v3.webp)",
-          backgroundPosition: "27% top",
-          filter: "sepia(0.4)",
-        }}
-        aria-hidden="true"
-      />
-      {/* SỬA 24/07/2026 — đổi position mobile kéo theo pixel tối hơn (nếp
-          rèm/khung gỗ) vào đúng vùng đoạn intro: đo lại cần 46.0% (so 39.8%
-          desktop cũ) — 45% chung FAIL trên mobile (contrast đo được 4.38).
-          Tách veil mobile 52% (dư biên ~6pp), giữ desktop 45% (không đổi, vị
-          trí ảnh desktop không đổi nên số cũ vẫn đúng). */}
-      <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_45%,transparent)] hidden md:block"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_52%,transparent)] md:hidden"
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_24%,transparent)]"
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-4xl mx-auto text-center">

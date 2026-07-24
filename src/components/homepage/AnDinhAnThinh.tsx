@@ -35,100 +35,40 @@
 export default function AnDinhAnThinh() {
   return (
     <section className="relative bg-e26-black px-6 py-24 md:py-40 overflow-hidden">
-      {/* SỬA 22/07/2026 (brief thay nền ⑦, Việc C) — thay andinh-vuon-toi.webp
-          (hiên villa BAN NGÀY, cần overlay đen 82-96% để giả ban đêm) bằng
-          an-dinh-toi.webp: ảnh Kenji thả THẬT SỰ chụp/dựng BAN ĐÊM (lối đi lát
-          đá dưới trăng dẫn vào villa trắng, cây thông silhouette, mặt trăng ló
-          sau tán lá — EXIF gốc: title "villa tối - 1", tác giả Kenji Phạm,
-          tạo 2026-07-22). Đổi tên file theo quy tắc mục 5 sổ tay (khắc phục
-          luôn lỗi gõ dấu "an-ding-tôi.png" → "an-dinh-toi.png/.webp"). Convert
-          webp q90 (65KB) — đã zoom 2x vùng trời/trăng (gradient mượt nhất,
-          rủi ro banding cao nhất): không banding.
-          Ý NGHĨA KHÁC HẲN ảnh cũ: ảnh mới đã TỐI SẴN (không cần overlay giả
-          đêm) — chỉ cần đủ overlay để chữ đọc được, ảnh vẫn giữ được chiều sâu
-          thật của cảnh đêm thay vì lớp đen phẳng đè lên ảnh ngày.
-          ĐO LẠI overlay TỪ ĐẦU (không giữ 82-96% cũ — ảnh khác bản chất, số cũ
-          vô nghĩa): worst-case ĐÚNG CHIỀU cho chữ sáng/nền tối (pixel SÁNG
-          nhất, mục 7) — hầu hết chữ đã dư dả ngay cả không overlay (9-16 ở
-          nhiều dòng) vì cảnh vốn tối. Điểm nghẽn thật: "câu mở" (Rồi một
-          ngày…, cần ≥4.5) và neo gold "An Thịnh." (cần ≥3, chữ lớn Vai 1) —
-          cả 2 đều rơi đúng vùng trời/tán lá sáng nhất. Desktop: câu mở đạt 4.5
-          ở 28%; mobile (đo riêng, phóng đại khác — mục 1): câu mở đạt 4.5 ở
-          36%. Chọn 38% CHUNG cho cả 2 breakpoint (câu mở desktop 5.9, mobile
-          4.9 — dư biên cả hai; gold "An Thịnh" 5+ ở cả hai, dư rất nhiều so
-          với ngưỡng 3). KHÔNG cần gradient đậm dần về đáy như ảnh cũ: đáy ⑦ ở
-          38% flat composite ra ~(14,19,23), ImageBridge (⑧) ngay sau đã đo lại
-          mép trên ~(15,15,13) — 2 mốc lệch chỉ ~1-10 đơn vị/kênh, không cần
-          gradient riêng để hoà (khác hẳn ảnh cũ vốn cần gradient 82%→96% vì
-          ảnh ngày ở 82% vẫn còn sáng ~54/255, hở seam thật với ⑧).
-          VỊ TRÍ (background-position): đã dò 5 mốc ngang (20/35/50/65/80%) ở
-          mobile (khung dọc hẹp, cover chỉ hiện 1 dải giữa ảnh theo chiều
-          rộng) — mốc mặc định 50% (center) đã cho bố cục cân đối nhất (trăng
-          + tán cây phía trên, villa + lối đi phía dưới, đọc được trọn vẹn
-          "về nhà ban đêm") — GIỮ bg-center, không cần dò lệch vì không có vấn
-          đề gì cần sửa (khác case bg-wall-dark cũ vốn near-invisible ở
-          center). Chữ ma "AN" (opacity 0.09, thuần trang trí — không cần đạt
-          WCAG) đã xem lại bằng mắt: vẫn nhận ra hình dạng/vị trí trên nền
-          mới.
-          SỬA 22/07/2026 (brief làm tối ⑦ trung tính, Việc B) — Kenji xem thật
-          thấy kết quả "vẫn sáng và ám xanh" dù overlay đen 38% đã đo contrast
-          đạt. NGUYÊN NHÂN ĐO ĐƯỢC (không đoán): overlay ĐEN thuần là phép
-          nhân (composite = raw×(1-alpha)) — phép nhân KHÔNG đổi TỈ LỆ giữa
-          các kênh màu, chỉ thu nhỏ biên độ. Quét lưới 25 điểm mẫu trên ảnh
-          gốc: vùng trời/trăng có B-R tới +34/255 (RGB thật 77,98,111 tại 1
-          điểm) — tăng overlay lên bao nhiêu, tỉ lệ B/R vẫn giữ nguyên, chỉ có
-          giá trị tuyệt đối nhỏ lại (ở 38%: B-R còn 21 — vẫn đủ để mắt đọc ra
-          "xanh", đúng phản ánh của Kenji, KHÔNG phải lỗi biến màu hay đo sai
-          contrast). Tính thử: để tự riêng overlay đen kéo B-R xuống <5 cần
-          overlay ≥85% — sẽ xoá sạch toàn bộ chi tiết cảnh đêm (ngược mục tiêu
-          giữ villa/lối đi "le lói nhận ra" đã chốt ở Việc C).
-          GIẢI PHÁP: filter `saturate(0.3)` áp lên layer ẢNH (trước khi
-          overlay đen chồng lên) — kỹ thuật cùng họ với filter khử-cam đã
-          dùng ở HomeHero.tsx, nhưng ở đây là khử-XANH bằng giảm bão hoà thay
-          vì hue-rotate (ảnh đêm không có "tông cam sai" để xoay, chỉ có
-          chênh lệch bão hoà giữa vùng trời xanh và phần còn lại trung tính —
-          giảm bão hoà đều là đúng công cụ). Đã tính bằng công thức ma trận
-          saturate() chuẩn W3C rồi đo lại qua canvas thật (không chỉ tính
-          tay): saturate(0.3) + overlay 38% đưa B-R lớn nhất (25 điểm mẫu lưới
-          canvas thật) xuống còn 6/255 — coi là trung tính (dưới ngưỡng nhận
-          biết bằng mắt ở độ sáng thấp này).
-          NHÂN TIỆN LÀM TỐI HƠN theo đúng tên brief ("làm tối ⑦ AN ĐỊNH hơn"):
-          tăng overlay 38%→50% (vẫn giữ saturate(0.3) — max B-R không đổi
-          nhiều theo overlay vì tỉ lệ giữ nguyên, đo lại được 5-6/255 ở mọi
-          mức 38-55%, xem báo cáo). Contrast đo lại ở 50% (canvas thật, cả 2
-          breakpoint): câu mở desktop 7.27/mobile 6.55, gold "An Thịnh"
-          desktop 6.61/mobile 6.61 — dư dả hơn hẳn mức 38% cũ, KHÔNG đụng span
-          gold nên vẫn đúng 1/3 điểm vàng. Seam đáy ⑦ đo lại ở 50%: (13,15,16)
-          so với đỉnh ImageBridge (15,15,13) — vẫn khớp tốt, thậm chí sát hơn
-          mức 38% cũ. Ảnh so sánh trước/sau (sharp render tại đúng tỉ lệ
-          cover): sky/trăng rõ ràng bớt ám xanh, tổng thể tối/tĩnh hơn — xem
-          báo cáo PR. */}
-      {/* SỬA 23/07/2026 (brief quét ám màu toàn tuyến, MT2) — Kenji xem màn thật
-          VẪN thấy ám xanh ở saturate(0.3) (30% chroma còn lại của trời trăng
-          vẫn đọc ra "xanh" trên khối tối lớn), và muốn TỐI + MỜ hơn nữa rõ
-          rệt. Giải pháp dứt điểm về mặt toán: saturate(0) TRIỆT chroma về 0 ở
-          MỌI pixel (B-R = 0 tuyệt đối, không còn tồn tại pixel xanh nào để
-          nhận ra) + sepia(0.12) trả lại một lớp ấm ĐỀU rất nhẹ (B-R âm nhẹ
-          đồng nhất — "đen trung tính hơi ấm", khớp ngôn ngữ vàng-kem toàn
-          trang, không bao giờ lệch về lạnh). Overlay 50%→78%: tối + mờ hơn
-          rõ rệt theo đúng brief, villa/lối đi vẫn le lói (ô cửa sáng 210 →
-          composite 66 vs nền 26 — vẫn là điểm sáng nhận ra rõ).
-          MỨC CHỐT 78% (dò 65→72→78 bằng canvas live): worst-case TRƯỢT THEO
-          WIDTH (bài học mục 6 — mỗi width cover lộ dải ảnh khác): desktop
-          có pixel ~146 dưới câu mở (65% cho 4.36 — fail; 72% cho 5.0);
-          nhưng MOBILE crop lộ pixel sáng 210 dưới câu mở → 72% chỉ còn
-          4.01 — fail tiếp. 78% mới đạt cả 2: mobile câu mở 4.75 (điểm nghẽn
-          toàn section), desktop ~5.9, gold "An Thịnh" 7.2+ cả 2 breakpoint,
-          mọi dòng khác 6-15.8. Dùng CHUNG 78% cho 2 breakpoint (một số duy
-          nhất, đơn giản hơn tách — nguyên tắc PR#57). Seam đáy ⑦ ở 78% càng
-          sát đen ImageBridge hơn mức 50% cũ. */}
+      {/* SỬA 25/07/2026 (brief "Essence Lightscape" v04) — thay hẳn
+          an-dinh-toi.webp (villa đêm thật, cần saturate(0)+sepia(0.12) khử ám
+          xanh + overlay đen 78% mới đủ tối/trung tính — xem BAI-HOC-KY-THUAT.md
+          mục 11 nếu cần bối cảnh lịch sử) bằng an-dinh-v4.webp: ảnh FLUX.2
+          [klein] 9B MỚI — nền tối/đêm gần như trọn khung, một dải ánh trăng
+          dịu, không villa/lối đi/cây thông silhouette như bản cũ. 1728×960.
+          Banding: quét plateau midtone ngang/dọc toàn ảnh — dài nhất 12px,
+          không đáng kể (vùng trời/trăng là nơi rủi ro banding cao nhất theo
+          brief, đã kiểm riêng).
+          MÀU SẮC: quét lưới toàn khung hiển thị (cả 2 breakpoint) không thấy
+          ám xanh (B-R tối đa ~6-9/255 ở vùng tối, trung tính) — ảnh mới không
+          có vấn đề như ảnh cũ, KHÔNG cần saturate/sepia khử màu nữa. Bỏ hẳn
+          filter, chỉ còn overlay đen (giống cách section ④ KietTac.tsx đang
+          làm — không filter, chỉ gradient/overlay đen).
+          OVERLAY: đo lại từ đầu qua canvas live (brightest pixel dưới từng
+          dòng chữ, cả 2 breakpoint) — ảnh đã tối sẵn theo đúng thiết kế nên
+          hầu hết dòng đạt 4.5:1/3:1 (neo lớn) ngay cả ở 0% overlay; điểm cần
+          overlay nhất là 2 đoạn thân AN THỊNH (đạt 4.5 từ ~13.5% desktop).
+          Chọn 20% CHUNG cho cả 2 breakpoint (dư biên desktop tối thiểu 4.88,
+          mobile tối thiểu 6.10 — mobile dư nhiều hơn vì crop cover ở đó rơi
+          vào vùng tối hơn của ảnh). Thấp hơn hẳn 78% cũ vì bản chất ảnh khác
+          hẳn — không còn villa/lối đi cần "le lói nhận ra" nên không cần giữ
+          overlay vừa đủ để lộ chi tiết, chỉ cần đủ WCAG.
+          VỊ TRÍ: giữ bg-cover bg-center — ảnh không có chi tiết cụ thể cần
+          canh giữa như villa/lối đi bản cũ, bố cục đối xứng tự nhiên đã ổn ở
+          center. Chữ ma "AN" (opacity 0.09) vẫn nhận ra hình dạng trên nền
+          mới. */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/an-dinh-toi.webp)", filter: "saturate(0) sepia(0.12)" }}
+        style={{ backgroundImage: "url(/images/home/an-dinh-v4.webp)" }}
         aria-hidden="true"
       />
       <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-black-2026)_78%,transparent)]"
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-black-2026)_20%,transparent)]"
         aria-hidden="true"
       />
       <span className="andinh-ghost-an absolute top-6 left-6 md:top-10 md:left-10 font-serif" aria-hidden="true">
