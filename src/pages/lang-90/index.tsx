@@ -7,8 +7,8 @@ export default function Lang90Landing() {
   return (
     <>
       <SEO
-        title="Lặng 90 — Phiên 1:1 cùng Kenji Phạm"
-        description="Một phiên 90 phút để làm chậm điều đang quá nhiễu, nhìn rõ một phản ứng hoặc vòng lặp chính và chọn một bước có thể thực hiện trong 48 giờ tiếp theo."
+        title="Lặng — Phiên 1:1 cùng Kenji Phạm"
+        description="Một lần ngồi xuống đủ lâu để tiếng ồn bớt đi — và điều bạn thật sự nghĩ bắt đầu hiện ra."
         image="/essence-og-1200x630.png"
         url="https://coachkenjipham.com/lang-90"
       />

@@ -47,7 +47,7 @@ export default function Lang90Reveal({
   return (
     <div
       ref={ref}
-      className={`motion-reduce:transform-none motion-reduce:transition-none transition-all duration-700 ease-out ${delayClass} ${
+      className={`motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none transition-all duration-700 ease-out ${delayClass} ${
         visible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
       } ${className}`}
     >
