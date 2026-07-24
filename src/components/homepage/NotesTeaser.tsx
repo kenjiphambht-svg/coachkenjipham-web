@@ -198,16 +198,33 @@ export default function NotesTeaser() {
             desktop (md+); mobile xếp dọc 1 cột nên so le vô nghĩa, giữ đều.
             Khung "kính mờ" giữ nguyên spec Doc V9 (radius 28, viền .06, nền
             trắng .72, blur 18px, p-10). */}
+        {/* SỬA 24/07/2026 (brief "bỏ nền trắng 3 card") — Kenji xem thật muốn
+            card TRONG SUỐT, thấy được ảnh bàn/cửa sổ phía sau, bỏ khối "kính
+            mờ" đục cũ (nền trắng .72). ĐO TRƯỚC KHI SỬA (không đoán): nếu bỏ
+            hẳn nền + giữ màu mô tả cũ (text-e26-text-2, yếu) → contrast rớt
+            còn 1.39-1.78 (test trực tiếp bằng canvas live) — không đọc được.
+            2 THAY ĐỔI cần đi cùng nhau:
+            (1) Đậm màu mô tả text-e26-text-2 → text-e26-text (giống pattern
+            đã dùng cho thân bài ⑥⑨ ở PR#72) — cùng lý luận: luminance
+            0.112→0.0104 đủ tự đạt chuẩn ở veil nhẹ hơn nhiều.
+            (2) Nền trắng hạ .72 → .18 (không bỏ hẳn 0%): đo được sau khi đậm
+            màu, 2/3 card đã đạt 4.5:1 ngay ở 0% (chỉ nhờ section veil 45%/52%
+            có sẵn), riêng card Ebook (nền tối hơn 2 card kia) cần thêm ~10%
+            phủ trắng mới đạt — chọn 18% cho cả 3 card (đồng nhất, dư biên).
+            KHÔNG còn backdrop-blur (nền gần như trong suốt nên blur không còn
+            tác dụng thị giác đáng kể, bỏ luôn cho card thật sự "mỏng"). CTA
+            "Mời bạn đọc" + nhãn "sắp mở" GIỮ opacity-50 mờ trang trí (chủ ý,
+            không tính chuẩn WCAG — đã ghi rõ từ MT5, không đổi). */}
         <div className="mt-14 grid gap-6 md:grid-cols-3">
           {CARDS.map((card, idx) => (
             <div
               key={card.title}
-              className={`rounded-[28px] border border-[rgba(0,0,0,0.06)] bg-[rgba(255,255,255,0.72)] p-10 backdrop-blur-[18px] cursor-default select-none ${
+              className={`rounded-[28px] border border-[rgba(0,0,0,0.06)] bg-[rgba(255,255,255,0.18)] p-10 cursor-default select-none ${
                 ["md:mt-0", "md:mt-12", "md:mt-5"][idx]
               }`}
             >
               <p className="font-serif font-normal text-xl text-e26-text mb-3">{card.title}</p>
-              <p className="font-sans font-normal text-[15px] leading-[1.7] text-e26-text-2">
+              <p className="font-sans font-normal text-[15px] leading-[1.7] text-e26-text">
                 {card.lines.map((line, i) => (
                   <span key={i}>
                     {line}

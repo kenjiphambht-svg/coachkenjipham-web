@@ -121,15 +121,24 @@ export default function WhatIsEssence() {
           đầu section (trước đây phẳng 92% suốt 0-27%/0-16%, che kín khung cửa
           sổ) xuống 50% (ngang mức thân bài, "ngưỡng mở" theo mục tiêu brief),
           CHỈ giữ dải hẹp 92% đúng quanh vị trí Sub (dòng vẫn giữ màu yếu theo
-          PR#72 — không đổi). Đo lại xác nhận: dải hẹp 26-32%(desktop)/14-19%
-          (mobile) vẫn đủ phủ trọn worst-pixel Sub (y26.9%/15.8%) với biên
-          ≥+3.3pp — không hồi quy PR#72. H2 (16-22% desktop, dùng text-e26-text
-          mạnh — luôn dư dả) giờ nằm trong dải mở 50%, không vấn đề. */}
+          PR#72 — không đổi).
+          SỬA 24/07/2026 (brief "dải sáng ngang ⑥ desktop") — Kenji xem thật
+          thấy 1 ĐƯỜNG NGANG CHÁY SÁNG rõ rệt đúng chỗ dải 92% cũ: nguyên nhân
+          là "cao nguyên phẳng" (flat 92% suốt 26-32%, ramp chỉ 6pp mỗi bên)
+          tạo 2 GÓC GẤP trong đường cong độ mờ — mắt rất nhạy với góc gấp, đặc
+          biệt trên nền có chi tiết (cửa sổ + cây), đọc thành 1 "vệt kem" rõ
+          rệt. Sửa: bỏ hẳn đoạn phẳng, đổi sang ĐƯỜNG CONG MƯỢT (raised-cosine,
+          7 điểm dừng, không góc gấp) — vẫn đạt ĐÚNG 92% tại điểm duy nhất cần
+          (y=26.9%, worst-pixel Sub) rồi tụt liên tục về 50% trong bán kính 6pp
+          mỗi bên, không còn đoạn nằm ngang nào. Đo lại xác nhận: h2(17.4%)=50%
+          (ngoài bán kính, không đổi), p1(31.5%)=55.4% (dư 5.4pp so 50% cũ,
+          không đáng kể — p1 dùng màu đậm text-e26-text nên vẫn dư contrast rất
+          nhiều). Áp dụng CÙNG kỹ thuật cho dải chữ ký (đỉnh y=79.5%). */}
       <div
         className="absolute inset-0 hidden md:block"
         style={{
           backgroundImage:
-            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 20%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 26%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 32%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 36%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 65%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 76%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 100%)",
+            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 20.9%, color-mix(in srgb, var(--essence-cream-2026) 60.5%, transparent) 22.9%, color-mix(in srgb, var(--essence-cream-2026) 81.5%, transparent) 24.9%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 26.9%, color-mix(in srgb, var(--essence-cream-2026) 81.5%, transparent) 28.9%, color-mix(in srgb, var(--essence-cream-2026) 60.5%, transparent) 30.9%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 32.9%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 73.5%, color-mix(in srgb, var(--essence-cream-2026) 60.5%, transparent) 75.5%, color-mix(in srgb, var(--essence-cream-2026) 81.5%, transparent) 77.5%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 79.5%, color-mix(in srgb, var(--essence-cream-2026) 81.5%, transparent) 81.5%, color-mix(in srgb, var(--essence-cream-2026) 60.5%, transparent) 83.5%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 85.5%, color-mix(in srgb, var(--essence-cream-2026) 50%, transparent) 100%)",
         }}
         aria-hidden="true"
       />
@@ -137,12 +146,14 @@ export default function WhatIsEssence() {
           đổi background-position (0%,0%) để lộ khung cửa sổ kéo theo đúng cột
           bóng thân cây tối hơn vào đúng vùng thân bài (đo lại: p1 cần 51.0%,
           p2 cần 51.9% — 50% cũ FAIL, đã xác nhận contrast 4.37/4.24 trước khi
-          sửa). 58% cho dư biên ~6pp, đo lại xác nhận PASS bên dưới. */}
+          sửa). 58% cho dư biên ~6pp, đo lại xác nhận PASS bên dưới.
+          Cùng sửa vệt sáng ngang như desktop: đường cong mượt thay cao nguyên
+          phẳng, đỉnh đúng y=15.4%/86.6% (Sub/chữ ký mobile, đo live thật). */}
       <div
         className="absolute inset-0 md:hidden"
         style={{
           backgroundImage:
-            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 10%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 14%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 19%, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 26%, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 78%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 86%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 100%)",
+            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 9.4%, color-mix(in srgb, var(--essence-cream-2026) 66.5%, transparent) 11.4%, color-mix(in srgb, var(--essence-cream-2026) 83.5%, transparent) 13.4%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 15.4%, color-mix(in srgb, var(--essence-cream-2026) 83.5%, transparent) 17.4%, color-mix(in srgb, var(--essence-cream-2026) 66.5%, transparent) 19.4%, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 21.4%, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 80.6%, color-mix(in srgb, var(--essence-cream-2026) 66.5%, transparent) 82.6%, color-mix(in srgb, var(--essence-cream-2026) 83.5%, transparent) 84.6%, color-mix(in srgb, var(--essence-cream-2026) 92%, transparent) 86.6%, color-mix(in srgb, var(--essence-cream-2026) 83.5%, transparent) 88.6%, color-mix(in srgb, var(--essence-cream-2026) 66.5%, transparent) 90.6%, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 92.6%, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 100%)",
         }}
         aria-hidden="true"
       />
