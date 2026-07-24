@@ -120,25 +120,33 @@ export default function NotesTeaser() {
           rệt cùng % (đã xem render). Chốt vùng nặng 87% (an toàn cả 2 breakpoint
           — mobile chỉ cần 79.9% do crop hẹp hơn, desktop cần 86.6%, dùng mốc
           cao hơn + dư biên nhỏ), giữ mid 58%/light 48% (chưa từng là điểm
-          nghẽn). */}
+          nghẽn).
+          SỬA 24/07/2026 (brief "thử bỏ veil, đổi màu chữ") — THÍ NGHIỆM: đoạn
+          intro (Vai 3, duy nhất dùng text-e26-text-2 gắn với nền section — 3
+          card có nền kính riêng, không phụ thuộc veil này) đổi sang
+          text-e26-text đặc (luminance 0.112→0.0104, xem lý do đầy đủ ở
+          WhatIsEssence.tsx + sổ tay mục 11). KHÁC ⑥: ⑨ không có "Sub/chữ ký"
+          nào khác còn giữ màu yếu gắn với nền này → không bị kẹt sàn, GOM
+          GRADIENT 3 mốc về 1 VEIL PHẲNG. Đo lại từ đầu: intro cần 39.8%
+          desktop / 17.6% mobile ở màu mới — chốt 45% (dư biên +5.2pp desktop,
+          rất dư ở mobile). Thấp hơn cả ⑧ (55%). H2 luôn dư dả (không đổi).
+          THÍ NGHIỆM — CHƯA MERGE, xem PR. */}
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: "url(/images/home/ghi-chep-essence-v3.webp)", filter: "sepia(0.4)" }}
         aria-hidden="true"
       />
       <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage:
-            "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 87%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 87%, transparent) 47%, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 60%, color-mix(in srgb, var(--essence-cream-2026) 48%, transparent) 100%)",
-        }}
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_45%,transparent)]"
         aria-hidden="true"
       />
       <div className="relative z-10 max-w-4xl mx-auto text-center">
         <h2 className="e26-reveal font-serif font-medium text-[30px] md:text-[42px] leading-[1.25] text-e26-text mb-8">
           Một góc để quay lại.
         </h2>
-        <p className="e26-reveal font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text-2 max-w-xl mx-auto">
+        {/* SỬA 24/07/2026 (brief "thử bỏ veil, đổi màu chữ") — text-e26-text-2
+            → text-e26-text: xem lý do đầy đủ tại khối overlay veil phía trên. */}
+        <p className="e26-reveal font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text max-w-xl mx-auto">
           Có ngày,
           <br />
           chỉ cần đọc một đoạn ngắn.
