@@ -7,8 +7,9 @@ const faqItems = [
     question: "Tôi không biết phải bắt đầu nói từ đâu thì sao?",
     answer: [
       "Bạn không cần biết.",
-      "Chúng ta có thể bắt đầu bằng một sự việc cụ thể, một cảm giác, một câu hỏi... hoặc chỉ bằng câu:",
-      "Tôi không biết phải bắt đầu từ đâu.",
+      "Có thể bắt đầu bằng một sự việc, một cảm giác, một câu hỏi...",
+      "hoặc chỉ bằng câu:",
+      "“Tôi không biết phải bắt đầu từ đâu.”",
       "Đó vẫn là một nơi để bắt đầu.",
     ],
   },
@@ -16,38 +17,25 @@ const faqItems = [
     question: "Tôi có phải kể hết mọi chuyện không?",
     answer: [
       "Không.",
-      "Bạn luôn có quyền giữ lại điều mình chưa sẵn sàng chia sẻ.",
-      "Một cuộc trò chuyện có chiều sâu không được đo bằng số lượng bí mật bạn kể ra.",
+      "Bạn kể đến đâu, chúng ta làm việc đến đó.",
+      "Tôi không cần biết toàn bộ cuộc đời bạn để cùng bạn nhìn rõ điều đang diễn ra lúc này.",
     ],
   },
   {
     question: "Kenji có nói tôi nên làm gì không?",
     answer: [
-      "Tôi có thể phản chiếu điều tôi đang nhìn thấy, đặt câu hỏi trực diện và chỉ ra những điểm đang mâu thuẫn.",
-      "Nhưng tôi không đưa ra quyết định thay bạn.",
-      "Mục tiêu của phiên là giúp bạn lựa chọn rõ hơn... không phải giao quyền lựa chọn cho tôi.",
-    ],
-  },
-  {
-    question: "Vì sao phải trả lời sáu câu hỏi trước khi được chọn lịch?",
-    answer: [
-      "Vì không phải mọi trạng thái đều phù hợp với cùng một loại hỗ trợ.",
-      "Sáu câu hỏi giúp cả bạn và tôi không bước vào một cuộc gặp sai phạm vi hoặc sai kỳ vọng.",
+      "Tôi sẽ nói điều tôi đang nhìn thấy.",
+      "Tôi có thể hỏi thẳng, đưa ra một góc nhìn khác hoặc chỉ ra nơi bạn đang né tránh.",
+      "Nhưng việc quyết định vẫn là của bạn.",
+      "Tôi không lấy quyền đó khỏi tay bạn.",
     ],
   },
   {
     question: "Những gì tôi chia sẻ có được giữ riêng tư không?",
     answer: [
-      "Thông tin bạn gửi chỉ được sử dụng để xem xét mức phù hợp, chuẩn bị cho phiên và thực hiện các bước chăm sóc đã được thông báo.",
-      "Những điều riêng tư của bạn không được dùng làm nội dung công khai nếu chưa có sự đồng ý rõ ràng.",
-    ],
-  },
-  {
-    question: "Nếu Lặng 90 chưa phù hợp thì sao?",
-    answer: [
-      "Tôi sẽ nói rõ.",
-      "Khi có một cánh cửa khác trong hệ Essence phù hợp hơn, tôi có thể gợi ý để bạn tự cân nhắc.",
-      "Bạn không có nghĩa vụ phải tiếp tục.",
+      "Tôi trực tiếp đọc phần bạn gửi.",
+      "Nội dung trong biểu mẫu và trong phiên được giữ trong phạm vi riêng tư của quá trình làm việc.",
+      "Nếu xuất hiện một nguy cơ an toàn nghiêm trọng, tôi sẽ nói rõ cách chúng ta cần xử lý trước khi tiếp tục.",
     ],
   },
 ];

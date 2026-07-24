@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 
 export const sectionLabelClass =
   "font-sans text-[12px] font-medium uppercase tracking-[0.18em] text-e26-text-2";
+export const darkSectionLabelClass =
+  "font-sans text-[12px] font-medium uppercase tracking-[0.18em] text-e26-text-dark-2";
 export const bodyClass =
   "font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text-2";
 export const whisperClass =
@@ -16,26 +18,6 @@ export function Lang90Header() {
         Kenji Phạm · Essence Coach · Sài Gòn
       </p>
     </header>
-  );
-}
-
-export function Lang90ImagePlaceholder({
-  label,
-  className = "",
-}: {
-  label: string;
-  className?: string;
-}) {
-  return (
-    <div
-      aria-hidden="true"
-      className={`relative overflow-hidden bg-e26-cream-deep ${className}`}
-    >
-      <div className="absolute inset-0 bg-[linear-gradient(145deg,rgba(26,26,26,0.1),transparent_55%)]" />
-      <span className="absolute bottom-5 left-5 right-5 font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-e26-text-2/70">
-        {label}
-      </span>
-    </div>
   );
 }
 
