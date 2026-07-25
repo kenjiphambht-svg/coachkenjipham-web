@@ -7,7 +7,7 @@ export const sectionLabelClass =
 export const darkSectionLabelClass =
   `${lang90Newsreader.className} text-[12px] font-medium uppercase tracking-[0.14em] text-e26-text-dark-2 md:text-[13px]`;
 export const bodyClass =
-  `${lang90Newsreader.className} max-w-[680px] text-[17px] font-normal leading-[1.8] text-e26-text-2 lg:text-[18px] lg:leading-[1.85]`;
+  `${lang90Newsreader.className} max-w-[680px] text-[18px] font-normal leading-[1.85] text-e26-text-2 lg:text-[20px] lg:leading-[1.9]`;
 export const whisperClass =
   `${lang90Cormorant.className} text-[22px] font-normal italic leading-[1.45] text-e26-text md:text-[26px] lg:text-[30px] lg:leading-[1.42]`;
 export const headingClass =
