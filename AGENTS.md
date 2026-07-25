@@ -18,6 +18,17 @@ This is the shared instruction file for Codex, Claude Code, and future AI coding
 - The 9 legacy color variables in `globals.css` (`--cream`, `--gold`, `--ink`, `--body-text`, `--cream-muted`, `--gold-brand`, `--gold-deep`, `--dark-section`, `--cream-light`) are used ONLY by `kidbook.tsx` and `ai-startup.tsx` (legacy routes). Do not use these variables for any new component or route — all new code must use the `--essence-*-2026` tokens only.
 - Khi Kenji gõ "fable mode" hoặc việc đụng route sống/quyết định khó đảo ngược — đọc `.claude/skills/fable-mode/SKILL.md` trước khi làm.
 
+## Trước khi làm thiết kế / hình ảnh (đọc theo thứ tự)
+
+Trước khi làm BẤT KỲ việc thiết kế/hình ảnh nào cho website (trang mới hay trang cũ), đọc theo thứ tự:
+
+1. `docs/brand/ESSENCE_VISUAL_ARCHITECTURE.md` — quy trình thiết kế bắt buộc, Page Mode, Signal Moment phải chốt TRƯỚC khi viết bất kỳ prompt ảnh nào.
+2. `docs/brand/ESSENCE_CREATIVE_GROWTH_COMPASS.md` — cách phân loại vấn đề (P0/P1/P2), Definition of Done, cách giải thích báo cáo cho Kenji.
+3. `docs/brand/image-system/08_ESSENCE_LIGHTSCAPE.md` + `docs/brand/image-system/09_PROMPT_MASTER_FLUX2_KLEIN_9B.md` — chuẩn tạo ảnh (ánh sáng là nhân vật chính, ít vật thể, cài đặt FLUX.2 klein 9B).
+4. `docs/website/BAI-HOC-KY-THUAT.md` — bài học kỹ thuật từ lỗi thật.
+
+Áp dụng như nhau cho Codex và Claude Code, mọi trang, mọi worktree.
+
 ## Project Identity
 
 Kenji Phạm is an Essence Coach and founder of Essence Coaching System - an AI-native identity coaching system combining coaching, depth psychology, symbolic psychological astrology, and agentic AI workflows.
