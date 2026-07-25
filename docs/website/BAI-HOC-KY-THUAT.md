@@ -356,3 +356,22 @@ khác chạy song song, TỰ KIỂM xem repo đang ở dạng thư mục đơn (
 động (vd `git status` thấy thay đổi lạ, hoặc branch khác không phải của mình
 đang có commit mới), đề xuất Kenji chuyển sang worktree trước khi tiếp tục,
 thay vì chỉ dựa vào "branch riêng" như trước đây.
+
+## 13. "SEPIA" TRONG CODE KHÔNG VI PHẠM LUẬT CẤM SEPIA CỦA BRAND
+
+(Kenji xác nhận 24/07/2026, sau khi audit phát hiện tension với
+`~/.claude/CLAUDE.md` — file luật cấp máy cấm "warm brown, sepia, mocha,
+chocolate, coffee, amber-heavy" như MỘT CẢM GIÁC THỊ GIÁC — ảnh trông cũ kỹ,
+ngả nâu-vàng kiểu ảnh xưa.)
+
+Hàm CSS `filter: sepia(0.4)` dùng trong hệ màu chung (PR#67, áp cho ④⑤⑥⑧⑨)
+là TRÙNG TÊN, không phải cùng thứ. Đây là công cụ kỹ thuật dùng ở mức rất nhẹ
+để kéo nhiều ảnh khác nguồn về chung một tông kem-vàng của brand (Cream
+`#F1EFE8` / Gold `#E0C068`) — kết quả cuối cùng không tạo cảm giác "ảnh cũ ngả
+nâu" mà luật cấm.
+
+**QUY TẮC:** được phép dùng `filter: sepia()` ở mức thấp (≤0.5) cho mục đích
+đồng bộ tông màu, MIỄN LÀ kết quả đo được vẫn nằm trong bảng màu brand (không
+ngả nâu/mocha/chocolate/coffee thật sự — đo composite màu, không chỉ tin tên
+hàm). Nếu ai review code thấy từ khoá "sepia" và nghi ngờ vi phạm luật cấm —
+đọc mục này trước khi báo lỗi.
