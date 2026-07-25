@@ -2,6 +2,27 @@
 Đường dẫn repo: docs/brand/image-system/00_READ_ME_FIRST_IMAGE_SYSTEM.md
 Phiên bản: v1.0 — 06/07/2026. Nền tảng: Design System v1.1 (light-led, dark as silence, no brown).
 
+## 0. CẬP NHẬT 24/07/2026 — TẦNG THỰC THI MỚI (ưu tiên cao hơn file 03)
+
+Bổ sung 2 file mới, KHÔNG xoá nội dung cũ bên dưới:
+
+- `08_ESSENCE_LIGHTSCAPE.md` — chuẩn thị giác "Essence Lightscape": nội thất
+  tối giản, ánh sáng là nhân vật chính, rất ít vật thể, typography luôn là
+  trung tâm.
+- `09_PROMPT_MASTER_FLUX2_KLEIN_9B.md` — prompt master + cài đặt Draw Things
+  cho model đã chốt **FLUX.2 [klein] 9B** (4 bước, Guidance 1, Shift 3, không
+  Negative Prompt), kèm 5 light module chuẩn và template điền nhanh.
+
+**Ưu tiên:** khi viết prompt ảnh CỤ THỂ, file **08 + 09 thắng file 03**
+(`03_FLUX_PROMPT_BANK_KENJI_AND_ESSENCE.md`). File 03 giữ lại làm kho tham
+khảo lịch sử; 08/09 là tầng thực thi hiện hành.
+
+**Đọc trước khi thiết kế/tạo ảnh** (tầng chiến lược, ngoài image-system):
+`docs/brand/ESSENCE_VISUAL_ARCHITECTURE.md` (Page Mode + Signal Moment + quy
+trình 6 lớp — phải chốt TRƯỚC khi viết bất kỳ prompt nào) và
+`docs/brand/ESSENCE_CREATIVE_GROWTH_COMPASS.md` (phân loại P0/P1/P2,
+Definition of Done, cách báo cáo cho Kenji).
+
 ## 1. Vì sao Essence cần image system riêng
 
 Với một thương hiệu coaching, **hình ảnh không phải trang trí — hình ảnh là niềm tin**. Khách quyết định "người này thật không, tin được không" bằng mắt trước khi đọc chữ đầu tiên. Một ảnh sai (da nhựa, ánh nâu studio giả, vibe guru) phá trong 2 giây thứ mà 10 trang copy xây. Vì Essence dùng ảnh AI (Flux + LoRA) làm hệ hình ảnh giai đoạn này, luật phải chặt gấp đôi: ảnh AI không được *nhìn giả* và không được *dùng để giả*.
