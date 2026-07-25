@@ -153,7 +153,7 @@ function fontCheck(font: FontFace) {
 }
 
 export default function TypeLab() {
-  const [pairKey, setPairKey] = useState<PairKey>("pair-0");
+  const [pairKey, setPairKey] = useState<PairKey>("pair-d");
   const [scene, setScene] = useState<Scene>("dark");
   const [frame, setFrame] = useState<Frame>("auto");
   const [anchorItalic, setAnchorItalic] = useState(true);
