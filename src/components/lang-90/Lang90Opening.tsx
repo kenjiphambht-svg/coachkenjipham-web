@@ -1,11 +1,12 @@
 import {
   bodyClass,
   darkSectionLabelClass,
-  sectionLabelClass,
+  headingClass,
   whisperClass,
 } from "./Lang90Frame";
 import Lang90Reveal from "./Lang90Reveal";
 import StoryboardSlot from "./StoryboardSlot";
+import { lang90Cormorant, lang90Newsreader } from "./Lang90Typography";
 
 export function Lang90Hero() {
   return (
@@ -17,17 +18,17 @@ export function Lang90Hero() {
           <p className={darkSectionLabelClass}>Lặng</p>
         </Lang90Reveal>
         <Lang90Reveal delay="short" className="mt-8 max-w-[880px]">
-          <h1 className="max-w-[820px] font-serif text-[43px] font-medium leading-[1.1] text-e26-text-dark sm:text-[52px] md:text-[72px]">
-            Khi đầu óc đã tính đủ mọi đường,<br />
-            nhưng bạn vẫn không biết đâu là bước của mình.
+          <h1 className={`max-w-[820px] ${lang90Cormorant.className} text-[27px] font-medium leading-[1.08] tracking-[-0.02em] text-e26-text-dark sm:text-[52px] md:text-[56px] lg:text-[72px]`}>
+            <span className="block whitespace-nowrap">Khi đầu óc đã tính đủ mọi đường,</span>
+            <span className="block whitespace-nowrap">nhưng bạn vẫn không biết</span>
+            <span className="block italic">đâu là bước của mình.</span>
           </h1>
         </Lang90Reveal>
         <Lang90Reveal delay="long" className="mt-12 max-w-[620px]">
-          <p className="font-sans text-[17px] font-normal leading-[1.85] text-e26-text-dark-2 md:text-[19px]">
-            Một lần ngồi xuống đủ lâu để tiếng ồn bớt đi —<br />
-            và điều bạn thật sự nghĩ bắt đầu hiện ra.
+          <p className={`${lang90Newsreader.className} max-w-[620px] text-[17px] font-normal leading-[1.8] text-e26-text-dark-2 md:text-[19px] md:leading-[1.85]`}>
+            Một lần ngồi xuống đủ lâu để tiếng ồn bớt đi — và điều bạn thật sự nghĩ bắt đầu hiện ra.
           </p>
-          <p className="mt-9 font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-e26-text-dark-2 md:text-[12px] md:tracking-[0.18em]">
+          <p className={`mt-9 ${darkSectionLabelClass} text-[11px] md:text-[12px]`}>
             90 phút · 1:1 cùng Kenji Phạm · Trực tuyến hoặc tại Sài Gòn
           </p>
         </Lang90Reveal>
@@ -42,25 +43,23 @@ export function Lang90Recognition() {
       <div className="mx-auto max-w-[680px]">
         <Lang90Reveal>
           <p className={darkSectionLabelClass}>Bạn có đang ở đây không</p>
-          <h2 className="mt-7 font-serif text-[30px] font-medium italic leading-[1.25] text-e26-text-dark md:text-[42px]">
+          <h2 className={`mt-7 ${headingClass} text-e26-text-dark`}>
             Bên ngoài, mọi thứ vẫn đang vận hành.
           </h2>
         </Lang90Reveal>
         <Lang90Reveal delay="short" className="mt-12">
-          <div className="space-y-8 font-sans text-[17px] font-normal leading-[1.9] text-e26-text-dark-2 md:text-[18px]">
+          <div className={`${bodyClass} space-y-8 text-e26-text-dark-2`}>
             <p>
-              Công việc vẫn chạy.<br />
-              Bạn vẫn trả lời những câu hỏi cần trả lời.<br />
+              Công việc vẫn chạy. Bạn vẫn trả lời những câu hỏi cần trả lời.
               Người khác vẫn thấy bạn ổn.
             </p>
             <p>Chỉ là ở bên trong...</p>
             <p>
-              có một điều gì đó đã lệch nhịp từ lâu,<br />
+              có một điều gì đó đã lệch nhịp từ lâu,
               và bạn vẫn chưa gọi được tên nó.
             </p>
             <p>
-              Bạn đã đọc.<br />
-              Đã nghe.<br />
+              Bạn đã đọc. Đã nghe.
               Đã tự phân tích câu chuyện ấy rất nhiều lần.
             </p>
             <p>Nhưng có những điều rất khó nhìn khi ta đang đứng bên trong nó.</p>
@@ -70,12 +69,12 @@ export function Lang90Recognition() {
         </Lang90Reveal>
       </div>
       <StoryboardSlot id="SB-01" tone="night" className="mt-20 min-h-[36svh] w-full md:mt-28 md:min-h-[56svh]" />
-      <div className="mx-auto max-w-[680px]">
+      <div className="mx-auto max-w-[1040px]">
         <Lang90Reveal delay="long" className="mt-20 md:mt-28">
-          <p className="font-serif text-[30px] font-medium italic leading-[1.25] text-e26-text-dark md:text-[42px]">
-            Điều bạn cần lúc này có thể không phải thêm một câu trả lời.<br />
-            Mà là một khoảng đủ yên<br />
-            để nghe rõ câu hỏi nào đang thật sự cần được trả lời.
+          <p className={`${lang90Cormorant.className} max-w-[1040px] text-[36px] font-normal leading-[1.16] tracking-[-0.015em] text-e26-text-dark md:text-[52px] lg:text-[66px]`}>
+            <span className="block">Có thể điều bạn cần lúc này<br />không phải thêm một câu trả lời.</span>
+            <span className="mt-8 block text-[1.18em] italic leading-[1.05]">Mà là một khoảng đủ yên</span>
+            <span className="mt-8 block">để nghe rõ câu hỏi nào<br />thật sự cần được trả lời.</span>
           </p>
         </Lang90Reveal>
       </div>
@@ -88,7 +87,7 @@ export function Lang90Definition() {
     <section className="bg-e26-cream-deep px-6 py-24 md:py-36">
       <div className="mx-auto max-w-[680px]">
         <Lang90Reveal>
-          <h2 className={sectionLabelClass}>Lặng không phải một cuộc trò chuyện để thấy nhẹ đi rồi thôi</h2>
+          <h2 className={`${headingClass} text-e26-text`}>Lặng không phải một cuộc trò chuyện để thấy nhẹ đi rồi thôi</h2>
         </Lang90Reveal>
         <Lang90Reveal delay="short" className={`mt-12 ${bodyClass} space-y-8`}>
           <p>Bạn sẽ được lắng nghe.</p>
