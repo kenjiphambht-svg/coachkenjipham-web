@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { bodyClass, sectionLabelClass } from "./Lang90Frame";
 import { Lang90SectionHeading } from "./Lang90Composition";
 import Lang90Reveal from "./Lang90Reveal";
@@ -21,7 +23,15 @@ export function Lang90Kenji() {
             <p>Đã có một giai đoạn trong đời...</p>
           </Lang90Reveal>
         </div>
-        <StoryboardSlot id="SB-02" tone="paper" className="-mt-2 aspect-[4/5] md:sticky md:top-10 md:col-start-1 md:row-span-2 md:row-start-1" />
+        <Image
+          src="/images/lang-90/sb-02-kenji-presence-v01.webp"
+          alt="Kenji Phạm rót trà trong một không gian yên tĩnh trước cuộc trò chuyện."
+          width={912}
+          height={1152}
+          sizes="(min-width: 1200px) 444px, (min-width: 768px) calc((100vw - 128px) * 0.444), calc(100vw - 48px)"
+          loading="lazy"
+          className="-mt-2 h-auto w-full md:sticky md:top-10 md:col-start-1 md:row-span-2 md:row-start-1"
+        />
         <Lang90Reveal delay="short" className={`${bodyClass} md:col-start-2 md:row-start-2 space-y-8`}>
           <p>
             tôi một mình nuôi hai con,
