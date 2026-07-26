@@ -24,8 +24,9 @@ Trước khi làm BẤT KỲ việc thiết kế/hình ảnh nào cho website (t
 
 1. `docs/brand/ESSENCE_VISUAL_ARCHITECTURE.md` — quy trình thiết kế bắt buộc, Page Mode, Signal Moment phải chốt TRƯỚC khi viết bất kỳ prompt ảnh nào.
 2. `docs/brand/ESSENCE_CREATIVE_GROWTH_COMPASS.md` — cách phân loại vấn đề (P0/P1/P2), Definition of Done, cách giải thích báo cáo cho Kenji.
-3. `docs/brand/image-system/08_ESSENCE_LIGHTSCAPE.md` + `docs/brand/image-system/09_PROMPT_MASTER_FLUX2_KLEIN_9B.md` — chuẩn tạo ảnh (ánh sáng là nhân vật chính, ít vật thể, cài đặt FLUX.2 klein 9B).
-4. `docs/website/BAI-HOC-KY-THUAT.md` — bài học kỹ thuật từ lỗi thật.
+3. `docs/brand/ESSENCE_GEO_STRATEGY.md` — ngân hàng câu hỏi + câu trả lời chuẩn cho SEO/GEO. Đọc TRƯỚC khi viết bất kỳ nội dung/meta/schema nào cho trang mới. Mọi số liệu sản phẩm và câu trả lời định vị phải lấy từ đây, không tự viết lại.
+4. `docs/brand/image-system/08_ESSENCE_LIGHTSCAPE.md` + `docs/brand/image-system/09_PROMPT_MASTER_FLUX2_KLEIN_9B.md` — chuẩn tạo ảnh (ánh sáng là nhân vật chính, ít vật thể, cài đặt FLUX.2 klein 9B).
+5. `docs/website/BAI-HOC-KY-THUAT.md` — bài học kỹ thuật từ lỗi thật.
 
 Áp dụng như nhau cho Codex và Claude Code, mọi trang, mọi worktree.
 

@@ -46,7 +46,10 @@ câu trước khi kết luận, không suy đoán.
   `<a>` thật (tránh soft 404 hại SEO).
 - Câu kết mọi section: KHÔNG ra lệnh cho người đọc, chỉ mô tả trạng thái +
   trao quyền tự chọn.
-- ICF: chỉ ghi "thực hành theo tiêu chuẩn ICF", không ghi cấp bằng/năm.
+- ICF (cập nhật 26/07/2026, thay luật cũ "chỉ ghi thực hành theo tiêu chuẩn
+  ICF"): được phép nói "có chứng chỉ ICF" trong chữ khách đọc; KHÔNG nêu cấp
+  độ (ACC), KHÔNG nêu năm. Trang chủ vẫn giữ nguyên: không nhắc ICF. Xem
+  `docs/brand/ESSENCE_GEO_STRATEGY.md` mục 2/11.
 - Landing bán hàng (khác trang chủ): hình + khối phải sắp theo mạch KỂ CHUYỆN
   (mỗi khối = một cảnh, khối tối = nút thắt) — áp dụng khi làm Hạt Mầm/Lặng 90'.
 
