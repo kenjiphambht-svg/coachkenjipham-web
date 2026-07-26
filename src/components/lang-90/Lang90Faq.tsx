@@ -1,7 +1,7 @@
 import { useId, useState } from "react";
 
-import { bodyClass, headingClass } from "./Lang90Frame";
-import { lang90Newsreader } from "./Lang90Typography";
+import { bodyClass } from "./Lang90Frame";
+import { Lang90SectionHeading } from "./Lang90Composition";
 
 const faqItems = [
   {
@@ -48,7 +48,7 @@ export default function Lang90Faq() {
   return (
     <section className="bg-e26-cream-deep px-6 py-24 md:py-36">
       <div className="mx-auto max-w-[680px]">
-        <h2 className={`${headingClass} text-e26-text`}>Trước khi bạn đi</h2>
+        <Lang90SectionHeading className="text-e26-text">Trước khi bạn đi</Lang90SectionHeading>
         <div className="mt-12 border-t border-e26-border">
           {faqItems.map((item, index) => {
             const open = openIndex === index;
@@ -61,7 +61,7 @@ export default function Lang90Faq() {
                     onClick={() => setOpenIndex(open ? null : index)}
                     aria-expanded={open}
                     aria-controls={panelId}
-                    className={`flex min-h-16 w-full items-center justify-between gap-6 py-7 text-left ${lang90Newsreader.className} text-[22px] font-medium leading-snug text-e26-text transition-colors hover:text-e26-text-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-e26-text-2 focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream-deep md:text-[25px]`}
+                    className="flex min-h-16 w-full items-center justify-between gap-6 py-7 text-left font-serif text-[22px] font-medium leading-snug tracking-[-0.01em] text-e26-text transition-colors hover:text-e26-text-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-e26-text-2 focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream-deep md:text-[25px]"
                   >
                     <span>{item.question}</span>
                     <span aria-hidden="true" className="text-xl font-normal">
