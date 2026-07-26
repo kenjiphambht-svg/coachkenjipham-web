@@ -68,7 +68,21 @@ export function Lang90Recognition() {
           </div>
         </Lang90Reveal>
       </div>
-      <StoryboardSlot id="SB-01" tone="night" className="mt-20 min-h-[36svh] w-full md:mt-28 md:min-h-[56svh]" />
+      <picture data-storyboard-slot="SB-01" className="mt-20 block aspect-[4/5] w-full overflow-hidden md:mt-28 md:aspect-[16/9]">
+        <source media="(min-width: 768px)" srcSet="/images/lang-90/sb-01-signal-moment-desktop-v01.webp" type="image/webp" />
+        <source media="(min-width: 768px)" srcSet="/images/lang-90/sb-01-signal-moment-desktop-v01.png" type="image/png" />
+        <source srcSet="/images/lang-90/sb-01-signal-moment-mobile-v01.webp" type="image/webp" />
+        <img
+          src="/images/lang-90/sb-01-signal-moment-mobile-v01.png"
+          alt="Một chiếc ghế đơn trống trong căn phòng tối giản, được chạm nhẹ bởi ánh sáng tự nhiên."
+          width={1024}
+          height={1280}
+          sizes="100vw"
+          loading="lazy"
+          decoding="async"
+          className="h-full w-full object-cover object-center"
+        />
+      </picture>
       <div className="mx-auto max-w-[1040px]">
         <Lang90Reveal delay="long" className="mt-20 md:mt-28">
           <p className={`${lang90Cormorant.className} max-w-[1040px] text-[36px] font-normal leading-[1.16] tracking-[-0.015em] text-e26-text-dark md:text-[52px] lg:text-[66px]`}>
