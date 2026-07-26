@@ -1,7 +1,6 @@
 import { bodyClass, headingClass, sectionLabelClass } from "./Lang90Frame";
 import Lang90Reveal from "./Lang90Reveal";
 import StoryboardSlot from "./StoryboardSlot";
-import { lang90Newsreader } from "./Lang90Typography";
 
 export function Lang90Kenji() {
   return (
@@ -77,7 +76,7 @@ export function Lang90Journey() {
           {journeySteps.map((step, index) => (
             <Lang90Reveal key={step.title} delay={index % 2 === 0 ? "none" : "short"}>
               <div className="border-t border-e26-border pt-7">
-                <h3 className={`${lang90Newsreader.className} text-[25px] font-medium leading-[1.25] text-e26-text md:text-[29px]`}>
+                <h3 className="font-serif text-[25px] font-medium leading-[1.25] text-e26-text md:text-[29px]">
                   {step.title}
                 </h3>
                 <div className={`mt-7 ${bodyClass} space-y-7`}>

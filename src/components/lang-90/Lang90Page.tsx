@@ -8,11 +8,10 @@ import {
 import { Lang90Journey, Lang90Kenji } from "./Lang90Conversation";
 import { Lang90Header } from "./Lang90Frame";
 import { Lang90Definition, Lang90Hero, Lang90Recognition } from "./Lang90Opening";
-import { lang90Newsreader } from "./Lang90Typography";
 
 export default function Lang90Page() {
   return (
-    <div className={`${lang90Newsreader.className} bg-e26-ivory text-e26-text`} style={{ fontSynthesis: "none" }}>
+    <div className="bg-e26-ivory font-sans text-e26-text" style={{ fontSynthesis: "none" }}>
       <Lang90Header />
       <main>
         <Lang90Hero />

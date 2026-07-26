@@ -7,12 +7,12 @@ import {
   headingClass,
   Lang90Footer,
   sectionLabelClass,
+  utilityClass,
   whisperClass,
 } from "./Lang90Frame";
 import Lang90Faq from "./Lang90Faq";
 import Lang90Reveal from "./Lang90Reveal";
 import StoryboardSlot from "./StoryboardSlot";
-import { lang90Newsreader } from "./Lang90Typography";
 
 export function Lang90Scope() {
   return (
@@ -159,11 +159,11 @@ export function Lang90NextStep() {
         <Lang90Reveal delay="long" className="mt-16 text-center md:mt-20">
           <Link
             href="/lang-90/dat-phien"
-            className={`inline-flex min-h-14 items-center justify-center bg-e26-gold px-8 py-4 ${lang90Newsreader.className} text-[12px] font-medium uppercase tracking-[0.14em] text-e26-black transition-colors hover:bg-e26-gold-deep hover:text-e26-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold-deep focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory md:text-[13px]`}
+            className={`inline-flex min-h-14 items-center justify-center bg-e26-gold px-8 py-4 ${utilityClass} text-[13px] uppercase tracking-[0.08em] text-e26-black transition-colors hover:bg-e26-gold-deep hover:text-e26-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold-deep focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory`}
           >
             BẮT ĐẦU 6 CÂU HỎI
           </Link>
-          <p className={`mt-5 ${lang90Newsreader.className} text-[12px] font-medium tracking-[0.12em] text-e26-text-2 md:text-[13px]`}>
+          <p className={`mt-5 ${utilityClass} text-xs tracking-[0.08em] text-e26-text-2`}>
             Chưa đặt lịch. Chưa phát sinh thanh toán.
           </p>
         </Lang90Reveal>
