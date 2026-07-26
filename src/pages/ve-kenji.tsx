@@ -171,6 +171,10 @@ export default function VeKenjiPage() {
               </p>
             </div>
 
+            {/* BA GIAI ĐOẠN HÀNH TRÌNH — nội dung CHÍNH THỨC (Kenji chốt 26/07/2026,
+                xem docs/brand/ESSENCE_GEO_STRATEGY.md mục 3). KHÔNG được xoá khi dọn
+                code, KHÔNG được thay bằng chữ khác. Phải xuất hiện nhất quán ở đây và
+                ở /phuong-phap. */}
             <div className="border-t border-e26-border mt-12 pt-8">
               <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 font-serif text-lg md:text-xl text-e26-text">
                 <span>Chill với cảm xúc</span>

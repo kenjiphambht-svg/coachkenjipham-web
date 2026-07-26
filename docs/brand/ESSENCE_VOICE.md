@@ -34,6 +34,11 @@ It should feel grounded, quiet, precise, and awake. The language should invite r
 - AI therapist
 - overpromising
 - manipulative urgency
+- khoa học lượng tử (Kenji chốt 26/07/2026 — cùng nhóm nhận thức với tần số/
+  năng lượng vũ trụ/manifest; xem `docs/brand/ESSENCE_GEO_STRATEGY.md` mục 11)
+- thuật ngữ nội bộ lộ ra chữ khách thấy — vd "giao thức", "protocol", "FCP",
+  "Current readiness" — kể cả trong meta description (chốt 26/07/2026, xem
+  `docs/brand/ESSENCE_GEO_STRATEGY.md` mục 6)
 
 ## Writing Notes
 
