@@ -1,7 +1,9 @@
-import { bodyClass, headingClass, sectionLabelClass } from "./Lang90Frame";
+import Image from "next/image";
+
+import { bodyClass, sectionLabelClass } from "./Lang90Frame";
+import { Lang90SectionHeading } from "./Lang90Composition";
 import Lang90Reveal from "./Lang90Reveal";
 import StoryboardSlot from "./StoryboardSlot";
-import { lang90Newsreader } from "./Lang90Typography";
 
 export function Lang90Kenji() {
   return (
@@ -21,7 +23,15 @@ export function Lang90Kenji() {
             <p>Đã có một giai đoạn trong đời...</p>
           </Lang90Reveal>
         </div>
-        <StoryboardSlot id="SB-02" tone="paper" className="-mt-2 aspect-[4/5] md:sticky md:top-10 md:col-start-1 md:row-span-2 md:row-start-1" />
+        <Image
+          src="/images/lang-90/sb-02-kenji-presence-v01.webp"
+          alt="Kenji Phạm rót trà trong một không gian yên tĩnh trước cuộc trò chuyện."
+          width={912}
+          height={1152}
+          sizes="(min-width: 1200px) 444px, (min-width: 768px) calc((100vw - 128px) * 0.444), calc(100vw - 48px)"
+          loading="lazy"
+          className="-mt-2 h-auto w-full md:sticky md:top-10 md:col-start-1 md:row-span-2 md:row-start-1"
+        />
         <Lang90Reveal delay="short" className={`${bodyClass} md:col-start-2 md:row-start-2 space-y-8`}>
           <p>
             tôi một mình nuôi hai con,
@@ -70,14 +80,14 @@ export function Lang90Journey() {
       <div className="mx-auto max-w-[680px]">
         <Lang90Reveal>
           <p className={sectionLabelClass}>Trong 90 phút, chúng ta đi từ đâu đến đâu</p>
-          <h2 className={`${headingClass} mt-7 text-e26-text`}>Không có một kịch bản cố định cho tất cả mọi người.</h2>
+          <Lang90SectionHeading className="mt-7 text-e26-text">Không có một kịch bản cố định cho tất cả mọi người.</Lang90SectionHeading>
           <p className={`mt-8 ${bodyClass}`}>Nhưng cuộc trò chuyện thường đi qua ba nhịp tự nhiên.</p>
         </Lang90Reveal>
         <div className="mt-16 space-y-12 md:mt-20 md:space-y-16">
           {journeySteps.map((step, index) => (
             <Lang90Reveal key={step.title} delay={index % 2 === 0 ? "none" : "short"}>
               <div className="border-t border-e26-border pt-7">
-                <h3 className={`${lang90Newsreader.className} text-[25px] font-medium leading-[1.25] text-e26-text md:text-[29px]`}>
+                <h3 className="font-serif text-[25px] font-medium leading-[1.25] tracking-[-0.01em] text-e26-text md:text-[29px]">
                   {step.title}
                 </h3>
                 <div className={`mt-7 ${bodyClass} space-y-7`}>

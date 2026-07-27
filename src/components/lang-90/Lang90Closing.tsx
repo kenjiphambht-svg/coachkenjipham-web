@@ -4,15 +4,14 @@ import type { ReactNode } from "react";
 import {
   bodyClass,
   darkSectionLabelClass,
-  headingClass,
   Lang90Footer,
   sectionLabelClass,
-  whisperClass,
+  utilityClass,
 } from "./Lang90Frame";
+import { Lang90AccentVoice, Lang90ScopeHeading, Lang90SectionHeading } from "./Lang90Composition";
 import Lang90Faq from "./Lang90Faq";
 import Lang90Reveal from "./Lang90Reveal";
 import StoryboardSlot from "./StoryboardSlot";
-import { lang90Newsreader } from "./Lang90Typography";
 
 export function Lang90Scope() {
   return (
@@ -20,11 +19,7 @@ export function Lang90Scope() {
       <div className="mx-auto max-w-[680px]">
         <Lang90Reveal>
           <p className={sectionLabelClass}>Phạm vi của Lặng</p>
-          <h2 className={`${headingClass} mt-7 text-e26-text`}>
-            Cách tôn trọng một người nhất<br />
-            đôi khi là không nhận họ<br />
-            vào sai cánh cửa.
-          </h2>
+          <Lang90ScopeHeading className="mt-7 text-e26-text" />
         </Lang90Reveal>
         <Lang90Reveal delay="short" className={`mt-12 ${bodyClass} space-y-8`}>
           <p>Lặng dành cho những lúc bạn cần làm chậm điều đang quá nhiều, nhìn rõ một phản ứng hoặc vòng lặp chính và mở lại khoảng để tự lựa chọn.</p>
@@ -84,7 +79,7 @@ export function Lang90Offer() {
       <div className="mx-auto max-w-[1040px]">
         <Lang90Reveal>
           <p className={sectionLabelClass}>Thông tin phiên</p>
-          <h2 className={`${headingClass} mt-7 text-e26-text`}>Phiên Lặng</h2>
+          <Lang90SectionHeading className="mt-7 text-e26-text">Phiên Lặng</Lang90SectionHeading>
         </Lang90Reveal>
         <div className="mt-14 grid gap-16 lg:grid-cols-[minmax(0,1fr)_0.65fr] lg:gap-20 lg:items-start">
           <div>
@@ -129,8 +124,8 @@ export function Lang90NextStep() {
       <div className="mx-auto max-w-[680px]">
         <Lang90Reveal>
           <p className={sectionLabelClass}>Bước tiếp theo</p>
-          <h2 className={`${headingClass} mt-7 text-e26-text`}>Bước tiếp theo chưa phải đặt lịch.</h2>
-          <p className={`${whisperClass} mt-4`}>Và cũng chưa phải thanh toán.</p>
+          <Lang90SectionHeading className="mt-7 text-e26-text">Bước tiếp theo chưa phải đặt lịch.</Lang90SectionHeading>
+          <Lang90AccentVoice className="mt-5 text-e26-text">Và cũng chưa phải thanh toán.</Lang90AccentVoice>
         </Lang90Reveal>
         <Lang90Reveal delay="short" className={`mt-12 ${bodyClass} space-y-8`}>
           <p>Khi bấm nút bên dưới, bạn sẽ được chuyển đến một biểu mẫu gồm sáu câu hỏi.</p>
@@ -159,11 +154,11 @@ export function Lang90NextStep() {
         <Lang90Reveal delay="long" className="mt-16 text-center md:mt-20">
           <Link
             href="/lang-90/dat-phien"
-            className={`inline-flex min-h-14 items-center justify-center bg-e26-gold px-8 py-4 ${lang90Newsreader.className} text-[12px] font-medium uppercase tracking-[0.14em] text-e26-black transition-colors hover:bg-e26-gold-deep hover:text-e26-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold-deep focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory md:text-[13px]`}
+            className={`inline-flex min-h-14 items-center justify-center bg-e26-gold px-8 py-4 ${utilityClass} text-[13px] uppercase tracking-[0.08em] text-e26-black transition-colors hover:bg-e26-gold-deep hover:text-e26-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold-deep focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory`}
           >
             BẮT ĐẦU 6 CÂU HỎI
           </Link>
-          <p className={`mt-5 ${lang90Newsreader.className} text-[12px] font-medium tracking-[0.12em] text-e26-text-2 md:text-[13px]`}>
+          <p className={`mt-5 ${utilityClass} text-xs tracking-[0.08em] text-e26-text-2`}>
             Chưa đặt lịch. Chưa phát sinh thanh toán.
           </p>
         </Lang90Reveal>
@@ -180,10 +175,10 @@ export function Lang90Closing() {
       <Lang90Footer>
         <Lang90Reveal>
           <p className={darkSectionLabelClass}>Đóng thư</p>
-          <p className={`${whisperClass} mt-7 text-e26-text-dark`}>
+          <Lang90AccentVoice className="mt-7 text-e26-text-dark">
             Cảm ơn bạn đã dành thời gian<br />
             ngồi lại cùng chính mình.
-          </p>
+          </Lang90AccentVoice>
           <div className={`mt-10 ${bodyClass} text-e26-text-dark-2`}>
             <p>Bạn không cần bước qua cánh cửa này vì đang bị thúc giục.</p>
             <p className="mt-6">
