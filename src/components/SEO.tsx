@@ -16,33 +16,18 @@ interface SEOProps {
   type?: string;
 }
 
-// SEO elements that can be used in _document.tsx (returns JSX without Head wrapper)
-export function SEOElements({
-  title = "Essence Coaching · Kenji Phạm",
-  description = "Câu chuyện cuộc sống của bạn là một kiệt tác. Essence Coaching by Kenji Phạm — Sài Gòn",
-  image = "/og-image.png",
-  url = undefined,
-}: SEOProps) {
-  return (
-    <>
-      <title>{title}</title>
-      <meta name="description" content={description} />
-      <link rel="icon" href="/essence-monogram-light.svg" type="image/svg+xml" />
-
-      {/* Open Graph */}
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      {image && <meta property="og:image" content={image} />}
-      {url && <meta property="og:url" content={url} />}
-      <meta property="og:type" content="website" />
-
-      {/* Twitter */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
-      {image && <meta name="twitter:image" content={image} />}
-    </>
-  );
+// CHỈ dùng trong _document.tsx cho markup THẬT SỰ giống nhau mọi trang
+// (favicon). KHÔNG còn render title/description/OG/Twitter ở đây — sửa
+// 27/07/2026: next/document's <Head> không merge/dedupe với next/head's
+// <Head> theo kiểu "trang thắng"; khi cả hai cùng có <title>, next/document
+// (đăng ký trước, do bọc toàn bộ cây) luôn thắng, khiến MỌI trang gọi
+// <SEO title="..."/> riêng đều bị hiện title mặc định sai (đo thật bằng
+// curl: /ve-kenji, /phuong-phap, /lang-90 production đều trả về title
+// "Essence Coaching · Kenji Phạm" dù mỗi trang set title khác nhau).
+// Trang nào cần title/description riêng phải tự gọi <SEO/> (không props =
+// dùng đúng default cũ). Xem SEO() bên dưới cho default.
+export function SEOElements() {
+  return <link rel="icon" href="/essence-monogram-light.svg" type="image/svg+xml" />;
 }
 
 // SEO component for use in pages/_app.tsx or individual pages (uses next/head)

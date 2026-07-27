@@ -375,3 +375,33 @@ nâu" mà luật cấm.
 ngả nâu/mocha/chocolate/coffee thật sự — đo composite màu, không chỉ tin tên
 hàm). Nếu ai review code thấy từ khoá "sepia" và nghi ngờ vi phạm luật cấm —
 đọc mục này trước khi báo lỗi.
+
+## 14. `_document.tsx`'S `<Head>` NUỐT MẤT `<title>` RIÊNG CỦA TỪNG TRANG
+
+(Phát hiện 27/07/2026 khi kiểm production thật sau PR#90/91 — Kenji xác nhận
+qua Web Studio audit, sửa trong `SEO.tsx`, đã merge.)
+
+`next/document`'s `<Head>` (dùng trong `src/pages/_document.tsx`) và
+`next/head`'s `<Head>` (dùng trong từng trang, kể cả qua component
+`<SEO/>` ở `src/components/SEO.tsx`) là HAI cơ chế khác nhau, KHÔNG merge
+theo kiểu "trang thắng". `_document.tsx` từng gọi `<SEOElements/>` với
+title/description MẶC ĐỊNH không truyền prop — vì `_document`'s Head bọc
+toàn bộ cây nên đăng ký TRƯỚC, tag `<title>` của nó luôn thắng bất kể trang
+tự set title gì qua `<SEO title="..."/>` hay `<Head><title>` trực tiếp.
+
+Hậu quả đo được thật trên production (curl, không qua JS): MỌI trang công
+khai đều trả về title chung "Essence Coaching · Kenji Phạm" trong HTML thô,
+dù mỗi trang set title SEO riêng khác nhau. Tab trình duyệt vẫn hiện ĐÚNG vì
+`next/head` sửa lại `document.title` bằng JS sau khi hydrate — nên bug này
+dễ lọt qua mắt nếu chỉ kiểm bằng trình duyệt thật, phải kiểm bằng
+`curl -sL <url>` (theo redirect) rồi grep `<title` mới thấy.
+
+**QUY TẮC:** `_document.tsx` CHỈ được chứa markup THẬT SỰ giống nhau mọi
+trang (favicon, viewport, font preconnect) — KHÔNG BAO GIỜ đặt `<title>`
+hay `<meta name="description">` ở đó. `SEOElements()` trong `SEO.tsx` đã bỏ
+phần title/description/OG/Twitter (chỉ còn favicon) — mỗi trang tự chịu
+trách nhiệm SEO của nó qua `<SEO/>` hoặc `next/head` trực tiếp. Route nào
+đổi/thêm mới (bất kỳ agent nào, kể cả Codex) mà thấy title sai/chung chung
+trên production — đọc mục này trước, khả năng cao KHÔNG phải do trang đó,
+mà do quên gọi `<SEO/>` hoặc do một thay đổi khác lỡ thêm lại markup title
+vào `_document.tsx`.
