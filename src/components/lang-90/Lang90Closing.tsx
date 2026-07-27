@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 
 import {
   bodyClass,
-  darkSectionLabelClass,
   Lang90Footer,
   sectionLabelClass,
   utilityClass,
@@ -174,28 +173,25 @@ export function Lang90Closing() {
       <StoryboardSlot id="SB-05" tone="closing" className="min-h-[24svh] w-full md:min-h-[36svh]" />
       <Lang90Footer>
         <Lang90Reveal>
-          <p className={darkSectionLabelClass}>Đóng thư</p>
-          <Lang90AccentVoice className="mt-7 text-e26-text-dark">
+          <Lang90AccentVoice className="text-e26-text">
             Cảm ơn bạn đã dành thời gian<br />
             ngồi lại cùng chính mình.
           </Lang90AccentVoice>
-          <div className={`mt-10 ${bodyClass} text-e26-text-dark-2`}>
+          <div className={`mt-10 ${bodyClass}`}>
             <p>Bạn không cần bước qua cánh cửa này vì đang bị thúc giục.</p>
             <p className="mt-6">
               Chỉ khi bạn cảm thấy mình đã sẵn sàng ngồi xuống...
               và nhìn một điều cho đủ rõ.
             </p>
           </div>
-          <div className={`mt-14 border-t border-e26-border-dark pt-8 ${darkSectionLabelClass}`}>
+          <div className={`mt-14 border-t border-e26-border pt-8 ${sectionLabelClass}`}>
             <p>Có câu hỏi trước khi bắt đầu?</p>
             <a
               href="mailto:contact@coachkenjipham.com"
-              className="mt-5 inline-block text-e26-text-dark transition-colors hover:text-e26-text-dark-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-e26-text-dark-2"
+              className="mt-5 inline-block text-e26-text transition-colors hover:text-e26-text-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-e26-text-2"
             >
               contact@coachkenjipham.com
             </a>
-            <p className="mt-8">Kenji Phạm · Essence Coach · Sài Gòn</p>
-            <p className="mt-5">© 2026 Essence Coaching System</p>
           </div>
         </Lang90Reveal>
       </Lang90Footer>
