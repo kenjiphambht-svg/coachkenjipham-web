@@ -9,12 +9,25 @@ import {
   Lang90SignalComposition,
 } from "./Lang90Composition";
 import Lang90Reveal from "./Lang90Reveal";
-import StoryboardSlot from "./StoryboardSlot";
 
 export function Lang90Hero() {
   return (
     <section className="relative flex min-h-[92svh] overflow-hidden bg-e26-black px-6 py-16 md:min-h-[94svh] md:py-24">
-      <StoryboardSlot id="SB-HERO" tone="hero" className="absolute inset-0" />
+      <picture className="absolute inset-0">
+        <source media="(min-width: 768px)" srcSet="/images/lang-90/sb-hero-atmosphere-desktop-v01.webp" type="image/webp" />
+        <source media="(min-width: 768px)" srcSet="/images/lang-90/sb-hero-atmosphere-desktop-v01.png" type="image/png" />
+        <source srcSet="/images/lang-90/sb-hero-atmosphere-mobile-v01.webp" type="image/webp" />
+        <img
+          src="/images/lang-90/sb-hero-atmosphere-mobile-v01.png"
+          alt=""
+          width={1024}
+          height={1280}
+          sizes="100vw"
+          fetchPriority="high"
+          decoding="async"
+          className="h-full w-full object-cover object-center"
+        />
+      </picture>
       <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,rgba(26,26,26,0.08),rgba(26,26,26,0.18)_52%,rgba(26,26,26,0.72))]" />
       <div className="relative mx-auto flex w-full max-w-[1080px] flex-col justify-end pb-3 md:pb-10">
         <Lang90Reveal>
