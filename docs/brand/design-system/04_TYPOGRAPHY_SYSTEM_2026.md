@@ -1,6 +1,20 @@
 # 04_TYPOGRAPHY_SYSTEM_2026.md
 Đường dẫn repo: docs/brand/design-system/04_TYPOGRAPHY_SYSTEM_2026.md
 
+> ⚠️ CẬP NHẬT 27/07/2026 (sau PR #90, brief bổ sung 4 việc): file này là bản
+> đề xuất SOẠN TRƯỚC khi Kenji chốt hệ chính thức (xem dòng "chờ Kenji chốt"
+> ở mục 2 — chưa bao giờ là luật đã ký). Nguồn chuẩn thật là
+> `docs/brand/essence-typography-composition-system-v1.md` — file đó không
+> cho số px cố định, chỉ cho QUY TẮC TỶ LỆ (mục 11: "Anchor = 45–65% Hero",
+> "Signal lớn hơn Hero"). Số px THẬT đã được khóa khi `/lang-90` được duyệt
+> (production, PR #89) — xem `src/components/lang-90/Lang90Composition.tsx`
+> và `docs/website/LANG_90_TYPOGRAPHY_COMPOSITION_APPROVED_IMPLEMENTATION_SNAPSHOT.md`.
+> Bảng mục 3 dưới đây đã sửa lại cho khớp bằng chứng thật (display desktop
+> 52–64 → nâng trần lên 68, khớp `Lang90HeroComposition` dòng italic thứ 3
+> `lg:text-[68px]`). Khi mục 3 và essence-typography-composition-system-v1.md
+> mâu thuẫn, luôn ưu tiên file kia + code `/lang-90` thật, không phải bảng số
+> tĩnh ở đây.
+
 ## 1. Hiện trạng
 
 - Hệ cũ (zip): **Cormorant Garamond** (display) + **DM Sans** (body), weight 300/400/500, cấm bold 600+.
@@ -31,8 +45,8 @@
 | body | DM Sans 400 | 17/28 | văn bản chính |
 | body large | DM Sans 300 | 20/32 | sapo, đoạn dẫn |
 | subhead | Cormorant 400 | 24/32 | tiêu đề phụ |
-| headline | Cormorant 400 | 34/42 | tiêu đề section |
-| display | Cormorant 300–400 | 52–64/1.1 | hero |
+| headline | Cormorant 400 | 34/42 | tiêu đề section (khớp `Lang90SectionHeading` desktop 42px thật; mobile thật đo được là 30px, không phải 34) |
+| display | Cormorant 300–400 | 52–68/1.1 | hero — trần thật đã duyệt là 68px desktop (`Lang90HeroComposition`, dòng italic thứ 3, `lg:text-[68px]`), KHÔNG phải 64 |
 | numeral | Cormorant 300 | 48+/1 | số trang trí (01, 02…) |
 | price | Cormorant 400 | 28/36 | giá — serif để giá đọc như lời mời, không như bảng kê |
 
@@ -52,7 +66,7 @@
 
 ## 6. Mobile type rules
 
-Display 34–40px; headline 26–28px; body giữ 17px (không bóp nhỏ hơn 16px); LH body mobile 1.65; độ dài dòng mục tiêu 60–75 ký tự (desktop) / tự nhiên theo màn (mobile).
+Display 31–34px (đỉnh thật đo trong `/lang-90`: 34px — dòng italic cuối Hero); headline/anchor 30px (đo thật `Lang90SectionHeading`, không phải 26–28 như bản cũ ghi); body giữ 17–18px (không bóp nhỏ hơn 16px); LH body mobile 1.65–1.72; độ dài dòng mục tiêu 60–75 ký tự (desktop) / tự nhiên theo màn (mobile).
 
 ## 7. QA checklist typography
 

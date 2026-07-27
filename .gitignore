@@ -38,3 +38,6 @@ next-env.d.ts
 # firebase
 firebase-service-account.json
 logs/
+
+# page review previews (cá nhân, không lên GitHub)
+/page-reviews/

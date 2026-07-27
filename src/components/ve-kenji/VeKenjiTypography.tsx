@@ -18,11 +18,21 @@ type Common = {
 
 // Vai 1 — Display Voice. Dùng cho H1 (size mặc định) và tầng B của Signal
 // Composition (size="signal" — lớn nhất toàn trang, lớn hơn cả H1).
-// Mobile hero = 34px (brief ghi 40px) — đo thật trong Type Lab: ở 390px,
-// dòng 2 của H1 ("Tôi tạo khoảng An định.") ở 40px rộng ~384px, tràn khỏi
-// khung 342px, gãy thêm dòng 3 và bỏ "định." mồ côi — vi phạm luật "mobile
-// hai dòng" + "không từ mồ côi". 34px vẫn nằm trong dải mobile display hợp
-// lệ 34–40px của 04_TYPOGRAPHY_SYSTEM_2026.md mục 6.
+// NGUỒN CHUẨN: docs/brand/essence-typography-composition-system-v1.md (chỉ
+// cho tỷ lệ, không cho px) + số px THẬT đã duyệt trong
+// src/components/lang-90/Lang90Composition.tsx (Lang90HeroComposition) —
+// KHÔNG phải 04_TYPOGRAPHY_SYSTEM_2026.md (file đó chỉ là đề xuất chờ chốt,
+// đã sửa lại 27/07/2026 cho khớp bằng chứng này).
+// Mobile hero = 34px — khớp ĐÚNG đỉnh Hero thật của /lang-90 (dòng italic
+// cuối, text-[34px]). Trùng hợp: số này cũng chính là số tối đa đo được
+// trong Type Lab của /ve-kenji không gây overflow ở 390px (40px làm dòng 2
+// H1 tràn 342px→384px, gãy thêm dòng 3 + mồ côi "định." — đã thử giữ break
+// point ở câu 1 và tìm cách chia lại 2 dòng khác ở 40px nhưng không có cách
+// nào giữ đúng ranh giới ngữ nghĩa "mỗi dòng = 1 câu" mà vừa khung; xuống
+// dòng giữa câu vi phạm mục 13 "theo ý nghĩa, không theo chiều rộng" nặng
+// hơn — nên 34px là lựa chọn đúng, không phải đường tắt).
+// Desktop hero = 68px (sửa từ 64px) — khớp ĐÚNG trần Hero thật của /lang-90
+// (lg:text-[68px]), không phải số 52–64 của 04_TYPOGRAPHY_SYSTEM_2026.md.
 export function EssenceDisplay({
   children,
   className,
@@ -34,7 +44,7 @@ export function EssenceDisplay({
       className={cn(
         "font-serif font-medium text-e26-text [text-wrap:balance]",
         size === "hero" &&
-          "text-[34px] leading-[1.1] tracking-[-0.01em] md:text-[64px] md:leading-[1.05]",
+          "text-[34px] leading-[1.1] tracking-[-0.01em] md:text-[68px] md:leading-[1.05]",
         size === "signal" &&
           "text-[52px] leading-[0.98] tracking-[-0.015em] md:text-[92px] md:leading-[0.95]",
         className
@@ -49,6 +59,11 @@ export function EssenceDisplay({
 // (70–80% cỡ H2). Nhấn nội bộ: bọc cụm chữ bằng <em> ngay trong children —
 // true italic, quy tắc chung của trang (một cách duy nhất, không lặp cách
 // khác).
+// Kiểm tỷ lệ theo essence-typography-composition-system-v1.md mục 11
+// ("Anchor = 45–65% Hero"): 42/68 = 62% ở desktop — đúng dải. Ở mobile 30/34
+// = 88%, vượt dải 45–65%, nhưng /lang-90 thật (Lang90SectionHeading 30px vs
+// Lang90HeroComposition đỉnh 34px mobile) cũng ở đúng tỷ lệ 88% — quy tắc
+// tỷ lệ trong file gốc chỉ áp cho desktop, mobile nén khoảng cách tự nhiên.
 export function EssenceAnchor({
   children,
   className,
