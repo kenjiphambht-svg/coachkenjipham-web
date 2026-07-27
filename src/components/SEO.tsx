@@ -11,6 +11,9 @@ interface SEOProps {
   ogDescription?: string;
   image?: string;
   url?: string;
+  // og:type — mặc định "website" giữ nguyên hành vi mọi trang cũ. Trang
+  // entity cá nhân (vd /ve-kenji) cần "profile" cho schema mạng xã hội.
+  type?: string;
 }
 
 // SEO elements that can be used in _document.tsx (returns JSX without Head wrapper)
@@ -50,6 +53,7 @@ export function SEO({
   ogDescription,
   image = "/og-image.png",
   url = undefined,
+  type = "website",
 }: SEOProps) {
   const shareDescription = ogDescription ?? description;
   return (
@@ -63,7 +67,7 @@ export function SEO({
       <meta property="og:description" content={shareDescription} />
       {image && <meta property="og:image" content={image} />}
       {url && <meta property="og:url" content={url} />}
-      <meta property="og:type" content="website" />
+      <meta property="og:type" content={type} />
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
