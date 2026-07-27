@@ -3,7 +3,6 @@ import Image from "next/image";
 import { bodyClass, sectionLabelClass } from "./Lang90Frame";
 import { Lang90SectionHeading } from "./Lang90Composition";
 import Lang90Reveal from "./Lang90Reveal";
-import StoryboardSlot from "./StoryboardSlot";
 
 export function Lang90Kenji() {
   return (
@@ -98,7 +97,21 @@ export function Lang90Journey() {
           ))}
         </div>
       </div>
-      <StoryboardSlot id="SB-03" tone="dawn" className="mt-20 min-h-[34svh] w-full md:mt-28 md:min-h-[52svh]" />
+      <picture className="mt-20 -mb-24 block w-full md:mt-28 md:-mb-36">
+        <source media="(min-width: 768px)" srcSet="/images/lang-90/sb-03-dawn-transition-desktop-v01.webp" type="image/webp" />
+        <source media="(min-width: 768px)" srcSet="/images/lang-90/sb-03-dawn-transition-desktop-v01.png" type="image/png" />
+        <source srcSet="/images/lang-90/sb-03-dawn-transition-mobile-v01.webp" type="image/webp" />
+        <img
+          src="/images/lang-90/sb-03-dawn-transition-mobile-v01.png"
+          alt=""
+          width={1024}
+          height={1280}
+          sizes="100vw"
+          loading="lazy"
+          decoding="async"
+          className="h-auto w-full"
+        />
+      </picture>
     </section>
   );
 }
