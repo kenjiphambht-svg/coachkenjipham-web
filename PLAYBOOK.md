@@ -42,14 +42,29 @@ QA checklist đầy đủ theo loại task: `docs/website/master-plan/13_QA_CHEC
 - Claude Code reports (phiếu 5 dòng: đã làm gì / tự kiểm gì / có sửa code không / rủi ro / cần Kenji xem chỗ nào).
 - ChatGPT interprets for Kenji.
 - Codex audits PR.
-- Kenji decides merge cho mọi PR đụng payment pages, dữ liệu trẻ em, hoặc thay
-  đổi cấu trúc/route lớn — không có ngoại lệ. Các PR này luôn để Draft, chờ
-  Kenji xem và tự bấm merge.
-- **Ngoại lệ đã duyệt (18/07/2026)**: với PR thuộc loại nhỏ và rõ ràng — đổi
-  ảnh, sửa lỗi hiển thị/CSS — và KHÔNG đụng payment pages, KHÔNG đụng dữ liệu
-  trẻ em, KHÔNG đổi cấu trúc/route, Claude Code được tự merge sau khi
-  build/lint pass và đã tự kiểm đầy đủ theo mục 4. Vẫn phải mở PR + phiếu báo
-  cáo đầy đủ như thường lệ — chỉ khác bước bấm merge cuối cùng.
+- **Merge policy (chốt 28/07/2026 — thay thế ngoại lệ hẹp 18/07/2026, áp dụng
+  như nhau cho Claude Code VÀ Codex)**: sau khi build/lint pass và đã tự kiểm
+  đầy đủ theo mục 4, agent được TỰ MERGE — không cần chờ Kenji duyệt bước
+  merge, kể cả khi PR không còn "nhỏ và rõ ràng" (vd: viết lại nội dung/route
+  trọn trang). Vẫn phải mở PR + phiếu báo cáo đầy đủ như thường lệ — chỉ khác
+  bước bấm merge cuối cùng.
+- **4 ngoại lệ vẫn bắt buộc Kenji tự duyệt + tự bấm merge — không đổi, không
+  có ngoại lệ nào khác**:
+  (a) PR đụng payment pages (`/thanh-toan-*`).
+  (b) PR đụng dữ liệu trẻ em.
+  (c) PR đổi cấu trúc/route lớn, hoặc đụng file dùng chung
+      (Header/Footer/globals.css/tailwind.config).
+  (d) Bất kỳ hành động khai báo trang với Google dưới mọi hình thức — submit
+      Search Console, thêm route vào sitemap công khai, gỡ noindex, đổi
+      robots.txt cho phép crawl. Nhóm (d) áp dụng bất kể PR thuộc loại nào,
+      kể cả PR nhỏ.
+  Các PR thuộc 1 trong 4 nhóm trên luôn để Draft, chờ Kenji xem và tự bấm
+  merge — nêu rõ trong phiếu báo cáo đang thuộc nhóm nào nếu có.
+- Lý do đổi: 18/07/2026 mới cho Claude Code tự merge PR nhỏ/rõ ràng; 28/07/2026
+  Kenji xác nhận mở rộng — tự merge là mặc định cho MỌI agent sau khi tự kiểm
+  đủ, chỉ cần hỏi trước khi có hành động khai báo Google (xem ghi chú tại
+  `docs/website/master-plan/15_DECISION_LOG_AND_NEXT_ACTIONS.md` mục 1 và
+  `docs/website/master-plan/11_CLAUDE_CODE_CODEX_AI_AGENT_SETUP.md`).
 
 ## 6. Quy tắc visual
 

@@ -14,8 +14,19 @@ Người đọc chính: Kenji mỗi tuần; mọi agent trước khi làm task.
 8. Payment thực tế VN: VietQR/chuyển khoản, không giả định Stripe.
 9. Kênh phân phối: Facebook cá nhân là kênh chính 90 ngày; fanpage/Instagram/Threads chỉ hiện diện + đăng lại.
 10. Hero homepage không mở đầu bằng AI-native; AI đứng phía sau, Kenji đứng phía trước.
-11. Mọi AI làm việc theo luật File 11: branch → PR → QA → Kenji duyệt; phiếu 5 dòng; không tự merge/push.
+11. ~~Mọi AI làm việc theo luật File 11: branch → PR → QA → Kenji duyệt; phiếu 5 dòng; không tự merge/push.~~ → SUPERSEDED bởi mục 13 (28/07/2026).
 12. OpenOPC: giữ ở Giai đoạn 0 (mượn tư tưởng role/playbook/backlog), xét cài lại ở Phase 12.
+13. (28/07/2026) Merge policy mới — áp dụng như nhau cho Claude Code và Codex:
+    branch → PR → QA tự kiểm đủ → agent TỰ MERGE, không cần chờ Kenji duyệt
+    bước merge. Ngoại lệ vẫn chờ Kenji tự duyệt + tự bấm merge (PR để Draft):
+    (a) payment pages; (b) dữ liệu trẻ em; (c) đổi cấu trúc/route lớn hoặc
+    file dùng chung (Header/Footer/globals.css/tailwind.config); (d) bất kỳ
+    hành động khai báo trang với Google (Search Console, sitemap công khai,
+    gỡ noindex, robots.txt). Phiếu báo cáo vẫn bắt buộc mọi lần. Chi tiết:
+    PLAYBOOK.md mục 5, `11_CLAUDE_CODE_CODEX_AI_AGENT_SETUP.md` mục 2.3,
+    AGENTS.md. Lý do: Kenji xác nhận qua chat 28/07/2026 sau khi thấy Claude
+    Code tự merge PR #96 (/phuong-phap) theo luật "2 rules" của fable mode —
+    mở rộng thành mặc định chung, không riêng fable mode.
 
 ## 2. Việc 7 ngày tới
 
