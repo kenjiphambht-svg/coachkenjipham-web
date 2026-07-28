@@ -13,27 +13,26 @@ import {
 } from "@/components/phuong-phap/PhuongPhapTypography";
 
 // ============================================================
-// /phuong-phap — VÒNG 1 (brief "GÓI 05" 28/07/2026): dựng lại toàn bộ trang
-// (bản trước — 24fd76b — là khung nội dung cũ 6 Scene, thay hẳn bằng bản 8
-// Scene nguyên văn theo brief mới). noindex, nofollow — CHƯA duyệt công khai
-// (LUẬT 2 brief). Copy NGUYÊN VĂN, không tự sửa chữ. Không nhắc FCP/Casting/
-// Gateway/Clear ở bất kỳ đâu. Scene ⑦ (Ranh giới) nền tối — dark section duy
-// nhất của trang. Đúng 1 nút vàng (Scene ⑧). Schema: Article + BreadcrumbList.
+// /phuong-phap — VÒNG 1 (brief "GÓI 05" 28/07/2026, bản cập nhật 9 Scene):
+// thay bản 8 Scene trước đó (PR #96) — brief mới thêm Scene ⑥ "Đo được,
+// không mơ hồ" và dời Ranh giới (nền tối) từ ⑦ → ⑧, CTA từ ⑧ → ⑨. noindex,
+// nofollow — CHƯA duyệt công khai (LUẬT 2 brief). Copy NGUYÊN VĂN, không tự
+// sửa chữ. Không nhắc FCP/Casting/Gateway/Clear ở bất kỳ đâu. Scene ⑧ (Ranh
+// giới) nền tối — dark section duy nhất của trang. Đúng 1 nút vàng (Scene ⑨).
+// Schema: Article + BreadcrumbList.
 //
 // Vòng này CHƯA có ảnh — nền là CSS thuần (Page Mode mode ấm-nhẹ, mục 4 brief).
 //
-// EssenceAccent dùng ĐÚNG 2 lần (Scene ⑤ dòng nhấn, Scene ⑥ câu chốt AI) —
-// KHÔNG ép thêm lần thứ 3 ở Scene ⑧: nội dung Scene ⑧ chỉ có tiêu đề CTA,
-// link phụ và nút — không có câu "thì thầm" nào hợp vai Accent; ép vào đó sẽ
-// dùng sai vai chữ (Accent là giọng thì thầm, không phải nhãn CTA). 2 lần vẫn
-// trong trần cho phép (không vượt quá 4).
+// EssenceAccent dùng ĐÚNG 3 lần — brief đánh số rõ tại Scene ⑤⑥⑦, không thêm
+// ở đâu khác (không còn là lựa chọn tự quyết như bản 8 Scene trước — Scene ⑥
+// mới đã cho sẵn câu Accent thứ 3 "Đây là những dấu hiệu...").
 //
-// CTA vàng cuối trang (Scene ⑧) trỏ /ve-kenji, KHÔNG trỏ section "Hai Cửa"
+// CTA vàng cuối trang (Scene ⑨) trỏ /ve-kenji, KHÔNG trỏ section "Hai Cửa"
 // (TwoStates.tsx): đã đọc src/pages/index.tsx (route "/" sống hiện tại vẫn là
 // bản Coming Soon cũ) và src/pages/trang-chu-v2.tsx (comment đầu file ghi rõ
 // "Route TẠM ... NOINDEX — chưa công khai ... Khi duyệt xong, nội dung này sẽ
 // thay thế index.tsx thật") — /trang-chu-v2 CHƯA phải bản sống chính thức nên
-// theo đúng nhánh dự phòng brief mục 2 Scene ⑧, CTA trỏ /ve-kenji. Nhất quán
+// theo đúng nhánh dự phòng brief mục 2 Scene ⑨, CTA trỏ /ve-kenji. Nhất quán
 // với /ve-kenji (đã trỏ /phuong-phap) và /dieu-essence-khong-hua (CTA cùng
 // dạng cũng trỏ /ve-kenji).
 //
@@ -246,7 +245,32 @@ export default function PhuongPhapPage() {
           </div>
         </section>
 
-        {/* ⑥ PHÍA SAU LÀ HỆ THỐNG. PHÍA TRƯỚC LÀ CON NGƯỜI — peak, tiếp nối */}
+        {/* ⑥ ĐO ĐƯỢC, KHÔNG MƠ HỒ — peak, tiếp nối, khối tăng uy tín */}
+        <section className="px-6 py-16 md:py-24" style={{ background: BG.peak }}>
+          <div className="max-w-[720px] mx-auto">
+            <EssenceAnchor as="h2" className="mb-10 md:mb-12">
+              Đo được, không mơ hồ
+            </EssenceAnchor>
+            <div className="space-y-6">
+              <EssenceBody as="p">
+                Tôi không nói "bạn sẽ thấy tốt hơn" rồi để đó. Kết quả của Essence không phải một
+                cảm giác mơ hồ — là những thay đổi cụ thể bạn, và cả người xung quanh bạn, nhận ra
+                được.
+              </EssenceBody>
+              <EssenceBody as="p">
+                Ngủ sâu hơn. Khi bị chạm, có một nhịp để chọn thay vì phản ứng ngay. Làm việc đúng
+                nhịp hơn, không còn phải cố hết sức chỉ để trông ổn. Bớt phải diễn — với người
+                khác, và với chính mình.
+              </EssenceBody>
+            </div>
+            <EssenceAccent as="p" className="mt-12 md:mt-16">
+              Đây là những dấu hiệu tôi cùng bạn theo dõi được qua thời gian — không phải một lời
+              hứa, mà là cách để cả hai cùng biết chuyện có đang đi đúng hướng hay không.
+            </EssenceAccent>
+          </div>
+        </section>
+
+        {/* ⑦ PHÍA SAU LÀ HỆ THỐNG. PHÍA TRƯỚC LÀ CON NGƯỜI — peak, tiếp nối */}
         <section className="px-6 py-16 md:py-24" style={{ background: BG.peak }}>
           <div className="max-w-[720px] mx-auto">
             <EssenceAnchor as="h2" className="mb-10 md:mb-12">
@@ -268,7 +292,7 @@ export default function PhuongPhapPage() {
           </div>
         </section>
 
-        {/* ⑦ RANH GIỚI — nền tối, điểm tương phản duy nhất của trang */}
+        {/* ⑧ RANH GIỚI — nền tối, điểm tương phản duy nhất của trang */}
         <section className="bg-e26-black px-6 py-24 md:py-[180px]">
           <div className="max-w-[640px] mx-auto text-center">
             <div className="w-12 h-px bg-e26-gold mx-auto mb-14" aria-hidden="true" />
@@ -290,7 +314,7 @@ export default function PhuongPhapPage() {
           </div>
         </section>
 
-        {/* ⑧ CTA — peak → rising, ấm lắng lại */}
+        {/* ⑨ CTA — peak → rising, ấm lắng lại */}
         <section
           className="px-6 py-16 md:py-24 text-center"
           style={{ background: `linear-gradient(to bottom, ${BG.peak} 0%, ${BG.rising} 100%)` }}
