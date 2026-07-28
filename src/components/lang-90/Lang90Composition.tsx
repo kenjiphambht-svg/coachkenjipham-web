@@ -7,7 +7,7 @@ type ClassNameProps = {
 export function Lang90HeroComposition({ className = "" }: ClassNameProps) {
   return (
     <h1 className={`max-w-[820px] text-e26-text-dark ${className}`}>
-      <span className="block font-serif text-[31px] font-medium leading-[1.12] tracking-[-0.018em] sm:text-[42px] md:text-[50px] lg:text-[62px]">
+      <span className="block font-serif text-[25px] font-medium leading-[1.12] tracking-[-0.018em] sm:text-[42px] md:text-[50px] lg:text-[62px]">
         Khi đầu óc đã tính đủ mọi đường,
       </span>
       <span className="mt-1 block font-serif text-[24px] font-medium leading-[1.2] tracking-[-0.01em] sm:text-[32px] md:text-[38px] lg:text-[48px]">
