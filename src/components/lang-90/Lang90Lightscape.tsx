@@ -1,4 +1,4 @@
-type LightscapeScene = "opening" | "signal" | "release" | "doorway";
+type LightscapeScene = "opening" | "signal" | "release" | "doorway" | "dawn";
 
 type Lang90LightscapeProps = {
   scene: LightscapeScene;
@@ -23,6 +23,10 @@ const assets: Record<LightscapeScene, { desktop: string; mobile: string }> = {
   doorway: {
     desktop: "/images/lang-90/lang90-lightscape-doorway-v02-desktop",
     mobile: "/images/lang-90/lang90-lightscape-doorway-v02-mobile",
+  },
+  dawn: {
+    desktop: "/images/lang-90/sb-03-dawn-transition-desktop-v01",
+    mobile: "/images/lang-90/sb-03-dawn-transition-mobile-v01",
   },
 };
 
