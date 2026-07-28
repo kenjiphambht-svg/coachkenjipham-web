@@ -172,13 +172,22 @@ function SignalScene() {
 
 function DefinitionScene() {
   return (
-    <section data-lang90-scene="clarity" className="bg-e26-cream-deep px-6 py-24 md:py-36">
-      <div className="mx-auto max-w-[1080px] md:grid md:grid-cols-[0.78fr_1fr] md:gap-20">
-        <Lang90Reveal>
-          <p className={sectionLabelClass}>LẶNG LÀ GÌ?</p>
-        </Lang90Reveal>
-        <div className="mt-8 md:mt-0">
-          <Lang90Reveal delay="short">
+    <section data-lang90-scene="clarity" className="relative isolate flex min-h-[88svh] overflow-hidden bg-e26-cream-deep px-6 py-24 md:min-h-[84svh] md:py-36">
+      <Lang90Lightscape
+        scene="dawn"
+        alt="Ánh sáng ban mai trải trên bức tường và sàn của một không gian tối giản."
+        className="object-[58%_center] md:object-center"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-[linear-gradient(90deg,rgba(241,239,232,0.97)_0%,rgba(241,239,232,0.94)_48%,rgba(241,239,232,0.72)_68%,rgba(241,239,232,0.18)_100%)]"
+      />
+      <div className="relative mx-auto flex w-full max-w-[1120px] flex-col justify-center">
+        <div className="max-w-[650px]">
+          <Lang90Reveal>
+            <p className={sectionLabelClass}>LẶNG LÀ GÌ?</p>
+          </Lang90Reveal>
+          <Lang90Reveal delay="short" className="mt-8">
             <Lang90SectionHeading className="text-e26-text">
               Trong Lặng, tôi không cố giải quyết cả cuộc đời bạn.
             </Lang90SectionHeading>
