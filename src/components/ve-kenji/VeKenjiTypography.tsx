@@ -1,5 +1,22 @@
-import type { ElementType, ReactNode } from "react";
+import { createContext, useContext, type ElementType, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
+
+// Context tone chữ — brief "LẮP 5 ẢNH THẬT" 29/07/2026. Một số section giờ
+// có ảnh nền đậm/tương phản cao (đo thật bằng ảnh chụp: chữ tối chìm vào
+// nền ở ③⑤⑥⑦⑧) — bọc cả section trong <VeKenjiToneProvider tone="light">
+// thay vì truyền tone="light" cho từng EssenceAnchor/Body/Accent một, tránh
+// sửa hàng chục chỗ dễ sót. Prop `tone` truyền trực tiếp vẫn override được.
+const ToneContext = createContext<"normal" | "light">("normal");
+
+export function VeKenjiToneProvider({
+  tone,
+  children,
+}: {
+  tone: "normal" | "light";
+  children: ReactNode;
+}) {
+  return <ToneContext.Provider value={tone}>{children}</ToneContext.Provider>;
+}
 
 // Hệ 5 vai typography riêng cho /ve-kenji — nguồn: brief "VỀ KENJI VÒNG 1"
 // mục 4 (docs/brand/essence-typography-composition-system-v1.md CHƯA có
@@ -69,11 +86,15 @@ export function EssenceAnchor({
   className,
   as: As = "h2",
   level = "h2",
-}: Common & { as?: ElementType; level?: "h2" | "h3" }) {
+  tone,
+}: Common & { as?: ElementType; level?: "h2" | "h3"; tone?: "normal" | "light" }) {
+  const contextTone = useContext(ToneContext);
+  tone = tone ?? contextTone;
   return (
     <As
       className={cn(
-        "font-serif font-medium text-e26-text [text-wrap:balance]",
+        "font-serif font-medium [text-wrap:balance]",
+        tone === "normal" ? "text-e26-text" : "text-e26-text-dark",
         level === "h2" && "text-[30px] leading-[1.25] tracking-normal md:text-[42px]",
         level === "h3" && "text-[22px] leading-[1.25] tracking-normal md:text-[32px]",
         className
@@ -86,11 +107,19 @@ export function EssenceAnchor({
 
 // Vai 3 — Reading Voice. Một đoạn = một <EssenceBody>. max-width giữ dòng
 // 55–70 ký tự; các đoạn liền kề tự xuống dòng nhờ wrapper cha (space-y-*).
-export function EssenceBody({ children, className, as: As = "p" }: Common & { as?: ElementType }) {
+export function EssenceBody({
+  children,
+  className,
+  as: As = "p",
+  tone,
+}: Common & { as?: ElementType; tone?: "normal" | "light" }) {
+  const contextTone = useContext(ToneContext);
+  tone = tone ?? contextTone;
   return (
     <As
       className={cn(
-        "font-sans font-normal text-e26-text-2 [text-wrap:pretty]",
+        "font-sans font-normal [text-wrap:pretty]",
+        tone === "normal" ? "text-e26-text-2" : "text-e26-text-dark-2",
         "text-[17px] leading-[1.7] tracking-normal md:text-[19px] md:leading-[1.75]",
         "max-w-[660px]",
         className
@@ -110,11 +139,19 @@ export function EssenceLeadIn({ children }: { children: ReactNode }) {
 }
 
 // Vai 4 — Accent Voice. True italic Cormorant. Đúng 3 lần trên trang (② ⑥ ⑨).
-export function EssenceAccent({ children, className, as: As = "p" }: Common & { as?: ElementType }) {
+export function EssenceAccent({
+  children,
+  className,
+  as: As = "p",
+  tone,
+}: Common & { as?: ElementType; tone?: "normal" | "light" }) {
+  const contextTone = useContext(ToneContext);
+  tone = tone ?? contextTone;
   return (
     <As
       className={cn(
-        "font-serif italic font-normal text-e26-text [text-wrap:balance]",
+        "font-serif italic font-normal [text-wrap:balance]",
+        tone === "normal" ? "text-e26-text" : "text-e26-text-dark",
         "text-[21px] leading-[1.4] tracking-normal md:text-[23px]",
         className
       )}
@@ -143,25 +180,39 @@ export function EssenceUtility({ children, className, as: As = "p" }: Common & {
 // CHỦ ĐÍCH so với hệ 3 tầng gốc (Kenji đã chốt: không tự thêm tầng C, khối
 // này không được có chữ nào khác ngoài A/B). Nhận đúng hai prop text, không
 // nhận children — khoá cứng để không ai lỡ tay thêm CTA/heading vào khối.
+// onImage: true khi đặt trên ảnh nền tối (01-khe-van-toi, brief 29/07/2026)
+// — đổi sang token chữ sáng (e26-text-dark) thay vì thêm text-shadow (cấm).
+// Class ve-kenji-signal-* là điểm neo cho useVeKenjiSignalReveal (GSAP).
 export function EssenceSignalComposition({
   tierA,
   tierB,
   className,
+  onImage = false,
 }: {
   tierA: ReactNode;
   tierB: ReactNode;
   className?: string;
+  onImage?: boolean;
 }) {
   return (
     <div className={cn("mx-auto max-w-[820px] text-center", className)}>
       <div
         aria-hidden="true"
-        className="mx-auto mb-10 h-px w-14 bg-e26-gold md:mb-14 md:w-16"
-      />
-      <EssenceBody as="p" className="mx-auto text-e26-text-2">
+        className="mx-auto mb-10 w-14 overflow-hidden md:mb-14 md:w-16"
+      >
+        <div className="ve-kenji-signal-hairline h-px w-0 bg-e26-gold" />
+      </div>
+      <EssenceBody
+        as="p"
+        className={cn("ve-kenji-signal-tier-a mx-auto", onImage ? "text-e26-text-dark-2" : "text-e26-text-2")}
+      >
         {tierA}
       </EssenceBody>
-      <EssenceDisplay as="p" size="signal" className="mt-6 md:mt-10">
+      <EssenceDisplay
+        as="p"
+        size="signal"
+        className={cn("ve-kenji-signal-tier-b mt-6 md:mt-10", onImage && "text-e26-text-dark")}
+      >
         {tierB}
       </EssenceDisplay>
     </div>

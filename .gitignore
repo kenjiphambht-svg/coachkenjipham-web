@@ -41,3 +41,7 @@ logs/
 
 # page review previews (cá nhân, không lên GitHub)
 /page-reviews/
+
+# ảnh PNG master (file gốc dung lượng lớn) — chỉ .webp đã tối ưu mới vào git
+public/images/**/*-master.png
+public/images/ve-kenji/chan-dung-kenji.png
