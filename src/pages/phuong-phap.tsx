@@ -13,19 +13,22 @@ import {
 } from "@/components/phuong-phap/PhuongPhapTypography";
 
 // ============================================================
-// /phuong-phap — VÒNG 1 (brief "GÓI 05" 28/07/2026, bản cập nhật 9 Scene):
-// thay bản 8 Scene trước đó (PR #96) — brief mới thêm Scene ⑥ "Đo được,
-// không mơ hồ" và dời Ranh giới (nền tối) từ ⑦ → ⑧, CTA từ ⑧ → ⑨. noindex,
-// nofollow — CHƯA duyệt công khai (LUẬT 2 brief). Copy NGUYÊN VĂN, không tự
-// sửa chữ. Không nhắc FCP/Casting/Gateway/Clear ở bất kỳ đâu. Scene ⑧ (Ranh
-// giới) nền tối — dark section duy nhất của trang. Đúng 1 nút vàng (Scene ⑨).
-// Schema: Article + BreadcrumbList.
+// /phuong-phap — dựng ở PR #96 (8 Scene) + #98 (9 Scene). PR này (brief
+// "v3" 28/07/2026) CHỈ đổi CHỮ + cấu trúc CTA Scene ⑨ — không dựng lại
+// trang, không đổi PhuongPhapTypography.tsx/Page Mode/schema (trừ SEO title
+// — xem mục 9 brief). noindex, nofollow — CHƯA duyệt công khai (LUẬT 2
+// brief). Copy NGUYÊN VĂN, không tự sửa chữ. Không nhắc FCP/Casting/Gateway/
+// Clear ở bất kỳ đâu. Scene ⑧ (Ranh giới) nền tối — dark section duy nhất
+// của trang. Đúng 1 nút vàng (Scene ⑨). Schema: Article + BreadcrumbList.
 //
 // Vòng này CHƯA có ảnh — nền là CSS thuần (Page Mode mode ấm-nhẹ, mục 4 brief).
 //
-// EssenceAccent dùng ĐÚNG 3 lần — brief đánh số rõ tại Scene ⑤⑥⑦, không thêm
-// ở đâu khác (không còn là lựa chọn tự quyết như bản 8 Scene trước — Scene ⑥
-// mới đã cho sẵn câu Accent thứ 3 "Đây là những dấu hiệu...").
+// EssenceAccent dùng ĐÚNG 3 lần (Scene ②⑤⑦ — đổi vị trí so với bản 9 Scene
+// trước: Accent cũ ở Scene ⑥ bị brief v3 xoá cùng nội dung cũ, Accent mới
+// thêm ở cuối Scene ②). Scene ⑥ sau v3 KHÔNG còn Accent nào.
+//
+// ICF xuất hiện ĐÚNG 1 LẦN trong chữ khách đọc, ở Scene ④ (brief v3 mục 2:
+// câu ICF cũ cuối Scene ③ đã xoá hẳn khi đổi ẩn dụ xe/phanh → buồm/neo).
 //
 // CTA vàng cuối trang (Scene ⑨) trỏ /ve-kenji, KHÔNG trỏ section "Hai Cửa"
 // (TwoStates.tsx): đã đọc src/pages/index.tsx (route "/" sống hiện tại vẫn là
@@ -105,7 +108,7 @@ export default function PhuongPhapPage() {
   return (
     <>
       <SEO
-        title="Phương pháp Essence | Coaching chiều sâu theo ICF"
+        title="Phương pháp Essence | Coaching tâm lý chiều sâu"
         description="Phương pháp Essence: nhìn rõ vòng lặp và kiểu gánh, theo tiêu chuẩn ICF, tâm lý học chiều sâu và khoa học thần kinh — không đường tắt, không hứa nhanh."
         image="/essence-og-1200x630.png"
         url="https://coachkenjipham.com/phuong-phap"
@@ -163,6 +166,10 @@ export default function PhuongPhapPage() {
                 gánh lâu thì mỏi, dù bề ngoài vẫn đang ổn.
               </EssenceBody>
             </div>
+            <EssenceAccent as="p" className="mt-12 md:mt-16">
+              Tám năm ngồi nghe người lớn nói những điều họ không nói ở nơi khác, tôi thấy hai
+              thứ này gần như lúc nào cũng có mặt.
+            </EssenceAccent>
           </section>
         </div>
 
@@ -178,18 +185,19 @@ export default function PhuongPhapPage() {
             <div className="space-y-6">
               <EssenceBody as="p">
                 Phần lớn coaching hướng tới mục tiêu — bạn muốn đi đâu, bước tiếp theo là gì, làm
-                sao đi nhanh hơn. Cách đó có giá trị thật, giống một người thầy dạy lái xe giỏi:
-                dạy đi đâu, đi thế nào, đi nhanh hơn.
-              </EssenceBody>
-              <EssenceBody as="p">Essence làm một việc khác: mở nắp ca-pô, xem xe có phanh không.</EssenceBody>
-              <EssenceBody as="p">
-                Không phải chuyện ai đi trước, ai đi sau. Là chuyện ở bên dưới. Người chưa biết lái
-                mà đã ra đường — cần kiểm phanh. Người đã chạy nhanh suốt nhiều năm — cần kiểm
-                phanh hơn nữa. Cùng một thứ thiếu, hai kiểu người khác nhau.
+                sao đi nhanh hơn. Cách đó có giá trị thật, và nhiều người cần đúng thứ đó.
               </EssenceBody>
               <EssenceBody as="p">
-                Kenji làm việc theo tiêu chuẩn ICF — nền tảng vững về quy trình và đạo đức nghề.
-                Essence không thay thế nền đó. Essence bắt đầu ở chỗ nó dừng lại.
+                Essence bắt đầu ở một chỗ khác. Nếu coaching mục tiêu là dạy căng buồm, thì việc
+                tôi làm là hỏi trước một câu: thuyền này đã có neo chưa.
+              </EssenceBody>
+              <EssenceBody as="p">
+                Buồm quyết định bạn đi được bao xa. Neo quyết định bạn có dừng được không khi cần
+                dừng. Người chưa từng ra khơi cần neo. Người đã đi mười năm không nghỉ càng cần
+                neo hơn.
+              </EssenceBody>
+              <EssenceBody as="p">
+                Đó là câu chuyện ở bên dưới. Cùng một thứ thiếu, hai kiểu người khác nhau.
               </EssenceBody>
             </div>
 
@@ -199,14 +207,24 @@ export default function PhuongPhapPage() {
             </EssenceAnchor>
             <div className="space-y-6">
               <EssenceBody as="p">
-                Cách tôi đọc một vòng lặp, một kiểu gánh — không dựa vào trực giác đơn thuần. Tôi
-                làm việc theo tiêu chuẩn ICF, dựa trên tâm lý học chiều sâu của Carl Jung, tâm lý
-                nguyên mẫu, và hiểu biết về cách hệ thần kinh phản ứng khi con người bất an.
+                Cách tôi đọc một vòng lặp, một kiểu gánh không đến từ trực giác. Nó đến từ nền
+                tảng.
               </EssenceBody>
               <EssenceBody as="p">
-                Nhưng tôi không dùng những nền tảng đó để đào về quá khứ cho ra vẻ sâu sắc. Tôi đi
-                thẳng vào điều đang vận hành trong đời sống bạn hôm nay — vì đó mới là chỗ bạn
-                thật sự sống.
+                Tiêu chuẩn ICF cho một khung vững về quy trình và đạo đức nghề — đó là mức tôi
+                không cho phép mình đi xuống dưới. Nhưng với việc tôi làm, chừng đó chưa đủ. Tôi
+                còn dựa trên tâm lý học chiều sâu của Carl Jung, tâm lý nguyên mẫu, và hiểu biết
+                về cách hệ thần kinh phản ứng khi con người bất an.
+              </EssenceBody>
+              <EssenceBody as="p">
+                Trên những nền tảng đó, tôi tự đặt thêm cho mình vài điều kiện riêng. Không phải
+                để tỏ ra khắt khe, mà để tự nhắc mình không đi quá xa: không đưa ai vào tầng sâu
+                khi họ chưa đủ vững, không kết luận thay người ngồi phía đối diện, và không dùng
+                quá khứ của họ để làm một buổi làm việc nghe có vẻ sâu sắc.
+              </EssenceBody>
+              <EssenceBody as="p">
+                Tôi đi thẳng vào điều đang vận hành trong đời sống bạn hôm nay — vì đó mới là chỗ
+                bạn thật sự sống.
               </EssenceBody>
             </div>
           </div>
@@ -223,17 +241,21 @@ export default function PhuongPhapPage() {
             </EssenceAnchor>
             <div className="space-y-6">
               <EssenceBody as="p">
-                <EssenceLeadIn>Chill với cảm xúc.</EssenceLeadIn> Trước khi làm gì, bạn cần một
+                Hành trình dài đi qua ba chặng. Mỗi chặng có tên riêng, và có việc riêng phải xong
+                trước khi sang chặng sau.
+              </EssenceBody>
+              <EssenceBody as="p">
+                <EssenceLeadIn>Chill với cảm xúc</EssenceLeadIn> — Trước khi làm gì, bạn cần một
                 khoảng đủ yên để không bị cảm xúc lái. Không phân tích vội. Không sửa vội. Chỉ
                 ngồi lại được với chính mình đã.
               </EssenceBody>
               <EssenceBody as="p">
-                <EssenceLeadIn>Thách thức giới hạn.</EssenceLeadIn> Khi đã đủ yên, mình mới nhìn
-                thẳng vào vòng lặp và kiểu gánh — bằng những câu hỏi bạn chưa từng được hỏi. Không
+                <EssenceLeadIn>Thách thức giới hạn</EssenceLeadIn> — Khi đã đủ yên, mình mới nhìn
+                thẳng vào vòng lặp và kiểu gánh, bằng những câu hỏi bạn chưa từng được hỏi. Không
                 để phán xét. Để bạn thấy rõ.
               </EssenceBody>
               <EssenceBody as="p">
-                <EssenceLeadIn>Hiện thực ước mơ.</EssenceLeadIn> Nhìn rõ rồi mới xây. Không phải
+                <EssenceLeadIn>Hiện thực ước mơ</EssenceLeadIn> — Nhìn rõ rồi mới xây. Không phải
                 kế hoạch đẹp trên giấy — là những bước thật, theo nhịp thật của đời sống bạn đang
                 có.
               </EssenceBody>
@@ -245,28 +267,31 @@ export default function PhuongPhapPage() {
           </div>
         </section>
 
-        {/* ⑥ ĐO ĐƯỢC, KHÔNG MƠ HỒ — peak, tiếp nối, khối tăng uy tín */}
+        {/* ⑥ LẤY GÌ ĐỂ BIẾT MÌNH ĐANG ĐI ĐÚNG HƯỚNG — peak, tiếp nối, khối tăng uy tín */}
         <section className="px-6 py-16 md:py-24" style={{ background: BG.peak }}>
           <div className="max-w-[720px] mx-auto">
             <EssenceAnchor as="h2" className="mb-10 md:mb-12">
-              Đo được, không mơ hồ
+              Lấy gì để biết mình đang đi đúng hướng
             </EssenceAnchor>
             <div className="space-y-6">
               <EssenceBody as="p">
-                Tôi không nói "bạn sẽ thấy tốt hơn" rồi để đó. Kết quả của Essence không phải một
-                cảm giác mơ hồ — là những thay đổi cụ thể bạn, và cả người xung quanh bạn, nhận ra
-                được.
+                Buổi đầu, bạn và tôi cùng viết xuống vài điều: điều gì đang làm bạn mỏi nhất, điều
+                gì bạn muốn thấy khác đi, và bạn đang thấy mình ở đâu hôm nay. Trang giấy đó được
+                giữ lại.
               </EssenceBody>
               <EssenceBody as="p">
-                Ngủ sâu hơn. Khi bị chạm, có một nhịp để chọn thay vì phản ứng ngay. Làm việc đúng
-                nhịp hơn, không còn phải cố hết sức chỉ để trông ổn. Bớt phải diễn — với người
-                khác, và với chính mình.
+                Sau một quãng, mình mở lại đúng trang đó và đọc cùng nhau. Không phải để chấm
+                điểm. Để thấy chỗ nào đã dịch, chỗ nào chưa — và vì sao.
+              </EssenceBody>
+              <EssenceBody as="p">
+                Những thứ thường dịch trước tiên: ngủ sâu hơn; khi bị chạm, có một nhịp để chọn
+                thay vì phản ứng ngay; làm việc đúng nhịp hơn, không còn phải cố hết sức chỉ để
+                trông ổn; bớt phải diễn — với người khác, và với chính mình.
+              </EssenceBody>
+              <EssenceBody as="p">
+                Có những thứ bạn không tự thấy, nhưng người sống gần bạn thấy trước.
               </EssenceBody>
             </div>
-            <EssenceAccent as="p" className="mt-12 md:mt-16">
-              Đây là những dấu hiệu tôi cùng bạn theo dõi được qua thời gian — không phải một lời
-              hứa, mà là cách để cả hai cùng biết chuyện có đang đi đúng hướng hay không.
-            </EssenceAccent>
           </div>
         </section>
 
@@ -282,8 +307,19 @@ export default function PhuongPhapPage() {
                 chiếu, và giữ chất lượng đều tay ở mọi ấn phẩm.
               </EssenceBody>
               <EssenceBody as="p">
-                Nhưng có một ranh giới không đổi: mọi ấn phẩm chuyên sâu gửi đến bạn đều do chính
-                tôi phân tích và viết, từ dòng đầu đến dòng cuối.
+                Những gì bạn nói trong phiên không nằm trong hệ đó. Nó ở lại giữa hai người. Cách
+                dữ liệu được giữ, tôi viết riêng ở{" "}
+                <Link
+                  href="/chinh-sach-rieng-tu"
+                  className="text-e26-text hover:text-e26-gold-deep transition-colors duration-300"
+                >
+                  Chính sách riêng tư
+                </Link>
+                .
+              </EssenceBody>
+              <EssenceBody as="p">
+                Có một ranh giới không đổi: mọi ấn phẩm chuyên sâu gửi đến bạn đều do chính tôi
+                phân tích và viết, từ dòng đầu đến dòng cuối.
               </EssenceBody>
             </div>
             <EssenceAccent as="p" className="mt-12 md:mt-16">
@@ -320,27 +356,55 @@ export default function PhuongPhapPage() {
           style={{ background: `linear-gradient(to bottom, ${BG.peak} 0%, ${BG.rising} 100%)` }}
         >
           <div className="max-w-[720px] mx-auto">
-            <EssenceAnchor as="h2" className="mb-10">
+            <EssenceAnchor as="h2" className="mb-14 md:mb-16">
               Nếu cách làm này đúng nhịp với bạn
             </EssenceAnchor>
-            <div className="flex flex-col items-center gap-8">
+
+            {/* KHỐI 1 — biết người làm */}
+            <div className="flex flex-col items-center gap-6">
+              <EssenceBody as="p" className="mx-auto">
+                Nếu bạn muốn biết người ngồi phía đối diện là ai
+              </EssenceBody>
+              <Link
+                href="/ve-kenji"
+                className="inline-block bg-e26-gold text-e26-black rounded-none font-sans font-medium text-[13px] tracking-[0.08em] uppercase px-10 py-4 hover:bg-e26-gold-deep hover:text-e26-ivory transition-colors duration-300"
+              >
+                Về Kenji
+              </Link>
+            </div>
+
+            {/* KHỐI 2 — đi tiếp, hai cửa chưa mở (span, KHÔNG phải Link — tránh soft 404) */}
+            <div className="flex flex-col items-center gap-4 mt-16 md:mt-20">
+              <EssenceBody as="p" className="mx-auto">
+                Nếu bạn đã biết mình muốn đi tiếp
+              </EssenceBody>
+              <EssenceBody as="p" className="mx-auto">
+                Ở đây có hai cửa — một cửa quay về phía bạn, một cửa quay về phía con.
+              </EssenceBody>
+              <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 font-sans text-[15px] text-e26-text-2 mt-2">
+                <span>
+                  Về phía bạn <span className="text-[13px] opacity-70">(sắp mở)</span>
+                </span>
+                <span aria-hidden="true">·</span>
+                <span>
+                  Về phía con <span className="text-[13px] opacity-70">(sắp mở)</span>
+                </span>
+              </div>
+            </div>
+
+            {/* KHỐI 3 — link phụ */}
+            <div className="mt-16 md:mt-20">
               <Link
                 href="/dieu-essence-khong-hua"
                 className="group inline-flex items-center gap-1.5 font-sans font-normal text-[15px] text-e26-text hover:font-medium hover:text-e26-gold-deep transition-colors duration-300"
               >
-                <span>Đọc đầy đủ</span>
+                <span>Đọc đầy đủ: Điều Essence không hứa</span>
                 <span
                   aria-hidden="true"
                   className="inline-block transition-transform duration-300 group-hover:translate-x-1"
                 >
                   →
                 </span>
-              </Link>
-              <Link
-                href="/ve-kenji"
-                className="inline-block bg-e26-gold text-e26-black rounded-none font-sans font-medium text-[13px] tracking-[0.08em] uppercase px-10 py-4 hover:bg-e26-gold-deep hover:text-e26-ivory transition-colors duration-300"
-              >
-                Bắt đầu từ cửa phù hợp
               </Link>
             </div>
           </div>
