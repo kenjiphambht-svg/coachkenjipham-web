@@ -44,7 +44,7 @@ const journeySteps = [
 const outcomes = [
   "Một phản ứng hoặc vòng lặp để nhận ra khi nó quay lại.",
   "Một bước đủ nhỏ để thực hiện trong 48 giờ.",
-  "Một bản tóm tắt riêng để bạn không phải cố nhớ mọi thứ.",
+  "Một bản tóm tắt riêng để bạn không phải nhớ một mình.",
   "Một vài câu hỏi có thể tiếp tục mang theo sau phiên.",
 ] as const;
 
@@ -53,7 +53,7 @@ const sessionDetails = [
   ["Hình thức", "Trực tuyến hoặc gặp trực tiếp tại Sài Gòn"],
   ["Người giữ phiên", "Kenji Phạm"],
   ["Phí phiên", "10.000.000 đồng"],
-  ["Sau phiên", "Bản tóm tắt riêng 1–2 trang"],
+  ["Sau phiên", "Bản tóm tắt riêng 1–2 trang. Hai lần tôi hỏi lại bạn: ngày 7 và ngày 30."],
   ["Số lượng", "Tối đa 5 phiên mỗi tháng"],
 ] as const;
 
@@ -138,9 +138,17 @@ function RecognitionScene() {
         <Lang90Reveal>
           <p className={darkSectionLabelClass}>BẠN CÓ ĐANG Ở ĐÂY KHÔNG?</p>
         </Lang90Reveal>
-        <Lang90Reveal delay="short" className={["mt-12 space-y-8", darkBodyClass].join(" ")}>
+        <Lang90Reveal delay="short" className={["mt-12", darkBodyClass].join(" ")}>
           <p>Bạn vẫn làm việc. Vẫn trả lời những câu cần trả lời. Người khác vẫn thấy bạn ổn.</p>
-          <p>Chỉ có một điều bên trong chưa chịu đi tiếp như cũ.</p>
+        </Lang90Reveal>
+        <Lang90Reveal delay="short" className="mt-10 md:mt-12">
+          <p className="max-w-[620px] font-serif text-[21px] font-normal italic leading-[1.85] tracking-[-0.006em] text-e26-text-dark md:text-[25px] md:leading-[1.8]">
+            Email đã trả lời. Con đã ngủ. Nhà đã yên. Điện thoại không còn rung.
+            <br />
+            Chỉ có đầu óc của bạn — vẫn chưa.
+          </p>
+        </Lang90Reveal>
+        <Lang90Reveal delay="short" className={["mt-10", darkBodyClass].join(" ")}>
           <p>Bạn đã nghĩ về nó nhiều lần. Nhưng càng nghĩ, mọi thứ càng rối.</p>
         </Lang90Reveal>
         <Lang90Reveal delay="long" className={["mt-14", darkBodyClass].join(" ")}>
@@ -227,6 +235,8 @@ function KenjiScene() {
             <Lang90SectionHeading className="mt-7 text-e26-text">Tôi là Kenji Phạm.</Lang90SectionHeading>
           </Lang90Reveal>
           <Lang90Reveal delay="short" className={["mt-12 space-y-8", bodyClass].join(" ")}>
+            <p>Tôi là Kenji Phạm. Tám năm ngồi nghe người lớn nói những điều họ không nói ở nơi khác.</p>
+            <p>Có một giai đoạn tôi một mình nuôi hai con, tài khoản còn 2,5 đô.<br />Tôi không kể thêm ở đây. Trang này không phải để nói về tôi.</p>
             <p>Tôi không ngồi ở đây để nói bạn nên sống thế nào.</p>
             <p>Tôi ở đây để giúp bạn nhìn rõ hơn điều chính mình đã cảm thấy — nhưng chưa đủ yên để tin.</p>
             <p>Tôi sẽ hỏi thẳng khi cần.<br />Và quyền quyết định vẫn ở bạn.</p>
@@ -307,8 +317,9 @@ function OutcomeScene() {
 
 function SessionInfoScene() {
   return (
-    <section data-lang90-scene="session-info" className="bg-e26-cream px-6 py-24 md:py-36">
-      <div className="mx-auto max-w-[920px]">
+    <section data-lang90-scene="session-info" className="relative overflow-hidden bg-e26-cream px-6 py-28 md:py-40">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(ellipse_at_20%_0%,rgba(255,255,255,0.85),transparent_66%)]" />
+      <div className="relative mx-auto max-w-[920px]">
         <Lang90Reveal>
           <p className={sectionLabelClass}>THÔNG TIN PHIÊN</p>
         </Lang90Reveal>
@@ -327,9 +338,23 @@ function SessionInfoScene() {
   );
 }
 
+function BreathScene() {
+  return (
+    <section data-lang90-scene="breath" className="bg-e26-ivory px-6 py-32 md:py-44">
+      <div className="mx-auto max-w-[860px]">
+        <Lang90Reveal>
+          <p className="font-serif text-[28px] font-normal italic leading-[1.35] tracking-[-0.012em] text-e26-text md:text-[38px] lg:text-[44px]">
+            Bạn không cần chắc chắn. Chỉ cần đủ thật với chính mình lúc này.
+          </p>
+        </Lang90Reveal>
+      </div>
+    </section>
+  );
+}
+
 function CtaScene() {
   return (
-    <section data-lang90-scene="next-step" className="bg-e26-ivory px-6 py-28 md:py-40">
+    <section data-lang90-scene="next-step" className="bg-e26-cream-deep px-6 py-32 md:py-44">
       <div className="mx-auto max-w-[680px]">
         <Lang90Reveal>
           <p className={sectionLabelClass}>BƯỚC TIẾP THEO</p>
@@ -347,7 +372,7 @@ function CtaScene() {
           <Link
             href="/lang-90/dat-phien"
             className={[
-              "inline-flex min-h-14 w-full items-center justify-center bg-e26-gold px-8 py-4 text-[13px] uppercase tracking-[0.08em] text-e26-black transition-colors hover:bg-e26-gold-deep hover:text-e26-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold-deep focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory sm:w-auto",
+              "inline-flex min-h-14 w-full items-center justify-center bg-e26-gold px-8 py-4 text-[13px] uppercase tracking-[0.08em] text-e26-black transition-colors hover:bg-e26-gold-deep hover:text-e26-ivory focus:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold-deep focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream-deep sm:w-auto",
               utilityClass,
             ].join(" ")}
           >
@@ -355,6 +380,9 @@ function CtaScene() {
           </Link>
           <p className={["mt-5 text-[11px] leading-[1.45] tracking-[0.08em] text-e26-text-2 md:text-xs", utilityClass].join(" ")}>
             Kenji trực tiếp đọc · Chưa đặt lịch · Chưa phát sinh thanh toán
+          </p>
+          <p className={["mt-6 max-w-[560px] text-[11px] leading-[1.75] tracking-[0.08em] text-e26-text-2 md:text-xs md:leading-[1.7]", utilityClass].join(" ")}>
+            Nếu bạn đang ở trong tình trạng khẩn cấp hoặc có nguy cơ làm tổn thương bản thân hay người khác, hãy ưu tiên liên hệ ngay với một người thân đáng tin, cơ sở y tế hoặc dịch vụ khẩn cấp tại nơi bạn đang sống.
           </p>
           <p className={["mt-8 flex flex-wrap gap-x-5 gap-y-3 text-[11px] tracking-[0.08em] text-e26-text-2 md:text-xs", utilityClass].join(" ")}>
             <Link href="/dieu-essence-khong-hua" className="underline decoration-e26-text-2 underline-offset-4 transition-colors hover:text-e26-text">Điều Essence không hứa</Link>
@@ -384,7 +412,7 @@ function FaqList() {
                 onClick={() => setOpenIndex(open ? null : index)}
                 aria-expanded={open}
                 aria-controls={panelId}
-                className="flex min-h-16 w-full items-center justify-between gap-6 py-6 text-left font-serif text-[22px] font-medium leading-snug tracking-[-0.01em] text-e26-text transition-colors hover:text-e26-text-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-e26-text-2 focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream md:text-[25px]"
+                className="flex min-h-16 w-full items-center justify-between gap-6 py-6 text-left font-serif text-[22px] font-medium leading-snug tracking-[-0.01em] text-e26-text transition-colors hover:text-e26-text-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-e26-text-2 focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory md:text-[25px]"
               >
                 <span>{item.question}</span>
                 <span aria-hidden="true" className="text-xl font-normal">{open ? "−" : "+"}</span>
@@ -404,8 +432,9 @@ function FaqList() {
 
 function FaqScene() {
   return (
-    <section data-lang90-scene="faq" className="bg-e26-cream px-6 py-24 md:py-36">
-      <div className="mx-auto max-w-[760px]">
+    <section data-lang90-scene="faq" className="relative overflow-hidden bg-e26-ivory px-6 py-28 md:py-40">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-[radial-gradient(ellipse_at_82%_100%,rgba(255,255,255,0.85),transparent_66%)]" />
+      <div className="relative mx-auto max-w-[760px]">
         <Lang90Reveal>
           <p className={sectionLabelClass}>NHỮNG ĐIỀU CÓ THỂ BẠN ĐANG HỎI</p>
         </Lang90Reveal>
@@ -452,6 +481,7 @@ export default function Lang90Cinematic() {
       <JourneyScene />
       <OutcomeScene />
       <SessionInfoScene />
+      <BreathScene />
       <CtaScene />
       <FaqScene />
       <ClosingScene />

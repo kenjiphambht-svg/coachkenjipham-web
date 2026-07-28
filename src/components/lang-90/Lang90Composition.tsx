@@ -53,36 +53,10 @@ export function Lang90SectionHeading({ children, className = "" }: { children: R
   );
 }
 
-export function Lang90ScopeHeading({ className = "" }: ClassNameProps) {
-  return (
-    <Lang90SectionHeading className={className}>
-      <span className="block">Cách tôn trọng một người nhất</span>
-      <span className="block">đôi khi là không nhận họ</span>
-      <span className="mt-1 block font-normal italic leading-[1.16]">vào sai cánh cửa.</span>
-    </Lang90SectionHeading>
-  );
-}
-
 export function Lang90AccentVoice({ children, className = "" }: { children: ReactNode } & ClassNameProps) {
   return (
     <p className={`font-serif text-[22px] font-normal italic leading-[1.55] tracking-[-0.008em] md:text-[27px] md:leading-[1.5] ${className}`}>
       {children}
     </p>
-  );
-}
-
-export function Lang90DefinitionAccentVoice({ className = "" }: ClassNameProps) {
-  return (
-    <div className={`max-w-[620px] ${className}`}>
-      <p className="font-serif text-[25px] font-normal italic leading-[1.32] text-e26-text md:text-[30px]">
-        nghe kỹ,
-      </p>
-      <p className="mt-1 font-serif text-[28px] font-medium leading-[1.2] text-e26-text md:text-[34px]">
-        hỏi thẳng,
-      </p>
-      <p className="mt-4 max-w-[560px] font-sans text-[18px] font-normal leading-[1.72] text-e26-text-2 md:text-[19px]">
-        và nói lại điều tôi đang nhìn thấy — kể cả khi điều đó khác với cách bạn đang hiểu câu chuyện của mình.
-      </p>
-    </div>
   );
 }
