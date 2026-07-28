@@ -13,8 +13,16 @@ This is the shared instruction file for Codex, Claude Code, and future AI coding
 - Always inspect existing structure before editing.
 - Always list changed files at the end.
 - Always run available verification commands when possible.
-- Do not merge or deploy automatically.
-- The human owner must review before merge.
+- Merge policy (chốt 28/07/2026 — áp dụng như nhau cho Codex và Claude Code, xem
+  PLAYBOOK.md mục 5 và File 11 mục 2/6 cho bản đầy đủ): sau khi đã tự kiểm đầy
+  đủ (build/lint pass, QA checklist) và mở PR + phiếu báo cáo, agent được TỰ
+  MERGE — không cần chờ chủ repo duyệt bước merge.
+- NGOẠI LỆ bắt buộc chờ duyệt trước (không đổi, không có ngoại lệ khác):
+  (a) PR đụng payment pages; (b) PR đụng dữ liệu trẻ em; (c) PR đổi cấu
+  trúc/route lớn hoặc file dùng chung (Header/Footer/globals.css/tailwind.config);
+  (d) bất kỳ hành động khai báo trang với Google (submit Search Console, thêm
+  route vào sitemap công khai, gỡ noindex, đổi robots.txt cho phép crawl).
+- Không tự deploy ngoài luồng PR → merge → Vercel auto-deploy bình thường của repo.
 - The 9 legacy color variables in `globals.css` (`--cream`, `--gold`, `--ink`, `--body-text`, `--cream-muted`, `--gold-brand`, `--gold-deep`, `--dark-section`, `--cream-light`) are used ONLY by `kidbook.tsx` and `ai-startup.tsx` (legacy routes). Do not use these variables for any new component or route — all new code must use the `--essence-*-2026` tokens only.
 - Khi Kenji gõ "fable mode" hoặc việc đụng route sống/quyết định khó đảo ngược — đọc `.claude/skills/fable-mode/SKILL.md` trước khi làm.
 
