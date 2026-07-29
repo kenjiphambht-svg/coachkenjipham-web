@@ -118,8 +118,17 @@ export function EssenceLeadIn({ children }: { children: ReactNode }) {
   );
 }
 
-// Vai 4 — Accent Voice. True italic Cormorant. Đúng 3 lần trên trang (② ⑥ ⑨).
+// Vai 4 — Accent Voice. True italic Cormorant.
 // "Chữ thì thầm" — #1A1A1A/75 (opacity 0.75, lùi nhẹ sau Body/Anchor đặc).
+//
+// SỬA 29/07/2026 (brief "MẠCH SÁNG TỐI THEO NỘI DUNG + RÚT GỌN" việc 3):
+// 3 lần → 6 lần (② ⑥ ⑨ gốc + cuối ⑤ cuối ⑦ cuối ⑦b, chuyển từ EssenceBody
+// sang Accent, KHÔNG viết thêm chữ mới — 3 câu chuyển đều là câu chốt sẵn có
+// của khối). Vượt chuẩn 2–4 lần của
+// docs/brand/essence-typography-composition-system-v1.md — Kenji chốt: chuẩn
+// đó viết cho trang thường, /ve-kenji dài gấp ba (91 khối body), nghiêng là
+// cách đổi giọng mạnh nhất không cần đổi cỡ chữ/màu, cần nhiều điểm nghỉ hơn
+// cho mắt giữa các mảng văn dài.
 export function EssenceAccent({ children, className, as: As = "p" }: Common & { as?: ElementType }) {
   return (
     <As
