@@ -125,22 +125,22 @@ const linkUnderline =
   "text-e26-text underline underline-offset-4 decoration-e26-border hover:text-e26-gold-deep hover:decoration-e26-gold transition-colors duration-300";
 
 // ── Chiều sâu Lớp 1+2 (nền + radial) ─────────────────────────────────────
-// Chỉ 3 sắc gốc trong bảng màu đã có (cream/black/white ngầm qua kênh RGB) —
-// không thêm màu mới. Mỗi hex dưới đây = cream #F1EFE8 dịch ±N đơn vị/kênh
-// màu (8-bit) — dịch dưới ~1 đơn vị sẽ làm tròn về y hệt cream nên chọn N đủ
-// để CÓ chênh lệch thật, vẫn giữ trong khoảng "~2–4%" brief yêu cầu:
-//   ③  base -6/kênh  (~2.4%, "nặng dần trước Signal")
-//   ⑦  base -4/kênh  (~1.6%)
-//   ②⑨ base +1/kênh (~0.6%, nhẹ nhất — gần như chỉ radial mới thấy)
-//   ⑦b base +3/kênh (~1.6%, sáng nhất trang)
-// ①⑤⑥⑧ giữ nguyên cream base (brief liệt kê là base, không dịch).
+// SỬA 29/07/2026 (brief "MẠCH SÁNG TỐI THEO NỘI DUNG + RÚT GỌN"): dựng lại
+// toàn bộ bảng nền — biên độ thật theo nội dung, không còn ràng buộc "chênh
+// tối đa 4%" của brief trước (Kenji chốt: muốn tương phản có chủ ý). Vẫn chỉ
+// dịch từ cream #F1EFE8 gốc theo kênh RGB (8-bit), không thêm màu ngoài
+// bảng. Hai bước nhảy lớn CÓ CHỦ ĐÍCH: ②(lift)→③(descend) = 20 đơn vị/kênh
+// (câu chuyện chìm xuống); ⑦(weight)→⑦b(peak) = 20 đơn vị/kênh (bùng sáng).
 const CREAM = "#F1EFE8";
 const BG = {
-  base: CREAM,
-  lift: "#F2F0E9", // ②⑨
-  heavy: "#EBE9E2", // ③
-  dim: "#EDEBE4", // ⑦
-  peak: "#F4F2EB", // ⑦b — sáng nhất trang
+  descend: "#DFDDD6", // −18/kênh — ③ chìm xuống (phá sản, gãy đổ)
+  recover: "#E5E3DC", // −12/kênh — ⑤ còn nặng, đang ngoi lên
+  weight: "#E9E7E0", // −8/kênh — ⑦ trầm (ranh giới đạo đức)
+  soft: "#EDEBE4", // −4/kênh — ⑥ nhẹ dần
+  base: CREAM, // cream gốc — ① ⑧
+  lift: "#F3F1EA", // +2/kênh — ②
+  close: "#F7F5EE", // +6/kênh — ⑨ ấm lắng
+  peak: "#FDFBF4", // +12/kênh — ⑦b đỉnh sáng
 };
 
 // Radial layer 2: tâm sáng hơn rìa ~3% — cộng thêm vài đơn vị/kênh từ chính
@@ -281,10 +281,10 @@ export default function VeKenjiPage() {
           </div>
         </section>
 
-        {/* ③ — nhịp thường, nặng dần trước Signal */}
+        {/* ③ — nhịp thường, chìm xuống (phá sản, gãy đổ) */}
         <section
           className={`px-6 ${RHYTHM.thuong}`}
-          style={{ background: sectionBg(BG.heavy) }}
+          style={{ background: sectionBg(BG.descend) }}
         >
           <div className="ve-kenji-reveal max-w-[660px] mx-auto">
             <EssenceUtility as="p" className="text-[#1A1A1A]/45 mb-4 md:mb-5">
@@ -304,16 +304,15 @@ export default function VeKenjiPage() {
                 con trai và làm lại từ đầu.
               </EssenceBody>
               <EssenceBody as="p">
-                Tôi đã đi qua nhiều nghề — phục vụ, lái xe, trợ lý, bảo hiểm, buôn bán, kinh
-                doanh, truyền thông. Nhiều việc giúp tôi sống. Nhưng chỉ khi gặp coaching — khi
-                tôi giúp một người nhìn ra điều đang âm thầm kéo họ — tôi mới thấy: à…mình đang ở
-                đúng chỗ.
+                Tôi đã đi qua nhiều nghề — phục vụ, lái xe, bảo hiểm, kinh doanh, truyền thông.
+                Nhiều việc giúp tôi sống. Nhưng chỉ khi gặp coaching — khi tôi giúp một người
+                nhìn ra điều đang âm thầm kéo họ — tôi mới thấy: à…mình đang ở đúng chỗ.
               </EssenceBody>
               <EssenceBody as="p">
-                Từ rất lâu trước phiên đầu tiên, tôi đã đi qua nhiều hệ quy chiếu khác nhau để
-                hiểu con người. Tôi chỉ giữ lại phần nào còn đứng được sau hàng trăm buổi ngồi
-                lắng nghe câu chuyện người ta kể. Tâm lý học chiều sâu của Carl Jung ở lại. Tâm lý
-                nguyên mẫu ở lại. Khoa học thần kinh ở lại. Còn lại, tôi để xuống.
+                Từ lâu trước phiên đầu tiên, tôi đã đi qua nhiều hệ quy chiếu để hiểu con người.
+                Tôi chỉ giữ lại phần nào còn đứng được sau hàng trăm buổi ngồi nghe. Tâm lý học
+                chiều sâu của Carl Jung, tâm lý nguyên mẫu, khoa học thần kinh — những thứ đó ở
+                lại. Còn lại, tôi để xuống.
               </EssenceBody>
               <EssenceBody as="p">
                 Và từ một câu hỏi: nếu đời mình đã từng vỡ như vậy — mình có thể dựng nó thành thứ
@@ -343,10 +342,10 @@ export default function VeKenjiPage() {
           </div>
         </VeKenjiSectionImage>
 
-        {/* ⑤⑥ — nhịp thường, về lại cream base */}
+        {/* ⑤ — nhịp thường, còn nặng, đang ngoi lên */}
         <section
           className={`px-6 ${RHYTHM.thuong}`}
-          style={{ background: sectionBg(BG.base) }}
+          style={{ background: sectionBg(BG.recover) }}
         >
           <div className="ve-kenji-reveal max-w-[660px] mx-auto">
             <EssenceUtility as="p" className="text-[#1A1A1A]/45 mb-4 md:mb-5">
@@ -366,24 +365,20 @@ export default function VeKenjiPage() {
                 diễn mình mang ra đời, và bản sắc thật đang chờ được sống.
               </EssenceBody>
               <EssenceBody as="p">
-                Việc này tôi làm từ lâu trước khi biết nó có một cái tên nghề. Đọc, ngồi nghe, đối
-                chiếu — nhiều năm như vậy, trước khi tôi biết người ta gọi nó là coaching.
-              </EssenceBody>
-              <EssenceBody as="p">
-                ICF đến sau. Tôi học vì thấy mình cần một khung nghề rõ ràng, và cần một bộ quy
-                tắc từ bên ngoài để tự soi — chứ không chỉ dựa vào cảm nhận của riêng mình. Chứng
-                chỉ đó không làm tôi hiểu người sâu hơn. Nó cho tôi khung làm việc có kỷ luật hơn.
-                Tôi giữ nó vì lý do này.
+                Việc này tôi làm từ lâu trước khi biết nó có một cái tên nghề. ICF đến sau — tôi
+                học vì cần một khung nghề rõ ràng và một bộ quy tắc từ bên ngoài để tự soi. Chứng
+                chỉ đó không làm tôi hiểu người sâu hơn; nó cho tôi kỷ luật. Tôi giữ nó vì lý do
+                này.
               </EssenceBody>
               <EssenceBody as="p">
                 Nhưng tám năm ngồi nghe, tôi thấy một điều lặp lại. Có người chưa đủ yên mà đã
                 được hỏi bước tiếp theo là gì — họ trả lời được, và rồi họ mệt thêm. Có người đã
                 tới đích rồi mới thấy trống — đạt được, nhưng đạt bằng cách căng mình lên.
               </EssenceBody>
-              <EssenceBody as="p">
+              <EssenceAccent as="p">
                 Cả hai đều thiếu cùng một thứ, và thứ đó không nằm trước hay sau cái đích. Nó nằm
                 bên dưới. Tôi làm phần bên dưới ấy.
-              </EssenceBody>
+              </EssenceAccent>
               <EssenceBody as="p">
                 Cách làm cụ thể tôi viết riêng ở{" "}
                 <Link
@@ -397,9 +392,10 @@ export default function VeKenjiPage() {
           </div>
         </section>
 
+        {/* ⑥ — nhịp mở, nhẹ dần */}
         <section
           className={`px-6 ${RHYTHM.mo}`}
-          style={{ background: sectionBg(BG.base) }}
+          style={{ background: sectionBg(BG.soft) }}
         >
           <div className="ve-kenji-reveal max-w-[560px] mx-auto">
             <EssenceUtility as="p" className="text-[#1A1A1A]/45 mb-4 md:mb-5">
@@ -460,10 +456,10 @@ export default function VeKenjiPage() {
 
         <VeKenjiDivider />
 
-        {/* ⑦ — nhịp thường, tối nhẹ lại */}
+        {/* ⑦ — nhịp thường, trầm (ranh giới đạo đức) */}
         <section
           className={`px-6 ${RHYTHM.thuong}`}
-          style={{ background: sectionBg(BG.dim) }}
+          style={{ background: sectionBg(BG.weight) }}
         >
           <div className="ve-kenji-reveal max-w-[760px] mx-auto">
             <EssenceUtility as="p" className="text-[#1A1A1A]/45 mb-4 md:mb-5">
@@ -542,10 +538,10 @@ export default function VeKenjiPage() {
               </div>
             </div>
 
-            <EssenceBody as="p" className="mt-12 md:mt-16">
+            <EssenceAccent as="p" className="mt-12 md:mt-16">
               Còn nếu tôi lỡ đẩy nhanh, lỡ gồng, lỡ sai nhịp — tôi quay lại, nói một câu xin lỗi,
               rồi chỉnh cho đúng.
-            </EssenceBody>
+            </EssenceAccent>
           </div>
         </section>
 
@@ -597,9 +593,9 @@ export default function VeKenjiPage() {
                 Thứ tự đó không đảo được. An định trước, An thịnh sau. Và tôi không nói với bạn nó
                 mất bao lâu.
               </EssenceBody>
-              <EssenceBody as="p">
+              <EssenceAccent as="p">
                 Riêng tư, đúng nhịp, và quyền dừng bất cứ lúc nào — ba điều đó luôn thuộc về bạn.
-              </EssenceBody>
+              </EssenceAccent>
               <EssenceBody as="p">
                 Toàn bộ những điều Essence không hứa, tôi viết rõ{" "}
                 <Link
@@ -645,7 +641,7 @@ export default function VeKenjiPage() {
         {/* ⑨ — nhịp lặng, ấm lắng lại */}
         <section
           className={`px-6 ${RHYTHM.lang}`}
-          style={{ background: sectionBg(BG.lift) }}
+          style={{ background: sectionBg(BG.close) }}
         >
           <div className="ve-kenji-reveal max-w-[660px] mx-auto">
             <div className="space-y-5">
