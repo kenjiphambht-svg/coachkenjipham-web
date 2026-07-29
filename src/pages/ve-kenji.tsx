@@ -32,6 +32,14 @@ import { useVeKenjiSectionReveal } from "@/hooks/useVeKenjiSectionReveal";
 // phân tách ở 3 chỗ chuyển ý, và độ đậm màu chữ phân vai). Ảnh chân dung
 // (05-chan-dung-kenji) đứng riêng ở ② — Kenji đã xem và CHỐT dùng dù có ghế
 // gỗ đen (wood rule), tạm thời, chờ ảnh thay thế sau.
+//
+// Vòng 29/07/2026 "TINH CHỈNH NHỊP & PHÂN VAI" (sau PR #104): hồi sinh
+// Utility Voice — thêm 6 nhãn điều hướng trước H2 (③⑤⑥⑦⑦b⑧), opacity 0.45
+// (nhạt hơn Utility mặc định 0.55 của Hero, để là cột mốc chứ không tranh
+// heading). Ảnh chân dung phóng to 280→440px desktop (② vẫn đứng riêng,
+// không chữ đè). EssenceLeadIn trong khối la bàn ⑦/⑦b bọc phần giải thích
+// bằng span opacity 0.80 (Lớp 4 áp vào đúng chỗ cần nhất — LeadIn tiến lên
+// trước, giải thích lùi sau). Không đổi 1 chữ nội dung nào.
 // ============================================================
 
 const personSchema = {
@@ -164,9 +172,13 @@ function VeKenjiDivider() {
 }
 
 // ── Nhịp khoảng trắng — 3 mức, brief mục 3A ──────────────────────────────
+// SỬA 29/07/2026 (brief "TINH CHỈNH NHỊP & PHÂN VAI" việc 4): ⑤⑥⑦ liền nhau
+// cùng nhịp "thường" — 3 section phẳng như nhau giữa khúc dài nhất trang.
+// Đổi ⑥ sang "mở" để cắt nhịp (nội dung Tự Do—Trí Tuệ—Kiến Tạo xứng đáng
+// khoảng thở rộng hơn, và đứng giữa chuỗi 3 nên cắt hiệu quả nhất).
 const RHYTHM = {
-  mo: "py-28 md:py-40", // ① Hero, ②, ⑦b
-  thuong: "py-20 md:py-28", // ③ ⑤ ⑥ ⑦ ⑧
+  mo: "py-28 md:py-40", // ① Hero, ②, ⑥, ⑦b
+  thuong: "py-20 md:py-28", // ③ ⑤ ⑦ ⑧
   lang: "py-36 md:py-56", // ④ Signal, ⑨ — rộng nhất trang
 };
 
@@ -237,9 +249,9 @@ export default function VeKenjiPage() {
               <Image
                 src="/images/ve-kenji/05-chan-dung-kenji.webp"
                 alt="Kenji Phạm"
-                width={340}
-                height={425}
-                className="h-auto w-[220px] md:w-[280px] object-cover"
+                width={440}
+                height={550}
+                className="h-auto w-[280px] max-w-full md:w-[440px] object-cover"
               />
             </div>
 
@@ -268,6 +280,9 @@ export default function VeKenjiPage() {
           style={{ background: sectionBg(BG.heavy) }}
         >
           <div className="ve-kenji-reveal max-w-[720px] mx-auto">
+            <EssenceUtility as="p" className="text-[#1A1A1A]/45 mb-4 md:mb-5">
+              TÔI ĐẾN TỪ ĐÂU
+            </EssenceUtility>
             <EssenceAnchor as="h2" className="mb-10 md:mb-12">
               Tôi không đến từ <em>lý thuyết</em>.
             </EssenceAnchor>
@@ -327,6 +342,9 @@ export default function VeKenjiPage() {
           style={{ background: sectionBg(BG.base) }}
         >
           <div className="ve-kenji-reveal max-w-[720px] mx-auto">
+            <EssenceUtility as="p" className="text-[#1A1A1A]/45 mb-4 md:mb-5">
+              CÁCH TÔI LÀM VIỆC
+            </EssenceUtility>
             <EssenceAnchor as="h2" className="mb-10 md:mb-12">
               Tôi đọc, để hiểu — <em>không để phán</em>.
             </EssenceAnchor>
@@ -373,10 +391,13 @@ export default function VeKenjiPage() {
         </section>
 
         <section
-          className={`px-6 ${RHYTHM.thuong}`}
+          className={`px-6 ${RHYTHM.mo}`}
           style={{ background: sectionBg(BG.base) }}
         >
           <div className="ve-kenji-reveal max-w-[720px] mx-auto">
+            <EssenceUtility as="p" className="text-[#1A1A1A]/45 mb-4 md:mb-5">
+              ĐIỀU TÔI HƯỚNG TỚI
+            </EssenceUtility>
             <EssenceAnchor as="h2" className="mb-8">
               Điều tôi hướng tới cùng bạn
             </EssenceAnchor>
@@ -438,6 +459,9 @@ export default function VeKenjiPage() {
           style={{ background: sectionBg(BG.dim) }}
         >
           <div className="ve-kenji-reveal max-w-[720px] mx-auto">
+            <EssenceUtility as="p" className="text-[#1A1A1A]/45 mb-4 md:mb-5">
+              LA BÀN
+            </EssenceUtility>
             <EssenceAnchor as="h2" className="mb-10 md:mb-12">
               La bàn tôi <em>tự giữ</em>
             </EssenceAnchor>
@@ -463,37 +487,51 @@ export default function VeKenjiPage() {
 
             <div className="space-y-8 mt-12 md:mt-16">
               <EssenceBody as="p">
-                <EssenceLeadIn>Tôi chỉ nói điều tôi thấy rõ.</EssenceLeadIn> Điều chưa rõ, tôi nói
-                là chưa rõ. Tôi không biến một cái nhìn thành kết luận về bạn. Và tôi không hứa
-                phép màu — không hết mệt sau một buổi, không biết trước điều gì đang chờ bạn.
+                <EssenceLeadIn>Tôi chỉ nói điều tôi thấy rõ.</EssenceLeadIn>{" "}
+                <span className="text-[#1A1A1A]/80">
+                  Điều chưa rõ, tôi nói là chưa rõ. Tôi không biến một cái nhìn thành kết luận về
+                  bạn. Và tôi không hứa phép màu — không hết mệt sau một buổi, không biết trước
+                  điều gì đang chờ bạn.
+                </span>
               </EssenceBody>
               <EssenceBody as="p">
-                <EssenceLeadIn>Tôi đi theo nhịp của bạn.</EssenceLeadIn> Có những giai đoạn cần im
-                lặng để tiêu hóa, không phải im lặng vì thất bại. Tôi không dùng kỹ thuật để bạn
-                trông ổn hơn trong khi bên trong chưa ổn. Và tôi không gọi cái đau của bạn là "bài
-                học đẹp" cho sang — tôi chỉ ngồi cùng nó, đủ thật và đủ mềm.
+                <EssenceLeadIn>Tôi đi theo nhịp của bạn.</EssenceLeadIn>{" "}
+                <span className="text-[#1A1A1A]/80">
+                  Có những giai đoạn cần im lặng để tiêu hóa, không phải im lặng vì thất bại. Tôi
+                  không dùng kỹ thuật để bạn trông ổn hơn trong khi bên trong chưa ổn. Và tôi
+                  không gọi cái đau của bạn là "bài học đẹp" cho sang — tôi chỉ ngồi cùng nó, đủ
+                  thật và đủ mềm.
+                </span>
               </EssenceBody>
               <EssenceBody as="p">
-                <EssenceLeadIn>Tôi không muốn bạn cần tôi lâu.</EssenceLeadIn> Một buổi làm việc
-                tốt không khiến bạn nghĩ "không có Kenji thì tôi không xong". Nó khiến bạn nghĩ
-                "tôi thấy rõ hơn, và tôi biết bước tiếp theo của mình". Chứng chỉ, danh tiếng, hay
-                việc từng học với ai — tôi không lấy làm thước đo. Thước đo là bạn có thật sự nhẹ
-                hơn không.
+                <EssenceLeadIn>Tôi không muốn bạn cần tôi lâu.</EssenceLeadIn>{" "}
+                <span className="text-[#1A1A1A]/80">
+                  Một buổi làm việc tốt không khiến bạn nghĩ "không có Kenji thì tôi không xong".
+                  Nó khiến bạn nghĩ "tôi thấy rõ hơn, và tôi biết bước tiếp theo của mình". Chứng
+                  chỉ, danh tiếng, hay việc từng học với ai — tôi không lấy làm thước đo. Thước đo
+                  là bạn có thật sự nhẹ hơn không.
+                </span>
               </EssenceBody>
               <EssenceBody as="p">
-                <EssenceLeadIn>Tôi biết chỗ mình phải dừng.</EssenceLeadIn> Tôi không chẩn đoán,
-                không thay bác sĩ hay chuyên gia tâm lý lâm sàng, không tư vấn đầu tư hay pháp lý.
-                Nếu điều bạn mang đến vượt phạm vi này, tôi nói thẳng và chỉ bạn tới nơi phù hợp
-                hơn.
+                <EssenceLeadIn>Tôi biết chỗ mình phải dừng.</EssenceLeadIn>{" "}
+                <span className="text-[#1A1A1A]/80">
+                  Tôi không chẩn đoán, không thay bác sĩ hay chuyên gia tâm lý lâm sàng, không tư
+                  vấn đầu tư hay pháp lý. Nếu điều bạn mang đến vượt phạm vi này, tôi nói thẳng và
+                  chỉ bạn tới nơi phù hợp hơn.
+                </span>
               </EssenceBody>
               <EssenceBody as="p">
-                <EssenceLeadIn>Tôi không để AI đóng vai tôi.</EssenceLeadIn> Phía sau có một lớp
-                vận hành AI giúp tôi nhanh và chính xác hơn khi sắp xếp, đối chiếu, ghi lại. Nhưng
-                bản gửi đến bạn, tôi đọc và viết từ đầu đến cuối.
+                <EssenceLeadIn>Tôi không để AI đóng vai tôi.</EssenceLeadIn>{" "}
+                <span className="text-[#1A1A1A]/80">
+                  Phía sau có một lớp vận hành AI giúp tôi nhanh và chính xác hơn khi sắp xếp, đối
+                  chiếu, ghi lại. Nhưng bản gửi đến bạn, tôi đọc và viết từ đầu đến cuối.
+                </span>
               </EssenceBody>
               <EssenceBody as="p">
-                <EssenceLeadIn>Với con của bạn, tôi giữ chặt hơn nữa.</EssenceLeadIn> Chữ tôi viết
-                là để ba mẹ nhìn con rõ hơn, không phải để dán cho con một cái nhãn.
+                <EssenceLeadIn>Với con của bạn, tôi giữ chặt hơn nữa.</EssenceLeadIn>{" "}
+                <span className="text-[#1A1A1A]/80">
+                  Chữ tôi viết là để ba mẹ nhìn con rõ hơn, không phải để dán cho con một cái nhãn.
+                </span>
               </EssenceBody>
             </div>
 
@@ -510,6 +548,9 @@ export default function VeKenjiPage() {
           style={{ background: sectionBg(BG.peak) }}
         >
           <div className="ve-kenji-reveal max-w-[720px] mx-auto">
+            <EssenceUtility as="p" className="text-[#1A1A1A]/45 mb-4 md:mb-5">
+              BẠN NHẬN ĐƯỢC GÌ
+            </EssenceUtility>
             <EssenceAnchor as="h2" className="mb-8">
               Đổi lại, bạn nhận được gì
             </EssenceAnchor>
@@ -519,22 +560,28 @@ export default function VeKenjiPage() {
 
             <div className="space-y-5">
               <EssenceBody as="p">
-                <EssenceLeadIn>Trước hết là sự rõ ràng.</EssenceLeadIn> Bạn thấy được điều gì
-                đang thật sự vận hành trong đời mình — thay vì chỉ thấy mình mệt mà không biết vì
-                sao.
+                <EssenceLeadIn>Trước hết là sự rõ ràng.</EssenceLeadIn>{" "}
+                <span className="text-[#1A1A1A]/80">
+                  Bạn thấy được điều gì đang thật sự vận hành trong đời mình — thay vì chỉ thấy
+                  mình mệt mà không biết vì sao.
+                </span>
               </EssenceBody>
               <EssenceBody as="p">
-                <EssenceLeadIn>Từ chỗ rõ, bên trong bắt đầu có một khoảng yên.</EssenceLeadIn> Tôi
-                gọi đó là An định. Không phải bình an kiểu không còn chuyện gì xảy ra. Là khi bị
-                chạm, bạn còn một nhịp để chọn, thay vì bị nhịp cũ kéo đi.
+                <EssenceLeadIn>Từ chỗ rõ, bên trong bắt đầu có một khoảng yên.</EssenceLeadIn>{" "}
+                <span className="text-[#1A1A1A]/80">
+                  Tôi gọi đó là An định. Không phải bình an kiểu không còn chuyện gì xảy ra. Là
+                  khi bị chạm, bạn còn một nhịp để chọn, thay vì bị nhịp cũ kéo đi.
+                </span>
               </EssenceBody>
               <EssenceBody as="p">
                 <EssenceLeadIn>
                   Và khi nền đó đủ vững, đời sống bên ngoài thường tự có trái.
                 </EssenceLeadIn>{" "}
-                Công việc đúng nhịp hơn. Quan hệ thật hơn. Chuyện tiền bớt căng. Thân nhẹ hơn. Đó
-                là An thịnh — không phải thứ tôi làm ra cho bạn, mà là thứ mọc lên khi bên trong
-                bạn nền đã vững.
+                <span className="text-[#1A1A1A]/80">
+                  Công việc đúng nhịp hơn. Quan hệ thật hơn. Chuyện tiền bớt căng. Thân nhẹ hơn.
+                  Đó là An thịnh — không phải thứ tôi làm ra cho bạn, mà là thứ mọc lên khi bên
+                  trong bạn nền đã vững.
+                </span>
               </EssenceBody>
             </div>
 
@@ -567,6 +614,9 @@ export default function VeKenjiPage() {
           style={{ background: sectionBg(BG.base) }}
         >
           <div className="ve-kenji-reveal max-w-[720px] mx-auto">
+            <EssenceUtility as="p" className="text-[#1A1A1A]/45 mb-4 md:mb-5">
+              CÂU HỎI THƯỜNG GẶP
+            </EssenceUtility>
             <EssenceAnchor as="h2" className="mb-10 md:mb-12">
               Vài câu người ta hay hỏi tôi
             </EssenceAnchor>

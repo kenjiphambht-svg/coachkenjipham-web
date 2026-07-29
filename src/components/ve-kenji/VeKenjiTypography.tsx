@@ -101,12 +101,21 @@ export function EssenceBody({ children, className, as: As = "p" }: Common & { as
   );
 }
 
-// Câu mở đầu bold trong một khối Reading Voice (③ giai đoạn, ⑦ la bàn, ⑦b —
-// "câu đầu bold, CÙNG DÒNG với phần còn lại"). Ngoại lệ CÓ CHỦ Ý với luật
-// "không bold 600+" của 04_TYPOGRAPHY_SYSTEM_2026.md — brief 27/07/2026 của
-// Kenji chỉ định rõ Inter 500–600 cho đúng các câu này.
+// Câu mở đầu bold trong một khối Reading Voice (③ giai đoạn, ⑥ ba giai đoạn,
+// ⑦ la bàn, ⑦b — "câu đầu bold, CÙNG DÒNG với phần còn lại"). Ngoại lệ CÓ CHỦ
+// Ý với luật "không bold 600+" của 04_TYPOGRAPHY_SYSTEM_2026.md — brief
+// 27/07/2026 của Kenji chỉ định rõ Inter 500–600 cho đúng các câu này.
+//
+// SỬA 29/07/2026 (brief "TINH CHỈNH NHỊP & PHÂN VAI" việc 3): khối la bàn ⑦
+// và ⑦b có 6+3 câu LeadIn nhưng trông phẳng như văn thường vì cùng cỡ chữ
+// với Body, chỉ đậm hơn. Tăng cỡ 18px/20px (chênh ~5–6% so Body 17/19px) +
+// màu đặc #1A1A1A tường minh (không kế thừa opacity từ span giải thích bọc
+// ngoài ở ⑦/⑦b — xem ve-kenji.tsx) để câu mở đầu LUÔN tiến lên trước dù đứng
+// cạnh phần giải thích đã lùi màu.
 export function EssenceLeadIn({ children }: { children: ReactNode }) {
-  return <strong className="font-semibold">{children}</strong>;
+  return (
+    <strong className="font-semibold text-[18px] md:text-[20px] text-[#1A1A1A]">{children}</strong>
+  );
 }
 
 // Vai 4 — Accent Voice. True italic Cormorant. Đúng 3 lần trên trang (② ⑥ ⑨).
