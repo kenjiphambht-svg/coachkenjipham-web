@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
 import { useRef } from "react";
 import { SEO } from "@/components/SEO";
 import HomeHeader from "@/components/homepage/HomeHeader";
@@ -12,20 +13,25 @@ import {
   EssenceLeadIn,
   EssenceSignalComposition,
   EssenceUtility,
-  VeKenjiToneProvider,
 } from "@/components/ve-kenji/VeKenjiTypography";
 import { VeKenjiSectionImage } from "@/components/ve-kenji/VeKenjiImagery";
 import { useVeKenjiSignalReveal } from "@/hooks/useVeKenjiSignalReveal";
+import { useVeKenjiSectionReveal } from "@/hooks/useVeKenjiSectionReveal";
 
 // ============================================================
 // "VỀ KENJI" — /ve-kenji (noindex, nofollow — LUẬT 2, còn hiệu lực: KHÔNG
 // khai báo Google dưới bất kỳ hình thức nào cho tới khi Kenji duyệt riêng)
 // Hạ tầng niềm tin + entity chính cho GEO (schema Person). Copy NGUYÊN VĂN
 // Kenji đã chốt — không tự sửa chính tả/từ ngữ/dấu câu.
-// Vòng 29/07/2026 "LẮP 5 ẢNH THẬT": thay mode nền CSS-only bằng ảnh Lightscape
-// thật (public/images/ve-kenji/*.webp) + overlay rgba tối theo section + GSAP
-// parallax cho ④ Signal. Ảnh chân dung (chan-dung-kenji.png) CHƯA dùng — vi
-// phạm wood rule (ghế gỗ đen rõ trong khung), xem phiếu báo cáo PR.
+//
+// Vòng 29/07/2026 "BỎ ẢNH NỀN, DỰNG CHIỀU SÂU BẰNG CODE": vòng ảnh trước
+// (4 ảnh nền + overlay) buộc overlay lên 0.42–0.5 mới đọc được chữ — ảnh bị
+// dìm gần chết mà vẫn tranh với chữ. Kenji quyết định đổi hướng: bỏ ảnh nền
+// ở MỌI section trừ ④ Signal (ngoại lệ duy nhất). Chiều sâu dựng bằng 4 lớp
+// CSS thuần (nền chuyển sắc rất nhẹ theo section, radial sáng giữa, đường kẻ
+// phân tách ở 3 chỗ chuyển ý, và độ đậm màu chữ phân vai). Ảnh chân dung
+// (05-chan-dung-kenji) đứng riêng ở ② — Kenji đã xem và CHỐT dùng dù có ghế
+// gỗ đen (wood rule), tạm thời, chờ ảnh thay thế sau.
 // ============================================================
 
 const personSchema = {
@@ -110,16 +116,65 @@ const breadcrumbSchema = {
 const linkUnderline =
   "text-e26-text underline underline-offset-4 decoration-e26-border hover:text-e26-gold-deep hover:decoration-e26-gold transition-colors duration-300";
 
-const IMG = {
-  vanMo: "/images/ve-kenji/03-van-mo.webp",
-  vanChuyen: "/images/ve-kenji/02-van-chuyen.webp",
-  kheVanToi: "/images/ve-kenji/01-khe-van-toi.webp",
-  vanSangDinh: "/images/ve-kenji/04-van-sang-dinh.webp",
+// ── Chiều sâu Lớp 1+2 (nền + radial) ─────────────────────────────────────
+// Chỉ 3 sắc gốc trong bảng màu đã có (cream/black/white ngầm qua kênh RGB) —
+// không thêm màu mới. Mỗi hex dưới đây = cream #F1EFE8 dịch ±N đơn vị/kênh
+// màu (8-bit) — dịch dưới ~1 đơn vị sẽ làm tròn về y hệt cream nên chọn N đủ
+// để CÓ chênh lệch thật, vẫn giữ trong khoảng "~2–4%" brief yêu cầu:
+//   ③  base -6/kênh  (~2.4%, "nặng dần trước Signal")
+//   ⑦  base -4/kênh  (~1.6%)
+//   ②⑨ base +1/kênh (~0.6%, nhẹ nhất — gần như chỉ radial mới thấy)
+//   ⑦b base +3/kênh (~1.6%, sáng nhất trang)
+// ①⑤⑥⑧ giữ nguyên cream base (brief liệt kê là base, không dịch).
+const CREAM = "#F1EFE8";
+const BG = {
+  base: CREAM,
+  lift: "#F2F0E9", // ②⑨
+  heavy: "#EBE9E2", // ③
+  dim: "#EDEBE4", // ⑦
+  peak: "#F4F2EB", // ⑦b — sáng nhất trang
+};
+
+// Radial layer 2: tâm sáng hơn rìa ~3% — cộng thêm vài đơn vị/kênh từ chính
+// màu nền section đó (không phải từ cream gốc), giữ đúng "giữa sáng hơn rìa
+// 3%" tương đối với MỖI section, không phải một mốc tuyệt đối toàn trang.
+function lighten(hex: string, amount: number) {
+  const n = parseInt(hex.slice(1), 16);
+  const r = Math.min(255, ((n >> 16) & 255) + amount);
+  const g = Math.min(255, ((n >> 8) & 255) + amount);
+  const b = Math.min(255, (n & 255) + amount);
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0").toUpperCase()}`;
+}
+
+function sectionBg(edge: string) {
+  const center = lighten(edge, 6);
+  return `radial-gradient(ellipse 120% 90% at 50% 40%, ${center} 0%, ${edge} 100%)`;
+}
+
+// ── Lớp 3: đường kẻ phân tách — chỉ ở 3 chỗ chuyển ý thật sự ─────────────
+function VeKenjiDivider() {
+  return (
+    <div className="max-w-[720px] mx-auto px-6" aria-hidden="true">
+      <div
+        className="h-px w-full max-w-[180px]"
+        style={{ backgroundColor: "rgba(26, 26, 26, 0.06)" }}
+      />
+    </div>
+  );
+}
+
+// ── Nhịp khoảng trắng — 3 mức, brief mục 3A ──────────────────────────────
+const RHYTHM = {
+  mo: "py-28 md:py-40", // ① Hero, ②, ⑦b
+  thuong: "py-20 md:py-28", // ③ ⑤ ⑥ ⑦ ⑧
+  lang: "py-36 md:py-56", // ④ Signal, ⑨ — rộng nhất trang
 };
 
 export default function VeKenjiPage() {
   const signalRef = useRef<HTMLDivElement>(null);
+  const pageRef = useRef<HTMLElement>(null);
   useVeKenjiSignalReveal(signalRef);
+  useVeKenjiSectionReveal(pageRef);
 
   return (
     <>
@@ -143,11 +198,13 @@ export default function VeKenjiPage() {
 
       <HomeHeader />
 
-      <main className="text-e26-text">
-        {/* ①② — Hero + intro, ảnh 03-van-mo (dùng chính), overlay rất nhẹ để giữ chữ nổi */}
-        <VeKenjiSectionImage src={IMG.vanMo} overlay={0.05} priority>
-          {/* ① HERO — hơi nén (padding dọc hẹp hơn các khối sau) */}
-          <section className="max-w-[720px] mx-auto px-6 pt-14 pb-10 md:pt-20 md:pb-12">
+      <main ref={pageRef} className="text-e26-text">
+        {/* ① HERO — nhịp mở, nền cream base */}
+        <section
+          className={`px-6 ${RHYTHM.mo}`}
+          style={{ background: sectionBg(BG.base) }}
+        >
+          <div className="ve-kenji-reveal max-w-[720px] mx-auto">
             <EssenceUtility as="p" className="mb-6 md:mb-8">
               Kenji Phạm · Huấn luyện viên tâm lý chiều sâu
             </EssenceUtility>
@@ -160,16 +217,33 @@ export default function VeKenjiPage() {
               Để bạn nhìn lại câu chuyện cuộc sống của mình, dọn điều đang kéo mình, và bạn chọn
               lại nhịp sống — từ nơi thật hơn bên trong.
             </EssenceBody>
-          </section>
+          </div>
+        </section>
 
-          {/* ② — nối tiếp Hero, không heading hiện. Chân dung Kenji CHƯA đặt ở đây —
-              xem phiếu báo cáo PR (wood rule + vị trí còn là đề xuất, chưa Kenji chốt). */}
-          <section className="max-w-[720px] mx-auto px-6 pt-6 pb-14 md:pt-8 md:pb-20">
+        {/* ② — nối tiếp Hero, không heading hiện. Ảnh chân dung đứng riêng sau đoạn
+            mở đầu — Kenji chốt 29/07: dùng tạm ảnh này dù có ghế gỗ đen (wood rule)
+            — sẽ thay bản mới sau. */}
+        <section
+          className={`px-6 ${RHYTHM.mo}`}
+          style={{ background: sectionBg(BG.lift) }}
+        >
+          <div className="ve-kenji-reveal max-w-[720px] mx-auto">
+            <EssenceBody as="p">
+              Tôi là Kenji Phạm — huấn luyện viên tâm lý chiều sâu tại Sài Gòn, người sáng lập
+              Essence Coaching.
+            </EssenceBody>
+
+            <div className="my-10 md:my-14">
+              <Image
+                src="/images/ve-kenji/05-chan-dung-kenji.webp"
+                alt="Kenji Phạm"
+                width={340}
+                height={425}
+                className="h-auto w-[220px] md:w-[280px] object-cover"
+              />
+            </div>
+
             <div className="space-y-5">
-              <EssenceBody as="p">
-                Tôi là Kenji Phạm — huấn luyện viên tâm lý chiều sâu tại Sài Gòn, người sáng lập
-                Essence Coaching.
-              </EssenceBody>
               <EssenceBody as="p">
                 <Link href="/ban-sac-cua-ban" className={linkUnderline}>
                   Tám năm qua, tôi ngồi cùng người lớn trong những đoạn họ muốn nhìn lại chính
@@ -185,57 +259,58 @@ export default function VeKenjiPage() {
             <EssenceAccent as="p" className="mt-12 md:mt-16">
               Câu chuyện cuộc sống của bạn là một kiệt tác.
             </EssenceAccent>
-          </section>
-        </VeKenjiSectionImage>
+          </div>
+        </section>
 
-        {/* ③ — ảnh 02-van-chuyen dùng lại, overlay đậm hơn ⑤⑥ (nặng dần trước Signal).
-            Overlay tăng từ 0.12→0.5 + đổi tone chữ sáng: đo thật bằng ảnh chụp, 0.12 +
-            chữ tối KHÔNG đủ tương phản trên vùng tối của ảnh (QA "chữ chìm vào nền"
-            — cấm sửa bằng text-shadow, phải sửa overlay/tone như brief cho phép). */}
-        <VeKenjiSectionImage src={IMG.vanChuyen} overlay={0.5}>
-          <VeKenjiToneProvider tone="light">
-            <section className="max-w-[720px] mx-auto px-6 pt-16 pb-16 md:pt-24 md:pb-24">
-              <EssenceAnchor as="h2" className="mb-10 md:mb-12">
-                Tôi không đến từ <em>lý thuyết</em>.
-              </EssenceAnchor>
-              <div className="space-y-5">
-                <EssenceBody as="p">
-                  Tôi lớn lên trong một môi trường mà từ rất sớm, tôi phải học cách sinh tồn. Không
-                  phải bằng sự dịu dàng — bằng gồng. Bằng kiểm soát. Bằng việc phải chứng minh mình
-                  không yếu.
-                </EssenceBody>
-                <EssenceBody as="p">
-                  Sau này, tôi phá sản ba lần. Hôn nhân tan vỡ. Từ năm 2015, tôi một mình nuôi hai
-                  con trai và làm lại từ đầu.
-                </EssenceBody>
-                <EssenceBody as="p">
-                  Tôi đã đi qua nhiều nghề — phục vụ, lái xe, trợ lý, bảo hiểm, buôn bán, kinh
-                  doanh, truyền thông. Nhiều việc giúp tôi sống. Nhưng chỉ khi gặp coaching — khi
-                  tôi giúp một người nhìn ra điều đang âm thầm kéo họ — tôi mới thấy: à…mình đang ở
-                  đúng chỗ.
-                </EssenceBody>
-                <EssenceBody as="p">
-                  Từ rất lâu trước phiên đầu tiên, tôi đã đi qua nhiều hệ quy chiếu khác nhau để
-                  hiểu con người. Tôi chỉ giữ lại phần nào còn đứng được sau hàng trăm buổi ngồi
-                  lắng nghe câu chuyện người ta kể. Tâm lý học chiều sâu của Carl Jung ở lại. Tâm lý
-                  nguyên mẫu ở lại. Khoa học thần kinh ở lại. Còn lại, tôi để xuống.
-                </EssenceBody>
-                <EssenceBody as="p">
-                  Và từ một câu hỏi: nếu đời mình đã từng vỡ như vậy — mình có thể dựng nó thành thứ
-                  giúp người khác bớt lạc hơn không?
-                </EssenceBody>
-              </div>
-            </section>
-          </VeKenjiToneProvider>
-        </VeKenjiSectionImage>
+        {/* ③ — nhịp thường, nặng dần trước Signal */}
+        <section
+          className={`px-6 ${RHYTHM.thuong}`}
+          style={{ background: sectionBg(BG.heavy) }}
+        >
+          <div className="ve-kenji-reveal max-w-[720px] mx-auto">
+            <EssenceAnchor as="h2" className="mb-10 md:mb-12">
+              Tôi không đến từ <em>lý thuyết</em>.
+            </EssenceAnchor>
+            <div className="space-y-5">
+              <EssenceBody as="p">
+                Tôi lớn lên trong một môi trường mà từ rất sớm, tôi phải học cách sinh tồn. Không
+                phải bằng sự dịu dàng — bằng gồng. Bằng kiểm soát. Bằng việc phải chứng minh mình
+                không yếu.
+              </EssenceBody>
+              <EssenceBody as="p">
+                Sau này, tôi phá sản ba lần. Hôn nhân tan vỡ. Từ năm 2015, tôi một mình nuôi hai
+                con trai và làm lại từ đầu.
+              </EssenceBody>
+              <EssenceBody as="p">
+                Tôi đã đi qua nhiều nghề — phục vụ, lái xe, trợ lý, bảo hiểm, buôn bán, kinh
+                doanh, truyền thông. Nhiều việc giúp tôi sống. Nhưng chỉ khi gặp coaching — khi
+                tôi giúp một người nhìn ra điều đang âm thầm kéo họ — tôi mới thấy: à…mình đang ở
+                đúng chỗ.
+              </EssenceBody>
+              <EssenceBody as="p">
+                Từ rất lâu trước phiên đầu tiên, tôi đã đi qua nhiều hệ quy chiếu khác nhau để
+                hiểu con người. Tôi chỉ giữ lại phần nào còn đứng được sau hàng trăm buổi ngồi
+                lắng nghe câu chuyện người ta kể. Tâm lý học chiều sâu của Carl Jung ở lại. Tâm lý
+                nguyên mẫu ở lại. Khoa học thần kinh ở lại. Còn lại, tôi để xuống.
+              </EssenceBody>
+              <EssenceBody as="p">
+                Và từ một câu hỏi: nếu đời mình đã từng vỡ như vậy — mình có thể dựng nó thành thứ
+                giúp người khác bớt lạc hơn không?
+              </EssenceBody>
+            </div>
+          </div>
+        </section>
 
-        {/* ④ SIGNAL COMPOSITION — ảnh 01-khe-van-toi độc quyền, KHÔNG dùng lại nơi khác.
-            GSAP: parallax liên tục (yPercent -4→4, scrub) + reveal 1 lần (hairline + tầng A/B). */}
+        <VeKenjiDivider />
+
+        {/* ④ SIGNAL COMPOSITION — ngoại lệ ảnh DUY NHẤT còn lại (01-khe-van-toi).
+            Nhịp lặng (rộng nhất trang). Overlay 0.15–0.20 (brief: không quá 0.25).
+            GSAP: parallax liên tục (yPercent -4→4, scrub) + reveal 1 lần. */}
         <VeKenjiSectionImage
-          src={IMG.kheVanToi}
-          overlay={0}
+          src="/images/ve-kenji/01-khe-van-toi.webp"
+          overlay={0.18}
           imgClassName="ve-kenji-signal-image scale-110"
-          className="py-28 px-6 md:py-40"
+          className={`px-6 ${RHYTHM.lang}`}
         >
           <div ref={signalRef}>
             <EssenceSignalComposition
@@ -246,11 +321,12 @@ export default function VeKenjiPage() {
           </div>
         </VeKenjiSectionImage>
 
-        {/* ⑤⑥ — ảnh 02-van-chuyen dùng chính, overlay nhẹ hơn ③ (đo thật: vẫn cần
-            tone sáng để chữ nổi trên vùng tối của ảnh, xem ghi chú ở ③). */}
-        <VeKenjiSectionImage src={IMG.vanChuyen} overlay={0.42}>
-          <VeKenjiToneProvider tone="light">
-          <section className="max-w-[720px] mx-auto px-6 pt-16 pb-16 md:pt-24 md:pb-24">
+        {/* ⑤⑥ — nhịp thường, về lại cream base */}
+        <section
+          className={`px-6 ${RHYTHM.thuong}`}
+          style={{ background: sectionBg(BG.base) }}
+        >
+          <div className="ve-kenji-reveal max-w-[720px] mx-auto">
             <EssenceAnchor as="h2" className="mb-10 md:mb-12">
               Tôi đọc, để hiểu — <em>không để phán</em>.
             </EssenceAnchor>
@@ -293,9 +369,14 @@ export default function VeKenjiPage() {
                 </Link>
               </EssenceBody>
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section className="max-w-[720px] mx-auto px-6 pb-16 md:pb-24">
+        <section
+          className={`px-6 ${RHYTHM.thuong}`}
+          style={{ background: sectionBg(BG.base) }}
+        >
+          <div className="ve-kenji-reveal max-w-[720px] mx-auto">
             <EssenceAnchor as="h2" className="mb-8">
               Điều tôi hướng tới cùng bạn
             </EssenceAnchor>
@@ -346,15 +427,17 @@ export default function VeKenjiPage() {
                 thật.
               </EssenceBody>
             </div>
-          </section>
-          </VeKenjiToneProvider>
-        </VeKenjiSectionImage>
+          </div>
+        </section>
 
-        {/* ⑦ — ảnh 03-van-mo dùng lại, overlay trung tính (đo thật: cần tone sáng,
-            xem ghi chú ở ③ — cùng ảnh 03-van-mo nhưng crop khác Hero nên tương phản khác). */}
-        <VeKenjiSectionImage src={IMG.vanMo} overlay={0.42}>
-          <VeKenjiToneProvider tone="light">
-          <section className="max-w-[720px] mx-auto px-6 pt-16 pb-16 md:pt-24 md:pb-24">
+        <VeKenjiDivider />
+
+        {/* ⑦ — nhịp thường, tối nhẹ lại */}
+        <section
+          className={`px-6 ${RHYTHM.thuong}`}
+          style={{ background: sectionBg(BG.dim) }}
+        >
+          <div className="ve-kenji-reveal max-w-[720px] mx-auto">
             <EssenceAnchor as="h2" className="mb-10 md:mb-12">
               La bàn tôi <em>tự giữ</em>
             </EssenceAnchor>
@@ -418,13 +501,15 @@ export default function VeKenjiPage() {
               Còn nếu tôi lỡ đẩy nhanh, lỡ gồng, lỡ sai nhịp — tôi quay lại, nói một câu xin lỗi,
               rồi chỉnh cho đúng.
             </EssenceBody>
-          </section>
-          </VeKenjiToneProvider>
-        </VeKenjiSectionImage>
+          </div>
+        </section>
 
-        {/* ⑦b — ảnh 04-van-sang-dinh dùng chính, gần như nguyên bản (sáng nhất trang) */}
-        <VeKenjiSectionImage src={IMG.vanSangDinh} overlay={0.03}>
-          <section className="max-w-[720px] mx-auto px-6 pt-16 pb-16 md:pt-24 md:pb-24">
+        {/* ⑦b — nhịp mở, sáng nhất trang */}
+        <section
+          className={`px-6 ${RHYTHM.mo}`}
+          style={{ background: sectionBg(BG.peak) }}
+        >
+          <div className="ve-kenji-reveal max-w-[720px] mx-auto">
             <EssenceAnchor as="h2" className="mb-8">
               Đổi lại, bạn nhận được gì
             </EssenceAnchor>
@@ -471,34 +556,39 @@ export default function VeKenjiPage() {
                 </Link>
               </EssenceBody>
             </div>
-          </section>
-        </VeKenjiSectionImage>
+          </div>
+        </section>
 
-        {/* ⑧ — ảnh 03-van-mo dùng lại lần 2, overlay hơi tối hơn ⑦ một chút (đo thật:
-            cần tone sáng như ⑦, xem ghi chú ở ③). */}
-        <VeKenjiSectionImage src={IMG.vanMo} overlay={0.48}>
-          <VeKenjiToneProvider tone="light">
-            <section className="max-w-[720px] mx-auto px-6 pt-16 pb-16 md:pt-24 md:pb-24">
-              <EssenceAnchor as="h2" className="mb-10 md:mb-12">
-                Vài câu người ta hay hỏi tôi
-              </EssenceAnchor>
-              <div className="space-y-10 md:space-y-12">
-                {faqs.map((f) => (
-                  <div key={f.q}>
-                    <EssenceAnchor as="h3" level="h3" className="mb-3">
-                      {f.q}
-                    </EssenceAnchor>
-                    <EssenceBody as="p">{f.a}</EssenceBody>
-                  </div>
-                ))}
-              </div>
-            </section>
-          </VeKenjiToneProvider>
-        </VeKenjiSectionImage>
+        <VeKenjiDivider />
 
-        {/* ⑨ — ảnh 04-van-sang-dinh dùng lại, khép trang êm */}
-        <VeKenjiSectionImage src={IMG.vanSangDinh} overlay={0.05}>
-          <section className="max-w-[720px] mx-auto px-6 pt-16 pb-24 md:pt-24 md:pb-32">
+        {/* ⑧ FAQ — nhịp thường, cream base sạch nhất, dễ đọc nhất */}
+        <section
+          className={`px-6 ${RHYTHM.thuong}`}
+          style={{ background: sectionBg(BG.base) }}
+        >
+          <div className="ve-kenji-reveal max-w-[720px] mx-auto">
+            <EssenceAnchor as="h2" className="mb-10 md:mb-12">
+              Vài câu người ta hay hỏi tôi
+            </EssenceAnchor>
+            <div className="space-y-10 md:space-y-12">
+              {faqs.map((f) => (
+                <div key={f.q}>
+                  <EssenceAnchor as="h3" level="h3" className="mb-3">
+                    {f.q}
+                  </EssenceAnchor>
+                  <EssenceBody as="p">{f.a}</EssenceBody>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ⑨ — nhịp lặng, ấm lắng lại */}
+        <section
+          className={`px-6 ${RHYTHM.lang}`}
+          style={{ background: sectionBg(BG.lift) }}
+        >
+          <div className="ve-kenji-reveal max-w-[720px] mx-auto">
             <div className="space-y-5">
               <EssenceBody as="p">
                 Nếu bạn muốn đi tiếp một bước,{" "}
@@ -522,8 +612,8 @@ export default function VeKenjiPage() {
             <EssenceAccent as="p" className="mt-14 mb-8 md:mt-20">
               Bạn không cần quyết gì hôm nay. Cửa không đóng, và nhịp là của bạn.
             </EssenceAccent>
-          </section>
-        </VeKenjiSectionImage>
+          </div>
+        </section>
       </main>
 
       <HomeFooter />
