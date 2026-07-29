@@ -1,190 +1,60 @@
 import Head from "next/head";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
-import HomeHeader from "@/components/homepage/HomeHeader";
+import BanSacCuaBanSignal from "@/components/ban-sac-cua-ban/BanSacCuaBanSignal";
+import { BanSacAccent, BanSacAnchor, BanSacBody, BanSacDisplay, BanSacUtility } from "@/components/ban-sac-cua-con/BanSacTypography";
 import HomeFooter from "@/components/homepage/HomeFooter";
+import HomeHeader from "@/components/homepage/HomeHeader";
+import Lang90Reveal from "@/components/lang-90/Lang90Reveal";
 
-// ============================================================
-// /ban-sac-cua-ban — HUB dòng người lớn (noindex, chờ Kenji duyệt).
-// Đối xứng /ban-sac-cua-con. Copy nguyên văn theo task — KHÔNG nhắc
-// FCP/Casting/Gateway hay tên kỹ thuật nội bộ nào. Không hiển thị giá
-// sản phẩm ở hub (để trong trang sản phẩm riêng, vd /lang-90).
-// Schema: Article (không Product — đây là hub, không phải trang bán).
-// Chỉ 1 nút vàng duy nhất (Section 5). 2/3 thẻ "Sắp mở", không link.
-// LƯU Ý: trang này chưa có brief riêng trong File 03 — mô tả 2 sản phẩm
-// "Dấu Ấn Của Bạn" / "Bạn Là Duy Nhất" là diễn giải do Claude (chat) dựng
-// theo M3+M8+Brand Book — Kenji cần duyệt kỹ phần này trước khi bỏ noindex.
-// ============================================================
+const cardClass = "group flex h-full flex-col border border-e26-border bg-e26-white p-7 transition-colors duration-300 hover:border-e26-gold-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory md:p-8";
+
 export default function BanSacCuaBanPage() {
-  return (
-    <>
-      <SEO
-        title="Bản Sắc Của Bạn — cửa dành cho người lớn (Bản nháp)"
-        description="Ba cách để ngồi lại với chính mình, tùy vào chỗ bạn đang đứng hôm nay. Không đường tắt. Không phán."
-        url="https://coachkenjipham.com/ban-sac-cua-ban"
-      />
-      <Head>
-        <meta name="robots" content="noindex" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Article",
-              headline: "Bản Sắc Của Bạn — cửa dành cho người lớn",
-              description:
-                "Ba cách để ngồi lại với chính mình, tùy vào chỗ bạn đang đứng hôm nay. Không đường tắt. Không phán.",
-              author: { "@type": "Person", name: "Kenji Phạm" },
-              publisher: { "@type": "Organization", name: "Essence Coaching System" },
-              url: "https://coachkenjipham.com/ban-sac-cua-ban",
-            }),
-          }}
-        />
-      </Head>
-
-      <HomeHeader />
-      <main className="bg-e26-ivory">
-        {/* 1 — HERO */}
-        <section className="max-w-[720px] mx-auto px-6 pt-16 pb-16 md:pt-24 md:pb-20">
-          <p className="font-sans text-sm text-e26-text-2">Cho chính bạn</p>
-          <h1 className="font-serif font-light text-[34px] md:text-[48px] leading-[1.15] text-e26-text mt-4">
-            Có những người lớn lên rất sớm —
-            <br />
-            vì ngày đó không có nhiều chỗ để yếu.
-          </h1>
-          <p className="font-sans text-[17px] leading-[1.65] text-e26-text-2 mt-8 max-w-xl">
-            Ba cách để ngồi lại với chính mình, tùy vào chỗ bạn đang đứng hôm nay. Không đường
-            tắt. Không phán. Chỉ một khoảng đủ yên để nhìn cho rõ.
-          </p>
-        </section>
-
-        {/* 2 — MỘT ĐOẠN DẪN */}
-        <section className="bg-e26-white">
-          <div className="max-w-[720px] mx-auto px-6 py-16 md:py-24">
-            <div className="space-y-5 font-sans text-[17px] leading-[1.7] text-e26-text-2 max-w-xl">
-              <p>
-                Bạn có thể rất giỏi. Rất có trách nhiệm. Rất đáng tin. Nhưng bên trong, một phần
-                nào đó vẫn chưa thật sự được nghỉ.
-              </p>
-              <p>
-                Essence bắt đầu từ chỗ đó — không phải để sửa bạn, mà để tạo một khoảng đủ An
-                định cho phần đã gồng quá lâu được quyền thở lại.
-              </p>
-            </div>
+  return <>
+    <SEO title="Bản Sắc Của Bạn — Ba cách để bắt đầu | Kenji Phạm" description="Ba cách để ngồi lại với chính mình: một ấn phẩm viết riêng, một phiên 90 phút, hoặc một phiên dài cùng bản phân tích cá nhân hóa." url="https://coachkenjipham.com/ban-sac-cua-ban" type="article" />
+    <Head><meta name="robots" content="noindex" /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "Article", headline: "Bản Sắc Của Bạn — Ba cách để bắt đầu", description: "Ba cách để ngồi lại với chính mình: một ấn phẩm viết riêng, một phiên 90 phút, hoặc một phiên dài cùng bản phân tích cá nhân hóa.", author: { "@type": "Person", name: "Kenji Phạm" }, publisher: { "@type": "Organization", name: "Essence Coaching System" }, url: "https://coachkenjipham.com/ban-sac-cua-ban" }) }} /></Head>
+    <HomeHeader />
+    <main className="overflow-hidden bg-e26-ivory">
+      <section className="relative isolate overflow-hidden px-6 pb-24 pt-16 md:pb-36 md:pt-28">
+        <div aria-hidden="true" className="pointer-events-none absolute -right-[18%] top-[7%] h-[540px] w-[540px] rounded-full bg-e26-cream opacity-75 blur-3xl md:h-[720px] md:w-[720px]" />
+        <Lang90Reveal className="relative mx-auto max-w-[1120px]"><div className="max-w-[720px]">
+          <BanSacUtility>Bản Sắc Của Bạn</BanSacUtility>
+          <BanSacDisplay className="mt-6 max-w-[800px]">Bạn không cần trở thành một người khác.<br />Có khi, bạn chỉ cần nhìn lại mình cho đúng.</BanSacDisplay>
+          <div className="mt-10 space-y-7">
+            <BanSacBody>Có những lúc bạn chỉ muốn hiểu mình rõ hơn, theo một cách riêng hơn những bài trắc nghiệm và những lời mô tả chung. Có những lúc một quyết định, một mối quan hệ hay một vòng lặp quen thuộc trở nên quá nhiễu, khiến bạn nghĩ mãi mà vẫn chưa biết nên đi tiếp thế nào.</BanSacBody>
+            <BanSacBody>Và cũng có lúc bạn đã học rất nhiều về bản thân, đi qua nhiều phương pháp, nhiều cách lý giải, nhưng những điều mình biết vẫn chưa nằm trong cùng một bức tranh.</BanSacBody>
+            <BanSacBody>Bản Sắc Của Bạn là ba cách để bạn ngồi lại với chính mình, tùy vào điều mình đang thật sự cần hôm nay.</BanSacBody>
+            <BanSacBody>Không phải ba cấp độ. Không có cánh cửa nào cao hơn cánh cửa nào. Chỉ có một nơi phù hợp hơn với chỗ bạn đang đứng lúc này.</BanSacBody>
           </div>
-        </section>
+          <a href="#ba-cach-bat-dau" className="mt-10 inline-flex min-h-11 items-center border-b border-e26-text pb-1 font-sans text-[13px] font-medium uppercase tracking-[0.08em] text-e26-text transition-colors hover:border-e26-gold-deep hover:text-e26-gold-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory">Xem ba cách bắt đầu</a>
+        </div></Lang90Reveal>
+      </section>
 
-        {/* 3 — BA PHÒNG */}
-        <section className="bg-e26-cream px-6 py-16 md:py-24">
-          <div className="max-w-[1120px] mx-auto">
-            <h2 className="font-serif font-normal text-[26px] md:text-[34px] text-e26-text mb-12">
-              Chọn theo chỗ bạn đang đứng
-            </h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              {/* Thẻ 1 — Lặng 90', ĐANG MỞ */}
-              <div className="bg-e26-white border border-e26-border p-8 flex flex-col">
-                <p className="font-sans text-xs tracking-[0.08em] uppercase text-e26-text-2 mb-3">
-                  Đang mở
-                </p>
-                <h3 className="font-serif text-xl text-e26-text mb-4">Lặng 90&apos;</h3>
-                <p className="font-sans text-[15px] leading-[1.6] text-e26-text-2 mb-6 flex-1">
-                  90 phút ngồi xuống cùng nhau, khi bạn đang ở một điểm gãy và cần nhìn thẳng
-                  vào thứ đang giữ mình lại.
-                </p>
-                <Link
-                  href="/lang-90"
-                  className="font-sans text-[14px] text-e26-text underline underline-offset-4 decoration-e26-border hover:text-e26-gold-deep hover:decoration-e26-gold transition-colors duration-300"
-                >
-                  Tìm hiểu Lặng 90&apos;
-                </Link>
-              </div>
+      <section className="bg-e26-white px-6 py-20 md:py-32"><div className="mx-auto max-w-[1120px] space-y-20 md:space-y-28">
+        <Lang90Reveal><div className="max-w-[660px]"><BanSacAnchor>Có những lúc mình biết khá nhiều về bản thân, nhưng vẫn chưa thật sự hiểu mình</BanSacAnchor><div className="mt-10 space-y-7"><BanSacBody>Bạn vẫn làm việc, vẫn chăm lo cho những điều cần thiết và phần lớn thời gian vẫn được mọi người nhìn thấy như một người ổn. Chỉ là ở đâu đó bên trong, bạn biết mình còn có những phần chưa được gọi đúng tên.</BanSacBody><BanSacBody>Bạn đã từng đọc về tính cách, nhận ra điểm mạnh, điểm yếu và hiểu thêm một vài thói quen của mình. Những điều ấy không sai. Nhưng đôi khi chúng vẫn chưa trả lời được câu hỏi gần nhất:</BanSacBody></div><BanSacAccent className="mt-10 max-w-[540px]">Trong tất cả những điều mình biết về mình, điều gì đang thật sự vận hành bên trong?</BanSacAccent></div></Lang90Reveal>
+        <Lang90Reveal className="md:ml-[16%]"><div className="max-w-[660px]"><BanSacAnchor as="h3" level="h2">Có những lúc một việc trở nên quá nhiễu</BanSacAnchor><div className="mt-10 space-y-7"><BanSacBody>Một quyết định đã nằm đó khá lâu. Một mối quan hệ cứ đưa bạn trở lại cùng một cảm giác. Hoặc một tình huống tưởng đã hiểu rồi, nhưng khi nó lặp lại, bạn vẫn phản ứng theo cách cũ.</BanSacBody><BanSacBody>Bạn đã nghĩ rất nhiều. Càng nghĩ, mỗi lựa chọn càng có thêm lý do để đúng và cũng có thêm lý do để sai. Lúc này, có thể bạn không cần thêm một tài liệu để đọc. Bạn cần một người ngồi xuống cùng mình, đủ lâu để tiếng ồn bớt đi và điều quan trọng bắt đầu hiện ra.</BanSacBody><BanSacBody>Câu hỏi không còn là mình nên biết thêm điều gì.</BanSacBody><BanSacBody>Mà là:</BanSacBody></div><BanSacAccent className="mt-10 max-w-[540px]">Mình đang mắc lại ở đâu, và bước thật nào có thể làm sau khi nhìn rõ?</BanSacAccent></div></Lang90Reveal>
+        <Lang90Reveal><div className="ml-auto max-w-[660px]"><BanSacAnchor as="h3" level="h2">Có những lúc mình đã có quá nhiều cách để giải thích chính mình</BanSacAnchor><div className="mt-10 space-y-7"><BanSacBody>Bạn đã đi qua nhiều hệ thống, nhiều lớp học và nhiều cách gọi tên những điều đang xảy ra bên trong. Có điều từng giúp bạn nhẹ lòng. Có điều từng mở ra một góc nhìn mà trước đó bạn chưa thấy.</BanSacBody><BanSacBody>Nhưng rồi cũng có lúc, càng biết nhiều, bạn càng khó phân biệt đâu là điều mình đang thật sự sống và đâu là điều mình đang muốn tin.</BanSacBody><BanSacBody>Bạn có thể giải thích rất rõ vì sao một chuyện xảy ra, nhưng vẫn chưa biết nên làm gì với công việc đang mắc lại, mối quan hệ đang mỏi đi hay một quyết định đã trì hoãn quá lâu. Bạn chờ thêm một dấu hiệu, thêm một lần xác nhận, trong khi một phần nào đó bên trong đã biết điều mình cần nhìn.</BanSacBody><BanSacBody>Lúc này, bạn không cần thêm một hệ thống mới.</BanSacBody><BanSacBody>Có thể bạn cần đưa những điều đã học trở lại đời sống thật.</BanSacBody></div></div></Lang90Reveal>
+      </div></section>
 
-              {/* Thẻ 2 — Dấu Ấn Của Bạn, PREVIEW (link thật, chưa mở bán) */}
-              <div className="bg-e26-white border border-e26-border p-8 flex flex-col">
-                <p className="font-sans text-xs tracking-[0.08em] uppercase text-e26-text-2 mb-3">
-                  Xem trước
-                </p>
-                <h3 className="font-serif text-xl text-e26-text mb-4">Dấu Ấn Của Bạn</h3>
-                <p className="font-sans text-[15px] leading-[1.6] text-e26-text-2 mb-6 flex-1">
-                  Một bản đồ sâu hơn về cách bạn được định hình — dành cho lúc bạn muốn hiểu
-                  mình kỹ, không phải lúc đang gấp.
-                </p>
-                <Link
-                  href="/dau-an-cua-ban"
-                  className="font-sans text-[14px] text-e26-text underline underline-offset-4 decoration-e26-border hover:text-e26-gold-deep hover:decoration-e26-gold transition-colors duration-300"
-                >
-                  Xem trước ấn phẩm
-                </Link>
-              </div>
+      <Lang90Reveal><BanSacCuaBanSignal /></Lang90Reveal>
 
-              {/* Thẻ 3 — Bạn Là Duy Nhất, PREVIEW (link thật, chưa mở bán) */}
-              <div className="bg-e26-white border border-e26-border p-8 flex flex-col">
-                <p className="font-sans text-xs tracking-[0.08em] uppercase text-e26-text-2 mb-3">
-                  Xem trước
-                </p>
-                <h3 className="font-serif text-xl text-e26-text mb-4">Bạn Là Duy Nhất</h3>
-                <p className="font-sans text-[15px] leading-[1.6] text-e26-text-2 mb-6 flex-1">
-                  Bước khởi đầu nhẹ để bắt đầu nhìn lại chính mình.
-                </p>
-                <Link
-                  href="/ban-la-duy-nhat"
-                  className="font-sans text-[14px] text-e26-text underline underline-offset-4 decoration-e26-border hover:text-e26-gold-deep hover:decoration-e26-gold transition-colors duration-300"
-                >
-                  Xem trước ấn phẩm
-                </Link>
-              </div>
-            </div>
+      <section id="ba-cach-bat-dau" className="scroll-mt-8 bg-e26-cream px-6 py-20 md:py-32"><Lang90Reveal className="mx-auto max-w-[1120px]">
+        <BanSacAnchor>Ba cách bắt đầu</BanSacAnchor>
+        <div className="mt-12 grid items-stretch gap-5 md:grid-cols-3 md:gap-6">
+          <article><Link href="/ban-la-duy-nhat" className={cardClass}><BanSacUtility>Sắp mở</BanSacUtility><BanSacAnchor as="h3" level="h3" className="mt-6">Bạn Là Duy Nhất</BanSacAnchor><BanSacAccent className="mt-5 text-[20px] leading-[1.45] md:text-[23px]">Khi bạn muốn tự nhìn lại mình theo nhịp riêng</BanSacAccent><div className="mt-7 space-y-5"><BanSacBody className="text-[16px] leading-[1.7] md:text-[17px]">Bạn Là Duy Nhất dành cho người không ở trong khủng hoảng và cũng chưa cần gặp ai ngay. Bạn chỉ muốn một lần được nhìn mình theo cách riêng hơn những mô tả đại trà.</BanSacBody><BanSacBody className="text-[16px] leading-[1.7] md:text-[17px]">Đây là một ấn phẩm khoảng 14 chương, được viết riêng từ dữ liệu và bối cảnh sống của bạn. Nội dung đi qua khí chất, cách bạn tìm cảm giác an toàn, những điều bạn đã quen tự gánh, các vòng lặp thường trở lại và giai đoạn cuộc sống đang mời bạn nhìn lại.</BanSacBody><BanSacBody className="text-[16px] leading-[1.7] md:text-[17px]">Bạn nhận ấn phẩm qua một phòng đọc riêng trên website, đồng thời có bản PDF A5 để lưu lại hoặc tự in khi muốn. Không có phiên gặp trực tiếp và không có ai ngồi cùng. Đây là một bản để bạn tự đọc, tự soi và quay lại theo nhịp của mình.</BanSacBody><BanSacBody className="text-[16px] leading-[1.7] md:text-[17px]">Ebook là một tấm gương chung dành cho nhiều người. Một vài câu hỏi nhỏ giúp bạn nhận ra nét đang nổi lên ở mình lúc này. Còn Bạn Là Duy Nhất là một bản viết riêng cho một người — dài hơn, sâu hơn và chỉ đúng với người đó.</BanSacBody></div><BanSacUtility className="mt-auto pt-8 text-e26-text">Phí khi mở: 3.000.000đ</BanSacUtility><span className="mt-5 font-sans text-[13px] font-medium tracking-[0.04em] text-e26-text underline decoration-e26-border underline-offset-8 transition-colors group-hover:text-e26-gold-deep group-hover:decoration-e26-gold-deep">Tìm hiểu Bạn Là Duy Nhất</span></Link></article>
+          <article><Link href="/lang-90" className={`${cardClass} border-e26-gold`}><BanSacUtility className="text-e26-gold-deep">Đang mở</BanSacUtility><BanSacAnchor as="h3" level="h3" className="mt-6">Lặng 90’</BanSacAnchor><BanSacAccent className="mt-5 text-[20px] leading-[1.45] md:text-[23px]">Khi có một việc đang quá nhiễu</BanSacAccent><div className="mt-7 space-y-5"><BanSacBody className="text-[16px] leading-[1.7] md:text-[17px]">Lặng dành cho lúc bạn không cần đọc thêm về chính mình. Bạn cần một người ngồi xuống cùng, ngay tại điều đang làm mình rối.</BanSacBody><BanSacBody className="text-[16px] leading-[1.7] md:text-[17px]">Trong 90 phút, bạn kể điều đang xảy ra. Tôi lắng nghe, hỏi và cùng bạn nhìn vào nơi mình thường đi vòng qua. Không giảng bài. Không quyết định thay bạn. Không cho lời khuyên rằng bạn phải làm gì.</BanSacBody><BanSacBody className="text-[16px] leading-[1.7] md:text-[17px]">Mục tiêu của phiên không phải để bạn có thêm thật nhiều điều phải nhớ. Chỉ để một việc đang nhiễu trở nên đủ rõ, để bạn có thể nhận ra bước thật tiếp theo của mình.</BanSacBody><BanSacBody className="text-[16px] leading-[1.7] md:text-[17px]">Sau phiên, tôi nhắn lại ở mốc ngày thứ 7 và ngày thứ 30. Không để kiểm tra bạn đã làm đúng chưa, mà để nhìn xem điều đã mở ra trong buổi gặp đang đi vào đời sống như thế nào.</BanSacBody><BanSacBody className="text-[16px] leading-[1.7] md:text-[17px]">Mỗi tháng tôi mở tối đa 5 phiên, vì mỗi người đều cần một khoảng hiện diện trọn vẹn. Khi tháng này đã đủ, bạn có thể để lại tên cho tháng sau. Không cần đặt cọc giữ chỗ và cũng không cần quyết định vội.</BanSacBody></div><BanSacUtility className="mt-auto pt-8 text-e26-text">Phí phiên: 10.000.000đ</BanSacUtility><span className="mt-5 font-sans text-[13px] font-medium tracking-[0.04em] text-e26-text underline decoration-e26-gold underline-offset-8">Tìm hiểu Lặng 90’</span></Link></article>
+          <article><Link href="/dau-an-cua-ban" className={cardClass}><BanSacUtility>Sắp mở</BanSacUtility><BanSacAnchor as="h3" level="h3" className="mt-6">Dấu Ấn Của Bạn</BanSacAnchor><BanSacAccent className="mt-5 text-[20px] leading-[1.45] md:text-[23px]">Khi bạn đã hiểu rất nhiều, nhưng vẫn chưa biết điều gì nên được tin</BanSacAccent><div className="mt-7 space-y-5"><BanSacBody className="text-[16px] leading-[1.7] md:text-[17px]">Có thể bạn đã đi qua nhiều hệ thống, nhiều phương pháp và nhiều cách lý giải về chính mình. Mỗi nơi cho bạn một mảnh ghép. Có những điều từng giúp bạn nhẹ lòng, từng khiến bạn thấy cuộc đời có thêm ý nghĩa.</BanSacBody><BanSacBody className="text-[16px] leading-[1.7] md:text-[17px]">Nhưng rồi cũng có lúc, những cách lý giải ấy trở nên nhiều hơn chính đời sống.</BanSacBody><BanSacBody className="text-[16px] leading-[1.7] md:text-[17px]">Bạn bắt đầu tìm một thông điệp phía sau mỗi việc xảy ra. Chờ thêm một dấu hiệu trước khi quyết định. Cố hiểu một bài học rất lớn, trong khi điều đang cần được nhìn có thể chỉ là một mối quan hệ đã mỏi, một công việc không còn phù hợp hay một giới hạn mình chưa dám nói ra.</BanSacBody><BanSacBody className="text-[16px] leading-[1.7] md:text-[17px]">Bạn biết nhiều ngôn ngữ để gọi tên điều đang xảy ra. Nhưng khi trở về với những việc rất thật như tiền bạc, công việc, tình cảm và lựa chọn của chính mình, bạn vẫn chưa biết đâu là tiếng nói nên được tin.</BanSacBody><BanSacBody className="text-[16px] leading-[1.7] md:text-[17px]">Dấu Ấn Của Bạn không thêm một hệ thống mới vào những điều bạn đã học.</BanSacBody><BanSacBody className="text-[16px] leading-[1.7] md:text-[17px]">Trong 150 phút làm việc trực tiếp, tôi cùng bạn đặt những mảnh ấy trở lại đời sống thật: cách bạn lựa chọn, làm việc, yêu, giữ lời và đi qua những điều không như ý. Sau phiên, bạn nhận một bản phân tích được viết riêng, gom những điều rời rạc thành một bức tranh liền mạch để có thể đọc lại và sống cùng lâu hơn buổi trò chuyện.</BanSacBody><BanSacBody className="text-[16px] leading-[1.7] md:text-[17px]">Lặng 90’ giúp bạn nhìn rõ <strong>một việc đang nhiễu lúc này</strong>.</BanSacBody><BanSacBody className="text-[16px] leading-[1.7] md:text-[17px]">Dấu Ấn giúp bạn nhìn lại <strong>nhiều điều đã học, đã tin và đã sống</strong>, rồi nhận ra điều gì còn đúng với mình, điều gì từng hữu ích nhưng đã đến lúc được đặt xuống.</BanSacBody><BanSacBody className="text-[16px] leading-[1.7] md:text-[17px]">Một bên cùng bạn gỡ một nút đang siết.</BanSacBody><BanSacBody className="text-[16px] leading-[1.7] md:text-[17px]">Một bên giúp bạn nhìn lại cách những sợi dây đã được nối với nhau.</BanSacBody></div><BanSacUtility className="mt-auto pt-8 text-e26-text">Phí khi mở: 8.000.000đ</BanSacUtility><span className="mt-5 font-sans text-[13px] font-medium tracking-[0.04em] text-e26-text underline decoration-e26-border underline-offset-8 transition-colors group-hover:text-e26-gold-deep group-hover:decoration-e26-gold-deep">Tìm hiểu Dấu Ấn Của Bạn</span></Link></article>
+        </div>
+      </Lang90Reveal></section>
 
-            <p className="font-sans text-sm text-e26-text-2 mt-10 max-w-2xl">
-              Mỗi cửa mở ra một độ sâu khác nhau. Bạn không cần đi hết — chỉ cần đúng cửa cho
-              hôm nay.
-            </p>
-          </div>
-        </section>
+      <section className="bg-e26-white px-6 py-20 md:py-32"><Lang90Reveal className="mx-auto max-w-[1120px]"><div className="max-w-[700px]"><BanSacAnchor>Có thể nhận ra nơi phù hợp bằng một câu hỏi nhỏ</BanSacAnchor><div className="mt-10 divide-y divide-e26-border border-y border-e26-border"><BanSacAccent className="py-7">Bạn muốn có một bản viết riêng để tự đọc theo nhịp của mình?</BanSacAccent><BanSacAccent className="py-7">Bạn đang có một việc cụ thể cần một người ngồi xuống cùng?</BanSacAccent><BanSacAccent className="py-7">Hay bạn đã đi qua nhiều cách hiểu về bản thân và muốn đưa tất cả trở lại một bức tranh gần với đời sống thật?</BanSacAccent></div><div className="mt-10 space-y-6"><BanSacBody>Không cần chọn điều có vẻ nhiều hơn, lâu hơn hay đặc biệt hơn.</BanSacBody><BanSacBody>Chỉ cần chọn nơi gần nhất với điều mình đang cần lúc này.</BanSacBody></div></div></Lang90Reveal></section>
 
-        {/* 4 — RANH GIỚI (dark silence section duy nhất) */}
-        <section className="bg-e26-black px-6 py-24 md:py-[180px]">
-          <div className="max-w-[640px] mx-auto text-center">
-            <div className="w-12 h-px bg-e26-gold mx-auto mb-14" aria-hidden="true" />
-            <h2 className="font-serif font-normal text-[28px] md:text-[40px] text-e26-text-dark mb-14">
-              Điều Essence không làm
-            </h2>
-            <div className="space-y-7 font-sans text-[17px] leading-[1.8] text-e26-text-dark text-left md:text-center max-w-xl mx-auto">
-              <p>
-                Essence là coaching — không phải chăm sóc sức khỏe tinh thần chuyên môn, không
-                chẩn đoán, không hứa thay đổi nhanh, không đoán trước tương lai.
-              </p>
-              <p>
-                Nếu bạn đang trong khủng hoảng cấp tính, điều cần trước tiên là chuyên gia tâm
-                lý lâm sàng — và tôi sẽ nói thẳng điều đó.
-              </p>
-            </div>
-          </div>
-        </section>
+      <section className="bg-e26-ivory px-6 py-20 md:py-32"><Lang90Reveal className="mx-auto max-w-[1120px]"><div className="max-w-[660px]"><BanSacAnchor>Một lối khác, khi hôm nay chưa cửa nào thật sự đúng</BanSacAnchor><div className="mt-10 space-y-7"><BanSacBody>Cũng không sao.</BanSacBody><BanSacBody>Có một cuốn sách nhỏ để bạn đọc theo nhịp của mình. Và nếu muốn nhìn rõ thêm một chút trước khi quyết định điều gì, bạn có thể đi qua một vài câu hỏi nhỏ.</BanSacBody><BanSacBody>Không để chấm điểm.</BanSacBody><BanSacBody>Không để xếp bạn vào một kiểu người.</BanSacBody><BanSacBody>Chỉ để biết mình đang đứng ở đâu.</BanSacBody><BanSacBody>Bạn không cần bước vào một sản phẩm chỉ vì đã đi đến đây. Điều quan trọng hơn là sau khi rời trang, bạn vẫn có một nơi vừa đủ để tiếp tục.</BanSacBody></div><div className="mt-12 flex flex-col items-start gap-5"><span aria-disabled="true" className="font-sans text-[15px] text-e26-text-2 underline decoration-e26-border underline-offset-4">Mời bạn đọc cuốn sách nhỏ <span className="ml-2 text-[12px] uppercase tracking-[0.08em]">Chưa mở</span></span><span aria-disabled="true" className="font-sans text-[15px] text-e26-text-2 underline decoration-e26-border underline-offset-4">Đi qua một vài câu hỏi <span className="ml-2 text-[12px] uppercase tracking-[0.08em]">Chưa mở</span></span></div></div></Lang90Reveal></section>
 
-        {/* 5 — CTA (đúng 1 nút vàng) */}
-        <section className="max-w-[720px] mx-auto px-6 py-16 md:py-24 text-center">
-          <h2 className="font-serif font-normal text-[26px] md:text-[32px] text-e26-text mb-10">
-            Nếu hôm nay bạn đang ở một điểm gãy
-          </h2>
-          <div className="flex flex-col items-center gap-6">
-            <Link
-              href="/lang-90"
-              className="inline-block bg-e26-gold text-e26-black rounded-none font-sans font-medium text-[13px] tracking-[0.08em] uppercase px-10 py-4 hover:bg-e26-gold-deep hover:text-e26-ivory transition-colors duration-300"
-            >
-              Ngồi xuống cùng tôi — Lặng 90&apos;
-            </Link>
-            <Link
-              href="/phuong-phap"
-              className="font-sans text-[15px] text-e26-text-2 underline underline-offset-4 decoration-e26-border hover:text-e26-gold-deep hover:decoration-e26-gold transition-colors duration-300"
-            >
-              Chưa chắc cửa nào? Đọc về phương pháp
-            </Link>
-          </div>
-        </section>
-      </main>
-      <HomeFooter />
-    </>
-  );
+      <section className="bg-e26-cream px-6 py-20 md:py-32"><Lang90Reveal className="mx-auto max-w-[1120px]"><div className="max-w-[700px]"><BanSacAnchor>Có những điều cần được giữ rõ ngay từ đầu</BanSacAnchor><div className="mt-10 space-y-7"><BanSacBody>Essence không chẩn đoán, không dự đoán tương lai và không hứa rằng một phiên gặp hay một bản viết sẽ làm cuộc đời bạn thay đổi thật nhanh.</BanSacBody><BanSacBody>Tôi cũng không mở những tầng sâu chỉ để tạo cảm giác rằng điều gì đó rất đặc biệt đang xảy ra. Không đưa một người vào một cánh cửa chỉ vì sản phẩm đó dài hơn, nhiều hơn hoặc có giá cao hơn. Và không nhận một người vào coaching khi điều họ thật sự cần là một loại hỗ trợ khác.</BanSacBody><BanSacBody>Nếu bạn đang trong khủng hoảng cấp tính, có ý nghĩ làm tổn thương bản thân, hoặc những gì đang xảy ra ảnh hưởng nghiêm trọng đến khả năng sống và làm việc hằng ngày, điều cần trước tiên là một chuyên gia tâm lý lâm sàng hoặc cơ sở chăm sóc sức khỏe tinh thần phù hợp.</BanSacBody><BanSacBody>Tôi sẽ nói thẳng điều đó.</BanSacBody><BanSacBody>Không phải để đẩy bạn ra ngoài, mà để bạn được bước vào đúng nơi có thể nâng đỡ mình.</BanSacBody></div></div></Lang90Reveal></section>
+
+      <section className="bg-e26-white px-6 py-20 md:py-32"><Lang90Reveal className="mx-auto max-w-[1120px]"><div className="max-w-[700px]"><BanSacAnchor>Có thể bạn đã nhận ra nơi gần với mình nhất</BanSacAnchor><div className="mt-10 space-y-7"><BanSacBody>Cũng có thể bạn vẫn chưa chắc.</BanSacBody><BanSacBody>Không cần quyết định chỉ vì đã đọc đến đây. Có những lựa chọn trở nên rõ hơn khi mình cho chúng thêm một khoảng yên, thay vì cố tìm câu trả lời trong lúc bên trong vẫn còn quá nhiều tiếng nói.</BanSacBody><BanSacBody>Khi sẵn sàng, bạn có thể trở lại ba cách bắt đầu và chọn nơi gần nhất với điều mình đang thật sự cần hôm nay.</BanSacBody></div><a href="#ba-cach-bat-dau" className="mt-12 inline-flex min-h-11 items-center bg-e26-gold px-7 py-3 font-sans text-[13px] font-medium uppercase tracking-[0.08em] text-e26-black transition-colors hover:bg-e26-gold-deep hover:text-e26-ivory focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-white">Trở lại ba cách bắt đầu</a><Link href="/phuong-phap" className="mt-8 block w-fit font-sans text-[15px] text-e26-text-2 underline decoration-e26-border underline-offset-4 transition-colors hover:text-e26-gold-deep hover:decoration-e26-gold-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4">Đọc về cách Essence làm việc</Link></div></Lang90Reveal></section>
+    </main>
+    <HomeFooter />
+  </>;
 }
