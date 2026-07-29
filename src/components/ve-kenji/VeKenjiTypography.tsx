@@ -1,22 +1,5 @@
-import { createContext, useContext, type ElementType, type ReactNode } from "react";
+import type { ElementType, ReactNode } from "react";
 import { cn } from "@/lib/utils";
-
-// Context tone chữ — brief "LẮP 5 ẢNH THẬT" 29/07/2026. Một số section giờ
-// có ảnh nền đậm/tương phản cao (đo thật bằng ảnh chụp: chữ tối chìm vào
-// nền ở ③⑤⑥⑦⑧) — bọc cả section trong <VeKenjiToneProvider tone="light">
-// thay vì truyền tone="light" cho từng EssenceAnchor/Body/Accent một, tránh
-// sửa hàng chục chỗ dễ sót. Prop `tone` truyền trực tiếp vẫn override được.
-const ToneContext = createContext<"normal" | "light">("normal");
-
-export function VeKenjiToneProvider({
-  tone,
-  children,
-}: {
-  tone: "normal" | "light";
-  children: ReactNode;
-}) {
-  return <ToneContext.Provider value={tone}>{children}</ToneContext.Provider>;
-}
 
 // Hệ 5 vai typography riêng cho /ve-kenji — nguồn: brief "VỀ KENJI VÒNG 1"
 // mục 4 (docs/brand/essence-typography-composition-system-v1.md CHƯA có
@@ -26,6 +9,16 @@ export function VeKenjiToneProvider({
 // Garamond ital,wght@1,400/1,500 đã nạp sẵn ở globals.css, không phải nghiêng
 // giả (transform/skew). text-wrap: balance cho khối ngắn (chống mồ côi chữ),
 // pretty cho đoạn dài.
+//
+// SỬA 29/07/2026 (brief "BỎ ẢNH NỀN, DỰNG CHIỀU SÂU BẰNG CODE"): bỏ ảnh nền ở
+// mọi section trừ Signal → bỏ luôn context tone sáng/tối (VeKenjiToneProvider)
+// từng thêm ở vòng ảnh trước, vì giờ chỉ còn ④ Signal cần chữ sáng (đã có
+// prop `onImage` riêng, không cần context). Đổi độ đậm màu chữ theo "Lớp 4 —
+// chiều sâu bằng độ đậm màu chữ" của brief: Body/Anchor/Display #1A1A1A đặc
+// (trước đây Body dùng e26-text-2 xám nhạt hơn — brief giờ yêu cầu đặc như
+// Anchor/Display để "tiến lên trước"); Utility opacity 0.55; Accent opacity
+// 0.75. Dùng chung 1 token gốc #1A1A1A (e26-text), chỉ khác opacity — không
+// thêm màu ngoài bảng.
 
 type Common = {
   children: ReactNode;
@@ -41,15 +34,8 @@ type Common = {
 // KHÔNG phải 04_TYPOGRAPHY_SYSTEM_2026.md (file đó chỉ là đề xuất chờ chốt,
 // đã sửa lại 27/07/2026 cho khớp bằng chứng này).
 // Mobile hero = 34px — khớp ĐÚNG đỉnh Hero thật của /lang-90 (dòng italic
-// cuối, text-[34px]). Trùng hợp: số này cũng chính là số tối đa đo được
-// trong Type Lab của /ve-kenji không gây overflow ở 390px (40px làm dòng 2
-// H1 tràn 342px→384px, gãy thêm dòng 3 + mồ côi "định." — đã thử giữ break
-// point ở câu 1 và tìm cách chia lại 2 dòng khác ở 40px nhưng không có cách
-// nào giữ đúng ranh giới ngữ nghĩa "mỗi dòng = 1 câu" mà vừa khung; xuống
-// dòng giữa câu vi phạm mục 13 "theo ý nghĩa, không theo chiều rộng" nặng
-// hơn — nên 34px là lựa chọn đúng, không phải đường tắt).
-// Desktop hero = 68px (sửa từ 64px) — khớp ĐÚNG trần Hero thật của /lang-90
-// (lg:text-[68px]), không phải số 52–64 của 04_TYPOGRAPHY_SYSTEM_2026.md.
+// cuối, text-[34px]). Desktop hero = 68px — khớp ĐÚNG trần Hero thật của
+// /lang-90 (lg:text-[68px]).
 export function EssenceDisplay({
   children,
   className,
@@ -76,25 +62,16 @@ export function EssenceDisplay({
 // (70–80% cỡ H2). Nhấn nội bộ: bọc cụm chữ bằng <em> ngay trong children —
 // true italic, quy tắc chung của trang (một cách duy nhất, không lặp cách
 // khác).
-// Kiểm tỷ lệ theo essence-typography-composition-system-v1.md mục 11
-// ("Anchor = 45–65% Hero"): 42/68 = 62% ở desktop — đúng dải. Ở mobile 30/34
-// = 88%, vượt dải 45–65%, nhưng /lang-90 thật (Lang90SectionHeading 30px vs
-// Lang90HeroComposition đỉnh 34px mobile) cũng ở đúng tỷ lệ 88% — quy tắc
-// tỷ lệ trong file gốc chỉ áp cho desktop, mobile nén khoảng cách tự nhiên.
 export function EssenceAnchor({
   children,
   className,
   as: As = "h2",
   level = "h2",
-  tone,
-}: Common & { as?: ElementType; level?: "h2" | "h3"; tone?: "normal" | "light" }) {
-  const contextTone = useContext(ToneContext);
-  tone = tone ?? contextTone;
+}: Common & { as?: ElementType; level?: "h2" | "h3" }) {
   return (
     <As
       className={cn(
-        "font-serif font-medium [text-wrap:balance]",
-        tone === "normal" ? "text-e26-text" : "text-e26-text-dark",
+        "font-serif font-medium text-e26-text [text-wrap:balance]",
         level === "h2" && "text-[30px] leading-[1.25] tracking-normal md:text-[42px]",
         level === "h3" && "text-[22px] leading-[1.25] tracking-normal md:text-[32px]",
         className
@@ -107,19 +84,13 @@ export function EssenceAnchor({
 
 // Vai 3 — Reading Voice. Một đoạn = một <EssenceBody>. max-width giữ dòng
 // 55–70 ký tự; các đoạn liền kề tự xuống dòng nhờ wrapper cha (space-y-*).
-export function EssenceBody({
-  children,
-  className,
-  as: As = "p",
-  tone,
-}: Common & { as?: ElementType; tone?: "normal" | "light" }) {
-  const contextTone = useContext(ToneContext);
-  tone = tone ?? contextTone;
+// Màu #1A1A1A đặc (không phải e26-text-2 xám) — brief 29/07/2026: chữ chính
+// (Body/Anchor/Display) đứng cùng một độ đậm để "tiến lên trước".
+export function EssenceBody({ children, className, as: As = "p" }: Common & { as?: ElementType }) {
   return (
     <As
       className={cn(
-        "font-sans font-normal [text-wrap:pretty]",
-        tone === "normal" ? "text-e26-text-2" : "text-e26-text-dark-2",
+        "font-sans font-normal text-e26-text [text-wrap:pretty]",
         "text-[17px] leading-[1.7] tracking-normal md:text-[19px] md:leading-[1.75]",
         "max-w-[660px]",
         className
@@ -139,19 +110,12 @@ export function EssenceLeadIn({ children }: { children: ReactNode }) {
 }
 
 // Vai 4 — Accent Voice. True italic Cormorant. Đúng 3 lần trên trang (② ⑥ ⑨).
-export function EssenceAccent({
-  children,
-  className,
-  as: As = "p",
-  tone,
-}: Common & { as?: ElementType; tone?: "normal" | "light" }) {
-  const contextTone = useContext(ToneContext);
-  tone = tone ?? contextTone;
+// "Chữ thì thầm" — #1A1A1A/75 (opacity 0.75, lùi nhẹ sau Body/Anchor đặc).
+export function EssenceAccent({ children, className, as: As = "p" }: Common & { as?: ElementType }) {
   return (
     <As
       className={cn(
-        "font-serif italic font-normal [text-wrap:balance]",
-        tone === "normal" ? "text-e26-text" : "text-e26-text-dark",
+        "font-serif italic font-normal text-[#1A1A1A]/75 [text-wrap:balance]",
         "text-[21px] leading-[1.4] tracking-normal md:text-[23px]",
         className
       )}
@@ -162,11 +126,12 @@ export function EssenceAccent({
 }
 
 // Vai 5 — Utility Voice. Nhãn nhỏ uppercase, tracking +0.18em.
+// "Chữ phụ" — #1A1A1A/55 (opacity 0.55, lùi ra sau nhất).
 export function EssenceUtility({ children, className, as: As = "p" }: Common & { as?: ElementType }) {
   return (
     <As
       className={cn(
-        "font-sans font-medium uppercase text-e26-text-2",
+        "font-sans font-medium uppercase text-[#1A1A1A]/55",
         "text-[12px] leading-[1.4] tracking-[0.18em] md:text-[13px]",
         className
       )}
@@ -180,9 +145,10 @@ export function EssenceUtility({ children, className, as: As = "p" }: Common & {
 // CHỦ ĐÍCH so với hệ 3 tầng gốc (Kenji đã chốt: không tự thêm tầng C, khối
 // này không được có chữ nào khác ngoài A/B). Nhận đúng hai prop text, không
 // nhận children — khoá cứng để không ai lỡ tay thêm CTA/heading vào khối.
-// onImage: true khi đặt trên ảnh nền tối (01-khe-van-toi, brief 29/07/2026)
-// — đổi sang token chữ sáng (e26-text-dark) thay vì thêm text-shadow (cấm).
-// Class ve-kenji-signal-* là điểm neo cho useVeKenjiSignalReveal (GSAP).
+// onImage: true khi đặt trên ảnh nền tối (01-khe-van-toi — ngoại lệ ảnh DUY
+// NHẤT còn lại trên trang) — đổi sang token chữ sáng (e26-text-dark) thay vì
+// thêm text-shadow (cấm). Class ve-kenji-signal-* là điểm neo cho
+// useVeKenjiSignalReveal (GSAP).
 export function EssenceSignalComposition({
   tierA,
   tierB,
@@ -204,7 +170,7 @@ export function EssenceSignalComposition({
       </div>
       <EssenceBody
         as="p"
-        className={cn("ve-kenji-signal-tier-a mx-auto", onImage ? "text-e26-text-dark-2" : "text-e26-text-2")}
+        className={cn("ve-kenji-signal-tier-a mx-auto", onImage && "text-e26-text-dark-2")}
       >
         {tierA}
       </EssenceBody>
