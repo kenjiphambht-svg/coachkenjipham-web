@@ -1,4 +1,11 @@
 # 12_IMPLEMENTATION_ROADMAP_PHASES.md
+> **Governance status:** L5 — Superseded
+> **Owner:** Kenji Phạm
+> **Purpose:** Historical sequencing evidence.
+> **Decision scope:** Earlier planning context only. **Non-decision scope:** Current roadmap or task priority.
+> **Still valid:** Dependency and privacy lessons. **Superseded:** The 13-phase roadmap.
+> **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md), C-09 and M0–M6 Founder Decisions.
+> **Last verified:** ead2eb7. **Review:** No periodic cadence.
 Mục tiêu: chia toàn dự án thành 13 phase để không làm tất cả một lần.
 Người đọc chính: Kenji (điều phối), mọi agent (biết mình đang ở phase nào).
 

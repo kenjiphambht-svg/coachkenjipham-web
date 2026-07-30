@@ -1,4 +1,11 @@
 # 15_DECISION_LOG_AND_NEXT_ACTIONS.md
+> **Governance status:** L5 — Historical with Governance Bridge
+> **Owner:** Kenji Phạm
+> **Purpose:** Dated decision history.
+> **Decision scope:** Historical record only. **Non-decision scope:** Current L0 authority where a newer Founder Decision is registered.
+> **Still valid:** Traceability of decisions at their dates. **Outdated/superseded:** Rules closed differently in the [Conflict Register](../../governance/CONFLICT_REGISTER.md).
+> **Replacement:** Governance authority and Conflict Register.
+> **Last verified:** ead2eb7. **Review:** No periodic cadence.
 Mục tiêu: một nơi duy nhất ghi quyết định đã chốt + việc kế tiếp. File sống — cập nhật mỗi khi có quyết định mới.
 Người đọc chính: Kenji mỗi tuần; mọi agent trước khi làm task.
 

@@ -1,5 +1,13 @@
 # AI Agent Instructions
 
+> **Governance status:** L2 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** Default safeguards for agents.
+> **Decision scope:** Task safety, scope and workflow. **Non-decision scope:** Founder Decisions, public positioning, route/indexing, product flow and image authority.
+> **Precedence:** Read [Documentation Authority](docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md), [Conflict Register](docs/governance/CONFLICT_REGISTER.md) and [Reading Bundles](docs/governance/READING_BUNDLES.md) first. L0 wins over every older statement below.
+> **Still valid:** Scoped work, verification and protected-area rules. **Outdated/superseded:** Old public AI-native/astrology positioning is not canonical public copy.
+> **Last verified:** ead2eb7. **Review:** Founder Decision trigger or 90 days.
+
 This is the shared instruction file for Codex, Claude Code, and future AI coding agents working on coachkenjipham.com.
 
 ## Operating Rules
@@ -82,4 +90,3 @@ English terms may be used when strategically useful:
 - AI therapist
 - diagnosis
 - guaranteed transformation claims
-

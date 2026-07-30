@@ -1,4 +1,12 @@
 # 00_READ_ME_FIRST_IMAGE_SYSTEM.md
+> **Governance status:** L3 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** Image-system entrypoint and workflow.
+> **Decision scope:** Image ethics, workflow and production routing. **Non-decision scope:** A global replacement of FLUX.1.
+> **L0 authority split:** Kenji portraits use FLUX.1 + Kenji LoRA. Non-Kenji imagery uses FLUX.2 Klein 9B.
+> **Still valid:** Light-led, no-brown and image ethics. **Outdated/superseded:** Any reading that labels all FLUX.1 knowledge historical.
+> **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-12; dedicated Portrait Production System is a follow-up task.
+> **Last verified:** ead2eb7. **Review:** System/model trigger or 180 days.
 Đường dẫn repo: docs/brand/image-system/00_READ_ME_FIRST_IMAGE_SYSTEM.md
 Phiên bản: v1.0 — 06/07/2026. Nền tảng: Design System v1.1 (light-led, dark as silence, no brown).
 
@@ -13,9 +21,10 @@ Bổ sung 2 file mới, KHÔNG xoá nội dung cũ bên dưới:
   cho model đã chốt **FLUX.2 [klein] 9B** (4 bước, Guidance 1, Shift 3, không
   Negative Prompt), kèm 5 light module chuẩn và template điền nhanh.
 
-**Ưu tiên:** khi viết prompt ảnh CỤ THỂ, file **08 + 09 thắng file 03**
-(`03_FLUX_PROMPT_BANK_KENJI_AND_ESSENCE.md`). File 03 giữ lại làm kho tham
-khảo lịch sử; 08/09 là tầng thực thi hiện hành.
+**Ưu tiên theo phạm vi:** với ảnh **không có Kenji**, file **08 + 09** thắng
+phần prompt non-Kenji của file 03. Với ảnh **có Kenji**, FLUX.1 + Kenji LoRA
+trong file 03 vẫn là tầng portrait production Active L3. File 03 giữ phần
+non-Kenji làm kho tham khảo lịch sử; 08/09 là tầng thực thi non-Kenji hiện hành.
 
 **Đọc trước khi thiết kế/tạo ảnh** (tầng chiến lược, ngoài image-system):
 `docs/brand/ESSENCE_VISUAL_ARCHITECTURE.md` (Page Mode + Signal Moment + quy

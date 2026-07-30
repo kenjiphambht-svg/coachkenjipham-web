@@ -1,4 +1,11 @@
 # ESSENCE — CHIẾN LƯỢC GEO v2
+> **Governance status:** L3 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** GEO/entity strategy and question structure.
+> **Decision scope:** GEO structure, evidence and safe-answer patterns. **Non-decision scope:** L0 public title, FCP meaning, selective public use of giao thức, ICF/neuroscience claims, or indexing launch.
+> **Still valid:** Entity consistency, capacity of 5 Lặng sessions/month and safety framing. **Outdated/superseded:** Conflicting identity/title, FCP, public-term and pre-M6 indexing rules.
+> **Replacement:** [Conflict Register](../governance/CONFLICT_REGISTER.md) C-02, C-05, C-07, C-10 and C-11.
+> **Last verified:** ead2eb7. **Review:** System/implementation trigger or 180 days.
 **Tối ưu để MỌI hệ thống AI (ChatGPT, Claude, Gemini, Perplexity, Copilot...) tìm thấy, hiểu đúng, và kể đúng về Essence**
 
 Ngày lập: 26/07/2026 · Web Studio soạn cho Kenji Phạm

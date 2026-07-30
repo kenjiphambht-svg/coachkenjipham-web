@@ -1,4 +1,11 @@
 # 13_QA_CHECKLIST_10000_USD_WEBSITE.md
+> **Governance status:** L2 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** QA reference.
+> **Decision scope:** Build, safety, visual, privacy and scope QA. **Non-decision scope:** Any merge authority conflicting with governance or task-specific Founder instruction.
+> **Still valid:** Build, child-safety, security and quality checks. **Outdated/superseded:** Unconditional Kenji-approval wording where an L0 or task ruling differs.
+> **Replacement:** [Documentation Authority](../../governance/ESSENCE_DOCUMENTATION_AUTHORITY.md). G0 is Draft and must not merge.
+> **Last verified:** ead2eb7. **Review:** Founder Decision trigger or 90 days.
 Mục tiêu: checklist QA tổng — cửa kiểm cuối trước mọi lần merge/publish.
 Người đọc chính: mọi agent trước khi trình phiếu; Kenji khi duyệt lô.
 Cách dùng: mỗi PR chạy nhóm liên quan + nhóm 8, 10 (bắt buộc mọi PR). Kết quả dán vào PR.

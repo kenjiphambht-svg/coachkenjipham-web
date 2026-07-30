@@ -1,4 +1,11 @@
 # 10_SEO_AIO_GEO_CONTENT_SYSTEM.md
+> **Governance status:** L3 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** SEO/GEO principles.
+> **Decision scope:** Entity, schema and privacy principles. **Non-decision scope:** Indexing launch timing, robots, sitemap or Search Console actions.
+> **Still valid:** Schema structure, private-route protections and content principles. **Outdated/superseded:** Any instruction to make Villa/public pages indexable before M6.
+> **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-02 and planned G1 Indexing Policy.
+> **Last verified:** ead2eb7. **Review:** System/implementation trigger or 180 days.
 Mục tiêu: để Google VÀ các AI (ChatGPT, Claude, Gemini, AI Overview) hiểu đúng và trích dẫn đúng về Kenji/Essence.
 Người đọc chính: Codex (kỹ thuật), người viết content, Kenji (hiểu chiến lược).
 

@@ -1,5 +1,13 @@
 # Brand System Index — Essence Coaching 2026
 
+> **Governance status:** L2 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** Brand-document entrypoint.
+> **Decision scope:** Reading index. **Non-decision scope:** Authority hierarchy or completeness of all current systems.
+> **Precedence:** Read [Documentation Authority](../governance/ESSENCE_DOCUMENTATION_AUTHORITY.md) and [Reading Bundles](../governance/READING_BUNDLES.md) first.
+> **Still valid:** System inventory and visual decisions. **Outdated/superseded:** “Three standard systems” is not the complete authority map.
+> **Last verified:** ead2eb7. **Review:** Founder Decision trigger or 90 days.
+
 Trang mục lục cho 3 bộ tài liệu chuẩn của Essence Coaching System. PR này chỉ thêm tài liệu, không sửa giao diện.
 
 ## 1. Website Master Plan

@@ -1,4 +1,11 @@
 # 07_BACKEND_CRM_PAYMENT_AND_DATA_ARCHITECTURE.md
+> **Governance status:** L3 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** Backend/privacy options and data-model reference.
+> **Decision scope:** Data separation and safety. **Non-decision scope:** Approval of Tally, Airtable, VietQR or legacy flow as new architecture.
+> **Still valid:** Child-data separation, consent and minimal-data principles. **Outdated/superseded:** Tool assumptions for Lặng and Hạt Mầm new flows.
+> **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-05 and C-06.
+> **Last verified:** ead2eb7. **Review:** System/implementation trigger or 180 days.
 Mục tiêu: vẽ backend/dữ liệu/CRM/payment đủ rõ để triển khai theo 3 mức, không xây thừa.
 Người đọc chính: Claude Code/Codex, automation builder; Kenji đọc mục 1–3 để hiểu và quyết.
 

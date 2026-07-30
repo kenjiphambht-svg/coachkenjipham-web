@@ -1,5 +1,13 @@
 # BACKLOG — Essence Website
 
+> **Governance status:** L2 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** Task queue and work visibility.
+> **Decision scope:** Declared task state only. **Non-decision scope:** Canonical roadmap, route truth, offer truth or Founder Decisions.
+> **Precedence:** [Documentation Authority](docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md) and the [Conflict Register](docs/governance/CONFLICT_REGISTER.md) win over the phase labels below.
+> **Still valid:** Task tracking and protected areas. **Outdated/superseded:** The Phase 1–5 sequence below is not the M0–M6 roadmap.
+> **Replacement:** Planned G1 current-truth matrices. **Last verified:** ead2eb7. **Review:** Founder Decision trigger or 90 days.
+
 File sống: nguồn sự thật duy nhất về "đang làm gì, làm gì tiếp theo".
 Mọi phiên Claude Code/Codex đọc file này trước khi nhận task (xem `PLAYBOOK.md`).
 Roadmap chi tiết: `docs/website/master-plan/12_IMPLEMENTATION_ROADMAP_PHASES.md`.

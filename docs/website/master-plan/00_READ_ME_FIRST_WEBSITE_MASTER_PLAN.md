@@ -1,4 +1,11 @@
 # 00_READ_ME_FIRST_WEBSITE_MASTER_PLAN.md
+> **Governance status:** L5 — Historical
+> **Owner:** Kenji Phạm
+> **Purpose:** Historical orientation to the original master-plan set.
+> **Decision scope:** Evidence of earlier planning only. **Non-decision scope:** Current roadmap, entrypoint, or agent reading order.
+> **Still valid:** Privacy, scoped-work and documentation-history context. **Superseded:** 13-phase operating authority.
+> **Replacement:** [Documentation Authority](../../governance/ESSENCE_DOCUMENTATION_AUTHORITY.md), [Reading Bundles](../../governance/READING_BUNDLES.md), and M0–M6 Founder Decisions.
+> **Last verified:** ead2eb7. **Review:** No periodic cadence.
 Mục tiêu: giải thích bộ tài liệu này dùng để làm gì và đọc theo thứ tự nào.
 Người đọc chính: Kenji trước tiên; sau đó mọi AI/người vào làm dự án.
 

@@ -1,4 +1,11 @@
 # 01_WEBSITE_NORTH_STAR_AND_POSITIONING.md
+> **Governance status:** L1 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** Website positioning principles.
+> **Decision scope:** Human-first experience and professional boundaries. **Non-decision scope:** Any statement conflicting with current L0 public positioning.
+> **Still valid:** Human-first framing, boundaries and no-guru principles. **Outdated/superseded:** Incomplete public identity wording.
+> **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md), C-07.
+> **Last verified:** ead2eb7. **Review:** Founder Decision trigger or 90 days.
 Mục tiêu: định nghĩa "website trị giá 10.000 USD" trong hệ Essence nghĩa là gì, để mọi quyết định sau này có la bàn.
 Người đọc chính: Kenji, rồi mọi người/AI làm dự án.
 

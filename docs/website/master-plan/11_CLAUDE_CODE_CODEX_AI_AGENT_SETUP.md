@@ -1,4 +1,11 @@
 # 11_CLAUDE_CODE_CODEX_AI_AGENT_SETUP.md
+> **Governance status:** L2 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** Agent task workflow.
+> **Decision scope:** Scoped task/QA conventions. **Non-decision scope:** L0 authority, current reading order or G0 merge decision.
+> **Still valid:** Task-format and protected-scope rules. **Outdated/superseded:** Old default reading order.
+> **Replacement:** [Reading Bundles](../../governance/READING_BUNDLES.md); G0 remains Draft and unmerged.
+> **Last verified:** ead2eb7. **Review:** Founder Decision trigger or 90 days.
 Mục tiêu: nhiều AI cùng làm một repo mà không giẫm chân nhau, không loạn, Kenji vẫn nắm quyền cuối.
 Người đọc chính: mọi AI vào repo; Kenji để hiểu cách giao việc.
 

@@ -1,4 +1,11 @@
 # 02_PUBLIC_SITEMAP_AND_ROUTE_POLICY.md
+> **Governance status:** L2 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** Historical/current route evidence pending G1 route truth.
+> **Decision scope:** Route safeguards and legacy evidence. **Non-decision scope:** Indexing launch, consumer journey or new-flow migration.
+> **Still valid:** Privacy, noindex safeguards for private routes and legacy caution. **Outdated/superseded:** Public-index timing, old journey assumptions and /ai-startup index role.
+> **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-01–C-04 and planned G1 Route State Matrix/Indexing Policy.
+> **Last verified:** ead2eb7. **Review:** Founder Decision trigger or 90 days.
 Mục tiêu: chốt danh sách route, trạng thái và luật của từng route — để không ai tạo trang bừa.
 Người đọc chính: Codex/Claude Code khi tạo hoặc sửa route; Kenji khi duyệt.
 

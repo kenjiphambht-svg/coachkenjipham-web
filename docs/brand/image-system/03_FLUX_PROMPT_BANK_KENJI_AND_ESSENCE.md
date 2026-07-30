@@ -1,4 +1,11 @@
 # 03_FLUX_PROMPT_BANK_KENJI_AND_ESSENCE.md
+> **Governance status:** L3 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** FLUX.1 + Kenji LoRA portrait production knowledge.
+> **Decision scope:** Images containing Kenji. **Non-decision scope:** Default production authority for imagery without Kenji.
+> **Still valid:** LoRA weight, portrait prompting, ethical and light-led guidance. **Historical/reference:** Non-Kenji prompt groups when FLUX.2 Lightscape/Prompt Master applies.
+> **Replacement:** Image-system 08/09 for non-Kenji work; dedicated Portrait Production System remains a follow-up task.
+> **Last verified:** ead2eb7. **Review:** System/model trigger or 180 days.
 Đường dẫn repo: docs/brand/image-system/03_FLUX_PROMPT_BANK_KENJI_AND_ESSENCE.md
 Model: FLUX.1 dev (local). LoRA: `kenji_face_lora (FLUX.1)` — chỉ bật cho ảnh có Kenji.
 

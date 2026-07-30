@@ -1,5 +1,13 @@
 # PLAYBOOK — Cách xưởng Essence vận hành
 
+> **Governance status:** L2 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** Agent workflow and QA.
+> **Decision scope:** Workflow, branch and QA discipline. **Non-decision scope:** L0 product, route, indexing and public-positioning decisions.
+> **Precedence:** [Documentation Authority](docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md) and [Conflict Register](docs/governance/CONFLICT_REGISTER.md) govern this file.
+> **Still valid:** Scoped branches, QA and safety. **Outdated/superseded:** Old phase truth and any conflicting merge wording. G0 is a Draft PR and must not merge.
+> **Last verified:** ead2eb7. **Review:** Founder Decision trigger or 90 days.
+
 Giao thức làm việc cho Claude Code, Codex, ChatGPT và Kenji.
 File này + `BACKLOG.md` là hệ điều hành của xưởng. Luật chi tiết hơn: `AGENTS.md`, `.claude/rules/`, `docs/website/master-plan/11_CLAUDE_CODE_CODEX_AI_AGENT_SETUP.md`.
 

@@ -1,4 +1,11 @@
 # 05_BAN_SAC_HAT_MAM_FUNNEL_AND_LANDING_SPEC.md
+> **Governance status:** L3 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** Child-safe Hạt Mầm content and funnel reference.
+> **Decision scope:** 0–7 framing, child safety and offer clarity. **Non-decision scope:** Approval of legacy tools or architecture for the new flow.
+> **Still valid:** Child safety, 0–7 audience and privacy principles. **Outdated/superseded:** Tally/VietQR MVP flow as a prescribed new implementation.
+> **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-06; planned G1 Offer State Matrix.
+> **Last verified:** ead2eb7. **Review:** System/implementation trigger or 180 days.
 Mục tiêu: spec landing + funnel hoàn chỉnh cho Ấn phẩm Bản Sắc Hạt Mầm — sản phẩm active chính 60–90 ngày tới.
 Người đọc chính: Codex (build), Kenji (duyệt), người dựng email/form.
 Nguồn bắt buộc: M3 Phần J, M8 persona 8, Tài liệu chuẩn hóa ngôn ngữ, docs/strategy/03 (kế hoạch beta), docs/strategy/06 (VoC).
