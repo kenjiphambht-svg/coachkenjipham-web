@@ -47,9 +47,7 @@ Trước khi làm BẤT KỲ việc thiết kế/hình ảnh nào cho website (t
 
 ## Project Identity
 
-Kenji Phạm là Người sáng lập · Hệ sinh thái Essence · Huấn luyện Phát triển Con người. Public positioning, title và copy chỉ được dùng theo hierarchy L0 và task-provided approved copy; không suy rộng từ định vị công khai lịch sử.
-
-Kenji Phạm is the Founder of the Essence ecosystem, focused on Human Development Coaching. Public positioning, titles, and copy must follow the L0 hierarchy and task-provided approved copy; do not infer them from historical public positioning.
+Canonical public positioning: Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching System. Không được diễn giải, rút gọn, dịch thành positioning khác, hoặc suy ra danh xưng từ evidence lịch sử.
 
 ## Website Role
 

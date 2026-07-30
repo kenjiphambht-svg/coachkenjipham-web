@@ -31,8 +31,8 @@ Không được tạo: cảm giác đền thờ guru; cảm giác phần mềm S
 
 ## 3. Định vị public
 
-- **Kenji Phạm** — Người sáng lập · Hệ sinh thái Essence · Huấn luyện Phát triển Con người. Một người thật, có hành trình thật, có ranh giới nghề rõ. Không là guru, không là nhà tiên tri, không là therapist, không là bác sĩ.
-- **Hệ sinh thái Essence** — mô tả public cụ thể phải do L0 hoặc task-provided approved copy cung cấp; tài liệu này không cấp phép dùng tên phương pháp hay giao thức làm public positioning.
+- **Kenji Phạm** — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching System. Một người thật, có hành trình thật, có ranh giới nghề rõ. Không là guru, không là nhà tiên tri, không là therapist, không là bác sĩ.
+- **Essence Coaching System** — mô tả public cụ thể phải do L0 hoặc task-provided approved copy cung cấp; tài liệu này không cấp phép dùng tên phương pháp hay giao thức làm public positioning.
 
 ## 4. Ghi chú lịch sử về AI-native
 

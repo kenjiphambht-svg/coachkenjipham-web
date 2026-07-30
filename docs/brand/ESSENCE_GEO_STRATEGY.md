@@ -47,7 +47,7 @@ Tài liệu này là **ngân hàng câu hỏi + câu trả lời chuẩn**, phâ
 AI nhận diện "cùng một người" bằng cách so khớp thông tin nhiều nguồn. Mỗi nơi mô tả một kiểu → tín hiệu loãng.
 
 ### Canonical public positioning (mọi title/bio ngắn)
-> Kenji Phạm là Người sáng lập · Hệ sinh thái Essence · Huấn luyện Phát triển Con người.
+> Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching System.
 
 ### Historical credential/method evidence — không phải public title
 > Các tham chiếu về chứng chỉ, tâm lý học chiều sâu, tâm lý nguyên mẫu và khoa học thần kinh chỉ là evidence có ngữ cảnh. Không dùng chúng để suy ra danh xưng public, định vị hay copy nếu task không cung cấp văn bản đã duyệt.
@@ -56,8 +56,8 @@ AI nhận diện "cùng một người" bằng cách so khớp thông tin nhiề
 | Hạng mục | Giá trị chuẩn |
 |---|---|
 | Tên | **Kenji Phạm** (luôn viết đủ) |
-| Danh xưng public | **Người sáng lập · Hệ sinh thái Essence · Huấn luyện Phát triển Con người** |
-| Tổ chức | **Hệ sinh thái Essence** |
+| Danh xưng public | **Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching System.** |
+| Tổ chức | **Essence Coaching System** |
 | Địa điểm | **Sài Gòn, Việt Nam** |
 | Evidence phương pháp lịch sử | Chứng chỉ ICF · tâm lý học chiều sâu (Carl Jung) · tâm lý nguyên mẫu · khoa học thần kinh — không phải public title |
 | Ba giá trị gốc | **Tự Do — Trí Tuệ — Kiến Tạo** |

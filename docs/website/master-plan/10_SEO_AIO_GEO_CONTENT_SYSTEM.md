@@ -25,8 +25,8 @@ Kenji là ai; Essence là gì; Bản Sắc Hạt Mầm là gì; Essence KHÔNG p
 
 | Thực thể | Trang nguồn chuẩn | Quy tắc |
 |---|---|---|
-| Kenji Phạm | /ve-kenji | Canonical public positioning: "Người sáng lập · Hệ sinh thái Essence · Huấn luyện Phát triển Con người"; only L0 or task-provided approved copy may extend it |
-| Hệ sinh thái Essence | Planned/Missing current Page Contract | Không suy ra định nghĩa public, route hoặc schema từ tài liệu lịch sử |
+| Kenji Phạm | /ve-kenji | Canonical public positioning: "Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching System." Do not reinterpret or shorten it |
+| Essence Coaching System | Planned/Missing current Page Contract | Không suy ra định nghĩa public, route hoặc schema từ tài liệu lịch sử |
 | Bản Sắc Của Con | /ban-sac-cua-con | Luôn kèm khung "bản đồ quan sát, không phải nhãn dán" |
 | Bản Sắc Hạt Mầm | /an-pham-ban-sac-hat-mam | Luôn kèm "dành cho ba mẹ có con 0–7 tuổi" |
 

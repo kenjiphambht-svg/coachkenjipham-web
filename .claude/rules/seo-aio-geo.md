@@ -13,7 +13,7 @@ Read `docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md`, `docs/governance/DOCU
 
 Canonical public positioning:
 
-Kenji Phạm — Người sáng lập · Hệ sinh thái Essence · Huấn luyện Phát triển Con người
+Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching System.
 
 Use no additional public title, organization name, credential or method claim unless L0 or task-provided approved copy supplies it.
 

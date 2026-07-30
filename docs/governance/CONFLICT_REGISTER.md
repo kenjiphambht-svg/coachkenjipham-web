@@ -18,7 +18,7 @@
 | C-04 | /ai-startup role | noindex; independent partner asset; outside consumer journey; rewrite pending. |
 | C-05 | Lặng capacity/flow | 5 sessions/month; six questions → support report → Kenji Human Decision Gate → payment → Kenji payment confirmation → private booking link. |
 | C-06 | Hạt Mầm age/funnel | Canonical age 0–7; new form, payment, confirmation, delivery and email flow; no legacy funnel. |
-| C-07 | Public identity | Kenji Phạm — Người sáng lập · Hệ sinh thái Essence · Huấn luyện Phát triển Con người. |
+| C-07 | Public identity | Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach.<br>Người sáng lập Essence Coaching System. |
 | C-08 | Public contact | contact@coachkenjipham.com is the public email. |
 | C-09 | Roadmap | M0–M6 supersedes the prior 13-phase roadmap. |
 | C-10 | FCP | FCP means Full Cycle Process. Older meanings are not canonical. |
