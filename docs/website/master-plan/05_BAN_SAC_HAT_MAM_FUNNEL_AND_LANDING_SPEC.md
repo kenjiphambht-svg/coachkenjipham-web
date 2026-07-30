@@ -1,4 +1,13 @@
 # 05_BAN_SAC_HAT_MAM_FUNNEL_AND_LANDING_SPEC.md
+> **Governance status:** L3 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** Child-safe Hạt Mầm content and funnel reference.
+> **Decision scope:** 0–7 framing, child safety and offer clarity. **Non-decision scope:** Approval of legacy tools or architecture for the new flow.
+> **Still valid:** Child safety, 0–7 audience and privacy principles. **Outdated/superseded:** Tally/VietQR MVP flow as a prescribed new implementation.
+> **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-06; planned G1 Offer State Matrix.
+> **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+> **Last verified:** PR #110 head; finalize at merge
+> **Review:** System/implementation trigger or 180 days.
 Mục tiêu: spec landing + funnel hoàn chỉnh cho Ấn phẩm Bản Sắc Hạt Mầm — sản phẩm active chính 60–90 ngày tới.
 Người đọc chính: Codex (build), Kenji (duyệt), người dựng email/form.
 Nguồn bắt buộc: M3 Phần J, M8 persona 8, Tài liệu chuẩn hóa ngôn ngữ, docs/strategy/03 (kế hoạch beta), docs/strategy/06 (VoC).
@@ -73,4 +82,4 @@ Một phụ huynh lạ tự đi trọn từ landing → đặt → điền form 
 - Thu thừa dữ liệu "cho tiện sau này" — vi phạm nguyên tắc tối thiểu dữ liệu.
 
 ## Prompt mẫu cho Codex
-"Đọc docs/website/05. Branch: feature/landing-hat-mam. Scope: route /an-pham-ban-sac-hat-mam + form intake + trang xác nhận đơn (noindex). Copy dùng bản đã duyệt tại [đường dẫn]. Payment: mức MVP (VietQR tĩnh theo mã đơn). Xong: chạy checklist file này + File 13, preview, phiếu 5 dòng. Không merge."
+"Historical prompt only — không thực thi. Flow, route, intake, payment, noindex và copy phải chờ Founder Decision C-06 cùng task-provided approved specification; không suy ra từ prompt lịch sử này."

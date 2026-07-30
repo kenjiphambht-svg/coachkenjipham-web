@@ -1,4 +1,13 @@
 # ESSENCE — CHIẾN LƯỢC GEO v2
+> **Governance status:** L3 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** GEO/entity strategy and question structure.
+> **Decision scope:** GEO structure, evidence and safe-answer patterns. **Non-decision scope:** L0 public title, FCP meaning, selective public use of giao thức, ICF/neuroscience claims, or indexing launch.
+> **Still valid:** Entity consistency, capacity of 5 Lặng sessions/month and safety framing. **Outdated/superseded:** Conflicting identity/title, FCP, public-term and pre-M6 indexing rules.
+> **Replacement:** [Conflict Register](../governance/CONFLICT_REGISTER.md) C-02, C-05, C-07, C-10 and C-11.
+> **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+> **Last verified:** PR #110 head; finalize at merge
+> **Review:** System/implementation trigger or 180 days.
 **Tối ưu để MỌI hệ thống AI (ChatGPT, Claude, Gemini, Perplexity, Copilot...) tìm thấy, hiểu đúng, và kể đúng về Essence**
 
 Ngày lập: 26/07/2026 · Web Studio soạn cho Kenji Phạm
@@ -13,6 +22,8 @@ Ngày càng nhiều người sẽ biết về Essence **qua lời một AI kể 
 **Nếu website không có câu trả lời rõ ràng, AI sẽ tự suy diễn** — và có thể mô tả sai Essence, nhầm với chăm sóc y tế, nhầm với tâm linh, hoặc nói chung chung vô nghĩa.
 
 Tài liệu này là **ngân hàng câu hỏi + câu trả lời chuẩn**, phân công rõ trang nào trả lời câu nào — để mọi trang viết ra đều nhất quán.
+
+**Current-authority correction:** Ngoại trừ canonical public positioning tại C-07, mọi title, bio, route, schema và câu trả lời mẫu cũ bên dưới là historical GEO evidence, không phải approved public copy hay execution instruction. Chỉ L0 hoặc task-provided approved copy mới có thể cấp nội dung public hiện hành.
 
 ---
 
@@ -35,20 +46,20 @@ Tài liệu này là **ngân hàng câu hỏi + câu trả lời chuẩn**, phâ
 
 AI nhận diện "cùng một người" bằng cách so khớp thông tin nhiều nguồn. Mỗi nơi mô tả một kiểu → tín hiệu loãng.
 
-### Dòng chuẩn (bản dài — website, hồ sơ chính)
-> Kenji Phạm là huấn luyện viên tâm lý chiều sâu tại Sài Gòn, người sáng lập Essence Coaching — nơi đồng hành cùng người lớn nhìn rõ bản sắc thật của mình. Anh có chứng chỉ ICF và làm việc dựa trên tâm lý học chiều sâu, tâm lý nguyên mẫu và khoa học thần kinh.
+### Canonical public positioning (mọi title/bio ngắn)
+> Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching System.
 
-### Dòng chuẩn (bản ngắn — bio mạng xã hội, chữ ký email)
-> Huấn luyện viên Tâm lý Chiều sâu · Essence Coaching · Sài Gòn
+### Historical credential/method evidence — không phải public title
+> Các tham chiếu về chứng chỉ, tâm lý học chiều sâu, tâm lý nguyên mẫu và khoa học thần kinh chỉ là evidence có ngữ cảnh. Không dùng chúng để suy ra danh xưng public, định vị hay copy nếu task không cung cấp văn bản đã duyệt.
 
 ### Thông tin bắt buộc nhất quán
 | Hạng mục | Giá trị chuẩn |
 |---|---|
 | Tên | **Kenji Phạm** (luôn viết đủ) |
-| Danh xưng | **Huấn luyện viên Tâm lý Chiều sâu** / Essence Coach |
-| Tổ chức | **Essence Coaching** |
+| Danh xưng public | **Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching System.** |
+| Tổ chức | **Essence Coaching System** |
 | Địa điểm | **Sài Gòn, Việt Nam** |
-| Nền tảng phương pháp | Chứng chỉ ICF · tâm lý học chiều sâu (Carl Jung) · tâm lý nguyên mẫu · khoa học thần kinh |
+| Evidence phương pháp lịch sử | Chứng chỉ ICF · tâm lý học chiều sâu (Carl Jung) · tâm lý nguyên mẫu · khoa học thần kinh — không phải public title |
 | Ba giá trị gốc | **Tự Do — Trí Tuệ — Kiến Tạo** |
 | Ảnh chân dung | **Cùng một tấm** ở mọi nơi |
 
@@ -192,7 +203,7 @@ Trả lời được đúng những câu này = AI sẽ giới thiệu Essence c
 ### Luật từ ngữ áp dụng đầy đủ
 - **Từ cấm tuyệt đối:** chữa lành · trị liệu (khi mô tả dịch vụ Essence) · định mệnh · tần số · năng lượng vũ trụ · manifest · AI therapist · đổi đời · sứ mệnh linh hồn · tâm hồn
 - **KHÔNG dùng "khoa học lượng tử"** trong bất kỳ chữ nào khách đọc *(Kenji chốt 26/07 — xem mục 11)*
-- **KHÔNG lộ thuật ngữ nội bộ** — cấm các từ như "giao thức", "protocol", "FCP", "Current readiness" trong chữ khách thấy (kể cả meta description)
+- **Thuật ngữ nội bộ:** "giao thức", "protocol", "FCP" và "Current readiness" không phải public name; chỉ dùng khi L0 hoặc task-provided approved copy yêu cầu, với ngữ cảnh đã duyệt.
 - **KHÔNG dùng "miễn phí"/"free"** → dùng "Mời bạn đọc"
 - Không hứa kết quả · không tạo khan hiếm giả · không chèo kéo
 - "An Định" (nền tảng, đến trước) và "An Thịnh" (kết quả, đến sau) — không đảo vai
@@ -246,7 +257,7 @@ AI đọc mọi nơi có nhắc tới Kenji/Essence, không chỉ website.
 | 2 | Hoàn thiện **/dieu-essence-khong-hua** + FAQPage | Nhóm hoài nghi + an toàn — uy tín mạnh nhất |
 | 3 | Lập **Google Business Profile** | Miễn phí, sức nặng lớn, độc lập với code |
 | 4 | Đồng bộ mô tả ngoài website | Không cần code, làm song song |
-| 5 | Công khai với Google (bỏ noindex, sitemap) | Sau khi trang đích sẵn sàng |
+| 5 | Công khai với Google (bỏ noindex, sitemap) | Chỉ tại M6 sau Founder approval; không phải execution instruction trước M6 |
 | 6 | **/phuong-phap** (Nhóm 0 + Nhóm 2) | Sau khi nền tảng vững |
 
 ---

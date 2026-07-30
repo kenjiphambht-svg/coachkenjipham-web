@@ -1,5 +1,15 @@
 # Brand System Index — Essence Coaching 2026
 
+> **Governance status:** L2 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** Brand-document entrypoint.
+> **Decision scope:** Reading index. **Non-decision scope:** Authority hierarchy or completeness of all current systems.
+> **Precedence:** Read [Documentation Authority](../governance/ESSENCE_DOCUMENTATION_AUTHORITY.md) and [Reading Bundles](../governance/READING_BUNDLES.md) first.
+> **Still valid:** System inventory and visual decisions. **Outdated/superseded:** “Three standard systems” is not the complete authority map.
+> **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+> **Last verified:** PR #110 head; finalize at merge
+> **Review:** Founder Decision trigger or 90 days.
+
 Trang mục lục cho 3 bộ tài liệu chuẩn của Essence Coaching System. PR này chỉ thêm tài liệu, không sửa giao diện.
 
 ## 1. Website Master Plan
@@ -22,7 +32,7 @@ Luật màu, font, layout, component cho toàn bộ website: brand identity và 
 
 Vị trí: [`docs/brand/image-system/`](image-system/)
 
-Luật ảnh cho hệ sinh thái Essence: chiến lược asset ảnh, style guide chân dung AI của Kenji, prompt bank cho Flux/LoRA, QA checklist ảnh, workflow sản xuất ảnh, handoff cho Claude Code/Codex và template inventory.
+Luật ảnh cho Essence Coaching System: chiến lược asset ảnh, style guide chân dung AI của Kenji, prompt bank cho Flux/LoRA, QA checklist ảnh, workflow sản xuất ảnh, handoff cho Claude Code/Codex và template inventory.
 
 Đọc trước: [`00_READ_ME_FIRST_IMAGE_SYSTEM.md`](image-system/00_READ_ME_FIRST_IMAGE_SYSTEM.md)
 

@@ -1,4 +1,13 @@
 # 01_WEBSITE_NORTH_STAR_AND_POSITIONING.md
+> **Governance status:** L1 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** Website positioning principles.
+> **Decision scope:** Human-first experience and professional boundaries. **Non-decision scope:** Any statement conflicting with current L0 public positioning.
+> **Still valid:** Human-first framing, boundaries and no-guru principles. **Outdated/superseded:** Incomplete public identity wording.
+> **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md), C-07.
+> **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+> **Last verified:** PR #110 head; finalize at merge
+> **Review:** Founder Decision trigger or 90 days.
 Mục tiêu: định nghĩa "website trị giá 10.000 USD" trong hệ Essence nghĩa là gì, để mọi quyết định sau này có la bàn.
 Người đọc chính: Kenji, rồi mọi người/AI làm dự án.
 
@@ -22,12 +31,12 @@ Không được tạo: cảm giác đền thờ guru; cảm giác phần mềm S
 
 ## 3. Định vị public
 
-- **Kenji Phạm** — Essence Coach, Huấn luyện viên Tâm lý Chiều sâu, founder Essence Coaching System. Một người thật, có hành trình thật, có ranh giới nghề rõ. Không là guru, không là nhà tiên tri, không là therapist, không là bác sĩ.
-- **Essence Coaching System** — hệ coaching có cấu trúc, có giao thức, có ranh giới đạo đức công khai. "Có giao thức" là điểm phân biệt với coaching cảm hứng trôi nổi.
+- **Kenji Phạm** — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching System. Một người thật, có hành trình thật, có ranh giới nghề rõ. Không là guru, không là nhà tiên tri, không là therapist, không là bác sĩ.
+- **Essence Coaching System** — mô tả public cụ thể phải do L0 hoặc task-provided approved copy cung cấp; tài liệu này không cấp phép dùng tên phương pháp hay giao thức làm public positioning.
 
-## 4. Vai trò của AI-native
+## 4. Ghi chú lịch sử về AI-native
 
-AI-native được nói ở **tầng hệ vận hành và tầng đối tác** (trang /ve-essence, /ai-startup): minh bạch rằng phía sau Kenji có hệ AI sản xuất, kiểm tra, vận hành. KHÔNG đặt AI-native làm câu bán hàng đầu tiên cho phụ huynh hoặc người đang rối — họ đến vì một con người, không vì một cỗ máy. Quy tắc một dòng: khách thấy Kenji trước, đối tác được thấy cả cỗ máy.
+Các mô tả AI-native trong tài liệu cũ chỉ là evidence lịch sử, không phải public positioning hoặc chỉ dẫn copy hiện hành. Không dùng chúng làm title, bio, route copy hay CTA nếu L0 hoặc task-provided approved copy không yêu cầu rõ.
 
 ## 5. Năm câu hỏi website phải trả lời được
 

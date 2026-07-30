@@ -1,4 +1,13 @@
 # 11_CLAUDE_CODE_CODEX_AI_AGENT_SETUP.md
+> **Governance status:** L2 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** Agent task workflow.
+> **Decision scope:** Scoped task/QA conventions. **Non-decision scope:** L0 authority, current reading order or G0 merge decision.
+> **Still valid:** Task-format and protected-scope rules. **Outdated/superseded:** Old default reading order.
+> **Replacement:** [Reading Bundles](../../governance/READING_BUNDLES.md); G0 remains Draft and unmerged.
+> **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+> **Last verified:** PR #110 head; finalize at merge
+> **Review:** Founder Decision trigger or 90 days.
 Mục tiêu: nhiều AI cùng làm một repo mà không giẫm chân nhau, không loạn, Kenji vẫn nắm quyền cuối.
 Người đọc chính: mọi AI vào repo; Kenji để hiểu cách giao việc.
 
@@ -6,11 +15,11 @@ Người đọc chính: mọi AI vào repo; Kenji để hiểu cách giao việc
 
 | Vai | Nhiệm vụ | KHÔNG được |
 |---|---|---|
-| Kenji | Founder / Essence Keeper / quyết định cuối cho 4 nhóm ngoại lệ merge (mục 2.3) | — |
+| Kenji | Founder / Essence Keeper / quyết định cuối theo L0 Founder Decision | — |
 | Claude (Chat, project chiến lược) | Chiến lược, spec, kế hoạch, QA nội dung | Viết code trực tiếp vào repo |
 | ChatGPT | Strategy architect / QA chéo / viết prompt (khi Kenji dùng) | Quyết thay Kenji |
-| Claude Code | Trợ lý repo local: audit, QA, sửa theo task, chạy build/lint, tự merge sau khi tự kiểm đủ (mục 2.3) | Tự merge 1 trong 4 nhóm ngoại lệ mục 2.3 mà chưa hỏi |
-| Codex | Agent triển khai trên GitHub theo task format, tự merge sau khi tự kiểm đủ (mục 2.3) | Sửa ngoài scope, tự viết copy, tự merge 1 trong 4 nhóm ngoại lệ mục 2.3 mà chưa hỏi |
+| Claude Code | Trợ lý repo local: audit, QA, sửa theo task, chạy build/lint | Tự merge khi không có L0/Founder Decision và task-specific approval |
+| Codex | Agent triển khai trên GitHub theo task format | Sửa ngoài scope, tự viết copy, tự merge khi không có L0/Founder Decision và task-specific approval |
 | GitHub | Source of truth của code + docs | — |
 | Vercel | Preview + deploy sau merge | Auto-deploy lên production domain khi chưa merge |
 | n8n/backend | Tầng automation (Phase sau) | Chạm dữ liệu trẻ em ngoài luật File 09 |
@@ -19,14 +28,7 @@ Người đọc chính: mọi AI vào repo; Kenji để hiểu cách giao việc
 
 1. Một AI sửa source code tại một thời điểm — không hai agent cùng mở một vùng code. Cách thực thi: BACKLOG.md của repo ghi rõ task nào đang thuộc agent nào.
 2. Mỗi task một branch (`feature/...`, `fix/...`); không commit thẳng main.
-3. **Merge policy (chốt 28/07/2026, xem PLAYBOOK.md mục 5 cho bản đầy đủ)**:
-   sau khi tự kiểm đủ theo checklist QA (File 13 nhóm 8 / PLAYBOOK.md mục 4)
-   và đã mở PR + phiếu báo cáo, agent TỰ MERGE — không cần chờ Kenji duyệt
-   bước merge. Chỉ 4 nhóm sau vẫn bắt buộc Kenji tự duyệt + tự bấm merge,
-   PR luôn để Draft: (a) payment pages; (b) dữ liệu trẻ em; (c) đổi cấu
-   trúc/route lớn hoặc file dùng chung (Header/Footer/globals.css/
-   tailwind.config); (d) bất kỳ hành động khai báo trang với Google (submit
-   Search Console, thêm vào sitemap công khai, gỡ noindex, đổi robots.txt).
+3. **Merge policy:** an agent does not self-merge by default. Merge requires the applicable L0/Founder Decision and task-specific approval; PR #110 remains Draft and must not merge in G0.
 4. Không cài package mới nếu chưa được duyệt (ghi đề xuất vào phiếu, chờ).
 5. Không sửa ngoài scope của task, kể cả "tiện tay sửa lỗi nhìn thấy" — ghi vào backlog thay vì sửa.
 6. Không đụng payment/private route nếu task không yêu cầu rõ.
@@ -47,7 +49,7 @@ Luật: tài liệu là một phần của repo — đổi quyết định thì 
 
 ## 4. Claude Code local setup (checklist từng bước)
 
-1. Clone repo về folder xưởng (đã có). 2. `git checkout -b <branch-của-task>`. 3. Đọc theo thứ tự: AGENTS.md → CLAUDE.md → file spec của task → BACKLOG.md → PLAYBOOK.md. 4. Làm trong scope. 5. Chạy `npm run build` + lint; sửa đến sạch. 6. Đẩy branch, mở PR, trình phiếu; nếu KHÔNG thuộc 4 nhóm ngoại lệ mục 2.3 thì tự merge, ngược lại để Draft chờ Kenji. 7. Report format: phiếu 5 dòng + danh sách file đổi + lệnh đã chạy và kết quả.
+1. Clone repo về folder xưởng (đã có). 2. `git checkout -b <branch-của-task>`. 3. Đọc theo thứ tự: Documentation Authority → Document Registry → Conflict Register → Reading Bundles → AGENTS.md → task-provided approved specification → BACKLOG.md → PLAYBOOK.md. Nếu Page Contract, policy hoặc spec không có exact path trong bundle thì đánh dấu Planned/Missing và yêu cầu task cung cấp, không suy diễn. 4. Làm trong scope. 5. Chạy `npm run build` + lint khi task cho phép; sửa đến sạch. 6. Đẩy branch, mở PR, trình phiếu; mọi merge tuân theo L0 và Founder Decision hiện hành. 7. Report format: phiếu 5 dòng + danh sách file đổi + lệnh đã chạy và kết quả.
 
 ## 5. Codex task format (bắt buộc mỗi task)
 
@@ -67,13 +69,13 @@ REPORT: phiếu 5 dòng + preview link
 1. Task khai báo trong BACKLOG.md (ai, branch, scope).
 2. Agent làm → push branch → PR mở với mô tả theo phiếu 5 dòng → preview Vercel tự sinh.
 3. QA: agent tự chạy checklist kỹ thuật (File 13 nhóm 8) → Claude Code có thể QA chéo PR của Codex (đọc diff, chạy build, soát từ cấm bằng script) → kết quả ghi vào PR.
-4. Không thuộc 4 nhóm ngoại lệ mục 2.3 → agent tự merge ngay sau khi QA PASS, không chờ Kenji xem preview trước. Thuộc 1 trong 4 nhóm → PR để Draft, Kenji xem preview trong khung duyệt lô rồi tự bấm merge; hoặc trả lại với ghi chú.
+4. QA PASS does not authorize merge by itself. Keep a PR Draft until the applicable L0/Founder Decision and task-specific approval authorize its next state; PR #110 remains Draft in G0.
 5. Vercel auto-deploy sau merge (không đổi).
 6. Handoff: agent cập nhật BACKLOG.md (Xong), ghi PLAYBOOK.md nếu có bài học, bàn giao ngữ cảnh cho task kế bằng chính hai file đó — không bàn giao bằng trí nhớ.
 
 ## 7. Template report cuối task
 
-"1. Đã làm: … 2. Tự kiểm: build PASS/lint PASS/QA nhóm X PASS, còn Y chưa chắc. 3. Cần mắt Kenji: (≤3 điểm — chỉ bắt buộc nếu PR thuộc 1 trong 4 nhóm ngoại lệ mục 2.3, kèm link preview đúng vị trí). 4. Rủi ro nếu duyệt sai: … 5. Đề xuất/trạng thái: đã tự merge / còn ở Draft chờ Kenji vì thuộc nhóm Z."
+"1. Đã làm: … 2. Tự kiểm: build PASS/lint PASS/QA nhóm X PASS, còn Y chưa chắc. 3. Cần mắt Kenji: các điểm cần Founder Decision hoặc task-specific approval, kèm link preview đúng vị trí. 4. Rủi ro nếu duyệt sai: … 5. Đề xuất/trạng thái: Draft chờ authority/approval, hoặc trạng thái đã được Founder Decision cho phép."
 
 ## Checklist
 - [ ] AGENTS.md tạo ở gốc repo (rút từ file này).

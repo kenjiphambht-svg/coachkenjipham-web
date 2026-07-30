@@ -1,4 +1,13 @@
 # 07_BACKEND_CRM_PAYMENT_AND_DATA_ARCHITECTURE.md
+> **Governance status:** L3 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** Backend/privacy options and data-model reference.
+> **Decision scope:** Data separation and safety. **Non-decision scope:** Approval of Tally, Airtable, VietQR or legacy flow as new architecture.
+> **Still valid:** Child-data separation, consent and minimal-data principles. **Outdated/superseded:** Tool assumptions for Lặng and Hạt Mầm new flows.
+> **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-05 and C-06.
+> **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+> **Last verified:** PR #110 head; finalize at merge
+> **Review:** System/implementation trigger or 180 days.
 Mục tiêu: vẽ backend/dữ liệu/CRM/payment đủ rõ để triển khai theo 3 mức, không xây thừa.
 Người đọc chính: Claude Code/Codex, automation builder; Kenji đọc mục 1–3 để hiểu và quyết.
 
@@ -11,6 +20,8 @@ Backend là khu bếp và sổ sách phía sau nhà hàng: khách không thấy,
 1. Lead capture (bắt liên hệ quan tâm) — 2. Intake form — 3. Payment — 4. Order management — 5. CRM/tag — 6. Publication generation (máy ấn phẩm, sống ngoài website) — 7. Delivery (File 06) — 8. Feedback — 9. Support/contact.
 
 ## 3. Ba mức stack (phân tích, chưa chốt công cụ cuối)
+
+**Current-authority correction:** Phân tích stack dưới đây là reference lịch sử, không phải phê duyệt triển khai, payment, CRM hay xử lý dữ liệu. Chỉ task-provided approved specification và Founder Decision mới có thể mở execution scope.
 
 | Module | MVP ít code (dùng cho beta) | Semi-automated | Production-grade |
 |---|---|---|---|

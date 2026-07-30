@@ -1,5 +1,15 @@
 # AI Agent Instructions
 
+> **Governance status:** L2 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** Default safeguards for agents.
+> **Decision scope:** Task safety, scope and workflow. **Non-decision scope:** Founder Decisions, public positioning, route/indexing, product flow and image authority.
+> **Precedence:** Read [Documentation Authority](docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md), [Conflict Register](docs/governance/CONFLICT_REGISTER.md) and [Reading Bundles](docs/governance/READING_BUNDLES.md) first. L0 wins over every older statement below.
+> **Still valid:** Scoped work, verification and protected-area rules. **Outdated/superseded:** Old public AI-native/astrology positioning is not canonical public copy.
+> **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+> **Last verified:** PR #110 head; finalize at merge
+> **Review:** Founder Decision trigger or 90 days.
+
 This is the shared instruction file for Codex, Claude Code, and future AI coding agents working on coachkenjipham.com.
 
 ## Operating Rules
@@ -13,10 +23,7 @@ This is the shared instruction file for Codex, Claude Code, and future AI coding
 - Always inspect existing structure before editing.
 - Always list changed files at the end.
 - Always run available verification commands when possible.
-- Merge policy (chốt 28/07/2026 — áp dụng như nhau cho Codex và Claude Code, xem
-  PLAYBOOK.md mục 5 và File 11 mục 2/6 cho bản đầy đủ): sau khi đã tự kiểm đầy
-  đủ (build/lint pass, QA checklist) và mở PR + phiếu báo cáo, agent được TỰ
-  MERGE — không cần chờ chủ repo duyệt bước merge.
+- Merge policy: an agent does not self-merge by default. Merge requires the applicable L0/Founder Decision and the task-specific approval. PR #110 remains Draft and must not merge in G0.
 - NGOẠI LỆ bắt buộc chờ duyệt trước (không đổi, không có ngoại lệ khác):
   (a) PR đụng payment pages; (b) PR đụng dữ liệu trẻ em; (c) PR đổi cấu
   trúc/route lớn hoặc file dùng chung (Header/Footer/globals.css/tailwind.config);
@@ -32,7 +39,7 @@ Trước khi làm BẤT KỲ việc thiết kế/hình ảnh nào cho website (t
 
 1. `docs/brand/ESSENCE_VISUAL_ARCHITECTURE.md` — quy trình thiết kế bắt buộc, Page Mode, Signal Moment phải chốt TRƯỚC khi viết bất kỳ prompt ảnh nào.
 2. `docs/brand/ESSENCE_CREATIVE_GROWTH_COMPASS.md` — cách phân loại vấn đề (P0/P1/P2), Definition of Done, cách giải thích báo cáo cho Kenji.
-3. `docs/brand/ESSENCE_GEO_STRATEGY.md` — ngân hàng câu hỏi + câu trả lời chuẩn cho SEO/GEO. Đọc TRƯỚC khi viết bất kỳ nội dung/meta/schema nào cho trang mới. Mọi số liệu sản phẩm và câu trả lời định vị phải lấy từ đây, không tự viết lại.
+3. `docs/brand/ESSENCE_GEO_STRATEGY.md` — historical credential/method evidence and GEO reference. Không dùng tài liệu này làm canonical public positioning, title, offer data hay schema; các giá trị đó phải do L0 hoặc task-provided approved copy cung cấp.
 4. `docs/brand/image-system/08_ESSENCE_LIGHTSCAPE.md` + `docs/brand/image-system/09_PROMPT_MASTER_FLUX2_KLEIN_9B.md` — chuẩn tạo ảnh (ánh sáng là nhân vật chính, ít vật thể, cài đặt FLUX.2 klein 9B).
 5. `docs/website/BAI-HOC-KY-THUAT.md` — bài học kỹ thuật từ lỗi thật.
 
@@ -40,9 +47,7 @@ Trước khi làm BẤT KỲ việc thiết kế/hình ảnh nào cho website (t
 
 ## Project Identity
 
-Kenji Phạm is an Essence Coach and founder of Essence Coaching System - an AI-native identity coaching system combining coaching, depth psychology, symbolic psychological astrology, and agentic AI workflows.
-
-Kenji Phạm là Essence Coach và founder Essence Coaching System - hệ khai vấn bản sắc AI-native kết hợp coaching, tâm lý chiều sâu, chiêm tinh tâm lý theo hướng biểu tượng và AI agentic workflow.
+Canonical public positioning: Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching System. Không được diễn giải, rút gọn, dịch thành positioning khác, hoặc suy ra danh xưng từ evidence lịch sử.
 
 ## Website Role
 
@@ -62,12 +67,7 @@ The website should act as a clear routing hall, not a crowded service menu.
 
 Vietnamese first.
 
-English terms may be used when strategically useful:
-
-- AI-native
-- Personal Psychology Engine
-- Solo AI Company
-- agentic workflow
+Historical terms such as AI-native, Personal Psychology Engine, Solo AI Company, and agentic workflow are not public positioning. Use them only when an L0 or task-provided approved specification explicitly supplies the required context.
 
 ## Avoid
 
@@ -82,4 +82,3 @@ English terms may be used when strategically useful:
 - AI therapist
 - diagnosis
 - guaranteed transformation claims
-
