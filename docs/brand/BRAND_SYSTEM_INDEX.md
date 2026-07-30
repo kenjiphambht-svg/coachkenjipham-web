@@ -32,7 +32,7 @@ Luật màu, font, layout, component cho toàn bộ website: brand identity và 
 
 Vị trí: [`docs/brand/image-system/`](image-system/)
 
-Luật ảnh cho hệ sinh thái Essence: chiến lược asset ảnh, style guide chân dung AI của Kenji, prompt bank cho Flux/LoRA, QA checklist ảnh, workflow sản xuất ảnh, handoff cho Claude Code/Codex và template inventory.
+Luật ảnh cho Essence Coaching System: chiến lược asset ảnh, style guide chân dung AI của Kenji, prompt bank cho Flux/LoRA, QA checklist ảnh, workflow sản xuất ảnh, handoff cho Claude Code/Codex và template inventory.
 
 Đọc trước: [`00_READ_ME_FIRST_IMAGE_SYSTEM.md`](image-system/00_READ_ME_FIRST_IMAGE_SYSTEM.md)
 

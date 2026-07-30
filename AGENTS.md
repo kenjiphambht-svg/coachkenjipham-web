@@ -51,7 +51,7 @@ Canonical public positioning: Kenji Phạm — Huấn luyện viên Tâm lý Chi
 
 ## Website Role
 
-coachkenjipham.com is the official public website and brand hub for Kenji Phạm and the Essence ecosystem.
+coachkenjipham.com is the official public website and brand hub for Kenji Phạm and Essence Coaching System.
 
 The website should act as a clear routing hall, not a crowded service menu.
 
