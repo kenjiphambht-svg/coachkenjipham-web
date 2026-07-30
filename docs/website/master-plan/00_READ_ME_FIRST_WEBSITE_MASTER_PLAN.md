@@ -5,7 +5,9 @@
 > **Decision scope:** Evidence of earlier planning only. **Non-decision scope:** Current roadmap, entrypoint, or agent reading order.
 > **Still valid:** Privacy, scoped-work and documentation-history context. **Superseded:** 13-phase operating authority.
 > **Replacement:** [Documentation Authority](../../governance/ESSENCE_DOCUMENTATION_AUTHORITY.md), [Reading Bundles](../../governance/READING_BUNDLES.md), and M0–M6 Founder Decisions.
-> **Last verified:** ead2eb7. **Review:** No periodic cadence.
+> **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+> **Last verified:** PR #110 head; finalize at merge
+> **Review:** No periodic cadence.
 Mục tiêu: giải thích bộ tài liệu này dùng để làm gì và đọc theo thứ tự nào.
 Người đọc chính: Kenji trước tiên; sau đó mọi AI/người vào làm dự án.
 

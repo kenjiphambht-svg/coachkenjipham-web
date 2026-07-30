@@ -4,7 +4,8 @@
 **Authority:** L2 — Current Website Operating Truth
 **Status:** Active
 **Owner:** Kenji Phạm
-**Last verified commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+**Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+**Last verified:** PR #110 head; finalize at merge
 **Review trigger:** immediately on a Founder Decision or discovered same-level conflict.
 
 ## Closed conflicts
@@ -17,7 +18,7 @@
 | C-04 | /ai-startup role | noindex; independent partner asset; outside consumer journey; rewrite pending. |
 | C-05 | Lặng capacity/flow | 5 sessions/month; six questions → support report → Kenji Human Decision Gate → payment → Kenji payment confirmation → private booking link. |
 | C-06 | Hạt Mầm age/funnel | Canonical age 0–7; new form, payment, confirmation, delivery and email flow; no legacy funnel. |
-| C-07 | Public identity | Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching System. |
+| C-07 | Public identity | Kenji Phạm — Người sáng lập · Hệ sinh thái Essence · Huấn luyện Phát triển Con người. |
 | C-08 | Public contact | contact@coachkenjipham.com is the public email. |
 | C-09 | Roadmap | M0–M6 supersedes the prior 13-phase roadmap. |
 | C-10 | FCP | FCP means Full Cycle Process. Older meanings are not canonical. |
@@ -34,4 +35,4 @@
 | O-04 | Runtime gap | Kenji | Replace public Gmail references only in a scoped runtime task. |
 | O-05 | External dependency pending | Kenji | Approve any further external documentation intake after G0. |
 
-Closed conflicts are L0 rulings. Open conflicts block assumptions, not safe documentation of the gap.
+This register is an L2 operating container. Every Closed conflict ruling recorded above is L0. Open conflicts block assumptions, not safe documentation of the gap.

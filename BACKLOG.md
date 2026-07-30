@@ -6,16 +6,17 @@
 > **Decision scope:** Declared task state only. **Non-decision scope:** Canonical roadmap, route truth, offer truth or Founder Decisions.
 > **Precedence:** [Documentation Authority](docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md) and the [Conflict Register](docs/governance/CONFLICT_REGISTER.md) win over the phase labels below.
 > **Still valid:** Task tracking and protected areas. **Outdated/superseded:** The Phase 1–5 sequence below is not the M0–M6 roadmap.
-> **Replacement:** Planned G1 current-truth matrices. **Last verified:** ead2eb7. **Review:** Founder Decision trigger or 90 days.
+> **Replacement:** Planned G1 current-truth matrices. **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc. **Last verified:** PR #110 head; finalize at merge. **Review:** Founder Decision trigger or 90 days.
 
-File sống: nguồn sự thật duy nhất về "đang làm gì, làm gì tiếp theo".
-Mọi phiên Claude Code/Codex đọc file này trước khi nhận task (xem `PLAYBOOK.md`).
-Roadmap chi tiết: `docs/website/master-plan/12_IMPLEMENTATION_ROADMAP_PHASES.md`.
-Quyết định đã chốt: `docs/website/master-plan/15_DECISION_LOG_AND_NEXT_ACTIONS.md`.
+File theo dõi công việc: ghi nhận điều đang làm, tiến độ và việc kế tiếp. Đây không phải nguồn sự thật canonical; authority, conflict precedence và Founder Decisions thuộc governance L0.
+Mọi phiên Claude Code/Codex đọc governance L0 và Reading Bundles trước; chỉ đọc file này khi task yêu cầu task-tracking.
+Roadmap chi tiết và decision log cũ chỉ là historical evidence, không phải source để suy ra scope, route, indexing, offer hay Founder Decision.
 
 ## Current Phase
 
-**Phase 1 — Homepage V2**
+**Historical tracking state — requires G1 re-baseline before use for execution**
+
+**Toàn bộ phase block và source references bên dưới là historical tracking evidence, không phải executable task list. Không tick, đổi phase, mở route, thay indexing hoặc suy ra implementation từ chúng; G1 current-truth matrices và task-provided approved specification mới có thể mở execution scope.**
 
 ## Phase 0 — Route & Source Audit
 
@@ -90,5 +91,5 @@ Live routes stay online until replacements are fully built, QA-passed, and expli
 ## Luật của file này
 
 - Task xong → tick checkbox + ghi PR số.
-- Đổi phase → cập nhật mục "Current Phase" trong PR của task cuối phase.
-- Quyết định mới → ghi vào `docs/website/master-plan/15_DECISION_LOG_AND_NEXT_ACTIONS.md` trước, sửa backlog sau.
+- Không đổi phase từ evidence lịch sử; chờ G1 re-baseline và Founder Decision.
+- Quyết định mới → dùng Founder Decision Protocol và cập nhật registry/conflict status; không ghi vào decision log lịch sử như nguồn authority.

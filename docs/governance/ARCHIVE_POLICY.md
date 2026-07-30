@@ -4,7 +4,8 @@
 **Authority:** L2 — Current Website Operating Truth
 **Status:** Active
 **Owner:** Kenji Phạm
-**Last verified commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+**Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+**Last verified:** PR #110 head; finalize at merge
 **Review trigger:** status or replacement change.
 
 ## Principle

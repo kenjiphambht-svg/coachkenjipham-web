@@ -4,16 +4,21 @@
 **Authority:** L2 — Current Website Operating Truth
 **Status:** Active
 **Owner:** Kenji Phạm
-**Last verified commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+**Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+**Last verified:** PR #110 head; finalize at merge
 **Review trigger:** Founder Decision, status/replacement change, or 90 days.
 
-This registry records authority-bearing, default-reading, imported-canonical, historical-evidence, external-dependency and planned current-truth documents. It contains **39 entries**. All rows use ead2eb7 as last verified commit unless noted.
+This registry records authority-bearing, default-reading, imported-canonical, historical-evidence, external-dependency and planned current-truth documents. It contains **39 entries**.
+
+## Verification metadata convention
+
+**baseline_evidence_commit** records the repository commit examined before G0. It is not a claim that a G0 file existed at that commit. Every file created, imported or patched by PR #110 uses **last_verified: PR #110 head; finalize at merge** until the merged commit SHA exists. Thereafter, its last_verified_commit is the merged SHA.
 
 | Path | Title / purpose | Authority / status / owner | Decision scope / non-decision scope | Still valid / outdated | Replacement | Next review / notes |
 |---|---|---|---|---|---|---|
-| docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md | hierarchy and protocol | L2 / Active / Kenji | governance / no product ruling | hierarchy / — | — | trigger + 90d |
+| docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md | hierarchy and protocol | L0 / Active / Kenji | Founder-approved constitution / no product ruling | hierarchy / — | — | Founder Decision only |
 | docs/governance/DOCUMENT_REGISTRY.md | registry | L2 / Active / Kenji | status/provenance / no content ruling | model / — | — | trigger + 90d |
-| docs/governance/CONFLICT_REGISTER.md | L0 record | L2 / Active / Kenji | conflict record / no runtime fix | rulings / — | — | immediate |
+| docs/governance/CONFLICT_REGISTER.md | L2 operating container | L2 / Active / Kenji | conflict record / no runtime fix | closed rulings are L0 / — | — | immediate |
 | docs/governance/READING_BUNDLES.md | required reading | L2 / Active / Kenji | reading order / no implementation | bundles / — | — | trigger + 90d |
 | docs/governance/ARCHIVE_POLICY.md | archive rules | L2 / Active / Kenji | status handling / no content ruling | policy / — | — | trigger + 90d |
 | docs/brand/essence-typography-composition-system-v1.md | canonical typography | L3 / Active / Kenji | roles/composition / no font runtime decision | composition / — | — | trigger + 180d |

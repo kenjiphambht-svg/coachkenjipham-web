@@ -5,13 +5,17 @@
 > **Decision scope:** Entity, schema and privacy principles. **Non-decision scope:** Indexing launch timing, robots, sitemap or Search Console actions.
 > **Still valid:** Schema structure, private-route protections and content principles. **Outdated/superseded:** Any instruction to make Villa/public pages indexable before M6.
 > **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-02 and planned G1 Indexing Policy.
-> **Last verified:** ead2eb7. **Review:** System/implementation trigger or 180 days.
+> **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+> **Last verified:** PR #110 head; finalize at merge
+> **Review:** System/implementation trigger or 180 days.
 Mục tiêu: để Google VÀ các AI (ChatGPT, Claude, Gemini, AI Overview) hiểu đúng và trích dẫn đúng về Kenji/Essence.
 Người đọc chính: Codex (kỹ thuật), người viết content, Kenji (hiểu chiến lược).
 
 ## 1. Giải thích cho Kenji
 
 SEO là để Google xếp trang anh lên khi người ta gõ tìm. AIO/GEO là tầng mới: khi người ta HỎI một AI ("Essence Coaching là gì?", "có nên làm bản đồ quan sát cho con?"), AI trả lời bằng cách trích các nguồn nó tin. AI tin nguồn có: danh tính nhất quán, định nghĩa sạch, cấu trúc rõ, nói cả điều mình KHÔNG làm. Ẩn dụ: SEO là bảng hiệu ngoài đường; GEO là việc anh được những người môi giới uy tín (các AI) nhắc tên đúng khi khách hỏi họ.
+
+**Current-authority correction:** Mọi title, entity statement, route, schema, crawler và indexing example cũ bên dưới là historical evidence. Không dùng chúng như approved public copy hoặc execution instruction; indexing actions chỉ có thể mở tại M6 theo L0, Founder approval và planned Indexing Policy.
 
 ## 2. Website phải giúp máy hiểu 5 điều
 
@@ -21,8 +25,8 @@ Kenji là ai; Essence là gì; Bản Sắc Hạt Mầm là gì; Essence KHÔNG p
 
 | Thực thể | Trang nguồn chuẩn | Quy tắc |
 |---|---|---|
-| Kenji Phạm | /ve-kenji | Một cách viết tên duy nhất; định danh "Essence Coach, founder Essence Coaching System" lặp nhất quán ở website, Facebook bio, GitHub, mọi nơi |
-| Essence Coaching System | /ve-essence (sau này), tạm thời /phuong-phap | Định nghĩa 2–3 câu dùng lại nguyên văn ở mọi trang nhắc tới |
+| Kenji Phạm | /ve-kenji | Canonical public positioning: "Người sáng lập · Hệ sinh thái Essence · Huấn luyện Phát triển Con người"; only L0 or task-provided approved copy may extend it |
+| Hệ sinh thái Essence | Planned/Missing current Page Contract | Không suy ra định nghĩa public, route hoặc schema từ tài liệu lịch sử |
 | Bản Sắc Của Con | /ban-sac-cua-con | Luôn kèm khung "bản đồ quan sát, không phải nhãn dán" |
 | Bản Sắc Hạt Mầm | /an-pham-ban-sac-hat-mam | Luôn kèm "dành cho ba mẹ có con 0–7 tuổi" |
 
@@ -41,15 +45,15 @@ Trước khi viết loạt bài đầu, dành một phiên liệt kê cụm ph�
 
 - Schema: Person (/ve-kenji), Organization + WebSite (site-wide), Article (bài viết + trang phương pháp), Product (landing Hạt Mầm), FAQPage (landing + /dieu-essence-khong-hua).
 - Internal linking: mọi bài /goc-doc link về đúng 1 trang nguồn chuẩn liên quan; các trang nguồn link chéo nhau theo ngữ cảnh; không nhồi link.
-- sitemap.xml: chỉ trang public index; tự sinh, có test loại trừ private.
-- robots.txt: cho phép crawl trang public; disallow /an-pham/, payment, admin. Lưu ý: robots.txt không phải bảo mật (nó chỉ là biển "xin đừng vào") — bảo mật thật theo File 09; quyết định cho/không cho AI crawler (GPTBot, ClaudeBot…) vào trang public: KHUYẾN NGHỊ CHO PHÉP, vì GEO cần AI đọc được nguồn chuẩn.
+- sitemap.xml: planned M6 artifact only; không tạo, sửa hoặc dùng làm execution instruction trước M6.
+- robots.txt: planned M6 artifact only; không cho phép crawl, thay đổi crawler policy hoặc suy ra hành động từ đoạn lịch sử này trước M6. Bảo mật thật theo File 09.
 - Canonical đầy đủ; title ≤ 60 ký tự; description viết cho người đọc trước, máy sau.
 - noindex rules: đúng bảng File 02.
 
 ## Checklist
 - [ ] 4 thực thể có trang nguồn + schema đúng loại, validate bằng công cụ kiểm schema.
 - [ ] Định danh Kenji khớp từng chữ trên site / Facebook / GitHub.
-- [ ] sitemap.xml + robots.txt đúng luật; private không lọt.
+- [ ] Chỉ tại M6: sitemap.xml + robots.txt đúng L0, Founder approval và Indexing Policy; private không lọt.
 - [ ] 10 bài đầu /goc-doc: mỗi bài có đoạn định nghĩa tự đứng được.
 - [ ] Không từ cấm trong mọi title/description.
 
@@ -61,4 +65,4 @@ Hỏi thử 2–3 AI lớn "Kenji Phạm là ai" / "Essence Coaching System là 
 - Viết bài đuổi theo từ khóa mà lệch giọng — mọi bài vẫn qua Brand QA trước.
 
 ## Prompt mẫu cho Codex
-"Đọc docs/website/10 mục 6. Task: thêm schema Person/Organization/WebSite, sitemap tự sinh có loại trừ private, robots.txt theo spec. Xuất diff + kết quả validate schema. Phiếu 5 dòng."
+"Historical prompt only — không thực thi trước M6. Schema, sitemap, robots và crawler policy chỉ được triển khai theo Founder-approved M6 task và planned Indexing Policy."

@@ -5,7 +5,9 @@
 > **Decision scope:** Earlier planning context only. **Non-decision scope:** Current roadmap or task priority.
 > **Still valid:** Dependency and privacy lessons. **Superseded:** The 13-phase roadmap.
 > **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md), C-09 and M0–M6 Founder Decisions.
-> **Last verified:** ead2eb7. **Review:** No periodic cadence.
+> **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+> **Last verified:** PR #110 head; finalize at merge
+> **Review:** No periodic cadence.
 Mục tiêu: chia toàn dự án thành 13 phase để không làm tất cả một lần.
 Người đọc chính: Kenji (điều phối), mọi agent (biết mình đang ở phase nào).
 

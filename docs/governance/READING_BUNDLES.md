@@ -4,7 +4,8 @@
 **Authority:** L2 — Current Website Operating Truth
 **Status:** Active
 **Owner:** Kenji Phạm
-**Last verified commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+**Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+**Last verified:** PR #110 head; finalize at merge
 **Review trigger:** Founder Decision that changes default reading order, or 90 days.
 
 Every task begins with Universal, then its task bundle. Historical and Superseded files must be read through their governance header.
@@ -20,28 +21,39 @@ Every task begins with Universal, then its task bundle. Historical and Supersede
 
 ## Editorial writing
 
-Universal; Experience Bible; ESSENCE_GEO_STRATEGY; North Star; relevant approved Page Contract/copy.
+- Exact repo paths: docs/brand/ESSENCE_EXPERIENCE_BIBLE_2026.md; docs/brand/ESSENCE_GEO_STRATEGY.md; docs/website/master-plan/01_WEBSITE_NORTH_STAR_AND_POSITIONING.md.
+- Task-provided document: approved page copy.
+- Planned/Missing: Page Contract. Do not infer it; the task must supply it before execution.
 
 ## Frontend design
 
-Universal; Experience Bible; canonical Typography Composition System; ESSENCE_VISUAL_ARCHITECTURE; relevant Page Contract.
+- Exact repo paths: docs/brand/ESSENCE_EXPERIENCE_BIBLE_2026.md; docs/brand/essence-typography-composition-system-v1.md; docs/brand/ESSENCE_VISUAL_ARCHITECTURE.md.
+- Task-provided document: approved page copy.
+- Planned/Missing: Page Contract. Do not infer it; the task must supply it before execution.
 
 ## Image production — Kenji portrait
 
-Universal; image-system 00; FLUX.1 Prompt Bank 03; Portrait Style Guide; Image QA. FLUX.1 + Kenji LoRA is portrait-only authority.
+- Exact repo paths: docs/brand/image-system/00_READ_ME_FIRST_IMAGE_SYSTEM.md; docs/brand/image-system/03_FLUX_PROMPT_BANK_KENJI_AND_ESSENCE.md; docs/brand/image-system/02_KENJI_AI_PORTRAIT_STYLE_GUIDE.md; docs/brand/image-system/04_IMAGE_QA_CHECKLIST.md.
+- FLUX.1 + Kenji LoRA is portrait-only authority.
 
 ## Image production — non-Kenji
 
-Universal; image-system 00; Lightscape 08; FLUX.2 Prompt Master 09. FLUX.2 Klein 9B is non-Kenji authority.
+- Exact repo paths: docs/brand/image-system/00_READ_ME_FIRST_IMAGE_SYSTEM.md; docs/brand/image-system/08_ESSENCE_LIGHTSCAPE.md; docs/brand/image-system/09_PROMPT_MASTER_FLUX2_KLEIN_9B.md; docs/brand/image-system/04_IMAGE_QA_CHECKLIST.md.
+- FLUX.2 Klein 9B is non-Kenji authority.
 
 ## Backend Lặng
 
-Universal; Conflict C-05; relevant Lặng Page Contract; privacy/security policy. Payment, booking and sensitive data require Kenji approval.
+- Exact repo paths: docs/governance/CONFLICT_REGISTER.md; docs/website/master-plan/09_SECURITY_PRIVACY_AND_CHILD_DATA_POLICY.md.
+- Planned/Missing: Lặng Page Contract and backend specification. Do not infer them; the task must supply them before execution.
+- Payment, booking and sensitive data require Kenji approval.
 
 ## Backend Hạt Mầm
 
-Universal; Conflict C-06; Hạt Mầm funnel/backend docs; privacy/security policy. Legacy tools are references, not approval for the new flow.
+- Exact repo paths: docs/governance/CONFLICT_REGISTER.md; docs/website/master-plan/05_BAN_SAC_HAT_MAM_FUNNEL_AND_LANDING_SPEC.md; docs/website/master-plan/07_BACKEND_CRM_PAYMENT_AND_DATA_ARCHITECTURE.md; docs/website/master-plan/09_SECURITY_PRIVACY_AND_CHILD_DATA_POLICY.md.
+- Planned/Missing: Hạt Mầm Page Contract and new-flow backend specification. Do not infer them; the task must supply them before execution.
 
 ## SEO/GEO
 
-Universal; C-02/C-04/C-07/C-11; GEO Strategy; route policy; SEO system. No Search Console, sitemap, robots or noindex action before M6 unless a new L0 ruling says otherwise.
+- Exact repo paths: docs/governance/CONFLICT_REGISTER.md; docs/brand/ESSENCE_GEO_STRATEGY.md; docs/website/master-plan/02_PUBLIC_SITEMAP_AND_ROUTE_POLICY.md; docs/website/master-plan/10_SEO_AIO_GEO_CONTENT_SYSTEM.md.
+- Planned/Missing: docs/website/current/INDEXING_POLICY.md. Do not infer it; G1 must create it.
+- No Search Console, sitemap, robots or noindex action before M6 unless a new L0 ruling says otherwise.

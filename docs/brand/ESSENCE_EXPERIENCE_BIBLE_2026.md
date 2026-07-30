@@ -6,6 +6,8 @@
 **Authority:** L1 — Canonical Brand & Experience Truth
 **Status:** Active
 **Owner:** Kenji Phạm
+**Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+**Last verified:** PR #110 head; finalize at merge
 **Phạm vi:** Triết lý trải nghiệm, emotional architecture, nhịp điệu, vai trò hình ảnh, ánh sáng, chuyển động, khoảng lặng và sự hiện diện của Kenji trên toàn website Essence.
 **Review trigger:** Khi thay đổi brand promise, Page Mode, visual system, image authority, typography authority, motion principle hoặc trải nghiệm cốt lõi.
 

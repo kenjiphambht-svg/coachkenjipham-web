@@ -5,7 +5,9 @@
 > **Decision scope:** Route safeguards and legacy evidence. **Non-decision scope:** Indexing launch, consumer journey or new-flow migration.
 > **Still valid:** Privacy, noindex safeguards for private routes and legacy caution. **Outdated/superseded:** Public-index timing, old journey assumptions and /ai-startup index role.
 > **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-01–C-04 and planned G1 Route State Matrix/Indexing Policy.
-> **Last verified:** ead2eb7. **Review:** Founder Decision trigger or 90 days.
+> **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+> **Last verified:** PR #110 head; finalize at merge
+> **Review:** Founder Decision trigger or 90 days.
 Mục tiêu: chốt danh sách route, trạng thái và luật của từng route — để không ai tạo trang bừa.
 Người đọc chính: Codex/Claude Code khi tạo hoặc sửa route; Kenji khi duyệt.
 
@@ -15,20 +17,22 @@ Route là địa chỉ từng phòng trong ngôi nhà web (ví dụ coachkenjiph
 
 ## 2. Bảng route
 
+**Current-authority correction:** Bảng dưới là evidence lịch sử, không phải lệnh build, migration, CTA hay indexing. Mọi trạng thái public/index phải chờ L0, Founder Decision và planned G1 Route State Matrix/Indexing Policy; không có thay đổi sitemap, robots hoặc noindex trước M6.
+
 | Route | Tên hiển thị | Vai trò | Người đọc chính | Trạng thái | SEO | CTA chính | Dữ liệu nhạy cảm | Ghi chú kỹ thuật |
 |---|---|---|---|---|---|---|---|---|
-| `/` | Trang chủ | Hành lang dẫn chuyện, định tuyến 2 cửa | Người lớn + phụ huynh | build now | index | Cửa Hạt Mầm | Không | Spec riêng File 04 |
-| `/ve-kenji` | Về Kenji | Niềm tin con người + entity GEO | Mọi khách + AI | build now | index | Về trang chủ / Hạt Mầm | Không | Schema Person |
-| `/ve-essence` | Về hệ Essence | Institutional credibility, GEO/AIO, đối tác | Người thẩm định | later (Phase 9) | index | Liên hệ hợp tác | Không | Brief: docs/strategy/02 |
-| `/phuong-phap` | Phương pháp | Giải thích cách Essence làm việc, public-safe | Người cân nhắc | later (Phase 2) | index | Hạt Mầm / Liên hệ | Không | Không mở FCP/Casting chi tiết |
-| `/ban-sac-cua-con` | Bản Sắc Của Con | Hub dòng phụ huynh (3 độ tuổi) | Phụ huynh | build now (Phase 2) | index | Landing Hạt Mầm | Không | Khám Phá/Giao Mùa ghi "sắp mở" |
-| `/an-pham-ban-sac-hat-mam` | Ấn phẩm Bản Sắc Hạt Mầm | Landing bán sản phẩm active chính | Ba mẹ con 0–7 | build now (Phase 3) | index | Đặt ấn phẩm / vào beta | Form intake liên kết | Spec riêng File 05 |
+| `/` | Trang chủ | Hành lang dẫn chuyện, định tuyến 2 cửa | Người lớn + phụ huynh | historical build plan | indexing deferred to M6 | historical CTA; not current authority | Không | Historical reference only |
+| `/ve-kenji` | Về Kenji | Niềm tin con người + entity GEO | Mọi khách + AI | historical build plan | indexing deferred to M6 | historical CTA; not current authority | Không | Historical reference only |
+| `/ve-essence` | Về hệ Essence | Institutional credibility, GEO/AIO, đối tác | Người thẩm định | historical phase plan | indexing deferred to M6 | historical CTA; not current authority | Không | Historical reference only |
+| `/phuong-phap` | Phương pháp | Giải thích cách Essence làm việc, public-safe | Người cân nhắc | historical phase plan | indexing deferred to M6 | historical CTA; not current authority | Không | Historical reference only |
+| `/ban-sac-cua-con` | Bản Sắc Của Con | Hub dòng phụ huynh (3 độ tuổi) | Phụ huynh | historical build plan | indexing deferred to M6 | historical CTA; not current authority | Không | Historical reference only |
+| `/an-pham-ban-sac-hat-mam` | Ấn phẩm Bản Sắc Hạt Mầm | Landing bán sản phẩm active chính | Ba mẹ con 0–7 | historical build plan | indexing deferred to M6 | historical CTA; not current authority | Form intake liên kết | Historical reference only |
 | `/kidbook` | (legacy) | Route cũ đang sống | Khách cũ | legacy — GIỮ NGUYÊN | giữ hiện trạng | — | Kiểm tra | KHÔNG redirect khi chưa kiểm payment/product flow đang chạy trên đó |
-| `/goc-doc` | Ghi chép Essence | Content engine SEO/AIO | Người đọc + AI | later (Phase 8) | index | Đọc tiếp / Bắt đầu | Không | Khung dựng sẵn, để trống được |
-| `/dieu-essence-khong-hua` | Điều Essence không hứa | Trust page (không phải disclaimer lạnh) | Người cẩn trọng + AI | build now (Phase 2) | index | Về cửa phù hợp | Không | Nguồn: M1 |
-| `/chinh-sach-rieng-tu` | Chính sách riêng tư | Pháp lý + child data notice | Phụ huynh + thẩm định | build now (Phase 2) | index | — | Không | Nguồn: File 09 |
-| `/lien-he` | Liên hệ | Một kênh liên hệ rõ | Mọi khách | build now (Phase 2) | index | Gửi tin / Zalo-Messenger | Email người gửi | Không form phức tạp |
-| `/ai-startup` | AI Startup Dossier | Luồng đối tác/thẩm định | Nhà đầu tư, đối tác | giữ, hạ xuống footer | index | Liên hệ hợp tác | Không | KHÔNG là CTA cho phụ huynh; sau này có thể gộp vào /ve-essence |
+| `/goc-doc` | Ghi chép Essence | Content engine SEO/AIO | Người đọc + AI | historical phase plan | indexing deferred to M6 | historical CTA; not current authority | Không | Historical reference only |
+| `/dieu-essence-khong-hua` | Điều Essence không hứa | Trust page (không phải disclaimer lạnh) | Người cẩn trọng + AI | historical build plan | indexing deferred to M6 | historical CTA; not current authority | Không | Historical reference only |
+| `/chinh-sach-rieng-tu` | Chính sách riêng tư | Pháp lý + child data notice | Phụ huynh + thẩm định | historical build plan | indexing deferred to M6 | historical CTA; not current authority | Không | Historical reference only |
+| `/lien-he` | Liên hệ | Một kênh liên hệ rõ | Mọi khách | historical build plan | indexing deferred to M6 | historical CTA; not current authority | Email người gửi | Historical reference only |
+| `/ai-startup` | AI Startup Dossier | Historical partner asset | Nhà đầu tư, đối tác | rewrite pending | **noindex pending Founder Decision** | no consumer CTA | Không | Not a parent/customer journey route; no migration or indexing instruction |
 | `/an-pham/[random-slug]` | Phòng đọc riêng | Giao ấn phẩm cho khách | Khách đã mua | build Phase 5 | **noindex** | Tải PDF A5 | CÓ — nội dung ấn phẩm | Spec File 06; slug ngẫu nhiên, không theo tên bé |
 | `/thanh-toan/*` (hoặc trang xác nhận đơn) | Payment routes | Nhận thanh toán / xác nhận | Khách mua | build Phase 4 | **noindex** | Hoàn tất đơn | CÓ — email, đơn hàng | Không nhúng dữ liệu nhạy cảm vào URL |
 | `/admin/*` | Dashboard nội bộ | Quản trị (nếu cần sau này) | Kenji | later (Phase 10, chỉ khi Airtable hết đủ) | noindex + chặn truy cập | — | CÓ | Không build sớm |

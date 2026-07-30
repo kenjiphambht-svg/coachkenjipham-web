@@ -5,7 +5,9 @@
 > **Decision scope:** Evidence and QA observations. **Non-decision scope:** Canonical composition, font-family production approval or runtime implementation.
 > **Still valid:** Vietnamese readability and implementation observations. **Outdated/superseded:** This file's font proposal and any claim above the canonical typography system.
 > **Replacement:** [Canonical Typography Composition System](../essence-typography-composition-system-v1.md). The Lặng snapshot is L4 evidence, not authority above it.
-> **Last verified:** ead2eb7. **Review:** Verify when used as evidence.
+> **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+> **Last verified:** PR #110 head; finalize at merge
+> **Review:** Verify when used as evidence.
 Đường dẫn repo: docs/brand/design-system/04_TYPOGRAPHY_SYSTEM_2026.md
 
 > ⚠️ CẬP NHẬT 27/07/2026 (sau PR #90, brief bổ sung 4 việc): file này là bản

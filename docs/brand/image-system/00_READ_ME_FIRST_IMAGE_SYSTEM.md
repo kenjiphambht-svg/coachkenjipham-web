@@ -6,7 +6,9 @@
 > **L0 authority split:** Kenji portraits use FLUX.1 + Kenji LoRA. Non-Kenji imagery uses FLUX.2 Klein 9B.
 > **Still valid:** Light-led, no-brown and image ethics. **Outdated/superseded:** Any reading that labels all FLUX.1 knowledge historical.
 > **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-12; dedicated Portrait Production System is a follow-up task.
-> **Last verified:** ead2eb7. **Review:** System/model trigger or 180 days.
+> **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+> **Last verified:** PR #110 head; finalize at merge
+> **Review:** System/model trigger or 180 days.
 Đường dẫn repo: docs/brand/image-system/00_READ_ME_FIRST_IMAGE_SYSTEM.md
 Phiên bản: v1.0 — 06/07/2026. Nền tảng: Design System v1.1 (light-led, dark as silence, no brown).
 

@@ -5,7 +5,9 @@
 > **Decision scope:** Build, safety, visual, privacy and scope QA. **Non-decision scope:** Any merge authority conflicting with governance or task-specific Founder instruction.
 > **Still valid:** Build, child-safety, security and quality checks. **Outdated/superseded:** Unconditional Kenji-approval wording where an L0 or task ruling differs.
 > **Replacement:** [Documentation Authority](../../governance/ESSENCE_DOCUMENTATION_AUTHORITY.md). G0 is Draft and must not merge.
-> **Last verified:** ead2eb7. **Review:** Founder Decision trigger or 90 days.
+> **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+> **Last verified:** PR #110 head; finalize at merge
+> **Review:** Founder Decision trigger or 90 days.
 Mục tiêu: checklist QA tổng — cửa kiểm cuối trước mọi lần merge/publish.
 Người đọc chính: mọi agent trước khi trình phiếu; Kenji khi duyệt lô.
 Cách dùng: mỗi PR chạy nhóm liên quan + nhóm 8, 10 (bắt buộc mọi PR). Kết quả dán vào PR.
@@ -36,7 +38,7 @@ Cách dùng: mỗi PR chạy nhóm liên quan + nhóm 8, 10 (bắt buộc mọi 
 - [ ] CTA rõ: mỗi trang một CTA chính, nhìn 3 giây biết bấm gì
 - [ ] Mỗi màn hình một ý
 - [ ] Người đọc luôn biết bước tiếp theo (không trang cụt)
-- [ ] Hạt Mầm có nổi đúng vị thế cửa active chính không
+- [ ] CTA và flow có khớp L0 hoặc task-provided approved specification không
 
 ## 5. Visual QA
 - [ ] Contrast đo đạt AA (thân bài 4.5:1, heading lớn 3:1) — bằng công cụ
@@ -49,9 +51,9 @@ Cách dùng: mỗi PR chạy nhóm liên quan + nhóm 8, 10 (bắt buộc mọi 
 ## 6. SEO/AIO/GEO QA
 - [ ] Title/description đúng, ≤60/≤160 ký tự, không từ cấm
 - [ ] Canonical đúng
-- [ ] Schema đúng loại theo File 10, validate pass
+- [ ] Chỉ tại M6 hoặc task được duyệt: schema đúng approved specification, validate pass
 - [ ] Internal link về đúng trang nguồn chuẩn
-- [ ] noindex: private + payment xác nhận bằng test; sitemap.xml sạch
+- [ ] noindex: private + payment xác nhận bằng test; mọi sitemap/indexing action chỉ tại M6
 
 ## 7. Security QA
 - [ ] Slug riêng tư đạt chuẩn (ngẫu nhiên, không tên bé)
@@ -76,7 +78,7 @@ Cách dùng: mỗi PR chạy nhóm liên quan + nhóm 8, 10 (bắt buộc mọi 
 ## 10. Merge QA (bắt buộc mọi PR)
 - [ ] PR scope đúng khai báo?
 - [ ] Preview đã xem trên desktop + điện thoại thật?
-- [ ] Kenji duyệt chưa? (không có ngoại lệ)
+- [ ] Merge authority có khớp L0, Founder Decision và task-specific approval không?
 - [ ] Rollback plan: biết cách quay về bản trước trong 5 phút (Vercel giữ deployment cũ — chỉ cần biết bấm restore)
 
 ## Definition of Done

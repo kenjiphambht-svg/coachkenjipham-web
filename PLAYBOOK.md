@@ -6,10 +6,12 @@
 > **Decision scope:** Workflow, branch and QA discipline. **Non-decision scope:** L0 product, route, indexing and public-positioning decisions.
 > **Precedence:** [Documentation Authority](docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md) and [Conflict Register](docs/governance/CONFLICT_REGISTER.md) govern this file.
 > **Still valid:** Scoped branches, QA and safety. **Outdated/superseded:** Old phase truth and any conflicting merge wording. G0 is a Draft PR and must not merge.
-> **Last verified:** ead2eb7. **Review:** Founder Decision trigger or 90 days.
+> **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+> **Last verified:** PR #110 head; finalize at merge
+> **Review:** Founder Decision trigger or 90 days.
 
 Giao thức làm việc cho Claude Code, Codex, ChatGPT và Kenji.
-File này + `BACKLOG.md` là hệ điều hành của xưởng. Luật chi tiết hơn: `AGENTS.md`, `.claude/rules/`, `docs/website/master-plan/11_CLAUDE_CODE_CODEX_AI_AGENT_SETUP.md`.
+File này là workflow entrypoint dưới governance L0, không phải authority hệ điều hành. Trước khi dùng workflow này, áp dụng hierarchy, conflict precedence và Founder Decisions trong `docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md`; registry, conflict register và reading bundles xác định tài liệu được phép dùng.
 
 ## 1. Mỗi phiên Claude Code bắt đầu như sau
 
@@ -50,12 +52,7 @@ QA checklist đầy đủ theo loại task: `docs/website/master-plan/13_QA_CHEC
 - Claude Code reports (phiếu 5 dòng: đã làm gì / tự kiểm gì / có sửa code không / rủi ro / cần Kenji xem chỗ nào).
 - ChatGPT interprets for Kenji.
 - Codex audits PR.
-- **Merge policy (chốt 28/07/2026 — thay thế ngoại lệ hẹp 18/07/2026, áp dụng
-  như nhau cho Claude Code VÀ Codex)**: sau khi build/lint pass và đã tự kiểm
-  đầy đủ theo mục 4, agent được TỰ MERGE — không cần chờ Kenji duyệt bước
-  merge, kể cả khi PR không còn "nhỏ và rõ ràng" (vd: viết lại nội dung/route
-  trọn trang). Vẫn phải mở PR + phiếu báo cáo đầy đủ như thường lệ — chỉ khác
-  bước bấm merge cuối cùng.
+- **Merge policy:** an agent does not self-merge by default. Merge requires the applicable L0/Founder Decision and task-specific approval. PR #110 remains Draft and must not merge in G0.
 - **4 ngoại lệ vẫn bắt buộc Kenji tự duyệt + tự bấm merge — không đổi, không
   có ngoại lệ nào khác**:
   (a) PR đụng payment pages (`/thanh-toan-*`).
@@ -68,11 +65,7 @@ QA checklist đầy đủ theo loại task: `docs/website/master-plan/13_QA_CHEC
       kể cả PR nhỏ.
   Các PR thuộc 1 trong 4 nhóm trên luôn để Draft, chờ Kenji xem và tự bấm
   merge — nêu rõ trong phiếu báo cáo đang thuộc nhóm nào nếu có.
-- Lý do đổi: 18/07/2026 mới cho Claude Code tự merge PR nhỏ/rõ ràng; 28/07/2026
-  Kenji xác nhận mở rộng — tự merge là mặc định cho MỌI agent sau khi tự kiểm
-  đủ, chỉ cần hỏi trước khi có hành động khai báo Google (xem ghi chú tại
-  `docs/website/master-plan/15_DECISION_LOG_AND_NEXT_ACTIONS.md` mục 1 và
-  `docs/website/master-plan/11_CLAUDE_CODE_CODEX_AI_AGENT_SETUP.md`).
+- Historical note: any prior blanket self-merge wording is superseded by the L0/Founder Decision requirement above.
 
 ## 6. Quy tắc visual
 
@@ -90,7 +83,7 @@ Trước khi làm BẤT KỲ việc thiết kế/hình ảnh nào cho website (t
 
 1. `docs/brand/ESSENCE_VISUAL_ARCHITECTURE.md` — quy trình thiết kế bắt buộc, Page Mode, Signal Moment phải chốt TRƯỚC khi viết bất kỳ prompt ảnh nào.
 2. `docs/brand/ESSENCE_CREATIVE_GROWTH_COMPASS.md` — cách phân loại vấn đề (P0/P1/P2), Definition of Done, cách giải thích báo cáo cho Kenji.
-3. `docs/brand/ESSENCE_GEO_STRATEGY.md` — ngân hàng câu hỏi + câu trả lời chuẩn cho SEO/GEO. Đọc TRƯỚC khi viết bất kỳ nội dung/meta/schema nào cho trang mới. Mọi số liệu sản phẩm và câu trả lời định vị phải lấy từ đây, không tự viết lại.
+3. `docs/brand/ESSENCE_GEO_STRATEGY.md` — historical credential/method evidence and GEO reference. Không dùng tài liệu này làm canonical public positioning, title, offer data hay schema; các giá trị đó phải do L0 hoặc task-provided approved copy cung cấp.
 4. `docs/brand/image-system/08_ESSENCE_LIGHTSCAPE.md` + `docs/brand/image-system/09_PROMPT_MASTER_FLUX2_KLEIN_9B.md` — chuẩn tạo ảnh (ánh sáng là nhân vật chính, ít vật thể, cài đặt FLUX.2 klein 9B).
 5. `docs/website/BAI-HOC-KY-THUAT.md` — bài học kỹ thuật từ lỗi thật.
 
