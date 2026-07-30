@@ -24,8 +24,8 @@ Every task begins with Universal, then its task bundle. Historical and Supersede
 
 ## Current website truth
 
-- Exact repo paths: docs/website/current/ESSENCE_SITE_JOURNEY_MAP.md; docs/website/current/ROUTE_STATE_MATRIX.md; docs/website/current/OFFER_STATE_MATRIX.md; docs/website/current/INDEXING_POLICY.md.
-- Use after Universal for route, journey, offer, CTA, private-flow, legacy, partner, indexing or runtime-planning work.
+- Exact repo paths: docs/website/current/ESSENCE_SITE_JOURNEY_MAP.md; docs/website/current/ROUTE_STATE_MATRIX.md; docs/website/current/OFFER_STATE_MATRIX.md; docs/website/current/INDEXING_POLICY.md; docs/website/current/PAGE_PORTFOLIO_AND_TRANSFORMATION_BLUEPRINT.md.
+- Use after Universal for route, journey, offer, CTA, private-flow, legacy, partner, indexing, page-transformation or runtime-planning work.
 - These L2 documents classify current evidence and governed intent. They do not authorize runtime, payment, booking, child-data or indexing changes.
 
 ## Editorial writing
@@ -36,7 +36,7 @@ Every task begins with Universal, then its task bundle. Historical and Supersede
 
 ## Frontend design
 
-- Exact repo paths: docs/brand/ESSENCE_EXPERIENCE_BIBLE_2026.md; docs/brand/essence-typography-composition-system-v1.md; docs/brand/ESSENCE_VISUAL_ARCHITECTURE.md.
+- Exact repo paths: docs/brand/ESSENCE_EXPERIENCE_BIBLE_2026.md; docs/brand/essence-typography-composition-system-v1.md; docs/brand/ESSENCE_VISUAL_ARCHITECTURE.md; docs/website/current/PAGE_PORTFOLIO_AND_TRANSFORMATION_BLUEPRINT.md.
 - Task-provided document: approved page copy.
 - Planned/Missing: Page Contract. Do not infer it; the task must supply it before execution.
 

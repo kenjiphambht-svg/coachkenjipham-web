@@ -9,7 +9,7 @@
 **Last verified:** G1 PR head; finalize at merge
 **Review trigger:** Founder Decision, status/replacement change, or 90 days.
 
-This registry records authority-bearing, default-reading, imported-canonical, historical-evidence, external-dependency and planned current-truth documents. It contains **39 entries**.
+This registry records authority-bearing, default-reading, imported-canonical, historical-evidence, external-dependency and planned current-truth documents. It contains **40 entries**.
 
 ## Verification metadata convention
 
@@ -56,6 +56,7 @@ This registry records authority-bearing, default-reading, imported-canonical, hi
 | docs/website/current/ROUTE_STATE_MATRIX.md | audited route state | L2 / Active / Kenji | implementation/governed route classification / no runtime change | current G1 truth / — | — | trigger + 90d |
 | docs/website/current/OFFER_STATE_MATRIX.md | audited offer and flow state | L2 / Active / Kenji | offer/flow classification / no product or provider invention | current G1 truth / — | — | trigger + 90d |
 | docs/website/current/INDEXING_POLICY.md | current indexing truth and M6 gate | L2 / Active / Kenji | indexing policy and gaps / no indexing action | current G1 truth / — | — | trigger + 90d |
+| docs/website/current/PAGE_PORTFOLIO_AND_TRANSFORMATION_BLUEPRINT.md | page portfolio and transformation execution blueprint | L2 / Active / Kenji | transformation classification, sequence, gates and brief seeds / no runtime, Founder Decision, offer contract, Page Contract or indexing approval | current G1 transformation truth / — | — | trigger + 90d |
 
 ## Maintenance
 
