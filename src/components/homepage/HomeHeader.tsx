@@ -13,7 +13,7 @@ const PRODUCT_LINKS = [
 
 // SỬA 23/07/2026 (brief bổ sung mục menu ⑨, MT4) — thêm "Một góc để quay lại".
 // Section ⑨ nằm TRÊN trang chủ (không có route trang riêng — 3 card còn "chưa
-// mở"), nên trỏ ANCHOR tới section: href đầy đủ "/trang-chu-v2#..." để chạy
+// mở"), nên trỏ ANCHOR tới section: href đầy đủ "/#..." để chạy
 // đúng CẢ khi đang ở trang khác dùng chung Header (10 trang) — bấm sẽ về trang
 // chủ rồi cuộn tới ⑨. Đặt ngay SAU "Điều Essence không hứa" (⑧) và TRƯỚC "Liên
 // hệ" — đúng thứ tự mạch cuộn trang (⑧ rồi ⑨), giữ Liên hệ ở cuối theo lệ.
@@ -23,7 +23,7 @@ const TRUST_LINKS = [
   { href: "/ve-kenji", label: "Về Kenji" },
   { href: "/phuong-phap", label: "Phương pháp" },
   { href: "/dieu-essence-khong-hua", label: "Điều Essence không hứa" },
-  { href: "/trang-chu-v2#mot-goc-de-quay-lai", label: "Một góc để quay lại" },
+  { href: "/#mot-goc-de-quay-lai", label: "Một góc để quay lại" },
   { href: "/lien-he", label: "Liên hệ" },
 ];
 
@@ -115,7 +115,11 @@ export default function HomeHeader() {
           (giữ nguyên h-10/h-12 chữ ký, h-[28px]/h-[34px] wordmark). Áp cùng
           mức cho cả 2 chỗ (đây + tấm phủ menu bên dưới). */}
       <div className="max-w-[1120px] mx-auto flex items-center justify-between py-1">
-        <Link href="/trang-chu-v2" aria-label="Về trang chủ">
+        <Link
+          href="/"
+          aria-label="Về trang chủ"
+          className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory"
+        >
           <HeaderLogo />
         </Link>
         <button
@@ -124,7 +128,7 @@ export default function HomeHeader() {
           onClick={() => setOpen(true)}
           aria-expanded={open}
           aria-controls="site-menu-panel"
-          className="font-sans text-sm tracking-[0.16em] uppercase text-e26-text hover:text-e26-gold-deep transition-colors duration-300"
+          className="font-sans text-sm tracking-[0.16em] uppercase text-e26-text hover:text-e26-gold-deep transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory"
         >
           Menu
         </button>
@@ -148,17 +152,24 @@ export default function HomeHeader() {
       >
         <div className="max-w-[1120px] mx-auto h-full flex flex-col px-6">
           <div className="flex items-center justify-between py-1">
-            <Link href="/trang-chu-v2" aria-label="Về trang chủ" onClick={(e) => e.stopPropagation()}>
+            <Link
+              href="/"
+              aria-label="Về trang chủ"
+              tabIndex={open ? 0 : -1}
+              onClick={(e) => e.stopPropagation()}
+              className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
+            >
               <HeaderLogo />
             </Link>
             <button
               type="button"
+              tabIndex={open ? 0 : -1}
               onClick={(e) => {
                 e.stopPropagation();
                 setOpen(false);
                 menuButtonRef.current?.focus();
               }}
-              className="font-sans text-sm tracking-[0.16em] uppercase text-e26-text hover:text-e26-gold-deep transition-colors duration-300"
+              className="font-sans text-sm tracking-[0.16em] uppercase text-e26-text hover:text-e26-gold-deep transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
             >
               Đóng
             </button>
@@ -175,8 +186,9 @@ export default function HomeHeader() {
                   key={link.href}
                   ref={i === 0 ? firstLinkRef : undefined}
                   href={link.href}
+                  tabIndex={open ? 0 : -1}
                   onClick={() => setOpen(false)}
-                  className="font-serif font-normal text-[32px] md:text-[44px] leading-tight text-e26-text hover:text-e26-gold-deep transition-colors duration-300 min-h-11"
+                  className="font-serif font-normal text-[32px] md:text-[44px] leading-tight text-e26-text hover:text-e26-gold-deep transition-colors duration-300 min-h-11 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
                 >
                   {link.label}
                 </Link>
@@ -190,8 +202,9 @@ export default function HomeHeader() {
                 <Link
                   key={link.href}
                   href={link.href}
+                  tabIndex={open ? 0 : -1}
                   onClick={() => setOpen(false)}
-                  className="font-serif font-normal text-[32px] md:text-[44px] leading-tight text-e26-text hover:text-e26-gold-deep transition-colors duration-300 min-h-11"
+                  className="font-serif font-normal text-[32px] md:text-[44px] leading-tight text-e26-text hover:text-e26-gold-deep transition-colors duration-300 min-h-11 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
                 >
                   {link.label}
                 </Link>
