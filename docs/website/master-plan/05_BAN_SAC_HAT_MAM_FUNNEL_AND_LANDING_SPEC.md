@@ -4,9 +4,9 @@
 > **Purpose:** Child-safe Hạt Mầm content and funnel reference.
 > **Decision scope:** 0–7 framing, child safety and offer clarity. **Non-decision scope:** Approval of legacy tools or architecture for the new flow.
 > **Still valid:** Child safety, 0–7 audience and privacy principles. **Outdated/superseded:** Tally/VietQR MVP flow as a prescribed new implementation.
-> **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-06; planned G1 Offer State Matrix.
+> **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-06 and [Offer State Matrix](../current/OFFER_STATE_MATRIX.md).
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** PR #110 head; finalize at merge
+> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
 > **Review:** System/implementation trigger or 180 days.
 Mục tiêu: spec landing + funnel hoàn chỉnh cho Ấn phẩm Bản Sắc Hạt Mầm — sản phẩm active chính 60–90 ngày tới.
 Người đọc chính: Codex (build), Kenji (duyệt), người dựng email/form.

@@ -6,7 +6,7 @@
 > **Still valid:** Vietnamese readability and implementation observations. **Outdated/superseded:** This file's font proposal and any claim above the canonical typography system.
 > **Replacement:** [Canonical Typography Composition System](../essence-typography-composition-system-v1.md). The Lặng snapshot is L4 evidence, not authority above it.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** PR #110 head; finalize at merge
+> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
 > **Review:** Verify when used as evidence.
 Đường dẫn repo: docs/brand/design-system/04_TYPOGRAPHY_SYSTEM_2026.md
 

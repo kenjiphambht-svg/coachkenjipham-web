@@ -6,7 +6,7 @@
 > **Decision scope:** Declared task state only. **Non-decision scope:** Canonical roadmap, route truth, offer truth or Founder Decisions.
 > **Precedence:** [Documentation Authority](docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md) and the [Conflict Register](docs/governance/CONFLICT_REGISTER.md) win over the phase labels below.
 > **Still valid:** Task tracking and protected areas. **Outdated/superseded:** The Phase 1–5 sequence below is not the M0–M6 roadmap.
-> **Replacement:** Planned G1 current-truth matrices. **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc. **Last verified:** PR #110 head; finalize at merge. **Review:** Founder Decision trigger or 90 days.
+> **Replacement:** docs/website/current/ROUTE_STATE_MATRIX.md and docs/website/current/OFFER_STATE_MATRIX.md. **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc. **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd. **Review:** Founder Decision trigger or 90 days.
 
 File theo dõi công việc: ghi nhận điều đang làm, tiến độ và việc kế tiếp. Đây không phải nguồn sự thật canonical; authority, conflict precedence và Founder Decisions thuộc governance L0.
 Mọi phiên Claude Code/Codex đọc governance L0 và Reading Bundles trước; chỉ đọc file này khi task yêu cầu task-tracking.

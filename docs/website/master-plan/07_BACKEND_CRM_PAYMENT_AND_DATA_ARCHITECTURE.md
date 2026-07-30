@@ -6,7 +6,7 @@
 > **Still valid:** Child-data separation, consent and minimal-data principles. **Outdated/superseded:** Tool assumptions for Lặng and Hạt Mầm new flows.
 > **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-05 and C-06.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** PR #110 head; finalize at merge
+> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
 > **Review:** System/implementation trigger or 180 days.
 Mục tiêu: vẽ backend/dữ liệu/CRM/payment đủ rõ để triển khai theo 3 mức, không xây thừa.
 Người đọc chính: Claude Code/Codex, automation builder; Kenji đọc mục 1–3 để hiểu và quyết.

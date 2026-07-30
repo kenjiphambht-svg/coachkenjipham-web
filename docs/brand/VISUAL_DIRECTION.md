@@ -6,7 +6,7 @@ Cập nhật 24/07/2026: Tài liệu này là bản định hướng sơ khai (0
 > **Still valid:** Quiet, refined restraint and motion restraint. **Outdated/superseded:** Dark-warm background direction.
 > **Replacement:** [Experience Bible](ESSENCE_EXPERIENCE_BIBLE_2026.md), ESSENCE_VISUAL_ARCHITECTURE and current Image System.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** PR #110 head; finalize at merge
+> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
 > **Review:** No periodic cadence.
 Từ 24/07/2026, phần cụ thể hơn về quy trình thiết kế, Page Mode, Signal
 Moment và chuẩn ánh sáng nằm ở `docs/brand/ESSENCE_VISUAL_ARCHITECTURE.md`

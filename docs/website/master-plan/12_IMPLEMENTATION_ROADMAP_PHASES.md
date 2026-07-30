@@ -6,7 +6,7 @@
 > **Still valid:** Dependency and privacy lessons. **Superseded:** The 13-phase roadmap.
 > **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md), C-09 and M0–M6 Founder Decisions.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** PR #110 head; finalize at merge
+> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
 > **Review:** No periodic cadence.
 Mục tiêu: chia toàn dự án thành 13 phase để không làm tất cả một lần.
 Người đọc chính: Kenji (điều phối), mọi agent (biết mình đang ở phase nào).
