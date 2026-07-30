@@ -5,9 +5,9 @@
 > **Purpose:** Point-in-time route/source evidence.
 > **Decision scope:** Audit evidence at its recorded date. **Non-decision scope:** Current route state, indexing state, migration or implementation decision.
 > **Still valid:** Legacy preservation and shared-CSS risk evidence. **Outdated/superseded:** Current route/indexing conclusions.
-> **Replacement:** Planned G1 Route State Matrix and [Conflict Register](../../governance/CONFLICT_REGISTER.md).
+> **Replacement:** [Route State Matrix](../current/ROUTE_STATE_MATRIX.md) and [Conflict Register](../../governance/CONFLICT_REGISTER.md).
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** PR #110 head; finalize at merge
+> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
 > **Review:** No periodic cadence.
 
 Mục tiêu: audit toàn bộ route và source hiện có trước khi bắt đầu Phase 1 — Homepage V2. Chỉ nhìn, không sửa (đúng luật `BACKLOG.md`).

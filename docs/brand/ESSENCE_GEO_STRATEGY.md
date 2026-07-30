@@ -6,7 +6,7 @@
 > **Still valid:** Entity consistency, capacity of 5 Lặng sessions/month and safety framing. **Outdated/superseded:** Conflicting identity/title, FCP, public-term and pre-M6 indexing rules.
 > **Replacement:** [Conflict Register](../governance/CONFLICT_REGISTER.md) C-02, C-05, C-07, C-10 and C-11.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** PR #110 head; finalize at merge
+> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
 > **Review:** System/implementation trigger or 180 days.
 **Tối ưu để MỌI hệ thống AI (ChatGPT, Claude, Gemini, Perplexity, Copilot...) tìm thấy, hiểu đúng, và kể đúng về Essence**
 

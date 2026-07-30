@@ -7,7 +7,7 @@
 > **Precedence:** Read [Documentation Authority](../governance/ESSENCE_DOCUMENTATION_AUTHORITY.md) and [Reading Bundles](../governance/READING_BUNDLES.md) first.
 > **Still valid:** System inventory and visual decisions. **Outdated/superseded:** “Three standard systems” is not the complete authority map.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** PR #110 head; finalize at merge
+> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
 > **Review:** Founder Decision trigger or 90 days.
 
 Trang mục lục cho 3 bộ tài liệu chuẩn của Essence Coaching System. PR này chỉ thêm tài liệu, không sửa giao diện.

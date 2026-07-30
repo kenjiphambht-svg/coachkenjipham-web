@@ -4,9 +4,9 @@
 > **Purpose:** Agent task workflow.
 > **Decision scope:** Scoped task/QA conventions. **Non-decision scope:** L0 authority, current reading order or G0 merge decision.
 > **Still valid:** Task-format and protected-scope rules. **Outdated/superseded:** Old default reading order.
-> **Replacement:** [Reading Bundles](../../governance/READING_BUNDLES.md); G0 remains Draft and unmerged.
+> **Replacement:** [Reading Bundles](../../governance/READING_BUNDLES.md); G0 merged at a45e4242c0e68f52e0004ee8dd5d02745e4212dd.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** PR #110 head; finalize at merge
+> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
 > **Review:** Founder Decision trigger or 90 days.
 Mục tiêu: nhiều AI cùng làm một repo mà không giẫm chân nhau, không loạn, Kenji vẫn nắm quyền cuối.
 Người đọc chính: mọi AI vào repo; Kenji để hiểu cách giao việc.
@@ -28,7 +28,7 @@ Người đọc chính: mọi AI vào repo; Kenji để hiểu cách giao việc
 
 1. Một AI sửa source code tại một thời điểm — không hai agent cùng mở một vùng code. Cách thực thi: BACKLOG.md của repo ghi rõ task nào đang thuộc agent nào.
 2. Mỗi task một branch (`feature/...`, `fix/...`); không commit thẳng main.
-3. **Merge policy:** an agent does not self-merge by default. Merge requires the applicable L0/Founder Decision and task-specific approval; PR #110 remains Draft and must not merge in G0.
+3. **Merge policy:** an agent does not self-merge by default. Merge requires the applicable L0/Founder Decision and task-specific approval. G0 merged at a45e4242c0e68f52e0004ee8dd5d02745e4212dd; this does not authorize any later PR.
 4. Không cài package mới nếu chưa được duyệt (ghi đề xuất vào phiếu, chờ).
 5. Không sửa ngoài scope của task, kể cả "tiện tay sửa lỗi nhìn thấy" — ghi vào backlog thay vì sửa.
 6. Không đụng payment/private route nếu task không yêu cầu rõ.
@@ -69,7 +69,7 @@ REPORT: phiếu 5 dòng + preview link
 1. Task khai báo trong BACKLOG.md (ai, branch, scope).
 2. Agent làm → push branch → PR mở với mô tả theo phiếu 5 dòng → preview Vercel tự sinh.
 3. QA: agent tự chạy checklist kỹ thuật (File 13 nhóm 8) → Claude Code có thể QA chéo PR của Codex (đọc diff, chạy build, soát từ cấm bằng script) → kết quả ghi vào PR.
-4. QA PASS does not authorize merge by itself. Keep a PR Draft until the applicable L0/Founder Decision and task-specific approval authorize its next state; PR #110 remains Draft in G0.
+4. QA PASS does not authorize merge by itself. Keep a PR Draft until the applicable L0/Founder Decision and task-specific approval authorize its next state.
 5. Vercel auto-deploy sau merge (không đổi).
 6. Handoff: agent cập nhật BACKLOG.md (Xong), ghi PLAYBOOK.md nếu có bài học, bàn giao ngữ cảnh cho task kế bằng chính hai file đó — không bàn giao bằng trí nhớ.
 

@@ -5,9 +5,9 @@
 > **Purpose:** Agent workflow and QA.
 > **Decision scope:** Workflow, branch and QA discipline. **Non-decision scope:** L0 product, route, indexing and public-positioning decisions.
 > **Precedence:** [Documentation Authority](docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md) and [Conflict Register](docs/governance/CONFLICT_REGISTER.md) govern this file.
-> **Still valid:** Scoped branches, QA and safety. **Outdated/superseded:** Old phase truth and any conflicting merge wording. G0 is a Draft PR and must not merge.
+> **Still valid:** Scoped branches, QA and safety. **Outdated/superseded:** Old phase truth and any conflicting merge wording. G0 merged at a45e4242c0e68f52e0004ee8dd5d02745e4212dd; later PRs still require task-specific approval.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** PR #110 head; finalize at merge
+> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
 > **Review:** Founder Decision trigger or 90 days.
 
 Giao thức làm việc cho Claude Code, Codex, ChatGPT và Kenji.
@@ -52,7 +52,7 @@ QA checklist đầy đủ theo loại task: `docs/website/master-plan/13_QA_CHEC
 - Claude Code reports (phiếu 5 dòng: đã làm gì / tự kiểm gì / có sửa code không / rủi ro / cần Kenji xem chỗ nào).
 - ChatGPT interprets for Kenji.
 - Codex audits PR.
-- **Merge policy:** an agent does not self-merge by default. Merge requires the applicable L0/Founder Decision and task-specific approval. PR #110 remains Draft and must not merge in G0.
+- **Merge policy:** an agent does not self-merge by default. Merge requires the applicable L0/Founder Decision and task-specific approval. A prior approved merge does not authorize a later PR.
 - **4 ngoại lệ vẫn bắt buộc Kenji tự duyệt + tự bấm merge — không đổi, không
   có ngoại lệ nào khác**:
   (a) PR đụng payment pages (`/thanh-toan-*`).

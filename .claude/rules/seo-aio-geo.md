@@ -4,9 +4,9 @@
 > **Owner:** Kenji Phạm
 > **Decision scope:** Required pre-read for SEO/GEO work. **Non-decision scope:** L0 public identity, indexing launch or route authority.
 > **Precedence:** Read docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md and docs/governance/CONFLICT_REGISTER.md first. Villa remains noindex until M6.
-> **Replacement:** Canonical public positioning is Conflict Register C-07; route/indexing current truth is planned G1.
+> **Replacement:** Canonical public positioning is Conflict Register C-07; route/indexing current truth is docs/website/current/ROUTE_STATE_MATRIX.md and docs/website/current/INDEXING_POLICY.md.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** PR #110 head; finalize at merge
+> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
 > **Review:** Founder Decision trigger or 90 days.
 
 Read `docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md`, `docs/governance/DOCUMENT_REGISTRY.md`, `docs/governance/CONFLICT_REGISTER.md`, and `docs/governance/READING_BUNDLES.md` before changing SEO, metadata, schema, sitemap, robots, or public entity copy. If the task does not supply an exact approved Page Contract or SEO specification, mark it Planned/Missing; do not guess a source path or implementation.

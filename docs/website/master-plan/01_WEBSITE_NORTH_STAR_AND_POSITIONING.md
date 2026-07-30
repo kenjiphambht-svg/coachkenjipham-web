@@ -6,7 +6,7 @@
 > **Still valid:** Human-first framing, boundaries and no-guru principles. **Outdated/superseded:** Incomplete public identity wording.
 > **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md), C-07.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** PR #110 head; finalize at merge
+> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
 > **Review:** Founder Decision trigger or 90 days.
 Mục tiêu: định nghĩa "website trị giá 10.000 USD" trong hệ Essence nghĩa là gì, để mọi quyết định sau này có la bàn.
 Người đọc chính: Kenji, rồi mọi người/AI làm dự án.

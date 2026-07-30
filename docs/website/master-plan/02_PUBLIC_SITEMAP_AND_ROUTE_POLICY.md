@@ -4,9 +4,9 @@
 > **Purpose:** Historical/current route evidence pending G1 route truth.
 > **Decision scope:** Route safeguards and legacy evidence. **Non-decision scope:** Indexing launch, consumer journey or new-flow migration.
 > **Still valid:** Privacy, noindex safeguards for private routes and legacy caution. **Outdated/superseded:** Public-index timing, old journey assumptions and /ai-startup index role.
-> **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-01–C-04 and planned G1 Route State Matrix/Indexing Policy.
+> **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-01–C-04, [Route State Matrix](../current/ROUTE_STATE_MATRIX.md), and [Indexing Policy](../current/INDEXING_POLICY.md).
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** PR #110 head; finalize at merge
+> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
 > **Review:** Founder Decision trigger or 90 days.
 Mục tiêu: chốt danh sách route, trạng thái và luật của từng route — để không ai tạo trang bừa.
 Người đọc chính: Codex/Claude Code khi tạo hoặc sửa route; Kenji khi duyệt.
@@ -17,7 +17,7 @@ Route là địa chỉ từng phòng trong ngôi nhà web (ví dụ coachkenjiph
 
 ## 2. Bảng route
 
-**Current-authority correction:** Bảng dưới là evidence lịch sử, không phải lệnh build, migration, CTA hay indexing. Mọi trạng thái public/index phải chờ L0, Founder Decision và planned G1 Route State Matrix/Indexing Policy; không có thay đổi sitemap, robots hoặc noindex trước M6.
+**Current-authority correction:** Bảng dưới là evidence lịch sử, không phải lệnh build, migration, CTA hay indexing. Mọi trạng thái public/index phải tuân L0, Founder Decision, [Route State Matrix](../current/ROUTE_STATE_MATRIX.md) và [Indexing Policy](../current/INDEXING_POLICY.md); không có thay đổi sitemap, robots hoặc noindex trước M6.
 
 | Route | Tên hiển thị | Vai trò | Người đọc chính | Trạng thái | SEO | CTA chính | Dữ liệu nhạy cảm | Ghi chú kỹ thuật |
 |---|---|---|---|---|---|---|---|---|

@@ -4,9 +4,9 @@
 > **Purpose:** SEO/GEO principles.
 > **Decision scope:** Entity, schema and privacy principles. **Non-decision scope:** Indexing launch timing, robots, sitemap or Search Console actions.
 > **Still valid:** Schema structure, private-route protections and content principles. **Outdated/superseded:** Any instruction to make Villa/public pages indexable before M6.
-> **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-02 and planned G1 Indexing Policy.
+> **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-02 and [Indexing Policy](../current/INDEXING_POLICY.md).
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** PR #110 head; finalize at merge
+> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
 > **Review:** System/implementation trigger or 180 days.
 Mục tiêu: để Google VÀ các AI (ChatGPT, Claude, Gemini, AI Overview) hiểu đúng và trích dẫn đúng về Kenji/Essence.
 Người đọc chính: Codex (kỹ thuật), người viết content, Kenji (hiểu chiến lược).
