@@ -1,5 +1,16 @@
 # Homepage Specification
 
+> **Authority:** L5 — Historical Record
+> **Status:** Superseded
+> **Owner:** Kenji Phạm
+> **Purpose:** Preserve an early homepage structure proposal.
+> **Decision scope:** Historical evidence only. **Non-decision scope:** Current homepage, public identity, CTA, route, copy or implementation.
+> **Outdated/superseded:** The structure, AI-language permission and future-state assumptions below.
+> **Replacement:** Universal + Current website truth bundles, C-07 and an approved Page Contract.
+> **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Last verified:** G1.1 PR head; finalize at merge.
+> **Review:** No periodic cadence.
+
 This document defines the future homepage structure. Do not implement this rebuild until explicitly asked.
 
 ## Homepage Role
@@ -31,4 +42,3 @@ The homepage should be simple on the outside and deep on the inside. It should h
 - Vietnamese should be primary.
 - English terms may appear when strategically useful: AI-native, Personal Psychology Engine, Solo AI Company, agentic workflow.
 - Avoid forbidden positioning and safety language listed in `AGENTS.md` and `docs/brand/SAFETY_BOUNDARIES.md`.
-

@@ -1,12 +1,13 @@
 # Essence Webperf Pass
 
+> Execution aid only. Subordinate to the Universal + applicable Frontend design bundle and current task-specific Founder instruction.
+
 Use this skill when measuring or reviewing page performance (Core Web Vitals, Lighthouse) — required before Kenji approves any new page.
 
 ## Read First
 
-- `AGENTS.md`
-- `docs/brand/BRAND_SYSTEM_INDEX.md` (brand/system entry point)
-- `docs/website/master-plan/04_HOMEPAGE_10000_USD_SPEC.md` (mục 4 — hiệu năng là yêu cầu visual)
+- Complete Universal bundle in `docs/governance/READING_BUNDLES.md`
+- Applicable Frontend design bundle and Page Contract
 - `docs/website/master-plan/13_QA_CHECKLIST_10000_USD_WEBSITE.md` (nhóm 6)
 
 ## Ngưỡng pass/fail (đo mobile, không ước lượng bằng mắt)

@@ -6,7 +6,7 @@
 > **Still valid:** Schema structure, private-route protections and content principles. **Outdated/superseded:** Any instruction to make Villa/public pages indexable before M6.
 > **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-02 and [Indexing Policy](../current/INDEXING_POLICY.md).
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
+> **Last verified:** G1.1 PR head; finalize at merge.
 > **Review:** System/implementation trigger or 180 days.
 Mục tiêu: để Google VÀ các AI (ChatGPT, Claude, Gemini, AI Overview) hiểu đúng và trích dẫn đúng về Kenji/Essence.
 Người đọc chính: Codex (kỹ thuật), người viết content, Kenji (hiểu chiến lược).
@@ -25,8 +25,8 @@ Kenji là ai; Essence là gì; Bản Sắc Hạt Mầm là gì; Essence KHÔNG p
 
 | Thực thể | Trang nguồn chuẩn | Quy tắc |
 |---|---|---|
-| Kenji Phạm | /ve-kenji | Canonical public positioning: "Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching System." Do not reinterpret or shorten it |
-| Essence Coaching System | Planned/Missing current Page Contract | Không suy ra định nghĩa public, route hoặc schema từ tài liệu lịch sử |
+| Kenji Phạm | /ve-kenji | Canonical public positioning: "Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching." Do not reinterpret or shorten it |
+| Essence Coaching | Planned/Missing current Page Contract | Official brand, organization and public entity. Không suy ra định nghĩa public, route hoặc schema ngoài C-07 từ tài liệu lịch sử |
 | Bản Sắc Của Con | /ban-sac-cua-con | Luôn kèm khung "bản đồ quan sát, không phải nhãn dán" |
 | Bản Sắc Hạt Mầm | /an-pham-ban-sac-hat-mam | Luôn kèm "dành cho ba mẹ có con 0–7 tuổi" |
 
@@ -34,7 +34,7 @@ Public source pages đầy đủ: /ve-kenji, /ve-essence, /phuong-phap, /dieu-es
 
 ## 4. Sáu content pillar cho /goc-doc
 
-1. Ghi chép quan sát con. 2. Kiểu gồng và phản xạ cũ (người lớn). 3. Đạo đức trong self-understanding. 4. Tâm lý chiều sâu public-safe. 5. AI phía sau hệ Essence (minh bạch hậu trường — pillar này nói AI-native đúng chỗ). 6. Hậu trường tạo ấn phẩm.
+1. Ghi chép quan sát con. 2. Kiểu gồng và phản xạ cũ (người lớn). 3. Đạo đức trong self-understanding. 4. Tâm lý chiều sâu public-safe. 5. Historical proposal: AI phía sau Essence. Pillar này không tự cấp phép dùng AI-native; exact wording/context phải đến từ L0 hoặc task-provided approved specification. 6. Hậu trường tạo ấn phẩm.
 Mỗi bài: một ý; heading rõ; có đoạn định nghĩa tự đứng được khi bị AI trích rời; kết bằng một dòng mở cửa. Nhịp và quy trình duyệt theo docs/strategy/04 + M7.
 
 ## 5. Bổ sung tài liệu gốc chưa nhắc — nghiên cứu từ khóa tiếng Việt thật
@@ -58,7 +58,7 @@ Trước khi viết loạt bài đầu, dành một phiên liệt kê cụm ph�
 - [ ] Không từ cấm trong mọi title/description.
 
 ## Definition of Done
-Hỏi thử 2–3 AI lớn "Kenji Phạm là ai" / "Essence Coaching System là gì" sau 4–8 tuần vận hành: câu trả lời lấy đúng định danh và mô tả từ trang nguồn (kiểm định kỳ, ghi vào scorecard tháng).
+Hỏi thử 2–3 AI lớn "Kenji Phạm là ai" / "Essence Coaching là gì" sau 4–8 tuần vận hành: câu trả lời lấy đúng định danh và mô tả từ trang nguồn (kiểm định kỳ, ghi vào scorecard tháng).
 
 ## Rủi ro cần tránh
 - Đo GEO quá sớm — AI cập nhật chậm; kiên nhẫn tối thiểu 1–2 tháng sau khi trang nguồn online.

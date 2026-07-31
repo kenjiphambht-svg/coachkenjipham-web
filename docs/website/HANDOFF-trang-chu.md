@@ -1,5 +1,18 @@
 # ESSENCE — TÓM TẮT NGỮ CẢNH TRANG CHỦ (tính đến 19/07/2026)
 
+> **Authority:** L5 — Historical Record
+> **Status:** Historical with Governance Bridge
+> **Owner:** Kenji Phạm
+> **Purpose:** Preserve dated homepage handoff evidence.
+> **Decision scope:** Historical provenance only. **Non-decision scope:** Current homepage, public identity, copy, route, image, merge or deployment authority.
+> **Outdated/superseded:** Former organization/positioning context and the self-merge permission described below.
+> **Replacement:** Universal + Current website truth bundles, C-07 and C-13.
+> **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Last verified:** G1.1 PR head; finalize at merge.
+> **Review:** No periodic cadence.
+
+**Execution warning:** The self-merge permission below is historical evidence only. Under L0 C-13, it cannot authorize any current PR; exact current task-specific Founder approval is required.
+
 Dùng để: (1) mở chat Web Studio mới, dán nguyên văn để tiếp tục không mất mạch.
 (2) lưu vào repo `docs/website/HANDOFF-trang-chu.md` để Claude Code đọc trước
 mỗi task, tránh lặp lại lỗi đã biết.

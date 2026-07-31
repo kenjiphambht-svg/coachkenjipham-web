@@ -5,9 +5,9 @@
 > **Purpose:** Default safeguards for agents.
 > **Decision scope:** Task safety, scope and workflow. **Non-decision scope:** Founder Decisions, public positioning, route/indexing, product flow and image authority.
 > **Precedence:** Read [Documentation Authority](docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md), [Conflict Register](docs/governance/CONFLICT_REGISTER.md) and [Reading Bundles](docs/governance/READING_BUNDLES.md) first. L0 wins over every older statement below.
-> **Still valid:** Scoped work, verification and protected-area rules. **Outdated/superseded:** Old public AI-native/astrology positioning is not canonical public copy.
+> **Still valid:** Scoped work, verification and protected-area rules. **Outdated/superseded:** Historical organization suffixes and old public AI-native/astrology positioning are not canonical public copy.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
+> **Last verified:** G1.1 PR head; finalize at merge.
 > **Review:** Founder Decision trigger or 90 days.
 
 This is the shared instruction file for Codex, Claude Code, and future AI coding agents working on coachkenjipham.com.
@@ -23,7 +23,7 @@ This is the shared instruction file for Codex, Claude Code, and future AI coding
 - Always inspect existing structure before editing.
 - Always list changed files at the end.
 - Always run available verification commands when possible.
-- Merge policy: an agent does not self-merge by default. Merge requires the applicable L0/Founder Decision and task-specific approval. G0 merged at a45e4242c0e68f52e0004ee8dd5d02745e4212dd; this fact does not authorize G1 or any later PR to merge.
+- Merge policy — **L0 C-13:** an agent may merge only when a current task-specific Founder instruction explicitly authorizes that exact PR. Historical briefs, prior standing permissions, earlier merges and QA success cannot authorize a later PR. Otherwise keep the PR Draft and stop for review.
 - NGOẠI LỆ bắt buộc chờ duyệt trước (không đổi, không có ngoại lệ khác):
   (a) PR đụng payment pages; (b) PR đụng dữ liệu trẻ em; (c) PR đổi cấu
   trúc/route lớn hoặc file dùng chung (Header/Footer/globals.css/tailwind.config);
@@ -47,11 +47,15 @@ Trước khi làm BẤT KỲ việc thiết kế/hình ảnh nào cho website (t
 
 ## Project Identity
 
-Canonical public positioning: Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching System. Không được diễn giải, rút gọn, dịch thành positioning khác, hoặc suy ra danh xưng từ evidence lịch sử.
+Official brand, organization and public entity: **Essence Coaching**.
+
+Canonical public positioning: **Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching.** Không được diễn giải, rút gọn, dịch thành positioning khác, thêm hậu tố “System”, hoặc suy ra danh xưng từ evidence lịch sử.
+
+The word “system” remains valid only as a common technical noun in context, such as typography system, image system or operating system. It is not part of the brand, organization or public identity.
 
 ## Website Role
 
-coachkenjipham.com is the official public website and brand hub for Kenji Phạm and Essence Coaching System.
+coachkenjipham.com is the official public website and brand hub for Kenji Phạm and Essence Coaching.
 
 The website should act as a clear routing hall, not a crowded service menu.
 
@@ -61,13 +65,13 @@ The website should act as a clear routing hall, not a crowded service menu.
 - Website visitors should quickly understand where to go:
   1. For themselves
   2. For their child
-  3. For understanding Kenji, Essence, and the AI system
+  3. For understanding Kenji, Essence, the approved method, and its boundaries
 
 ## Preferred Language
 
 Vietnamese first.
 
-Historical terms such as AI-native, Personal Psychology Engine, Solo AI Company, and agentic workflow are not public positioning. Use them only when an L0 or task-provided approved specification explicitly supplies the required context.
+Historical/internal terms such as AI-native, Personal Psychology Engine, Solo AI Company, and agentic workflow are not public positioning and are never default public language. Use them only when a current L0 or task-provided approved specification explicitly supplies the exact context and wording.
 
 ## Avoid
 

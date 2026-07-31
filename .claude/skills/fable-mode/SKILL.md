@@ -1,9 +1,12 @@
 # Fable Mode
 
+> Execution aid only. Subordinate to the Universal bundle, C-13 and current task-specific Founder instruction. It never grants merge/deploy authority.
+
 Use this skill when Kenji types "fable mode" in a request, OR when a task touches a live route (`/kidbook`, `/ai-startup`, payment pages) or a hard-to-reverse merge/deploy decision — in those two cases, propose enabling fable mode instead of turning it on silently. Do NOT use for small/obvious edits (fix one line of text, change one link) — it slows down trivial work for no reason.
 
 ## Read First
 
+- Complete Universal bundle in `docs/governance/READING_BUNDLES.md`
 - `AGENTS.md`
 - `PLAYBOOK.md`
 

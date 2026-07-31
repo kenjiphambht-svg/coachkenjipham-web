@@ -1,4 +1,13 @@
 # 00_READ_ME_FIRST_DESIGN_SYSTEM.md
+> **Governance status:** L3 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** Subordinate design-system collection entrypoint.
+> **Decision scope:** Bounded design-system reading and implementation support. **Non-decision scope:** Governance hierarchy, L0 identity, global experience/typography authority, runtime or indexing.
+> **Precedence:** Governance Constitution → C-07/C-12 → Experience Bible → Visual Architecture/canonical typography → this collection. File 11 is historical visual evidence and never wins over that chain.
+> **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Last verified:** G1.1 PR head; finalize at merge.
+> **Review:** Design-system trigger or 180 days.
+
 Đường dẫn repo: docs/brand/design-system/00_READ_ME_FIRST_DESIGN_SYSTEM.md
 Phiên bản: 2026 **v1.1** — 06/07/2026. v1.1 = đã áp Founder Visual Decision (light-led premium, dark as silence, no brown) trực tiếp vào các file 03/05/08/10/11 — bộ này KHÔNG còn mâu thuẫn nội bộ; không cần đọc kèm patch nào khác. Hai file FOUNDER_VISUAL_DECISION_SUMMARY.md và UPDATED_COLOR_AND_PAGE_RULES_FOR_CODEX.md nằm cùng folder: một là biên bản quyết định gốc, một là bản thi hành chi tiết homepage.
 
@@ -37,7 +46,7 @@ Mọi task UI phải trích: file token liên quan (03–05), file component (06
 
 - Spec trước, code sau, ảnh sau design system.
 - **Không lấy file cũ trong zip làm luật nếu chưa được normalize** — zip là tham khảo; luật là bộ 2026 này. Điểm nào bộ này chưa nói, tra file 01 xem phần đó được xếp Keep/Update/Archive rồi hỏi Kenji nếu vẫn mơ hồ.
-- Mâu thuẫn giữa tài liệu: file 11 (decision log) thắng, vì nó ghi quyết định mới nhất của Kenji.
+- Mâu thuẫn giữa tài liệu: áp dụng hierarchy trong Governance Constitution và Conflict Register. File 11 chỉ là historical visual evidence; ngày mới hơn không tự tạo authority cao hơn.
 
 ## Checklist
 - [ ] Bộ 12 file nằm ở docs/brand/design-system/ (PR docs-only, xem file 10).

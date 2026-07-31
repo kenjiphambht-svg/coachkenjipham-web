@@ -7,7 +7,7 @@
 **Status:** Active
 **Owner:** Kenji Phạm
 **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-**Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
+**Last verified:** G1.1 PR head; finalize at merge.
 **Phạm vi:** Triết lý trải nghiệm, emotional architecture, nhịp điệu, vai trò hình ảnh, ánh sáng, chuyển động, khoảng lặng và sự hiện diện của Kenji trên toàn website Essence.
 **Review trigger:** Khi thay đổi brand promise, Page Mode, visual system, image authority, typography authority, motion principle hoặc trải nghiệm cốt lõi.
 
@@ -2259,4 +2259,4 @@ Mục tiêu cuối cùng là xây dựng **một trải nghiệm có giá trị 
 
 Khi đó, website sẽ không còn là một công cụ marketing.
 
-Nó sẽ trở thành **cánh cửa đầu tiên của Essence Coaching System** — nơi mỗi người bắt đầu hành trình bằng việc **gặp lại chính mình**.
+Nó sẽ trở thành **cánh cửa đầu tiên của Essence Coaching** — nơi mỗi người bắt đầu hành trình bằng việc **gặp lại chính mình**.

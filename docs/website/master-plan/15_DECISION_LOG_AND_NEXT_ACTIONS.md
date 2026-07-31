@@ -3,13 +3,15 @@
 > **Owner:** Kenji Phạm
 > **Purpose:** Dated decision history.
 > **Decision scope:** Historical record only. **Non-decision scope:** Current L0 authority where a newer Founder Decision is registered.
-> **Still valid:** Traceability of decisions at their dates. **Outdated/superseded:** Rules closed differently in the [Conflict Register](../../governance/CONFLICT_REGISTER.md).
-> **Replacement:** Governance authority and Conflict Register.
+> **Still valid:** Traceability of decisions at their dates. **Outdated/superseded:** Rules closed differently in the [Conflict Register](../../governance/CONFLICT_REGISTER.md), including the self-merge policy in items 11/13 below.
+> **Replacement:** Governance authority and Conflict Register C-13.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
+> **Last verified:** G1.1 PR head; finalize at merge.
 > **Review:** No periodic cadence.
 Mục tiêu: một nơi duy nhất ghi quyết định đã chốt + việc kế tiếp. File sống — cập nhật mỗi khi có quyết định mới.
 Người đọc chính: Kenji mỗi tuần; mọi agent trước khi làm task.
+
+**Execution warning:** Items 11 and 13 below are dated provenance, not current merge authority. C-13 requires exact current task-specific Founder approval for the exact PR; otherwise the PR remains Draft.
 
 ## 1. Quyết định đã chốt (tính đến 04/07/2026)
 

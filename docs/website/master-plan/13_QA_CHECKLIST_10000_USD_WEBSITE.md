@@ -4,9 +4,9 @@
 > **Purpose:** QA reference.
 > **Decision scope:** Build, safety, visual, privacy and scope QA. **Non-decision scope:** Any merge authority conflicting with governance or task-specific Founder instruction.
 > **Still valid:** Build, child-safety, security and quality checks. **Outdated/superseded:** Unconditional Kenji-approval wording where an L0 or task ruling differs.
-> **Replacement:** [Documentation Authority](../../governance/ESSENCE_DOCUMENTATION_AUTHORITY.md). G0 merged at a45e4242c0e68f52e0004ee8dd5d02745e4212dd; later PRs still require task-specific approval.
+> **Replacement:** [Documentation Authority](../../governance/ESSENCE_DOCUMENTATION_AUTHORITY.md) and Conflict Register C-13. A prior merge never authorizes a later PR.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
+> **Last verified:** G1.1 PR head; finalize at merge.
 > **Review:** Founder Decision trigger or 90 days.
 Mục tiêu: checklist QA tổng — cửa kiểm cuối trước mọi lần merge/publish.
 Người đọc chính: mọi agent trước khi trình phiếu; Kenji khi duyệt lô.
