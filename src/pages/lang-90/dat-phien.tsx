@@ -14,10 +14,7 @@ import { SEO } from "@/components/SEO";
 // Lưu trữ: không backend — đáp án đưa qua sessionStorage sang trang xác nhận,
 // người dùng gửi cho Kenji qua nút mailto ở trang đó. Nhánh chặn: gửi/không lưu gì.
 //
-// ⚠️ THÔNG ĐIỆP CHẶN (khối .crisis) — Kenji CHƯA cấp nguyên văn. Đoạn dưới do
-//    Claude soạn theo tinh thần tài liệu; CẦN KENJI DUYỆT TỪNG CHỮ và điền số
-//    đường dây nóng đã xác minh vào chỗ [SỐ HOTLINE — KENJI ĐIỀN]. Không ship
-//    public khi chưa duyệt đoạn này.
+// ⚠️ THÔNG ĐIỆP CHẶN (khối .crisis) — copy đã được Kenji duyệt.
 // ============================================================
 
 export default function Lang90Form() {
@@ -135,28 +132,21 @@ export default function Lang90Form() {
               )}
             </div>
 
-            {/* NHÁNH CHẶN — Câu 2 = C. Không render phần còn lại của form.
-                ⚠️ Đoạn chữ dưới do Claude soạn — Kenji cần duyệt + điền hotline thật. */}
+            {/* NHÁNH CHẶN — Câu 2 = C. Không render phần còn lại của form. */}
             {blocked ? (
               <div className="crisis border-t border-e26-border pt-8">
                 <div className="border border-e26-border bg-e26-white p-6 md:p-8 space-y-4 font-sans text-[15px] leading-[1.75] text-e26-text">
-                  <p className="font-serif text-xl text-e26-text">Cảm ơn bạn đã thành thật.</p>
                   <p>
-                    Điều bạn vừa chia sẻ cho tôi biết: ngay lúc này, thứ bạn cần là một người có
-                    chuyên môn lâm sàng ở bên — không phải một phiên coaching. Đó không phải vì bạn
-                    &ldquo;quá nặng&rdquo; hay có gì sai. Chỉ là đúng người, đúng lúc mới giúp được.
+                    Cảm ơn bạn đã nói thật. Điều bạn vừa chia sẻ là điều tôi không xem nhẹ.
                   </p>
                   <p>
-                    Lặng 90' là coaching — tôi không thay thế được bác sĩ tâm thần hay chuyên gia
-                    tâm lý lâm sàng, nên tôi sẽ không nhận phiên trong tình huống này.
+                    Và chính vì vậy, tôi dừng ở đây. Những gì bạn đang mang cần một người có chuyên môn y tế đi cùng — không phải một phiên coaching. Nói điều này không phải là tôi từ chối bạn. Là tôi không muốn bạn nhận sai thứ mình cần lúc này.
                   </p>
-                  <p className="text-e26-text-2">
-                    Nếu bạn đang trong nguy hiểm tức thời, xin hãy liên hệ ngay đường dây nóng{" "}
-                    <span className="font-medium text-e26-text">[SỐ HOTLINE — KENJI ĐIỀN]</span>. Bạn
-                    cũng có thể tìm đến một chuyên gia tâm lý lâm sàng hoặc bác sĩ tâm thần gần bạn.
+                  <p>
+                    Xin bạn liên hệ một bác sĩ hoặc chuyên gia sức khỏe tâm thần sớm nhất có thể. Nếu đêm nay quá nặng, hãy tìm đến cơ sở y tế gần nhất, hoặc gọi cho một người thân mà bạn còn tin.
                   </p>
-                  <p className="text-e26-text">
-                    Bạn không một mình. Và bước tìm đúng sự giúp đỡ — đã là một bước rất dũng cảm.
+                  <p>
+                    Bạn không cần đi qua đêm nay một mình.
                   </p>
                 </div>
               </div>
