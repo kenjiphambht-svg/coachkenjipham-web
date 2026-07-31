@@ -63,5 +63,5 @@ Generate + loại thô: việc máy chạy nền, làm lúc rảnh. Shortlist + 
 - **Tiêu chuẩn reject:** lệch tuổi ±5; da nhựa/mắt chết/cười giả; tay lỗi trong khung; nền hoặc gỗ ngả nâu khi nheo mắt; cháy sáng trắng lâm sàng; vibe guru/CEO stock/AI headshot.
 - **Export:** WebP, ≤300KB, crop 4:5 chuẩn homepage.
 - **Filename:** `kenji-homepage-portrait-v01.webp` → 03_web_ready/.
-- **Alt text:** "Kenji Phạm — Essence Coach, founder Essence Coaching System".
+- **Alt text:** mô tả đúng nội dung ảnh; khi cần định danh public, dùng exact C-07 với **Essence Coaching**, không thêm hậu tố tổ chức lịch sử.
 - **Kết sổ:** ghi dòng inventory (IMG-001) kèm weight + seed của bản chọn; các bản gần đạt lưu 01_shortlist/ làm dự phòng OG/social.

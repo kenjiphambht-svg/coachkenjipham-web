@@ -1,5 +1,18 @@
 # Route Policy
 
+> **Authority:** L5 — Historical Record
+> **Status:** Superseded
+> **Owner:** Kenji Phạm
+> **Purpose:** Preserve an early route/indexing policy.
+> **Decision scope:** Historical evidence only. **Non-decision scope:** Current route role, indexability, sitemap, redirect, launch or runtime action.
+> **Outdated/superseded:** The indexable route list and `/ai-startup` treatment below conflict with pre-M6 truth.
+> **Replacement:** Conflict Register C-01–C-04, `docs/website/current/ROUTE_STATE_MATRIX.md` and `docs/website/current/INDEXING_POLICY.md`.
+> **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Review:** No periodic cadence.
+
+The content below is preserved as historical provenance and cannot authorize indexing, sitemap, redirect or route work.
+
 This policy defines which routes are public/indexable, noindex, deprecated, excluded from navigation, and which require human approval before launch.
 
 ## Indexable Routes
@@ -52,4 +65,3 @@ The following must be noindex and should not be submitted to the sitemap:
 - Any payment or checkout page
 - Any private publication route
 - Any route collecting child or family data
-

@@ -1,6 +1,15 @@
 # 11_DESIGN_SYSTEM_DECISION_LOG.md
+> **Governance status:** L5 — Historical visual decision record with governance bridge
+> **Owner:** Kenji Phạm
+> **Decision scope:** Dated visual provenance only. **Non-decision scope:** Current governance hierarchy, L0 identity, image authority or public positioning.
+> **Still valid:** Traceability of visual decisions at their dates. **Outdated/superseded:** Any claim that this file wins conflicts or independently authorizes AI-native public language.
+> **Replacement:** Governance Constitution, Conflict Register, Experience Bible and Visual Architecture.
+> **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Review:** No periodic cadence.
+
 Đường dẫn repo: docs/brand/design-system/11_DESIGN_SYSTEM_DECISION_LOG.md
-Phiên bản: v1.1 — 06/07/2026. File sống — quyết định mới ghi tại đây kèm ngày. Khi tài liệu mâu thuẫn, file này + FOUNDER_VISUAL_DECISION_SUMMARY.md thắng.
+Phiên bản: v1.1 — 06/07/2026. Nội dung dưới đây được giữ làm dated provenance. Quyết định mới đi qua Founder Decision Protocol; file này không còn là nơi giải quyết conflict.
 
 ## 1. ĐÃ CHỐT
 

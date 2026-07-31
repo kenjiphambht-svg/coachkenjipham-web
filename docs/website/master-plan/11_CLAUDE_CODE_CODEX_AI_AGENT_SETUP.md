@@ -3,10 +3,10 @@
 > **Owner:** Kenji Phạm
 > **Purpose:** Agent task workflow.
 > **Decision scope:** Scoped task/QA conventions. **Non-decision scope:** L0 authority, current reading order or G0 merge decision.
-> **Still valid:** Task-format and protected-scope rules. **Outdated/superseded:** Old default reading order.
-> **Replacement:** [Reading Bundles](../../governance/READING_BUNDLES.md); G0 merged at a45e4242c0e68f52e0004ee8dd5d02745e4212dd.
+> **Still valid:** Task-format and protected-scope rules. **Outdated/superseded:** Old default reading order and all historical self-merge permissions.
+> **Replacement:** [Reading Bundles](../../governance/READING_BUNDLES.md) and Conflict Register C-13.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** Founder Decision trigger or 90 days.
 Mục tiêu: nhiều AI cùng làm một repo mà không giẫm chân nhau, không loạn, Kenji vẫn nắm quyền cuối.
 Người đọc chính: mọi AI vào repo; Kenji để hiểu cách giao việc.
@@ -18,8 +18,8 @@ Người đọc chính: mọi AI vào repo; Kenji để hiểu cách giao việc
 | Kenji | Founder / Essence Keeper / quyết định cuối theo L0 Founder Decision | — |
 | Claude (Chat, project chiến lược) | Chiến lược, spec, kế hoạch, QA nội dung | Viết code trực tiếp vào repo |
 | ChatGPT | Strategy architect / QA chéo / viết prompt (khi Kenji dùng) | Quyết thay Kenji |
-| Claude Code | Trợ lý repo local: audit, QA, sửa theo task, chạy build/lint | Tự merge khi không có L0/Founder Decision và task-specific approval |
-| Codex | Agent triển khai trên GitHub theo task format | Sửa ngoài scope, tự viết copy, tự merge khi không có L0/Founder Decision và task-specific approval |
+| Claude Code | Trợ lý repo local: audit, QA, sửa theo task, chạy build/lint | Merge bất kỳ PR nào thiếu current task-specific Founder approval cho chính PR đó |
+| Codex | Agent triển khai trên GitHub theo task format | Sửa ngoài scope, tự viết copy, hoặc merge bất kỳ PR nào thiếu current task-specific Founder approval cho chính PR đó |
 | GitHub | Source of truth của code + docs | — |
 | Vercel | Preview + deploy sau merge | Auto-deploy lên production domain khi chưa merge |
 | n8n/backend | Tầng automation (Phase sau) | Chạm dữ liệu trẻ em ngoài luật File 09 |
@@ -28,7 +28,7 @@ Người đọc chính: mọi AI vào repo; Kenji để hiểu cách giao việc
 
 1. Một AI sửa source code tại một thời điểm — không hai agent cùng mở một vùng code. Cách thực thi: BACKLOG.md của repo ghi rõ task nào đang thuộc agent nào.
 2. Mỗi task một branch (`feature/...`, `fix/...`); không commit thẳng main.
-3. **Merge policy:** an agent does not self-merge by default. Merge requires the applicable L0/Founder Decision and task-specific approval. G0 merged at a45e4242c0e68f52e0004ee8dd5d02745e4212dd; this does not authorize any later PR.
+3. **Merge policy — L0 C-13:** an agent may merge only when a current task-specific Founder instruction explicitly authorizes that exact PR. Historical briefs, earlier merges, standing permission and QA PASS cannot authorize a later PR. Otherwise keep the PR Draft.
 4. Không cài package mới nếu chưa được duyệt (ghi đề xuất vào phiếu, chờ).
 5. Không sửa ngoài scope của task, kể cả "tiện tay sửa lỗi nhìn thấy" — ghi vào backlog thay vì sửa.
 6. Không đụng payment/private route nếu task không yêu cầu rõ.
@@ -84,7 +84,7 @@ REPORT: phiếu 5 dòng + preview link
 - [ ] Script soát từ cấm đặt ở .claude/rules/ chạy được trong CI hoặc tay.
 
 ## Definition of Done
-Hai agent (Codex + Claude Code) chạy hai task khác scope trong cùng tuần mà không đụng file của nhau, mọi merge đều có phiếu; duyệt của Kenji chỉ bắt buộc cho 4 nhóm ngoại lệ mục 2.3 (payment, dữ liệu trẻ em, cấu trúc/route lớn, khai báo Google).
+Hai agent (Codex + Claude Code) chạy hai task khác scope trong cùng tuần mà không đụng file của nhau; mọi merge có phiếu và exact current task-specific Founder approval. Bốn nhóm payment, dữ liệu trẻ em, cấu trúc/route lớn và khai báo Google luôn phải để Draft cho Kenji tự duyệt + tự bấm merge.
 
 ## Rủi ro cần tránh
 - Giao task bằng chat rời rạc không theo format — task không format thì không làm.

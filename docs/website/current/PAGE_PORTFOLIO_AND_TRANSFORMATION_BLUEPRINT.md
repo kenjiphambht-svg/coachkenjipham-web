@@ -7,7 +7,7 @@
 > **Decision scope:** Transformation class, relative sequence, dependencies, risks, approval gates and brief seeds. **Non-decision scope:** Runtime/public-copy change, Founder Decision, offer contract, Page Contract, price, payment, booking, data architecture, redirect, deletion, indexing or deployment approval.
 > **Governing basis:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-01–C-12; [Site Journey Map](ESSENCE_SITE_JOURNEY_MAP.md); [Route State Matrix](ROUTE_STATE_MATRIX.md); [Offer State Matrix](OFFER_STATE_MATRIX.md); [Indexing Policy](INDEXING_POLICY.md).
 > **Baseline evidence commit:** origin/main at a45e4242c0e68f52e0004ee8dd5d02745e4212dd
-> **Last verified:** G1 PR head; finalize at merge under the registry convention.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** Founder Decision, material page/route/offer/dependency change, or 90 days.
 
 ## 1. How to use this blueprint
@@ -231,7 +231,7 @@ Every future page task must:
 1. read the Universal and Current website truth bundles;
 2. name the exact route(s), class, priority, dependencies, approval gate and non-goals from this blueprint;
 3. provide an approved Page Contract and exact copy rather than deriving public wording from this document;
-4. preserve exact C-07 positioning: **Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching System.**
+4. preserve the C-07 entity **Essence Coaching** and exact positioning: **Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching.**
 5. apply the canonical typography composition system without making narrative the only navigation;
 6. use FLUX.1 + Kenji LoRA only for Kenji imagery, and FLUX.2 Klein 9B for non-Kenji imagery;
 7. verify headings, keyboard/focus, contrast, reduced motion where relevant, desktop/mobile wrapping and overflow, CTA truth, errors and recovery;

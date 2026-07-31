@@ -5,12 +5,12 @@
 > **Purpose:** Brand-document entrypoint.
 > **Decision scope:** Reading index. **Non-decision scope:** Authority hierarchy or completeness of all current systems.
 > **Precedence:** Read [Documentation Authority](../governance/ESSENCE_DOCUMENTATION_AUTHORITY.md) and [Reading Bundles](../governance/READING_BUNDLES.md) first.
-> **Still valid:** System inventory and visual decisions. **Outdated/superseded:** “Three standard systems” is not the complete authority map.
+> **Still valid:** Document inventory and bounded visual decisions. **Outdated/superseded:** “Three standard systems,” old organization suffixes and any collection-level claim to outrank governance.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** Founder Decision trigger or 90 days.
 
-Trang mục lục cho 3 bộ tài liệu chuẩn của Essence Coaching System. PR này chỉ thêm tài liệu, không sửa giao diện.
+Trang mục lục cho các bộ tài liệu hỗ trợ của Essence Coaching. Đây là inventory dưới Reading Bundles, không phải hierarchy hay default reading order độc lập.
 
 ## 1. Website Master Plan
 
@@ -18,7 +18,7 @@ Vị trí: [`docs/website/master-plan/`](../website/master-plan/)
 
 Bản đồ tổng của website coachkenjipham.com: định vị, sitemap và route policy, page briefs, spec homepage, funnel Bản Sắc Hạt Mầm, hệ thống ấn phẩm riêng tư, kiến trúc backend/CRM/payment, email nurture, bảo mật và dữ liệu trẻ em, SEO/AIO/GEO, setup AI agent, roadmap triển khai, QA checklist, glossary và decision log.
 
-Đọc trước: [`00_READ_ME_FIRST_WEBSITE_MASTER_PLAN.md`](../website/master-plan/00_READ_ME_FIRST_WEBSITE_MASTER_PLAN.md)
+Authority hiện hành: đọc Universal + Current website truth trong [`READING_BUNDLES.md`](../governance/READING_BUNDLES.md). `00_READ_ME_FIRST_WEBSITE_MASTER_PLAN.md` và các file không được Registry ghi Active là historical collection evidence; không dùng để mở scope hoặc thay L0/L2 current truth.
 
 ## 2. Design System v1.1
 
@@ -26,15 +26,15 @@ Vị trí: [`docs/brand/design-system/`](design-system/)
 
 Luật màu, font, layout, component cho toàn bộ website: brand identity và voice 2026, color tokens, typography, layout/spacing/grid, UI component rules, logo và asset policy, hướng dẫn áp dụng theo trang, handoff cho Codex/Claude Code, migration plan và decision log.
 
-Đọc trước: [`00_READ_ME_FIRST_DESIGN_SYSTEM.md`](design-system/00_READ_ME_FIRST_DESIGN_SYSTEM.md)
+Entrypoint hỗ trợ: [`00_READ_ME_FIRST_DESIGN_SYSTEM.md`](design-system/00_READ_ME_FIRST_DESIGN_SYSTEM.md). Toàn bộ collection này subordinate dưới Experience Bible, Visual Architecture, canonical typography system, C-07 và Reading Bundles; decision log trong collection không thể tạo hierarchy cạnh tranh.
 
 ## 3. Image System v1.1
 
 Vị trí: [`docs/brand/image-system/`](image-system/)
 
-Luật ảnh cho Essence Coaching System: chiến lược asset ảnh, style guide chân dung AI của Kenji, prompt bank cho Flux/LoRA, QA checklist ảnh, workflow sản xuất ảnh, handoff cho Claude Code/Codex và template inventory.
+Luật ảnh cho Essence Coaching: chiến lược asset ảnh, style guide chân dung AI của Kenji, prompt bank cho Flux/LoRA, QA checklist ảnh, workflow sản xuất ảnh, handoff cho Claude Code/Codex và template inventory.
 
-Đọc trước: [`00_READ_ME_FIRST_IMAGE_SYSTEM.md`](image-system/00_READ_ME_FIRST_IMAGE_SYSTEM.md)
+Entrypoint hỗ trợ: [`00_READ_ME_FIRST_IMAGE_SYSTEM.md`](image-system/00_READ_ME_FIRST_IMAGE_SYSTEM.md). Các file 01–09 subordinate dưới entrypoint, C-12 và Reading Bundles.
 
 ## Founder Visual Decision
 

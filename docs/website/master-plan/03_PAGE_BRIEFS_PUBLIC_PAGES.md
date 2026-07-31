@@ -1,4 +1,17 @@
 # 03_PAGE_BRIEFS_PUBLIC_PAGES.md
+
+> **Governance status:** L5 — Historical with Governance Bridge
+> **Owner:** Kenji Phạm
+> **Purpose:** Preserve dated page-brief evidence.
+> **Decision scope:** Historical brief structure only. **Non-decision scope:** Current public copy, SEO title, entity naming, schema, indexing, offer state or precedence.
+> **Outdated/superseded:** The former organization suffix, SEO titles, index claims and every "file này thắng"/"file đó thắng" precedence statement below. Page copy comes only from a task-provided approved Page Contract.
+> **Replacement:** Current website truth bundle, Conflict Register C-07, and task-provided approved copy.
+> **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Review:** No periodic cadence.
+
+The content below is preserved verbatim as historical provenance and must not be used as current authority.
+
 Mục tiêu: brief đủ sâu cho từng trang public để Codex build không phải đoán.
 Người đọc chính: Codex/Claude Code khi build từng trang; Kenji khi duyệt copy.
 Quy ước chung cho MỌI trang: nguồn đọc bắt buộc = M0, M1, ai-writing-style, Brand Book (từ cấm), essence-glossary + nguồn riêng ghi trong từng brief. Mọi trang: mobile-first, contrast AA, không từ cấm, schema đúng khai báo, không dữ liệu khách. DoD chung: qua File 13 nhóm Brand/Copy/Child Safety/Visual/SEO.

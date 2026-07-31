@@ -7,7 +7,7 @@
 > **Decision scope:** Classification of actual and authority-named routes. **Non-decision scope:** Redirects, deletions, implementation, offer approval or indexing launch.
 > **Governing basis:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-01–C-08; [Site Journey Map](ESSENCE_SITE_JOURNEY_MAP.md); [Indexing Policy](INDEXING_POLICY.md).
 > **Baseline evidence commit:** origin/main at a45e4242c0e68f52e0004ee8dd5d02745e4212dd
-> **Last verified:** G1 PR head; finalize at merge under the registry convention.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** Route, CTA, robots, sitemap, redirect or Founder Decision trigger; otherwise 90 days.
 
 ## Classification legend

@@ -6,7 +6,7 @@
 **Owner:** Kenji Phạm
 **Documentation Steward:** repository maintainer, under Kenji approval
 **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-**Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
+**Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 **Review trigger:** every Founder Decision; otherwise by authority cadence.
 
 ## Purpose

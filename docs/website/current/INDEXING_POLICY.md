@@ -7,7 +7,7 @@
 > **Decision scope:** Pre-M6 constraints, governed indexing intent, and gap recording. **Non-decision scope:** Any runtime indexing change, crawler permission, sitemap generation, metadata rewrite or Search Console action.
 > **Governing basis:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-02, C-03 and C-04; [Route State Matrix](ROUTE_STATE_MATRIX.md); [Security and Child Data Policy](../master-plan/09_SECURITY_PRIVACY_AND_CHILD_DATA_POLICY.md).
 > **Baseline evidence commit:** origin/main at a45e4242c0e68f52e0004ee8dd5d02745e4212dd
-> **Last verified:** G1 PR head; finalize at merge under the registry convention.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** Founder Decision, robots/sitemap/metadata change, M6 launch trigger, or 90 days.
 
 ## 1. Governing rule
@@ -26,7 +26,7 @@ Therefore, no robots file, sitemap file, robots directive, canonical metadata, n
 | Page-level noindex is inconsistent. | 17 of 21 concrete source routes emit explicit noindex (two also emit nofollow). /, /kidbook, /ai-startup and /chinh-sach-rieng-tu do not emit an observed directive. | Absence of a directive is an implementation fact, never evidence that a route may index. |
 | SEO component emits title, description, Open Graph and Twitter tags. | src/components/SEO.tsx | It has no noindex prop or centralized canonical policy. |
 | No runtime canonical link policy was found. | Source audit of pages and SEO component. | Canonical URL intent is a future M6 implementation decision. |
-| Entity/schema organization naming is inconsistent. | Root, /ve-kenji, /phuong-phap, /ai-startup and /kidbook source use “Essence Coaching” in JSON-LD or product schema, while current hubs use “Essence Coaching System.” | C-07 governs the canonical organization name. Reconciliation requires a scoped metadata/entity runtime task; G1 changes no schema. |
+| Entity/schema organization naming is inconsistent. | Some source already uses the current entity “Essence Coaching”; the Conflict Register C-07 runtime inventory identifies routes whose JSON-LD or visible partner copy still uses the former organization suffix. | C-07 governs the canonical organization name. Reconciliation requires a scoped metadata/entity runtime task; G1.1 changes no schema. |
 | One configured redirect exists. | vercel.json: /old-path → /new-path. | It is not a sitemap/canonical decision and its target has no source page observed. |
 
 ## 3. Governed route policy

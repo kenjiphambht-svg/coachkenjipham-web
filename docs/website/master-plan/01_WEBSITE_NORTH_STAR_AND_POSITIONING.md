@@ -3,10 +3,10 @@
 > **Owner:** Kenji Phạm
 > **Purpose:** Website positioning principles.
 > **Decision scope:** Human-first experience and professional boundaries. **Non-decision scope:** Any statement conflicting with current L0 public positioning.
-> **Still valid:** Human-first framing, boundaries and no-guru principles. **Outdated/superseded:** Incomplete public identity wording.
+> **Still valid:** Human-first framing, boundaries and no-guru principles. **Outdated/superseded:** Former organization suffix and incomplete public identity wording.
 > **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md), C-07.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** Founder Decision trigger or 90 days.
 Mục tiêu: định nghĩa "website trị giá 10.000 USD" trong hệ Essence nghĩa là gì, để mọi quyết định sau này có la bàn.
 Người đọc chính: Kenji, rồi mọi người/AI làm dự án.
@@ -31,8 +31,8 @@ Không được tạo: cảm giác đền thờ guru; cảm giác phần mềm S
 
 ## 3. Định vị public
 
-- **Kenji Phạm** — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching System. Một người thật, có hành trình thật, có ranh giới nghề rõ. Không là guru, không là nhà tiên tri, không là therapist, không là bác sĩ.
-- **Essence Coaching System** — mô tả public cụ thể phải do L0 hoặc task-provided approved copy cung cấp; tài liệu này không cấp phép dùng tên phương pháp hay giao thức làm public positioning.
+- **Kenji Phạm** — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching. Một người thật, có hành trình thật, có ranh giới nghề rõ. Không là guru, không là nhà tiên tri, không là therapist, không là bác sĩ.
+- **Essence Coaching** — tên thương hiệu, tổ chức và public entity chính thức. Mô tả public cụ thể ngoài C-07 phải do L0 hoặc task-provided approved copy cung cấp; tài liệu này không cấp phép dùng tên phương pháp hay giao thức làm public positioning.
 
 ## 4. Ghi chú lịch sử về AI-native
 

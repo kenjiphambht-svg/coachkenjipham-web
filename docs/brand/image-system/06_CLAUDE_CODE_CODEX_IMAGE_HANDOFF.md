@@ -24,7 +24,7 @@ REPORT: theo mục 5
 
 ## 3. Prompt mẫu — Codex thay ảnh homepage
 
-"Đọc docs/brand/image-system/06 và docs/brand/design-system/08 mục 1. Branch feature/homepage-kenji-portrait. Việc: đặt kenji-homepage-portrait-v01.webp vào section 2 homepage, crop 4:5, lazy-load tắt cho ảnh này (above fold thứ hai), alt text 'Kenji Phạm — Essence Coach, founder Essence Coaching System'. Files allowed: public/images/kenji/ + component section 2. Kiểm: mobile 360px mặt không bị cắt, chữ cạnh ảnh đạt contrast, trang không chậm đi (ảnh ≤300KB). Không đụng ảnh/route khác. Phiếu 5 dòng, không merge."
+"Đọc Universal + Frontend design + Image production — Kenji portrait bundles. Branch feature/homepage-kenji-portrait. Việc: đặt kenji-homepage-portrait-v01.webp vào section 2 homepage, crop 4:5, lazy-load tắt cho ảnh này (above fold thứ hai), alt text mô tả đúng ảnh và chỉ dùng exact C-07 nếu cần định danh public. Files allowed: public/images/kenji/ + component section 2. Kiểm: mobile 360px mặt không bị cắt, chữ cạnh ảnh đạt contrast, trang không chậm đi (ảnh ≤300KB). Không đụng ảnh/route khác. Phiếu 5 dòng, không merge."
 
 ## 4. Prompt mẫu — Claude Code audit ảnh
 

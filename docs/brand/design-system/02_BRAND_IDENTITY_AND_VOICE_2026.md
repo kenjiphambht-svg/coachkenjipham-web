@@ -1,13 +1,22 @@
 # 02_BRAND_IDENTITY_AND_VOICE_2026.md
+> **Governance status:** L3 — Active with Patch, subordinate to C-07 and canonical brand documents
+> **Owner:** Kenji Phạm
+> **Decision scope:** Design-system voice support. **Non-decision scope:** L0 identity, organization naming, public positioning, offer or runtime copy approval.
+> **Still valid:** Đời — Lặng — Thức, audience safety and visual/copy boundaries. **Outdated/superseded:** Former organization suffix and standalone public-positioning paragraph.
+> **Replacement:** Conflict Register C-07 and `docs/brand/ESSENCE_VOICE.md`.
+> **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Review:** Founder Decision or design-system trigger; otherwise 180 days.
+
 Đường dẫn repo: docs/brand/design-system/02_BRAND_IDENTITY_AND_VOICE_2026.md
 Nguồn: Brand Book Core DNA, ai-writing-style, Tài liệu chuẩn hóa ngôn ngữ, M1, M3, M8 + phần Keep của hệ cũ.
 
 ## 1. Danh tính
 
-- Brand name: **Essence Coaching** (hệ: Essence Coaching System).
-- Founder: **Kenji Phạm** — Essence Coach, Huấn luyện viên Tâm lý Chiều sâu. Một cách viết duy nhất, mọi nơi.
+- Brand/organization/public entity: **Essence Coaching**.
+- Founder: **Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching.** Một cách viết duy nhất, mọi nơi.
 - Tagline/mantra: **Đời — Lặng — Thức**.
-- Public positioning 2026: *Hệ coaching có cấu trúc và ranh giới đạo đức, giúp người lớn nhìn rõ mình hơn và giúp ba mẹ có một bản đồ quan sát con — Kenji đứng phía trước, một hệ vận hành nghiêm túc đứng phía sau.* (Thay định vị cũ "entrepreneurs/traders/inflection points" — tệp cũ vẫn được phục vụ trong nhánh người lớn, nhưng không còn là toàn bộ định vị.)
+- Historical design-system description: *Hệ coaching có cấu trúc và ranh giới đạo đức, giúp người lớn nhìn rõ mình hơn và giúp ba mẹ có một bản đồ quan sát con — Kenji đứng phía trước, một hệ vận hành nghiêm túc đứng phía sau.* Câu này là evidence về hướng thiết kế, không phải canonical public positioning và không được dùng thay C-07.
 
 ## 2. Essence LÀ / KHÔNG LÀ
 
@@ -27,7 +36,7 @@ Câu ngắn, dám dừng. Em-dash (—) là chữ ký câu, dùng có chủ đí
 ## 5. Cách nói về AI
 
 - Tầng khách hàng (homepage, landing, ấn phẩm): AI không xuất hiện ở hero/lời mở. Khi cần minh bạch quy trình: "máy hỗ trợ soạn — Kenji đọc duyệt từng bản trước khi giao."
-- Tầng vận hành/đối tác (/ve-essence, /ai-startup, hậu trường): được nói rõ AI-native, kèm nguyên tắc Kenji giữ quyết định cuối.
+- Tầng vận hành/đối tác: chỉ dùng AI-native hoặc thuật ngữ nội bộ khi một L0/task-provided approved specification cung cấp exact context và wording; không suy ra từ file này.
 - Cấm mọi biến thể "AI thay coach", "AI therapist", "AI đọc vị bạn".
 
 ## 6. Cách nói với từng tệp

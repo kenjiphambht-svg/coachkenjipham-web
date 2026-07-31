@@ -1,4 +1,17 @@
 # 04_HOMEPAGE_10000_USD_SPEC.md
+
+> **Governance status:** L5 — Superseded
+> **Owner:** Kenji Phạm
+> **Purpose:** Preserve the dated homepage specification as provenance.
+> **Decision scope:** Historical homepage-thinking evidence only. **Non-decision scope:** Current homepage, root Page Contract, copy, structure, CTA, indexing or precedence.
+> **Outdated/superseded:** The "file này thắng" precedence claim and the entire spec below. The canonical Villa cutover is governed by the P1 blueprint in `docs/website/current/PAGE_PORTFOLIO_AND_TRANSFORMATION_BLUEPRINT.md` and requires a task-provided approved root Page Contract.
+> **Replacement:** P1 blueprint + root Page Contract + Conflict Register C-01.
+> **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Review:** No periodic cadence.
+
+The content below is preserved verbatim as historical provenance and must not be used as current authority.
+
 Mục tiêu: spec chi tiết duy nhất cho homepage. Nếu tài liệu khác lệch với file này về homepage, file này thắng.
 Người đọc chính: Codex (build), Kenji (duyệt), designer.
 

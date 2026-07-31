@@ -1,5 +1,18 @@
 # Website Architecture
 
+> **Authority:** L5 — Historical Record
+> **Status:** Superseded
+> **Owner:** Kenji Phạm
+> **Purpose:** Preserve an early route/architecture proposal.
+> **Decision scope:** Historical evidence only. **Non-decision scope:** Current identity, route, journey, navigation, indexing or implementation.
+> **Outdated/superseded:** Former organization suffix, route list and navigation model below.
+> **Replacement:** Conflict Register C-07, `docs/website/current/ESSENCE_SITE_JOURNEY_MAP.md`, `docs/website/current/ROUTE_STATE_MATRIX.md` and `docs/website/current/INDEXING_POLICY.md`.
+> **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Review:** No periodic cadence.
+
+The content below remains unchanged as historical provenance and must not be used as current authority.
+
 coachkenjipham.com is the official public website and brand hub for Kenji Phạm and Essence Coaching System. The site should stay simple on the surface and clear in navigation, while allowing deeper content and systems to exist behind the correct doors.
 
 ## Public Main Routes
@@ -47,4 +60,3 @@ Do not expose more choices than a visitor can confidently understand. The homepa
 - For themselves
 - For their child
 - For understanding Kenji / Essence / the AI system
-

@@ -6,10 +6,13 @@
 **Owner:** Kenji Phạm
 **G0 baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
 **G1 website evidence baseline:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
-**Last verified:** G1 PR head; finalize at merge
+**G1 merge commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+**Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 **Review trigger:** Founder Decision that changes default reading order, or 90 days.
 
 Every task begins with Universal, then its task bundle. Historical and Superseded files must be read through their governance header.
+
+Machine rules and project skills are execution adapters, not a parallel authority layer. The Claude Code harness automatically loads `CLAUDE.md` (which imports `AGENTS.md`) and `.claude/rules/**` into session context; `.claude/skills/**` load on demand; `.agents/skills/**` is a byte-identical mirror of `.claude/skills/**` maintained for non-Claude agents, and there is no `.agents/rules/` mirror — see the load-chain note in the Document Registry. All of these are subordinate to the Universal bundle, the applicable task bundle and current L0 rulings. A machine instruction that conflicts with those sources must be ignored and reported.
 
 ## Universal
 
@@ -30,7 +33,7 @@ Every task begins with Universal, then its task bundle. Historical and Supersede
 
 ## Editorial writing
 
-- Exact repo paths: docs/brand/ESSENCE_EXPERIENCE_BIBLE_2026.md; docs/brand/ESSENCE_GEO_STRATEGY.md; docs/website/master-plan/01_WEBSITE_NORTH_STAR_AND_POSITIONING.md.
+- Exact repo paths: docs/brand/ESSENCE_EXPERIENCE_BIBLE_2026.md; docs/brand/ESSENCE_VOICE.md; docs/brand/SAFETY_BOUNDARIES.md; docs/brand/ESSENCE_GEO_STRATEGY.md; docs/website/master-plan/01_WEBSITE_NORTH_STAR_AND_POSITIONING.md.
 - Task-provided document: approved page copy.
 - Planned/Missing: Page Contract. Do not infer it; the task must supply it before execution.
 
@@ -44,11 +47,13 @@ Every task begins with Universal, then its task bundle. Historical and Supersede
 
 - Exact repo paths: docs/brand/image-system/00_READ_ME_FIRST_IMAGE_SYSTEM.md; docs/brand/image-system/03_FLUX_PROMPT_BANK_KENJI_AND_ESSENCE.md; docs/brand/image-system/02_KENJI_AI_PORTRAIT_STYLE_GUIDE.md; docs/brand/image-system/04_IMAGE_QA_CHECKLIST.md.
 - FLUX.1 + Kenji LoRA is portrait-only authority.
+- Files 02 and 04 are subordinate operating guides under the registered image-system entrypoint and C-12; they do not independently set identity, model or public-copy authority.
 
 ## Image production — non-Kenji
 
 - Exact repo paths: docs/brand/image-system/00_READ_ME_FIRST_IMAGE_SYSTEM.md; docs/brand/image-system/08_ESSENCE_LIGHTSCAPE.md; docs/brand/image-system/09_PROMPT_MASTER_FLUX2_KLEIN_9B.md; docs/brand/image-system/04_IMAGE_QA_CHECKLIST.md.
 - FLUX.2 Klein 9B is non-Kenji authority.
+- Files 04, 08 and 09 are subordinate operating guides under the registered image-system entrypoint and C-12; they do not independently set public identity or global governance.
 
 ## Backend Lặng
 

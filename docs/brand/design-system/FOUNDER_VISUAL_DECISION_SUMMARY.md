@@ -1,6 +1,16 @@
 # FOUNDER_VISUAL_DECISION_SUMMARY.md
+
+> **Governance status:** L3 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** Record the Founder visual decisions of 06/07/2026 (light-led premium, dark as silence, no brown, Inter during beta).
+> **Decision scope:** Design-system visual rulings. **Non-decision scope:** Governance hierarchy, L0 identity, public positioning, route, image-model or merge authority.
+> **Precedence:** The "wins every design-system file" claim below applies **inside the design-system collection only**; it never outranks the Governance Constitution, the Conflict Register or any L0 ruling.
+> **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Review:** Founder Decision trigger or 180 days.
+
 Đường dẫn repo: docs/brand/design-system/FOUNDER_VISUAL_DECISION_SUMMARY.md
-Ngày: 06/07/2026 — Quyết định của Kenji Phạm. File này thắng mọi file design system khác khi mâu thuẫn.
+Ngày: 06/07/2026 — Quyết định của Kenji Phạm. File này thắng mọi file design system khác khi mâu thuẫn (phạm vi: nội bộ design-system; không vượt governance L0).
 
 ## 1. Điều đang đúng trong design system hiện tại
 

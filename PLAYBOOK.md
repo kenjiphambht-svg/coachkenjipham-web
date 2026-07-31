@@ -5,9 +5,9 @@
 > **Purpose:** Agent workflow and QA.
 > **Decision scope:** Workflow, branch and QA discipline. **Non-decision scope:** L0 product, route, indexing and public-positioning decisions.
 > **Precedence:** [Documentation Authority](docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md) and [Conflict Register](docs/governance/CONFLICT_REGISTER.md) govern this file.
-> **Still valid:** Scoped branches, QA and safety. **Outdated/superseded:** Old phase truth and any conflicting merge wording. G0 merged at a45e4242c0e68f52e0004ee8dd5d02745e4212dd; later PRs still require task-specific approval.
+> **Still valid:** Scoped branches, QA and safety. **Outdated/superseded:** Old phase truth and every historical self-merge permission. G1 merged at fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae; later PRs still require exact current task-specific Founder approval.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** Founder Decision trigger or 90 days.
 
 Giao thức làm việc cho Claude Code, Codex, ChatGPT và Kenji.
@@ -15,13 +15,12 @@ File này là workflow entrypoint dưới governance L0, không phải authority
 
 ## 1. Mỗi phiên Claude Code bắt đầu như sau
 
-1. Check branch (`git branch --show-current`).
-2. Check `git status`.
-3. Read `BACKLOG.md`.
-4. Read `PLAYBOOK.md`.
-5. Read `docs/brand/BRAND_SYSTEM_INDEX.md`.
-6. Read relevant docs for task.
-7. Confirm scope before editing.
+1. Check branch (`git branch --show-current`) and `git status`.
+2. Read the complete Universal bundle in `docs/governance/READING_BUNDLES.md`.
+3. Read the applicable task bundle and task-provided approved specification.
+4. Read `BACKLOG.md` only for task-state visibility; it is not roadmap authority.
+5. Use `docs/brand/BRAND_SYSTEM_INDEX.md` only as a subordinate inventory when the task needs it.
+6. Confirm scope before editing.
 
 ## 2. Quy tắc branch
 
@@ -52,7 +51,7 @@ QA checklist đầy đủ theo loại task: `docs/website/master-plan/13_QA_CHEC
 - Claude Code reports (phiếu 5 dòng: đã làm gì / tự kiểm gì / có sửa code không / rủi ro / cần Kenji xem chỗ nào).
 - ChatGPT interprets for Kenji.
 - Codex audits PR.
-- **Merge policy:** an agent does not self-merge by default. Merge requires the applicable L0/Founder Decision and task-specific approval. A prior approved merge does not authorize a later PR.
+- **Merge policy — L0 C-13:** an agent may merge only when a current task-specific Founder instruction explicitly authorizes that exact PR. A historical brief, earlier approved merge, standing permission or QA PASS does not authorize a later PR.
 - **4 ngoại lệ vẫn bắt buộc Kenji tự duyệt + tự bấm merge — không đổi, không
   có ngoại lệ nào khác**:
   (a) PR đụng payment pages (`/thanh-toan-*`).
@@ -65,7 +64,7 @@ QA checklist đầy đủ theo loại task: `docs/website/master-plan/13_QA_CHEC
       kể cả PR nhỏ.
   Các PR thuộc 1 trong 4 nhóm trên luôn để Draft, chờ Kenji xem và tự bấm
   merge — nêu rõ trong phiếu báo cáo đang thuộc nhóm nào nếu có.
-- Historical note: any prior blanket self-merge wording is superseded by the L0/Founder Decision requirement above.
+- Historical note: all blanket self-merge wording is superseded. If current approval is absent or ambiguous, keep the PR Draft and stop for review.
 
 ## 6. Quy tắc visual
 

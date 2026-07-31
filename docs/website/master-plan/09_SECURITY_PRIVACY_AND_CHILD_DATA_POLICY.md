@@ -1,4 +1,14 @@
 # 09_SECURITY_PRIVACY_AND_CHILD_DATA_POLICY.md
+> **Governance status:** L3 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** Security, privacy and child-data safety reference.
+> **Decision scope:** Data minimization, private-route protection and child-data safety. **Non-decision scope:** Legal advice, provider approval, retention duration, runtime architecture, route/indexing action or public identity.
+> **Still valid:** Ten hard safety rules, privacy-first requirements and QA. **Outdated/superseded:** Historical provider/phase assumptions and any operational promise not verified against deployed systems.
+> **Replacement/precedence:** C-02/C-03/C-06, Current website truth and task-provided approved privacy/data architecture.
+> **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Review:** Privacy, child-data, security or provider trigger; otherwise 180 days.
+
 Mục tiêu: chính sách bảo mật/dữ liệu cho website và vận hành nội bộ — phần sống còn của hệ.
 Người đọc chính: MỌI người/AI làm dự án; Kenji để hiểu và ký; là nguồn cho trang /chinh-sach-rieng-tu.
 

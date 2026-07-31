@@ -7,7 +7,7 @@
 > **Decision scope:** Journey membership and operating boundaries. **Non-decision scope:** Public copy, route deletion/redirect, payment/booking architecture, indexing launch, or runtime changes.
 > **Governing basis:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-01–C-09; [Route State Matrix](ROUTE_STATE_MATRIX.md); [Offer State Matrix](OFFER_STATE_MATRIX.md); [Indexing Policy](INDEXING_POLICY.md).
 > **Baseline evidence commit:** origin/main at a45e4242c0e68f52e0004ee8dd5d02745e4212dd
-> **Last verified:** G1 PR head; finalize at merge under the registry convention.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** Founder Decision, material route/CTA change, or 90 days.
 
 ## 1. Evidence labels
@@ -107,7 +107,7 @@ Never include intake, payment, confirmation, booking, private delivery, legacy p
 | J-03 | Hạt Mầm uses legacy Tally/payment entrypoints. | Scoped child-data/payment/delivery task. | Kenji approval |
 | J-04 | Trust-page Page Contracts are Planned/Missing. | Task must provide approved contract. | Kenji |
 | J-05 | /ai-startup has no observed noindex. | Scoped runtime noindex/rewrite task. | Kenji approval |
-| J-06 | Several JSON-LD/product schema blocks use “Essence Coaching” instead of the C-07 organization name “Essence Coaching System.” | Scoped metadata/entity alignment task; no G1 runtime edit. | Kenji approval |
+| J-06 | Several JSON-LD/product schema blocks still use the former organization suffix, while others already use “Essence Coaching.” | Apply the C-07 runtime impact inventory in the Conflict Register through a scoped metadata/entity task; no G1.1 runtime edit. | Kenji approval |
 
 ## 8. Evidence notes
 

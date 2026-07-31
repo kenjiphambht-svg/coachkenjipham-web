@@ -1,5 +1,15 @@
 # Safety Boundaries
 
+> **Authority:** L1 — Canonical Brand & Product Truth
+> **Status:** Active
+> **Owner:** Kenji Phạm
+> **Purpose:** Ethical and psychological public-language boundaries.
+> **Decision scope:** Safety claims and prohibited framing. **Non-decision scope:** Medical/legal advice, public identity, privacy implementation, offer or route approval.
+> **Precedence/provenance:** C-07, approved Page Contracts and verified operations govern exact public statements.
+> **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Review:** Founder Decision, safety-policy change, or 90 days.
+
 Essence should be presented with clear ethical and psychological boundaries.
 
 ## Boundaries
@@ -20,4 +30,3 @@ Essence should be presented with clear ethical and psychological boundaries.
 - Avoid guaranteed outcomes.
 - Avoid urgency that pressures people into purchase or disclosure.
 - Include human review and professional boundaries where sensitive child/family data is involved.
-

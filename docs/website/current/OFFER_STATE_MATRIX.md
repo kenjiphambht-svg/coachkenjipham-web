@@ -7,7 +7,7 @@
 > **Decision scope:** Offer state, flow boundary, legacy exclusion and runtime-gap recording. **Non-decision scope:** Price, provider, eligibility, SLA, legal claim, automation, booking or delivery architecture.
 > **Governing basis:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-03, C-05 and C-06; [Route State Matrix](ROUTE_STATE_MATRIX.md); [Security and Child Data Policy](../master-plan/09_SECURITY_PRIVACY_AND_CHILD_DATA_POLICY.md).
 > **Baseline evidence commit:** origin/main at a45e4242c0e68f52e0004ee8dd5d02745e4212dd
-> **Last verified:** G1 PR head; finalize at merge under the registry convention.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** Founder Decision, offer/CTA/form/payment change, or 90 days.
 
 ## How to use this matrix
@@ -30,7 +30,7 @@
 
 | Control | Current truth |
 |---|---|
-| Public identity | Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching System. |
+| Public identity | Official entity: Essence Coaching. Exact positioning: Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching. |
 | Child safety | Do not use child data to label, predict, diagnose, pressure, or train AI. Treat all uncertainty as sensitive. |
 | Payment | No provider is approved by this matrix. Legacy static QR is an observation, not a new-flow decision. |
 | Booking | No automated booking is approved. Lặng requires Kenji’s Human Decision Gate and payment confirmation before a private booking link. |
