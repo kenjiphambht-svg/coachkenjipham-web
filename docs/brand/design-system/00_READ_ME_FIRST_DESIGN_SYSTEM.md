@@ -5,7 +5,7 @@
 > **Decision scope:** Bounded design-system reading and implementation support. **Non-decision scope:** Governance hierarchy, L0 identity, global experience/typography authority, runtime or indexing.
 > **Precedence:** Governance Constitution → C-07/C-12 → Experience Bible → Visual Architecture/canonical typography → this collection. File 11 is historical visual evidence and never wins over that chain.
 > **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
-> **Last verified:** G1.1 PR head; finalize at merge.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** Design-system trigger or 180 days.
 
 Đường dẫn repo: docs/brand/design-system/00_READ_ME_FIRST_DESIGN_SYSTEM.md

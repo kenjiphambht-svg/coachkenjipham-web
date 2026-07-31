@@ -8,7 +8,7 @@
 > **Outdated/superseded:** The structure, AI-language permission and future-state assumptions below.
 > **Replacement:** Universal + Current website truth bundles, C-07 and an approved Page Contract.
 > **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
-> **Last verified:** G1.1 PR head; finalize at merge.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** No periodic cadence.
 
 This document defines the future homepage structure. Do not implement this rebuild until explicitly asked.

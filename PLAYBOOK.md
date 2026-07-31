@@ -7,7 +7,7 @@
 > **Precedence:** [Documentation Authority](docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md) and [Conflict Register](docs/governance/CONFLICT_REGISTER.md) govern this file.
 > **Still valid:** Scoped branches, QA and safety. **Outdated/superseded:** Old phase truth and every historical self-merge permission. G1 merged at fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae; later PRs still require exact current task-specific Founder approval.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** G1.1 PR head; finalize at merge.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** Founder Decision trigger or 90 days.
 
 Giao thức làm việc cho Claude Code, Codex, ChatGPT và Kenji.

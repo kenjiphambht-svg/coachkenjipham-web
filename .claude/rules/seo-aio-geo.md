@@ -7,7 +7,7 @@
 > **Precedence/provenance:** Subordinate to the Universal and SEO/GEO bundles, C-07 and `AGENTS.md`. Villa remains noindex until M6.
 > **Replacement:** Canonical public entity/positioning is Conflict Register C-07; route/indexing current truth is docs/website/current/ROUTE_STATE_MATRIX.md and docs/website/current/INDEXING_POLICY.md.
 > **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
-> **Last verified:** G1.1 PR head; finalize at merge.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** Founder Decision trigger or 90 days.
 
 Read `docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md`, `docs/governance/DOCUMENT_REGISTRY.md`, `docs/governance/CONFLICT_REGISTER.md`, and `docs/governance/READING_BUNDLES.md` before changing SEO, metadata, schema, sitemap, robots, or public entity copy. If the task does not supply an exact approved Page Contract or SEO specification, mark it Planned/Missing; do not guess a source path or implementation.

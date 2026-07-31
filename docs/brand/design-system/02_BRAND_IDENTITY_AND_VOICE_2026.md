@@ -5,7 +5,7 @@
 > **Still valid:** Đời — Lặng — Thức, audience safety and visual/copy boundaries. **Outdated/superseded:** Former organization suffix and standalone public-positioning paragraph.
 > **Replacement:** Conflict Register C-07 and `docs/brand/ESSENCE_VOICE.md`.
 > **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
-> **Last verified:** G1.1 PR head; finalize at merge.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** Founder Decision or design-system trigger; otherwise 180 days.
 
 Đường dẫn repo: docs/brand/design-system/02_BRAND_IDENTITY_AND_VOICE_2026.md

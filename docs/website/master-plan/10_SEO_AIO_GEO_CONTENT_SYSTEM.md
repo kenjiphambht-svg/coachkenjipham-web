@@ -6,7 +6,7 @@
 > **Still valid:** Schema structure, private-route protections and content principles. **Outdated/superseded:** Any instruction to make Villa/public pages indexable before M6.
 > **Replacement:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-02 and [Indexing Policy](../current/INDEXING_POLICY.md).
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** G1.1 PR head; finalize at merge.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** System/implementation trigger or 180 days.
 Mục tiêu: để Google VÀ các AI (ChatGPT, Claude, Gemini, AI Overview) hiểu đúng và trích dẫn đúng về Kenji/Essence.
 Người đọc chính: Codex (kỹ thuật), người viết content, Kenji (hiểu chiến lược).

@@ -6,7 +6,7 @@
 **Status:** Active
 **Owner:** Kenji Phạm
 **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-**Last verified:** G1.1 PR head; finalize at merge.
+**Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 **Phạm vi:** Typography composition toàn bộ website Essence Coaching
 **Implementation evidence đầu tiên:** Trang Lặng 90
 **Mục tiêu:** Biến typography thành một hệ thống dẫn cảm xúc, dẫn mắt và tổ chức ý nghĩa — không chỉ là chọn font đẹp.

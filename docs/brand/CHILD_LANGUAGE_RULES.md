@@ -7,7 +7,7 @@
 > **Decision scope:** Language boundaries for child/parent content. **Non-decision scope:** Offer activation, age-line approval, child-data architecture, diagnosis, public identity or runtime implementation.
 > **Precedence/provenance:** C-06 and approved offer/Page Contracts govern product state; the Security and Child Data Policy governs data handling.
 > **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
-> **Last verified:** G1.1 PR head; finalize at merge.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** Founder Decision, child-safety change, or 90 days.
 
 These rules apply to Bản Sắc Của Con, Bản Sắc Hạt Mầm, child-related publications, parent-facing product pages, forms, and follow-up copy.

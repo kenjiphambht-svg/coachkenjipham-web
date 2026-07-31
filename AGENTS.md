@@ -7,7 +7,7 @@
 > **Precedence:** Read [Documentation Authority](docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md), [Conflict Register](docs/governance/CONFLICT_REGISTER.md) and [Reading Bundles](docs/governance/READING_BUNDLES.md) first. L0 wins over every older statement below.
 > **Still valid:** Scoped work, verification and protected-area rules. **Outdated/superseded:** Historical organization suffixes and old public AI-native/astrology positioning are not canonical public copy.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** G1.1 PR head; finalize at merge.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** Founder Decision trigger or 90 days.
 
 This is the shared instruction file for Codex, Claude Code, and future AI coding agents working on coachkenjipham.com.

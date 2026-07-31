@@ -7,7 +7,7 @@
 > **Decision scope:** Safety claims and prohibited framing. **Non-decision scope:** Medical/legal advice, public identity, privacy implementation, offer or route approval.
 > **Precedence/provenance:** C-07, approved Page Contracts and verified operations govern exact public statements.
 > **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
-> **Last verified:** G1.1 PR head; finalize at merge.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** Founder Decision, safety-policy change, or 90 days.
 
 Essence should be presented with clear ethical and psychological boundaries.

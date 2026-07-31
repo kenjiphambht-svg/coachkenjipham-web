@@ -5,7 +5,7 @@
 > **Still valid:** Traceability of visual decisions at their dates. **Outdated/superseded:** Any claim that this file wins conflicts or independently authorizes AI-native public language.
 > **Replacement:** Governance Constitution, Conflict Register, Experience Bible and Visual Architecture.
 > **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
-> **Last verified:** G1.1 PR head; finalize at merge.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** No periodic cadence.
 
 Đường dẫn repo: docs/brand/design-system/11_DESIGN_SYSTEM_DECISION_LOG.md

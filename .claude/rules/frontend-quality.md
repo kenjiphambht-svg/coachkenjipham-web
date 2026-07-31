@@ -6,7 +6,7 @@
 > **Decision scope:** Quality reminders. **Non-decision scope:** Page Contract, design authority, public identity, route, indexing, dependency or deployment approval.
 > **Precedence/provenance:** Subordinate to the Universal and Frontend design bundles, task-approved Page Contract and `AGENTS.md`.
 > **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
-> **Last verified:** G1.1 PR head; finalize at merge.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** Frontend-governance change or 90 days.
 
 Prioritize mobile quality, accessibility, performance, and maintainability.

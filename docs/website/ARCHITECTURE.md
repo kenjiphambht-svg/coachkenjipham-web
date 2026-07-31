@@ -8,7 +8,7 @@
 > **Outdated/superseded:** Former organization suffix, route list and navigation model below.
 > **Replacement:** Conflict Register C-07, `docs/website/current/ESSENCE_SITE_JOURNEY_MAP.md`, `docs/website/current/ROUTE_STATE_MATRIX.md` and `docs/website/current/INDEXING_POLICY.md`.
 > **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
-> **Last verified:** G1.1 PR head; finalize at merge.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** No periodic cadence.
 
 The content below remains unchanged as historical provenance and must not be used as current authority.

@@ -8,7 +8,7 @@
 > **Outdated/superseded:** The former organization suffix, AI-native title and Personal Psychology Engine statements below are not active authority.
 > **Replacement:** Conflict Register C-07, Reading Bundles SEO/GEO, `docs/website/current/INDEXING_POLICY.md` and task-provided approved copy.
 > **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
-> **Last verified:** G1.1 PR head; finalize at merge.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** No periodic cadence.
 
 The content below is preserved verbatim as historical provenance. Do not copy it into public content, metadata or schema.

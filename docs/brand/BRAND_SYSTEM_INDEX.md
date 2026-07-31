@@ -7,7 +7,7 @@
 > **Precedence:** Read [Documentation Authority](../governance/ESSENCE_DOCUMENTATION_AUTHORITY.md) and [Reading Bundles](../governance/READING_BUNDLES.md) first.
 > **Still valid:** Document inventory and bounded visual decisions. **Outdated/superseded:** “Three standard systems,” old organization suffixes and any collection-level claim to outrank governance.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** G1.1 PR head; finalize at merge.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** Founder Decision trigger or 90 days.
 
 Trang mục lục cho các bộ tài liệu hỗ trợ của Essence Coaching. Đây là inventory dưới Reading Bundles, không phải hierarchy hay default reading order độc lập.

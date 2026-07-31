@@ -12,7 +12,7 @@
 
 Every task begins with Universal, then its task bundle. Historical and Superseded files must be read through their governance header.
 
-Auto-loaded rules and project skills are execution adapters, not a parallel authority layer. `CLAUDE.md`, `.claude/rules/**`, `.agents/skills/**` and `.claude/skills/**` are subordinate to the Universal bundle, the applicable task bundle and current L0 rulings. A machine instruction that conflicts with those sources must be ignored and reported.
+Machine rules and project skills are execution adapters, not a parallel authority layer. The Claude Code harness automatically loads `CLAUDE.md` (which imports `AGENTS.md`) and `.claude/rules/**` into session context; `.claude/skills/**` load on demand; `.agents/skills/**` is a byte-identical mirror of `.claude/skills/**` maintained for non-Claude agents, and there is no `.agents/rules/` mirror — see the load-chain note in the Document Registry. All of these are subordinate to the Universal bundle, the applicable task bundle and current L0 rulings. A machine instruction that conflicts with those sources must be ignored and reported.
 
 ## Universal
 

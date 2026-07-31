@@ -1,6 +1,16 @@
 # UPDATED_COLOR_AND_PAGE_RULES_FOR_CODEX.md
+
+> **Governance status:** L3 — Active with Patch
+> **Owner:** Kenji Phạm
+> **Purpose:** Implementation color/page rules under the Founder visual decision.
+> **Decision scope:** Palette and page implementation rules. **Non-decision scope:** Governance hierarchy, L0 identity, public positioning, route or merge authority.
+> **Precedence:** The "wins over old 03/08" claim below applies **inside the design-system collection only**; it never outranks the Governance Constitution, the Conflict Register or any L0 ruling.
+> **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Review:** Founder Decision trigger or 180 days.
+
 Đường dẫn repo: docs/brand/design-system/UPDATED_COLOR_AND_PAGE_RULES_FOR_CODEX.md
-Đây là bản thi hành. Khi lệch với 03/08 bản cũ, file này thắng (cho tới khi 03/08 được update theo PATCH_NOTES).
+Đây là bản thi hành. Khi lệch với 03/08 bản cũ, file này thắng (cho tới khi 03/08 được update theo PATCH_NOTES) — phạm vi nội bộ design-system; không vượt governance L0.
 
 ## Final palette (chỉ 4 nhóm — cấm hex ngoài danh sách)
 

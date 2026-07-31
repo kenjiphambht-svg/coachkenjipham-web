@@ -8,7 +8,7 @@
 > **Outdated/superseded:** Former organization/positioning context and the self-merge permission described below.
 > **Replacement:** Universal + Current website truth bundles, C-07 and C-13.
 > **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
-> **Last verified:** G1.1 PR head; finalize at merge.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** No periodic cadence.
 
 **Execution warning:** The self-merge permission below is historical evidence only. Under L0 C-13, it cannot authorize any current PR; exact current task-specific Founder approval is required.

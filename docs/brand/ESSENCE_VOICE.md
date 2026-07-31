@@ -7,7 +7,7 @@
 > **Decision scope:** Voice and language use. **Non-decision scope:** L0 public identity, offer, route, method claim, indexing or runtime copy approval.
 > **Precedence/provenance:** C-07 and task-provided approved copy govern exact identity/copy. Historical internal terms below never become public positioning by inclusion here.
 > **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
-> **Last verified:** G1.1 PR head; finalize at merge.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** Founder Decision, brand-voice change, or 90 days.
 
 The Essence voice is:

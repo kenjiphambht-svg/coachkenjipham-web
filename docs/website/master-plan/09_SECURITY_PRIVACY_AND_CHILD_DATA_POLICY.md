@@ -6,7 +6,7 @@
 > **Still valid:** Ten hard safety rules, privacy-first requirements and QA. **Outdated/superseded:** Historical provider/phase assumptions and any operational promise not verified against deployed systems.
 > **Replacement/precedence:** C-02/C-03/C-06, Current website truth and task-provided approved privacy/data architecture.
 > **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
-> **Last verified:** G1.1 PR head; finalize at merge.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** Privacy, child-data, security or provider trigger; otherwise 180 days.
 
 Mục tiêu: chính sách bảo mật/dữ liệu cho website và vận hành nội bộ — phần sống còn của hệ.

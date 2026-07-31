@@ -7,7 +7,7 @@
 > **Decision scope:** Visual composition process, Page Mode, Signal Moment and six-layer coordination. **Non-decision scope:** L0 identity, exact public copy, route, offer, image-model split, runtime or indexing.
 > **Precedence/provenance:** Subordinate to the Governance Constitution, C-07/C-12 and Experience Bible; image production follows the applicable Reading Bundle.
 > **Baseline evidence commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
-> **Last verified:** G1.1 PR head; finalize at merge.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** Visual-system trigger or 180 days.
 
 **Phiên bản:** v1.0  

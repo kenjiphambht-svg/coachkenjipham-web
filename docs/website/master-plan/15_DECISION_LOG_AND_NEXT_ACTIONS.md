@@ -6,7 +6,7 @@
 > **Still valid:** Traceability of decisions at their dates. **Outdated/superseded:** Rules closed differently in the [Conflict Register](../../governance/CONFLICT_REGISTER.md), including the self-merge policy in items 11/13 below.
 > **Replacement:** Governance authority and Conflict Register C-13.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-> **Last verified:** G1.1 PR head; finalize at merge.
+> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
 > **Review:** No periodic cadence.
 Mục tiêu: một nơi duy nhất ghi quyết định đã chốt + việc kế tiếp. File sống — cập nhật mỗi khi có quyết định mới.
 Người đọc chính: Kenji mỗi tuần; mọi agent trước khi làm task.
