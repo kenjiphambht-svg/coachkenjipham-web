@@ -6,8 +6,8 @@
 > **Purpose:** Canonical information architecture and journey map; separates permitted journey intent from routes currently rendered by code.
 > **Decision scope:** Journey membership and operating boundaries. **Non-decision scope:** Public copy, route deletion/redirect, payment/booking architecture, indexing launch, or runtime changes.
 > **Governing basis:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-01–C-09; [Route State Matrix](ROUTE_STATE_MATRIX.md); [Offer State Matrix](OFFER_STATE_MATRIX.md); [Indexing Policy](INDEXING_POLICY.md).
-> **Baseline evidence commit:** origin/main at a45e4242c0e68f52e0004ee8dd5d02745e4212dd
-> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Baseline evidence commit:** origin/main at a45e4242c0e68f52e0004ee8dd5d02745e4212dd; P1 re-baseline at 733b19900d3f8c471fb90cbd6f17bc4acf8b1332
+> **Last verified:** 733b19900d3f8c471fb90cbd6f17bc4acf8b1332
 > **Review:** Founder Decision, material route/CTA change, or 90 days.
 
 ## 1. Evidence labels
@@ -26,7 +26,7 @@ The Experience Bible supplies emotional architecture, not runtime CTA, payment, 
 
 | Layer | Canonical role | Routes/nodes | Boundary |
 |---|---|---|---|
-| Villa entry | **L0:** / is the canonical public Villa route. | / | Current source is a stub; no redirect is authorized. |
+| Villa entry | **L0:** / is the canonical public Villa route. | / | Renders the canonical Villa since P1 (PR #112 at 733b199); /trang-chu-v2 remains contained evidence; no redirect is authorized. |
 | Adult entry | Discover the appropriate adult path without treating every rendered offer as approved. | /ban-sac-cua-ban → /lang-90; planned adult offers | Lặng is governed by C-05; other adult offers require offer-specific approval. |
 | Parent entry | Observe a child without labels; discover the age-appropriate line. | /ban-sac-cua-con → /an-pham-ban-sac-hat-mam | **L0:** Hạt Mầm is 0–7 and uses a new flow, not the legacy funnel. |
 | Trust and identity | Explain identity, method, boundaries and privacy. | /ve-kenji, /phuong-phap, /dieu-essence-khong-hua, /chinh-sach-rieng-tu, /lien-he | Rendered support nodes; no indexing before M6. |
@@ -72,7 +72,7 @@ Every canonical public node must preserve clear headings, direct route labels, u
 
 | Node | Audience | Journey class | Permitted next node | Exclusion/gate | Basis |
 |---|---|---|---|---|---|
-| / | Public | canonical Villa entry | adult or parent discovery when CTA is scoped | Current CTA to /kidbook is runtime evidence only | L0 C-01 + source |
+| / | Public | canonical Villa entry | adult or parent discovery via rendered doors | P1 removed the legacy /kidbook CTA | L0 C-01 + source at 733b199 |
 | /ban-sac-cua-ban | Adults | adult discovery | /lang-90; planned adult offers | No direct payment inferred | source + C-05 |
 | /lang-90 | Adults | Lặng discovery | /lang-90/dat-phien | capacity and human decision boundary | L0 C-05 |
 | /lang-90/dat-phien | Adult applicant | private intake | human review; code currently goes to confirmation | no direct checkout/automated booking | C-05 + source |
@@ -88,7 +88,7 @@ This is an information-architecture sitemap, not an XML sitemap and not authoriz
 
 | Primary public node | Role | Current route state |
 |---|---|---|
-| / | Canonical Villa entry | Implemented stub; no observed noindex, gap against C-02 |
+| / | Canonical Villa entry | Implemented canonical Villa (P1); emits noindex |
 | /ban-sac-cua-ban | Adult discovery | Implemented; noindex |
 | /ban-sac-cua-con | Parent discovery | Implemented; noindex |
 | /lang-90 | Lặng discovery | Implemented; noindex |
@@ -102,7 +102,7 @@ Never include intake, payment, confirmation, booking, private delivery, legacy p
 
 | ID | Gap | Required next action | Owner/gate |
 |---|---|---|---|
-| J-01 | Root is a stub whose only CTA is /kidbook. | Scoped homepage/CTA task; no redirect implied. | Kenji approval |
+| J-01 | ~~Root is a stub whose only CTA is /kidbook.~~ **Resolved by PR #112 (733b199):** root renders the canonical Villa with adult/parent/trust doors; the /kidbook CTA is gone. | None — closed. /trang-chu-v2 post-cutover disposition remains a separate pending decision. | Closed |
 | J-02 | Lặng bypasses the L0 Human Decision Gate. | Scoped private-flow task. | Kenji |
 | J-03 | Hạt Mầm uses legacy Tally/payment entrypoints. | Scoped child-data/payment/delivery task. | Kenji approval |
 | J-04 | Trust-page Page Contracts are Planned/Missing. | Task must provide approved contract. | Kenji |

@@ -6,8 +6,8 @@
 > **Purpose:** Audited route-by-route implementation state, governed role and required action.
 > **Decision scope:** Classification of actual and authority-named routes. **Non-decision scope:** Redirects, deletions, implementation, offer approval or indexing launch.
 > **Governing basis:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-01–C-08; [Site Journey Map](ESSENCE_SITE_JOURNEY_MAP.md); [Indexing Policy](INDEXING_POLICY.md).
-> **Baseline evidence commit:** origin/main at a45e4242c0e68f52e0004ee8dd5d02745e4212dd
-> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Baseline evidence commit:** origin/main at a45e4242c0e68f52e0004ee8dd5d02745e4212dd; P1 re-baseline at 733b19900d3f8c471fb90cbd6f17bc4acf8b1332
+> **Last verified:** 733b19900d3f8c471fb90cbd6f17bc4acf8b1332
 > **Review:** Route, CTA, robots, sitemap, redirect or Founder Decision trigger; otherwise 90 days.
 
 ## Classification legend
@@ -18,8 +18,8 @@ Kenji Phạm owns every Founder Decision and approval gate. “Scoped task” in
 
 | Route | Source/evidence | Current implementation | Canonical role / journey | Visibility and indexing | CTA / flow observation | Governing basis / gap / next action |
 |---|---|---|---|---|---|---|
-| / | src/pages/index.tsx | Implemented stub | **L0 C-01:** canonical Villa public route; public-entry membership | Observed: no robots directive. Governed: noindex until M6. | Single CTA → /kidbook. | R-01: root CTA is legacy runtime evidence, not current journey authority. Separate homepage/noindex task. |
-| /trang-chu-v2 | src/pages/trang-chu-v2.tsx; src/components/homepage/HomeHeader.tsx | Implemented migration candidate | Not canonical Villa; no redirect authorized | Observed noindex; governed noindex pre-M6 | Shared header logo and one trust anchor point here. | **L0 C-01.** Keep evidence only; do not redirect in G1. |
+| / | src/pages/index.tsx → src/components/homepage/VillaPage.tsx | Implemented canonical Villa (P1 cutover, PR #112 at 733b199) | **L0 C-01:** canonical Villa public route; public-entry membership | Observed noindex (P1); governed noindex until M6 | Adult door → /ban-sac-cua-ban; parent door → /ban-sac-cua-con; trust links; no /kidbook CTA. | R-01 resolved by PR #112: legacy stub and its /kidbook CTA removed. |
+| /trang-chu-v2 | src/pages/trang-chu-v2.tsx → src/components/homepage/VillaPage.tsx | Implemented contained migration evidence; renders the same shared VillaPage | Not canonical Villa; no redirect authorized; not a primary navigation destination | Observed noindex; governed noindex pre-M6 | Shared header logo and home links now resolve to /. | **L0 C-01.** Keep renderable and contained; post-cutover disposition is a pending Kenji decision. |
 | /ban-sac-cua-ban | src/pages/ban-sac-cua-ban.tsx | Implemented adult hub | Adult discovery; L2 journey node | Observed noindex; governed noindex pre-M6 | Cards → /ban-la-duy-nhat, /lang-90, /dau-an-cua-ban. | Only Lặng has L0 flow. Other cards are rendered offer candidates. |
 | /lang-90 | src/pages/lang-90/index.tsx; src/components/lang-90/Lang90Cinematic.tsx | Implemented | Lặng discovery, adult journey | Observed noindex; governed noindex pre-M6 | CTA → /lang-90/dat-phien. | **L0 C-05.** Capacity 5/month; no direct-checkout inference. |
 | /lang-90/dat-phien | src/pages/lang-90/dat-phien.tsx | Implemented six-question client-side intake | Private operation, not public sitemap | Observed noindex; governed noindex | Writes intake to sessionStorage, routes to confirmation. | R-02: source skips required Human Decision Gate. Scoped sensitive-data task. |
@@ -54,3 +54,4 @@ Kenji Phạm owns every Founder Decision and approval gate. “Scoped task” in
 - No dynamic route file, API route, robots file, sitemap file, Next.js rewrite, or sitemap implementation was found.
 - vercel.json contains one redirect only: /old-path → /new-path.
 - Shared links in HomeHeader, HomeFooter, Lang90Cinematic and landing components were included in the audit.
+- **P1 re-baseline (733b199):** / and /trang-chu-v2 now render the single shared src/components/homepage/VillaPage.tsx; HomeHeader logo/menu home links resolve to /; both routes emit noindex. No other row changed at P1.

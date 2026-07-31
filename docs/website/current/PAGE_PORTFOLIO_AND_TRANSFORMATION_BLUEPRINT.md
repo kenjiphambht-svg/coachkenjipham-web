@@ -6,8 +6,8 @@
 > **Purpose:** Portfolio-wide transformation classification, approval gates, execution sequence and page-brief seeds derived from the current website audit.
 > **Decision scope:** Transformation class, relative sequence, dependencies, risks, approval gates and brief seeds. **Non-decision scope:** Runtime/public-copy change, Founder Decision, offer contract, Page Contract, price, payment, booking, data architecture, redirect, deletion, indexing or deployment approval.
 > **Governing basis:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-01–C-12; [Site Journey Map](ESSENCE_SITE_JOURNEY_MAP.md); [Route State Matrix](ROUTE_STATE_MATRIX.md); [Offer State Matrix](OFFER_STATE_MATRIX.md); [Indexing Policy](INDEXING_POLICY.md).
-> **Baseline evidence commit:** origin/main at a45e4242c0e68f52e0004ee8dd5d02745e4212dd
-> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Baseline evidence commit:** origin/main at a45e4242c0e68f52e0004ee8dd5d02745e4212dd; P1 re-baseline at 733b19900d3f8c471fb90cbd6f17bc4acf8b1332
+> **Last verified:** 733b19900d3f8c471fb90cbd6f17bc4acf8b1332
 > **Review:** Founder Decision, material page/route/offer/dependency change, or 90 days.
 
 ## 1. How to use this blueprint
@@ -47,8 +47,8 @@ Classification combines baseline source/configuration inspection, the four other
 
 | Route(s) | Role / audience | Maturity, implementation quality and authority readiness | Class / priority | Problem → required visitor or operating outcome | Dependencies, risk, action and approval gate |
 |---|---|---|---|---|---|
-| `/` | Canonical Villa; adults, parents and trust-seeking public visitors | Stub; low implementation maturity; rendered preview is sparse and shows mobile clipping/overflow risk; L0 role is clear but no approved root Page Contract | **REBUILD — P1, conditional** | Ambiguous “coming soon” and sole legacy CTA → clear choice between adult, parent and trust paths | Adapt approved material from `/trang-chu-v2`; do not derive authority from legacy. Gate: root Page Contract, shared-header scope, exact copy/metadata and explicit preservation of pre-M6 noindex. High journey/indexing risk. |
-| `/trang-chu-v2` | Non-canonical Villa migration evidence; same public audience | Visually/compositionally mature; high implementation readiness as evidence only; mobile viewport still needs overflow verification | **MIGRATION SOURCE — P1** | Duplicate, non-canonical home destination → governed source for the root cutover | Do not optimize, redirect or delete independently. Gate: root contract and post-cutover disposition decision. Keep noindex. |
+| `/` | Canonical Villa; adults, parents and trust-seeking public visitors | Canonical Villa implemented through shared `VillaPage.tsx` (P1); QA passed at 375/768/1440; noindex preserved | **REBUILD — P1, COMPLETED (PR #112 at 733b199)** | ~~Ambiguous “coming soon” and sole legacy CTA~~ → resolved: clear adult/parent/trust doors render at root | Historical gate satisfied by the P1 package (approved Villa material, shared-header scope, noindex preservation). Remaining root work follows normal page tasks. |
+| `/trang-chu-v2` | Non-canonical Villa migration evidence; same public audience | Visually/compositionally mature; high implementation readiness as evidence only; mobile viewport still needs overflow verification | **MIGRATION SOURCE — P1 served; contained (PR #112)** | Duplicate, non-canonical home destination → governed source for the root cutover | Do not optimize, redirect or delete independently. Gate: root contract and post-cutover disposition decision. Keep noindex. |
 | `/ban-sac-cua-ban` | Adult discovery hub | Recent, strong editorial structure; rendered desktop hierarchy is coherent but mobile preview shows clipping/overflow risk; L2 journey role clear; offer-state claims remain conditional | **REFINE — P4** | Three attractive options can imply equal readiness → explicit active/planned state and bounded next action | Gate: approved availability language and offer contracts. Preserve discovery role; correct responsive/keyboard/CTA clarity. Do not activate unapproved offers. |
 | `/lang-90` | Public Lặng discovery for adults | Mature public composition; core structure reusable; downstream flow violates C-05 | **KEEP / REFINE — P4** | Strong landing leads directly into a non-conforming flow → honest capacity/CTA state leading only to an approved private flow | Dependency: P3 private flow, exact capacity and CTA approval. Preserve structure where it survives Page Contract review. No direct-checkout inference. |
 | `/lang-90/dat-phien` | Private six-question adult intake | Implemented but client-side; high sensitive-data and operating risk; not authority-ready | **PRIVATE FLOW REBUILD — P3, blocked** | `sessionStorage` intake proceeds without support report/Human Decision Gate → safe intake followed by Kenji review | Gate: sensitive-data design, support-report contract, receiver/storage/retention rules, exact crisis copy and C-05 flow approval. Never public sitemap. |
@@ -104,7 +104,7 @@ The count is node-based and totals 28:
 
 This is a dependency sequence, not permission to start code:
 
-1. **P1 — Canonical Villa Cutover:** rebuild `/` from an approved Page Contract, using `/trang-chu-v2` only as migration evidence; correct shared home links in the same bounded package.
+1. **P1 — Canonical Villa Cutover — COMPLETED (PR #112 at 733b199):** `/` renders the canonical Villa through the shared `VillaPage.tsx`; shared home links corrected; `/trang-chu-v2` contained and noindex; its post-cutover disposition remains a pending Kenji decision.
 2. **P2 — Trust Foundation:** first reconcile `/chinh-sach-rieng-tu` and `/lien-he` with actual operations (P2a), then refine `/ve-kenji`, `/phuong-phap` and `/dieu-essence-khong-hua` (P2b).
 3. **P3 — Lặng Private Flow:** rebuild the two private steps to exact C-05, sensitive-data and Human Decision Gate requirements.
 4. **P4 — Adult Discovery:** refine `/ban-sac-cua-ban` and `/lang-90`; activate the Lặng CTA only toward the conforming P3 flow.

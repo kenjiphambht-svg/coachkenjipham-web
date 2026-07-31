@@ -6,8 +6,8 @@
 > **Purpose:** Current indexing truth and the M6 launch gate; documents source observation without changing robots, sitemap, metadata or Search Console.
 > **Decision scope:** Pre-M6 constraints, governed indexing intent, and gap recording. **Non-decision scope:** Any runtime indexing change, crawler permission, sitemap generation, metadata rewrite or Search Console action.
 > **Governing basis:** [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-02, C-03 and C-04; [Route State Matrix](ROUTE_STATE_MATRIX.md); [Security and Child Data Policy](../master-plan/09_SECURITY_PRIVACY_AND_CHILD_DATA_POLICY.md).
-> **Baseline evidence commit:** origin/main at a45e4242c0e68f52e0004ee8dd5d02745e4212dd
-> **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+> **Baseline evidence commit:** origin/main at a45e4242c0e68f52e0004ee8dd5d02745e4212dd; P1 re-baseline at 733b19900d3f8c471fb90cbd6f17bc4acf8b1332
+> **Last verified:** 733b19900d3f8c471fb90cbd6f17bc4acf8b1332
 > **Review:** Founder Decision, robots/sitemap/metadata change, M6 launch trigger, or 90 days.
 
 ## 1. Governing rule
@@ -23,7 +23,7 @@ Therefore, no robots file, sitemap file, robots directive, canonical metadata, n
 | Observation | Evidence | Meaning |
 |---|---|---|
 | No robots file or sitemap implementation exists. | No matching route/static implementation found; next.config.mjs contains no sitemap/robots logic. | G1 documents a gap; it does not create either artifact. |
-| Page-level noindex is inconsistent. | 17 of 21 concrete source routes emit explicit noindex (two also emit nofollow). /, /kidbook, /ai-startup and /chinh-sach-rieng-tu do not emit an observed directive. | Absence of a directive is an implementation fact, never evidence that a route may index. |
+| Page-level noindex is still not universal. | Since P1 (733b199), / emits noindex through the shared VillaPage; /kidbook, /ai-startup and /chinh-sach-rieng-tu still do not emit an observed directive. | Absence of a directive is an implementation fact, never evidence that a route may index. |
 | SEO component emits title, description, Open Graph and Twitter tags. | src/components/SEO.tsx | It has no noindex prop or centralized canonical policy. |
 | No runtime canonical link policy was found. | Source audit of pages and SEO component. | Canonical URL intent is a future M6 implementation decision. |
 | Entity/schema organization naming is inconsistent. | Some source already uses the current entity “Essence Coaching”; the Conflict Register C-07 runtime inventory identifies routes whose JSON-LD or visible partner copy still uses the former organization suffix. | C-07 governs the canonical organization name. Reconciliation requires a scoped metadata/entity runtime task; G1.1 changes no schema. |
@@ -33,7 +33,7 @@ Therefore, no robots file, sitemap file, robots directive, canonical metadata, n
 
 | Route class | Governed state before M6 | Public sitemap eligibility | Runtime observation / required future action |
 |---|---|---|---|
-| Villa route / | noindex | Excluded | Source lacks observed noindex; separate approved runtime task required. |
+| Villa route / | noindex | Excluded | Source emits noindex since P1 (733b199); keep until the M6 Founder Decision. |
 | Implemented public discovery/trust pages | noindex | Excluded | Most emit noindex; each M6 inclusion requires route and metadata review. |
 | /kidbook legacy funnel | Do not infer indexability or journey membership from live code. | Excluded from canonical new sitemap/journey. | Source lacks observed noindex; preserve while a separate legacy/privacy task determines runtime action. |
 | Legacy payment pages | noindex | Never include | Source emits noindex; remain outside new journey. |

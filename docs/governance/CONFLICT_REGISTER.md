@@ -5,7 +5,7 @@
 **Status:** Active
 **Owner:** Kenji Phạm
 **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-**Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+**Last verified:** 733b19900d3f8c471fb90cbd6f17bc4acf8b1332
 **Review trigger:** immediately on a Founder Decision or discovered same-level conflict.
 
 ## Closed conflicts
@@ -30,12 +30,12 @@
 
 | ID | Status | Owner | Required next action |
 |---|---|---|---|
-| O-01 | Runtime gap | Kenji | Separate approval for root and /ai-startup noindex alignment; G0 changes no runtime. |
+| O-01 | Runtime gap — partially resolved | Kenji | Root noindex resolved by P1 (PR #112 at 733b199: / emits noindex via shared VillaPage). Remaining: /ai-startup noindex alignment in its own approved task. |
 | O-02 | Runtime gap | Kenji | Implement Lặng Human Decision Gate, payment confirmation and private booking in a separate task. |
 | O-03 | Runtime gap | Kenji | Implement Hạt Mầm new form/payment/confirmation/delivery in a separate task. |
 | O-04 | Runtime gap | Kenji | Replace public Gmail references only in a scoped runtime task. |
 | O-05 | External dependency pending | Kenji | Approve any further external documentation intake after G0. |
-| O-06 | Runtime/entity gap | Kenji | Apply the C-07 runtime impact inventory below in a separate approved metadata/public-copy task. G1.1 changes no runtime. |
+| O-06 | Runtime/entity gap — partially resolved | Kenji | Villa scope resolved by P1 (PR #112 at 733b199): / and /trang-chu-v2 JSON-LD entities now use Essence Coaching. Remaining inventory rows below still need their own approved metadata/public-copy tasks. |
 
 This register is an L2 operating container. Every Closed conflict ruling recorded above is L0. Open conflicts block assumptions, not safe documentation of the gap.
 
@@ -45,7 +45,7 @@ The baseline is `origin/main` at `fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae`. The
 
 | Route / surface | File(s) | Observed occurrence | Required later handling |
 |---|---|---|---|
-| `/trang-chu-v2` | `src/pages/trang-chu-v2.tsx` | Person `worksFor` and Organization JSON-LD use the former organization suffix. | Align structured entities to **Essence Coaching** under a scoped metadata task. |
+| `/trang-chu-v2` | `src/pages/trang-chu-v2.tsx` | ~~Person `worksFor` and Organization JSON-LD use the former organization suffix.~~ | **Resolved by PR #112 (733b199):** both / and /trang-chu-v2 render shared `VillaPage.tsx` whose entities use **Essence Coaching**. |
 | `/ban-sac-cua-ban` | `src/pages/ban-sac-cua-ban.tsx` | Article publisher JSON-LD uses the former organization suffix. | Align schema only after route-level metadata review. |
 | `/ban-sac-cua-con` | `src/pages/ban-sac-cua-con.tsx` | Article publisher JSON-LD uses the former organization suffix. | Align schema in a child-safe, route-scoped metadata task. |
 | `/ban-la-duy-nhat` | `src/pages/ban-la-duy-nhat.tsx` | Product/offer-candidate brand entity uses the former organization suffix. | Align only with the held-offer contract and metadata task. |

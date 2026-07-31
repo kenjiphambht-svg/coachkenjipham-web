@@ -6,17 +6,32 @@
 > **Decision scope:** Declared task state only. **Non-decision scope:** Canonical roadmap, route truth, offer truth or Founder Decisions.
 > **Precedence:** [Documentation Authority](docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md) and the [Conflict Register](docs/governance/CONFLICT_REGISTER.md) win over the phase labels below.
 > **Still valid:** Task tracking and protected areas. **Outdated/superseded:** The Phase 1–5 sequence below is not the M0–M6 roadmap.
-> **Replacement:** docs/website/current/ROUTE_STATE_MATRIX.md and docs/website/current/OFFER_STATE_MATRIX.md. **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc. **Last verified:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd. **Review:** Founder Decision trigger or 90 days.
+> **Replacement:** docs/website/current/ROUTE_STATE_MATRIX.md and docs/website/current/OFFER_STATE_MATRIX.md. **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc. **Last verified:** 733b19900d3f8c471fb90cbd6f17bc4acf8b1332. **Review:** Founder Decision trigger or 90 days.
 
 File theo dõi công việc: ghi nhận điều đang làm, tiến độ và việc kế tiếp. Đây không phải nguồn sự thật canonical; authority, conflict precedence và Founder Decisions thuộc governance L0.
 Mọi phiên Claude Code/Codex đọc governance L0 và Reading Bundles trước; chỉ đọc file này khi task yêu cầu task-tracking.
 Roadmap chi tiết và decision log cũ chỉ là historical evidence, không phải source để suy ra scope, route, indexing, offer hay Founder Decision.
 
-## Current Phase
+## HIỆN TRẠNG — đọc mục này trước (cập nhật 31/07/2026, evidence 733b199)
 
-**Historical tracking state — requires G1 re-baseline before use for execution**
+**Đã hoàn thành và merge (thứ tự thời gian):**
 
-**Toàn bộ phase block và source references bên dưới là historical tracking evidence, không phải executable task list. Không tick, đổi phase, mở route, thay indexing hoặc suy ra implementation từ chúng; G1 current-truth matrices và task-provided approved specification mới có thể mở execution scope.**
+| Mốc | Nội dung | PR | Merge commit |
+|---|---|---|---|
+| G0 | Governance foundation (authority L0–L5, registry, conflict register, bundles, archive policy) | #110 | a45e424 |
+| G1 | Current Website Truth v1 (journey map, route/offer matrix, indexing policy, blueprint) | #111 | fe0739d |
+| G1.1 | Governance end state (C-07 = Essence Coaching, C-13 khoá self-merge, registry 69 entries, load-chain thật, hết placeholder) | #113 | d8cfa93 |
+| P1 | Canonical Villa Cutover — `/` render Villa qua `VillaPage.tsx` dùng chung; `/trang-chu-v2` contained; cả hai noindex; entity Villa = Essence Coaching | #112 | 733b199 |
+
+**Hiện trạng:** `/` là Villa canonical. Governance foundation ĐÓNG — không còn cleanup PR nào chờ. Roadmap thực tế = `docs/website/current/PAGE_PORTFOLIO_AND_TRANSFORMATION_BLUEPRINT.md` (mục 3, đã đánh dấu P1 COMPLETED).
+
+**Việc kế tiếp theo blueprint (mỗi việc cần Page Contract + approved copy + Kenji phê duyệt trước khi làm):** P2a (privacy/contact foundation) → P2b (trust suite) → P3 (Lặng private flow) → ... → M6 (indexing, Founder Decision riêng, luôn cuối cùng).
+
+**Gaps mở còn lại:** xem Conflict Register O-01 (phần /ai-startup), O-02..O-05, O-06 (các route ngoài Villa). Không suy ra quyền làm từ file này.
+
+## Lịch sử tracking cũ (dưới đây) — chỉ là evidence
+
+**Toàn bộ phase block và source references bên dưới là historical tracking evidence, không phải executable task list. Không tick, đổi phase, mở route, thay indexing hoặc suy ra implementation từ chúng; current-truth matrices và task-provided approved specification mới có thể mở execution scope.** Việc "Homepage V2" trong Phase 1 cũ đã được thay thế bằng P1 Canonical Villa Cutover (bảng trên) — không tick vào block cũ.
 
 ## Phase 0 — Route & Source Audit
 
