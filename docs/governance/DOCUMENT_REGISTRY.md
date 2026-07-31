@@ -7,7 +7,9 @@
 **G0 baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
 **G1 website evidence baseline:** a45e4242c0e68f52e0004ee8dd5d02745e4212dd
 **G1 merge commit:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
-**Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
+**G1.1 merge commit:** d8cfa93e210fc537f065e59aadacfaf5e14ee3f9
+**P1 (Canonical Villa) merge commit:** 733b19900d3f8c471fb90cbd6f17bc4acf8b1332
+**Last verified:** 733b19900d3f8c471fb90cbd6f17bc4acf8b1332
 **Review trigger:** Founder Decision, status/replacement change, or 90 days.
 
 This registry records authority-bearing, default-reading, imported-canonical, machine-instruction, historical-evidence, external-dependency and planned current-truth sources. It contains **69 entries**.
