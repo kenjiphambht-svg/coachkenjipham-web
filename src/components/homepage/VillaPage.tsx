@@ -71,8 +71,9 @@ export default function VillaPage({ pageUrl }: VillaPageProps) {
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180.png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        {/* Person + Organization JSON-LD — theo "Schema đề xuất" trong BAN-CHOT.md
-            (thay cho WebSite schema của bản trước). */}
+        {/* Person + Organization JSON-LD — cấu trúc theo "Schema đề xuất" trong
+            BAN-CHOT.md (thay cho WebSite schema của bản trước). Tên entity theo
+            L0 C-07 (31/07/2026): "Essence Coaching" — không hậu tố "System". */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -84,7 +85,7 @@ export default function VillaPage({ pageUrl }: VillaPageProps) {
               jobTitle: "Huấn luyện viên Tâm lý Chiều sâu",
               worksFor: {
                 "@type": "Organization",
-                name: "Essence Coaching System",
+                name: "Essence Coaching",
               },
               address: {
                 "@type": "PostalAddress",
@@ -101,7 +102,7 @@ export default function VillaPage({ pageUrl }: VillaPageProps) {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              name: "Essence Coaching System",
+              name: "Essence Coaching",
               founder: {
                 "@type": "Person",
                 name: "Kenji Phạm",
