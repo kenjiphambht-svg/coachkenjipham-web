@@ -249,12 +249,11 @@ export default function HomeHero() {
               <p>
                 Bạn vẫn đi làm.
                 <br />
-                Vẫn trả lời những tin nhắn cần trả lời.
+                Vẫn trả lời những tin nhắn.
                 <br />
                 Vẫn có mặt khi người khác cần.
-                <br />
-                Mọi thứ vẫn ổn.
               </p>
+              <p>Mọi thứ vẫn ổn.</p>
               <p>
                 Chỉ là đã lâu rồi,
                 <br />

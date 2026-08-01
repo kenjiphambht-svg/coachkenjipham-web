@@ -26,7 +26,7 @@ export default function KenjiSection() {
             <p>Đằng sau một quyết định khó không phải lúc nào cũng là thiếu lựa chọn.</p>
             <p>Tôi giúp bạn nhìn ra những phản xạ, vai diễn và vòng lặp đang âm thầm dẫn cách bạn sống — để điều đang rối có cấu trúc, điều đang mơ hồ có tên gọi, và lựa chọn tiếp theo thật sự thuộc về bạn.</p>
             <p>Tôi không giúp ai đi nhanh hơn.</p>
-            <p>Tôi giữ cho không gian đủ yên để họ nhìn rõ điều đang diễn ra và nghe được chính mình.</p>
+            <p>Tôi giữ những khoảng lặng để bạn nhìn rõ điều đang diễn ra và nghe được chính mình.</p>
           </div>
           <blockquote className="e26-reveal border-l border-e26-black pl-6 mt-10">
             <p className="font-serif italic font-medium text-[30px] md:text-[42px] leading-[1.25] text-e26-text max-w-lg">“Tôi không sửa. Tôi tạo sự An định.”</p>

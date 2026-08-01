@@ -79,7 +79,7 @@ export default function AnDinhAnThinh() {
         <p className="e26-reveal font-sans font-normal text-[18px] leading-[1.9] text-e26-text-dark-2">
           Rồi một ngày,
           <br />
-          bạn nhận ra mình thở khác.
+          bạn nhận ra nhịp sống của mình đã khác.
         </p>
 
         {/* Thì thầm — Vai 4: serif italic nhỏ, opacity ~0.75 (dùng token phụ
@@ -125,11 +125,13 @@ export default function AnDinhAnThinh() {
           rất dễ trở thành gánh nặng.
         </p>
         <p className="e26-reveal font-sans font-normal text-[18px] leading-[1.9] text-e26-text-dark-2 mt-6">
-          Khi nền đủ vững,
-          <br />
-          điều đến sau
-          <br />
-          mới ở lại.
+          Khi nền bên trong đủ vững,
+          <br className="hidden md:block" />
+          những điều tốt đẹp đến không còn chỉ ghé qua —
+          <br className="hidden md:block" />
+          <br className="hidden md:block" />
+          chúng ở lại và lớn lên thành một{" "}
+          <span className="whitespace-nowrap">đời sống An Thịnh.</span>
         </p>
 
         {/* Neo cuối — "An Thịnh" TO NHẤT section + gold #E0C068 (điểm vàng
