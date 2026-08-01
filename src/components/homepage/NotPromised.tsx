@@ -1,92 +1,25 @@
 import Link from "next/link";
 
-// Section 8 — Điều Essence không hứa (teaser). Nền KEM (không còn đen — luật
-// nhịp sáng-tối chỉ còn đúng 2 khối tối là ④ và ⑦). 1 câu + 1 link — nội
-// dung đầy đủ đã có ở /dieu-essence-khong-hua.
-// SỬA 20/07/2026 (brief V9-FINAL) — DỰNG LẠI TỐI GIẢN theo Google Doc
-// "HOMEPAGE V9-FINAL": bỏ hẳn card/khoảng đệm cũ, chỉ còn 1 câu H2 serif
-// căn giữa + link sống, nhiều khoảng trắng trên/dưới (khoảng trắng LÀ hình
-// ảnh). Câu đổi nguyên văn: "...và Essence chọn không nói." (bỏ dấu "...",
-// dùng dấu chấm hết câu — đúng Doc). Hover link ĐỔI kỹ thuật: CHỈ đậm chữ +
-// mũi tên nhích phải, KHÔNG gạch chân, KHÔNG đổi màu gold (tránh vượt trần
-// 3 điểm vàng toàn trang — xem AnDinhAnThinh.tsx).
-// SỬA 21/07/2026 (brief dọn cuối trang chủ, Việc C) — link thiếu font-normal
-// ở trạng thái nghỉ nên kế thừa nhầm body{font-weight:300} di sản (xem
-// globals.css) thay vì 400 — đã thêm font-normal, giữ nguyên hover:font-medium
-// cho hiệu ứng "đậm chữ khi hover" đã có.
 export default function NotPromised() {
-  // Section cao thêm ~30% desktop (md:py-[232px], MT1 PR#66) cho khung vòm có
-  // khoảng thở trên/dưới. MOBILE giữ py-28. (overflow-hidden đã bỏ cùng blur ở
-  // brief hệ màu chung 23/07 — không còn lớp ảnh phóng -inset cần cắt.)
   return (
-    <section className="relative bg-e26-cream px-6 py-28 md:py-[232px]">
-      {/* SỬA 22/07/2026 (brief thay nền ⑧⑨, Việc C) — thay bg-light-evening.webp
-          (Light System trừu tượng, dùng CHUNG với ⑨) bằng essence-khong-hua.webp:
-          ảnh THẬT Kenji thả riêng cho ⑧ — phòng trắng tối giản, 2 khung vòm
-          (1 nhỏ trái, 1 lớn giữa), ánh sáng ấm hắt qua, sàn phản chiếu sạch
-          (không vân đá/baseboard rõ như ảnh cũ). ⑧ và ⑨ từ nay dùng 2 ảnh
-          RIÊNG, không chung 1 file nữa. Không banding (webp gốc Kenji thả,
-          77KB, đã zoom 2x vùng vòm sáng nhất: mượt).
-          ĐO LẠI overlay TỪ ĐẦU (không giữ 82% cũ — ảnh khác hẳn, số cũ vô
-          nghĩa): ảnh mới đã rất sáng/sạch sẵn (không còn vấn đề "chân tường
-          nhận diện được" của ảnh cũ) nên H2 + link đạt ≥4.5:1 NGAY CẢ Ở 0%
-          overlay (H2 4.74 ở mobile — điểm chặt nhất, link 16+ ở mọi mức).
-          Chọn 20% (không phải mức tối thiểu 0%) THUẦN VÌ THẨM MỸ — dư biên
-          contrast rất nhiều (H2 6.21 ở 20%) và tạo cảm giác gắn kết nhẹ với
-          tông cream của section, không phải yêu cầu kỹ thuật. Đã xem ảnh
-          chụp thật ở 20%: vẫn giữ trọn "khoảng trắng LÀ hình ảnh" — 2 khung
-          vòm rõ ràng, không có chi tiết nào cần che. */}
-      {/* NỀN ⑧ — trạng thái hiện hành (gộp lịch sử PR#63-65, bỏ mô tả lỗi thời):
-          - CROP `bg-top`: cut-top = 0 ở MỌI width desktop → đỉnh vòm + dải trần
-            luôn hiện trọn (thay bg-[center_15%] của PR#64 vốn chỉ đúng ở 1 width;
-            toạ độ đỉnh vòm thật y=82/1088). Mobile cover khớp đúng chiều cao nên
-            bg-top ≡ center, không hồi quy.
-          - TÔNG `sepia(0.3)`: kéo hue về vàng-gỗ, composite R/B 1.195 ≈ cầu nối
-            1.20 → liền dòng màu với ảnh ghế phía trên (mốc thẩm mỹ Kenji chỉ).
-          SỬA 23/07/2026 (brief ⑧ mờ hơn, MT1): THÊM `blur(16px)` — Kenji muốn
-          nền "chỉ còn ánh sáng + hình khối lớn, không đọc được đường viền kiến
-          trúc sắc nét". blur là đúng công cụ (khác tăng overlay chỉ làm nhạt màu
-          mà cạnh vẫn sắc). blur lấy mẫu tràn ra ngoài hộp → quầng trong suốt ở
-          mép; chống bằng `-inset-10` (phóng lớp ảnh ra 40px mỗi phía, >16px
-          blur) + section overflow-hidden cắt gọn. blur KHÔNG đổi mean màu nên
-          R/B vẫn khớp cầu nối (MT3 không bị ảnh hưởng). Overlay giữ 20% — sau
-          blur chữ càng dư contrast (đo lại live xác nhận). */}
-      {/* SỬA 23/07/2026 (brief HỆ MÀU CHUNG) — 2 sửa:
-          (1) BỎ blur(16px) (Kenji chốt: ⑧ rõ như ⑨, đảo lại PR#66) + filter
-          sepia(0.3)→sepia(0.4) dùng CHUNG grade toàn dải. Không còn blur nên bỏ
-          -inset-10 → về inset-0 (không còn quầng mép để chống). Giữ bg-top (vòm
-          trọn mọi width) + section vẫn cao (khoảng thở vòm — MT1 PR#66 giữ).
-          (2) veil 20%→55%: nâng để ⑧ ngang mức làm-rõ của ⑨ (~48-52%) thay vì
-          quá trong (20% cũ lệch hẳn khỏi dải). H2 chữ lớn vẫn 10+ (đo live). */}
+    <section className="relative overflow-hidden bg-e26-cream px-6 py-28 md:py-40">
       <div
-        className="absolute inset-0 bg-cover bg-top"
-        style={{ backgroundImage: "url(/images/home/essence-khong-hua.webp)", filter: "sepia(0.4)" }}
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(circle at 20% 25%, var(--essence-ivory-2026) 0%, transparent 40%), linear-gradient(145deg, var(--essence-cream-2026), var(--essence-cream-deep-2026))",
+        }}
         aria-hidden="true"
       />
-      <div
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_55%,transparent)]"
-        aria-hidden="true"
-      />
-      <div className="relative z-10 max-w-[640px] mx-auto text-center">
-        {/* SỬA 20/07/2026 (brief sửa lặp từ) — "Có những lời..." (lặp cấu
-            trúc "Có những" với ⑦/⑨) → "Nhiều lời...". Kenji đã duyệt, sẽ
-            đồng bộ vào Doc V9-FINAL sau. */}
-        <h2 className="e26-reveal font-serif font-medium text-[30px] md:text-[42px] leading-[1.25] text-e26-text">
-          Nhiều lời rất dễ nói. Essence chọn không nói.
-        </h2>
-        {/* SỬA 22/07/2026 (brief hover vàng cho link, Việc D) — thêm
-            hover:text-e26-gold-deep + transition-colors duration-300, đúng
-            pattern đã có ở TwoStates.tsx. Giữ nguyên hover:font-medium + mũi
-            tên dịch phải đã có. Hover-only, KHÔNG tính vào 3 điểm vàng
-            thường trực. */}
-        <Link
-          href="/dieu-essence-khong-hua"
-          className="group e26-reveal mt-10 inline-flex items-center gap-1.5 font-sans font-normal text-[15px] text-e26-text hover:font-medium hover:text-e26-gold-deep transition-colors duration-300"
-        >
-          <span>Đọc đầy đủ</span>
-          <span aria-hidden="true" className="inline-block transition-transform duration-300 group-hover:translate-x-1">
-            →
-          </span>
+      <div className="relative z-10 max-w-[720px] mx-auto text-center">
+        <h2 className="e26-reveal font-serif font-medium text-[30px] md:text-[42px] leading-[1.25] text-e26-text">Điều Essence không hứa.</h2>
+        <div className="e26-reveal mt-10 space-y-6 font-sans font-normal text-[17px] md:text-[18px] leading-[1.9] text-e26-text">
+          <p>Essence không hứa trao cho bạn một đáp án đúng sẵn.</p>
+          <p>Điều Essence làm là giúp bạn nhìn đúng điều đang vận hành bên trong, hiểu nó đủ sâu, và trở lại với quyền lựa chọn của chính mình.</p>
+          <p>Bởi một lựa chọn chỉ thật sự là của bạn khi nó không còn được sinh ra từ nỗi sợ và phản xạ cũ.</p>
+        </div>
+        <Link href="/dieu-essence-khong-hua" aria-label="Đọc đầy đủ những điều Essence không hứa" className="group e26-reveal mt-10 inline-flex items-center gap-1.5 font-sans font-normal text-[15px] text-e26-text underline decoration-e26-black underline-offset-4 hover:text-e26-gold-deep transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream">
+          Đọc đầy đủ <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">→</span>
         </Link>
       </div>
     </section>

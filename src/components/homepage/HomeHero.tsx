@@ -249,6 +249,10 @@ export default function HomeHero() {
               <p>
                 Bạn vẫn đi làm.
                 <br />
+                Vẫn trả lời những tin nhắn cần trả lời.
+                <br />
+                Vẫn có mặt khi người khác cần.
+                <br />
                 Mọi thứ vẫn ổn.
               </p>
               <p>
@@ -256,8 +260,9 @@ export default function HomeHero() {
                 <br />
                 bạn chưa thật sự ngồi xuống với chính mình.
               </p>
-              <p>Ở đây, không ai hối thúc bạn phải khá hơn.</p>
               <p>
+                Ở đây, không ai hối thúc bạn phải khá hơn.
+                <br />
                 Chỉ có một khoảng lặng,
                 <br />
                 để bạn nghe lại chính mình.

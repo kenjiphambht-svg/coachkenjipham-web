@@ -142,14 +142,6 @@ export default function AnDinhAnThinh() {
           </span>
         </p>
 
-        {/* Câu kết khối — không nút, Vai 3. SỬA 20/07/2026 (brief sửa lặp
-            từ): "Có những cánh cửa..." → "Không phải cánh cửa nào..." —
-            Kenji đã duyệt, sẽ đồng bộ vào Doc V9-FINAL sau. */}
-        <p className="e26-reveal font-sans font-normal text-[18px] leading-[1.9] text-e26-text-dark-2 mt-16 md:mt-20">
-          Không phải cánh cửa nào cũng cần mở ngay.
-          <br />
-          Chỉ cần bạn biết chúng luôn ở đó.
-        </p>
       </div>
     </section>
   );
