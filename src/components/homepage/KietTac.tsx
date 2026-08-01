@@ -51,7 +51,9 @@ export default function KietTac() {
         <p className="e26-reveal font-sans font-normal text-[18px] leading-[1.9] text-e26-text-dark-2 mt-8 max-w-lg mx-auto">
           Không phải mọi chương đều đẹp.
           <br />
-          Mà vì…bạn đã chưa đọc nó đủ chậm.
+          Mà vì ngay cả những đoạn bạn từng muốn bỏ qua
+          <br />
+          cũng đang giữ một phần câu trả lời.
         </p>
       </div>
     </section>

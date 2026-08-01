@@ -249,15 +249,19 @@ export default function HomeHero() {
               <p>
                 Bạn vẫn đi làm.
                 <br />
-                Mọi thứ vẫn ổn.
+                Vẫn trả lời những tin nhắn.
+                <br />
+                Vẫn có mặt khi người khác cần.
               </p>
+              <p>Mọi thứ vẫn ổn.</p>
               <p>
                 Chỉ là đã lâu rồi,
                 <br />
                 bạn chưa thật sự ngồi xuống với chính mình.
               </p>
-              <p>Ở đây, không ai hối thúc bạn phải khá hơn.</p>
               <p>
+                Ở đây, không ai hối thúc bạn phải khá hơn.
+                <br />
                 Chỉ có một khoảng lặng,
                 <br />
                 để bạn nghe lại chính mình.

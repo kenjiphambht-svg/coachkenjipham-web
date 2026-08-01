@@ -54,9 +54,10 @@ export default function VillaPage({ pageUrl }: VillaPageProps) {
   return (
     <>
       <SEO
-        title="Kenji Phạm | Huấn luyện viên Tâm lý Chiều sâu"
-        description="Câu chuyện cuộc sống của bạn là một kiệt tác. Cùng Kenji Phạm dọn phản xạ cũ, thiết lập nhịp sống mới và kiến tạo đời sống An Thịnh từ bản sắc thật."
-        ogDescription="Câu chuyện cuộc sống của bạn là một kiệt tác. Essence Coaching by Kenji Phạm — Sài Gòn"
+        title="Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach"
+        ogTitle="Kenji Phạm — Essence Coaching"
+        description="Essence Coaching là hành trình do Kenji Phạm kiến tạo, giúp bạn nhận ra bản sắc, sống đúng nhịp của mình và để An Thịnh trở thành kết quả tự nhiên."
+        ogDescription="Nhìn rõ điều đang vận hành bên trong, nhận ra bản sắc và sống đúng nhịp của mình — để An Thịnh không còn là điều phải mãi theo đuổi."
         image="https://coachkenjipham.com/essence-og-1200x630.png"
         url={pageUrl}
       />
@@ -82,7 +83,7 @@ export default function VillaPage({ pageUrl }: VillaPageProps) {
               "@type": "Person",
               name: "Kenji Phạm",
               alternateName: "Coach Kenji Phạm",
-              jobTitle: "Huấn luyện viên Tâm lý Chiều sâu",
+              jobTitle: "Huấn luyện viên Tâm lý Chiều sâu, Essence Coach",
               worksFor: {
                 "@type": "Organization",
                 name: "Essence Coaching",

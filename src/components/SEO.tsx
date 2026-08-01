@@ -2,6 +2,7 @@ import Head from 'next/head';
 
 interface SEOProps {
   title?: string;
+  ogTitle?: string;
   description?: string;
   // Mô tả RIÊNG cho og:description/twitter:description khi khác với
   // <meta name="description"> chuẩn SEO — vd trang chủ muốn description
@@ -34,6 +35,7 @@ export function SEOElements() {
 // Note: Flattened structure (no fragment) for better Next.js Head compatibility during hot reload
 export function SEO({
   title = "Essence Coaching · Kenji Phạm",
+  ogTitle,
   description = "Câu chuyện cuộc sống của bạn là một kiệt tác. Essence Coaching by Kenji Phạm — Sài Gòn",
   ogDescription,
   image = "/og-image.png",
@@ -41,6 +43,7 @@ export function SEO({
   type = "website",
 }: SEOProps) {
   const shareDescription = ogDescription ?? description;
+  const shareTitle = ogTitle ?? title;
   return (
     <Head>
       <title>{title}</title>
@@ -48,7 +51,7 @@ export function SEO({
       <link rel="icon" href="/essence-monogram-light.svg" type="image/svg+xml" />
 
       {/* Open Graph */}
-      <meta property="og:title" content={title} />
+      <meta property="og:title" content={shareTitle} />
       <meta property="og:description" content={shareDescription} />
       {image && <meta property="og:image" content={image} />}
       {url && <meta property="og:url" content={url} />}
@@ -56,7 +59,7 @@ export function SEO({
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={title} />
+      <meta name="twitter:title" content={shareTitle} />
       <meta name="twitter:description" content={shareDescription} />
       {image && <meta name="twitter:image" content={image} />}
     </Head>
