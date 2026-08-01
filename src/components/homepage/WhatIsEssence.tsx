@@ -60,7 +60,7 @@ export default function WhatIsEssence() {
           </Link>
         </p>
         <p className="e26-reveal mx-auto mt-12 max-w-3xl font-serif text-[20px] font-normal italic leading-[1.65] text-e26-text md:mt-16 md:text-[23px]">
-          Mỗi ấn phẩm chuyên sâu gửi đến bạn đều do Kenji phân tích chuyên môn và viết, từ dòng đầu đến dòng cuối.
+          Mỗi ấn phẩm chuyên sâu gửi đến bạn đều do Kenji phân tích và viết, từ dòng đầu đến dòng cuối.
         </p>
       </div>
     </section>

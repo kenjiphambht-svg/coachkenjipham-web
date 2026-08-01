@@ -13,7 +13,7 @@ export default function TwoStates() {
         alt=""
         fill
         sizes="100vw"
-        className="object-cover object-[35%_center] md:object-center"
+        className="origin-bottom scale-[1.18] object-cover object-[35%_68%] md:scale-[1.14] md:object-[50%_70%]"
         aria-hidden="true"
       />
       <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_70%,transparent)] md:bg-[color-mix(in_srgb,var(--essence-ivory-2026)_60%,transparent)]" aria-hidden="true" />

@@ -29,10 +29,10 @@ export default function KenjiSection() {
           <ImageSlot ratio="4/5" src="/images/home/kenji-portrait.webp" alt="Kenji Phạm — chân dung" />
         </figure>
         <div className="w-full md:flex-1">
-          <p className="e26-reveal font-sans text-xs font-medium tracking-[0.18em] uppercase text-e26-text-2 mb-6">Tôi là Kenji Phạm.</p>
+          <p className="e26-reveal font-sans text-xs font-medium tracking-[0.18em] uppercase text-e26-text-2 mb-6">Tôi là</p>
           <h2 className="e26-reveal font-serif font-medium text-[30px] md:text-[42px] leading-[1.25] text-e26-text mb-3">Kenji Phạm</h2>
           <p className="e26-reveal font-sans font-medium text-[16px] md:text-[17px] leading-[1.7] text-e26-text-2 mb-8">
-            Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach.<br />
+            Huấn luyện viên Tâm lý Chiều sâu, Essence Coach.<br />
             Người sáng lập Essence Coaching.
           </p>
           <div className="e26-reveal space-y-5 font-sans font-normal text-[18px] leading-[1.9] text-e26-text-2 max-w-xl">
