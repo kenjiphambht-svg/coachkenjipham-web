@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import ImageSlot from "./ImageSlot";
 
 const cardLinkClass =
@@ -7,15 +8,16 @@ const cardLinkClass =
 export default function TwoStates() {
   return (
     <section className="relative overflow-hidden bg-e26-cream px-6 py-16 md:py-32">
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(90deg, var(--essence-cream-2026) 0%, var(--essence-ivory-2026) 52%, var(--essence-cream-2026) 100%)",
-        }}
+      <Image
+        src="/images/home/two-paths-light-room.webp"
+        alt=""
+        fill
+        sizes="100vw"
+        className="object-cover object-[35%_center] md:object-center"
         aria-hidden="true"
       />
-      <div className="relative max-w-[1120px] mx-auto">
+      <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_70%,transparent)] md:bg-[color-mix(in_srgb,var(--essence-ivory-2026)_60%,transparent)]" aria-hidden="true" />
+      <div className="relative z-10 max-w-[1120px] mx-auto">
         <h2 className="sr-only">Hai cánh cửa để bắt đầu</h2>
         <p className="e26-reveal font-sans text-xs font-medium tracking-[0.18em] uppercase text-e26-text-2 mb-16 md:mb-20">
           Ở đây có hai cánh cửa.

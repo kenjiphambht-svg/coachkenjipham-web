@@ -1,15 +1,29 @@
 import Link from "next/link";
+import Image from "next/image";
 import ImageSlot from "./ImageSlot";
 
 export default function KenjiSection() {
   return (
     <section className="relative bg-e26-white px-6 py-16 md:py-28">
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url(/images/home/kenji-phong-doc1.webp)", filter: "sepia(0.4)" }}
+      <Image
+        src="/images/home/kenji-section-light-wall.webp"
+        alt=""
+        fill
+        sizes="100vw"
+        className="object-cover object-[30%_center] md:object-left"
+        style={{ filter: "saturate(0.92) contrast(0.96)" }}
         aria-hidden="true"
       />
-      <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_72%,transparent)]" aria-hidden="true" />
+      <div
+        className="absolute inset-0 md:hidden"
+        style={{ background: "linear-gradient(to bottom, color-mix(in srgb, var(--essence-cream-2026) 68%, transparent), color-mix(in srgb, var(--essence-cream-2026) 84%, transparent))" }}
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-0 hidden md:block"
+        style={{ background: "linear-gradient(to right, color-mix(in srgb, var(--essence-cream-2026) 48%, transparent), color-mix(in srgb, var(--essence-cream-2026) 74%, transparent) 54%, color-mix(in srgb, var(--essence-cream-2026) 88%, transparent))" }}
+        aria-hidden="true"
+      />
       <div className="relative z-10 max-w-[1120px] mx-auto flex flex-col gap-10 md:flex-row md:items-center md:gap-16">
         <figure className="e26-reveal w-full max-w-[360px] mx-auto shrink-0 md:mx-0 md:w-[40%] md:max-w-none">
           <ImageSlot ratio="4/5" src="/images/home/kenji-portrait.webp" alt="Kenji Phạm — chân dung" />

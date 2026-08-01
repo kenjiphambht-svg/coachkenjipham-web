@@ -1,14 +1,26 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function NotPromised() {
   return (
     <section className="relative overflow-hidden bg-e26-cream px-6 py-28 md:py-40">
+      <Image
+        src="/images/home/not-promised-plaster-field.webp"
+        alt=""
+        fill
+        sizes="100vw"
+        className="object-cover object-center opacity-65"
+        style={{ filter: "saturate(0.82) contrast(0.92) brightness(1.06)" }}
+        aria-hidden="true"
+      />
       <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(circle at 20% 25%, var(--essence-ivory-2026) 0%, transparent 40%), linear-gradient(145deg, var(--essence-cream-2026), var(--essence-cream-deep-2026))",
-        }}
+        className="absolute inset-0 md:hidden"
+        style={{ background: "radial-gradient(ellipse at center, color-mix(in srgb, var(--essence-cream-2026) 94%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 88%, transparent) 100%)" }}
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-0 hidden md:block"
+        style={{ background: "radial-gradient(ellipse at center, color-mix(in srgb, var(--essence-cream-2026) 90%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 76%, transparent) 100%)" }}
         aria-hidden="true"
       />
       <div className="relative z-10 mx-auto max-w-[760px] text-center text-e26-text">
