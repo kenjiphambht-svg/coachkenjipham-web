@@ -22,8 +22,11 @@ Roadmap chi tiết và decision log cũ chỉ là historical evidence, không ph
 | G1 | Current Website Truth v1 (journey map, route/offer matrix, indexing policy, blueprint) | #111 | fe0739d |
 | G1.1 | Governance end state (C-07 = Essence Coaching, C-13 khoá self-merge, registry 69 entries, load-chain thật, hết placeholder) | #113 | d8cfa93 |
 | P1 | Canonical Villa Cutover — `/` render Villa qua `VillaPage.tsx` dùng chung; `/trang-chu-v2` contained; cả hai noindex; entity Villa = Essence Coaching | #112 | 733b199 |
+| P1.5 | Homepage Editorial Completion — Locked Copy, S09 Editorial Reading Table redesign, SEO/GEO metadata, card asset swap | #116 | 887a631 |
 
 **Hiện trạng:** `/` là Villa canonical. Governance foundation ĐÓNG — không còn cleanup PR nào chờ. Roadmap thực tế = `docs/website/current/PAGE_PORTFOLIO_AND_TRANSFORMATION_BLUEPRINT.md` (mục 3, đã đánh dấu P1 COMPLETED).
+
+**Audit 2026-08-02 (branch `audit/homepage-index-readiness`, chưa merge):** Homepage index-readiness audit sau PR #116 — xem `docs/website/homepage/HOMEPAGE_INDEX_READINESS_AUDIT_2026-08-02.md`. Kết quả: NOT READY — 2 nhóm BLOCKER chờ Founder ruling (lệch chữ Locked Copy ở S01/S02/S03/S08 CTA; nền S04/S08 dùng ảnh thay vì code background theo đúng bản khoá). Không đổi noindex/route/Locked Copy trong audit này.
 
 **Việc kế tiếp theo blueprint (mỗi việc cần Page Contract + approved copy + Kenji phê duyệt trước khi làm):** P2a (privacy/contact foundation) → P2b (trust suite) → P3 (Lặng private flow) → ... → M6 (indexing, Founder Decision riêng, luôn cuối cùng).
 

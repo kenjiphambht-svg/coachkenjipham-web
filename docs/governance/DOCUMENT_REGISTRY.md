@@ -96,6 +96,7 @@ This registry records authority-bearing, default-reading, imported-canonical, ma
 | docs/website/current/OFFER_STATE_MATRIX.md | audited offer and flow state | L2 / Active / Kenji | offer/flow classification / no product or provider invention | current G1 truth / — | — | trigger + 90d |
 | docs/website/current/INDEXING_POLICY.md | current indexing truth and M6 gate | L2 / Active / Kenji | indexing policy and gaps / no indexing action | current G1 truth / — | — | trigger + 90d |
 | docs/website/current/PAGE_PORTFOLIO_AND_TRANSFORMATION_BLUEPRINT.md | page portfolio and transformation execution blueprint | L2 / Active / Kenji | transformation classification, sequence, gates and brief seeds / no runtime, Founder Decision, offer contract, Page Contract or indexing approval | current G1 transformation truth / — | — | trigger + 90d |
+| docs/website/homepage/HOMEPAGE_INDEX_READINESS_AUDIT_2026-08-02.md | Homepage index-readiness audit evidence after PR #116 | L4 / Implementation Evidence / Kenji rules, Claude Code evidence | PASS/BLOCKER/SYSTEM DEPENDENCY findings only / no content, background-asset, canonical-domain or indexing ruling | audit evidence as of 887a631 / — | — | Founder ruling on its BLOCKER rows, or next Homepage PR |
 
 ## Maintenance
 
