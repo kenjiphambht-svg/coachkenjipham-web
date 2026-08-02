@@ -107,3 +107,23 @@ export const LANG_SLOT_HOLDING_STATUSES: readonly LangStatus[] = [
 
 /** Giới hạn mặc định khi lang_capacity không có dòng cho tháng đó (L0 C-05). */
 export const LANG_DEFAULT_MONTHLY_SLOTS = 5;
+
+/**
+ * Phí một phiên Lặng 90'. Founder chốt 02/08/2026 (B0.1) — xem
+ * docs/decisions/2026-08-02-b0-followups.md mục 1. Không đổi mà không
+ * có quyết định mới.
+ */
+export const LANG_SESSION_PRICE_VND = 10_000_000;
+
+/**
+ * Hạn dùng của booking token (link chọn lịch qua email), tính bằng giờ.
+ * Founder chốt 02/08/2026 (B0.1) — xem docs/decisions/2026-08-02-b0-followups.md
+ * mục 3.
+ *
+ * ⚠️ Hằng số này CHƯA được nơi nào trong code đọc — B0 chưa xây bước phát
+ * booking token (xem ghi chú trong src/pages/admin/lang/[id].tsx: "Bước
+ * xếp lịch và phát link đặt lịch riêng sẽ làm ở vòng sau"). Đặt sẵn ở đây
+ * để khi B1 xây bước đó, con số đến từ một nơi duy nhất đã được duyệt,
+ * không phải một số mới ai đó đoán khi viết code.
+ */
+export const BOOKING_TOKEN_TTL_HOURS = 48;

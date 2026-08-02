@@ -15,7 +15,7 @@ import { getLangApplication } from '@/lib/db/queries';
 import { countLangSlotsUsed, getMonthlyLimit } from '@/lib/db/queries';
 import { DomainError, HTTP_STATUS_BY_CODE } from '@/lib/domain/errors';
 import { transitionLang, type Actor } from '@/lib/domain/state-machine';
-import type { LangStatus } from '@/lib/domain/states';
+import { LANG_SESSION_PRICE_VND, type LangStatus } from '@/lib/domain/states';
 import { toMonthKey } from '@/lib/domain/capacity';
 
 type Action =
@@ -160,6 +160,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         action: result.audit.action,
         at: new Date().toISOString(),
       });
+    }
+
+    // ---- Cửa 2 (FD-B/B0.1): "Đã nhận tiền" phải để lại một dòng sổ sách ----
+    // Trước bản vá này nút chỉ đổi status, không ghi gì vào payments — nghĩa
+    // là không có bằng chứng kế toán cho việc Kenji vừa xác nhận. Giai đoạn
+    // đầu là Kenji tự bấm (không webhook), nhưng đây vẫn là "sự thật kế
+    // toán" nên phải có dòng ghi lại, không chỉ đổi một cột trạng thái.
+    if (action === 'confirm_payment') {
+      const { error: paymentError } = await db.from('payments').insert({
+        subject: 'lang',
+        subject_id: id,
+        amount_vnd: LANG_SESSION_PRICE_VND,
+        status: 'confirmed',
+        confirmed_at: new Date().toISOString(),
+      });
+      if (paymentError) {
+        // Trạng thái hồ sơ đã đổi thành công (transitionLang + update ở trên
+        // đã qua) — không rollback nó ở đây, vì rollback một transition đã
+        // audit lại là một việc khác cần thiết kế riêng. Kêu to để không ai
+        // âm thầm mất một dòng sổ sách.
+        console.error('[admin] payments insert failed sau confirm_payment', {
+          applicationId: id,
+          at: new Date().toISOString(),
+        });
+      }
     }
 
     // TODO(vòng sau — B1 email): gửi email theo từng bước.
