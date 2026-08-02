@@ -12,13 +12,17 @@
 
 ## 1. Final status
 
-# `/` = INDEX-READY LOCKED — NOINDEX PENDING FOUNDER ACTIVATION
+# `/` = CLOSED — INDEX-READY LOCKED — NOINDEX PENDING FOUNDER ACTIVATION
+
+**Closed 02/08/2026.** The Founder approved PR #117 for merge; it was merged to `main` and deployed to production, and production was re-verified after deployment (§4, §8). Homepage `/` has no remaining build or retrofit work.
 
 All Homepage-scoped layers are complete and verified. The canonical-domain infrastructure action recorded here as O-07 was performed by the Founder on 02/08/2026 and **verified live in production** (§4) — apex serves 200, `www` returns a permanent 308 to apex, HTTP redirects to HTTPS apex, and no redirect loop exists at any entry point.
 
 `noindex` is unchanged everywhere. No sitemap, robots, or Search Console action was taken. When the Founder later authorizes M6, activation should require only removing the `noindex` directive and re-verifying production — no content, SEO, domain, security, accessibility or performance retrofit remains outstanding for `/`.
 
-**One code change lands with the merge of PR #117** — the `<link rel="canonical">` tag — verified in the PR's built HTML but not yet on production, since the PR is intentionally unmerged. Everything else in this record is already live. No copy change ships: the Signal Moment matches the Founder's final ruling exactly as production already renders it.
+**Exactly one code change shipped with PR #117** — the `<link rel="canonical">` tag on the shared `VillaPage`. No copy change shipped: the Signal Moment matches the Founder's final ruling exactly as production already rendered it, and `KietTac.tsx` was identical to `main` at merge time. No image, route, typography or `/ve-kenji` change shipped.
+
+**Indexing was not activated.** `noindex` is unchanged on `/` and `/trang-chu-v2`. No sitemap, robots file, or Search Console action exists or was taken. M6 remains a separate Founder Decision.
 
 ## 2. Founder Decisions of 02/08/2026 — reconciled into current truth
 
