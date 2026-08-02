@@ -159,7 +159,7 @@ export function EssenceUtility({ children, className, as: As = "p" }: Common & {
   return (
     <As
       className={cn(
-        "font-sans font-medium uppercase text-[#1A1A1A]/55",
+        "font-sans font-medium uppercase text-[#1A1A1A]/62",
         "text-[12px] leading-[1.4] tracking-[0.18em] md:text-[13px]",
         className
       )}
