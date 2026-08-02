@@ -10,8 +10,7 @@ export interface SupabasePublicEnv {
   anonKey: string;
 }
 
-function read(name: string): string | undefined {
-  const value = process.env[name];
+function normalize(value: string | undefined): string | undefined {
   return value && value.trim() !== '' ? value.trim() : undefined;
 }
 
@@ -19,10 +18,19 @@ function read(name: string): string | undefined {
  * Biến công khai (được nhúng vào bundle trình duyệt). Chỉ URL + anon key —
  * hai giá trị này vốn được thiết kế để lộ ra client; RLS mới là thứ giữ
  * dữ liệu, không phải sự bí mật của anon key.
+ *
+ * ⚠️ B0.3: BẮT BUỘC viết `process.env.NEXT_PUBLIC_...` dưới dạng literal
+ * ngay tại đây — KHÔNG được gói qua một hàm đọc `process.env[name]` động.
+ * Next.js chỉ inline biến NEXT_PUBLIC_* vào bundle trình duyệt khi tìm
+ * thấy đúng cú pháp literal lúc build (thay thế tĩnh, không phải đọc
+ * process.env thật lúc chạy trên browser). Bản trước gói qua hàm
+ * `read(name)` — dynamic lookup không được inline, nên trên browser
+ * `process.env.NEXT_PUBLIC_SUPABASE_URL` luôn là undefined, mọi lần đăng
+ * nhập đều rơi vào nhánh CONFIG_MISSING dù server đã cấu hình đúng.
  */
 export function getSupabasePublicEnv(): SupabasePublicEnv {
-  const url = read('NEXT_PUBLIC_SUPABASE_URL');
-  const anonKey = read('NEXT_PUBLIC_SUPABASE_ANON_KEY');
+  const url = normalize(process.env.NEXT_PUBLIC_SUPABASE_URL);
+  const anonKey = normalize(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
   const missing: string[] = [];
   if (!url) missing.push('NEXT_PUBLIC_SUPABASE_URL');
@@ -54,7 +62,12 @@ export function getSupabaseServiceRoleKey(): string {
     );
   }
 
-  const key = read('SUPABASE_SERVICE_ROLE_KEY');
+  // Biến này không có tiền tố NEXT_PUBLIC_ nên Next.js không inline nó vào
+  // browser bundle bất kể đọc động hay literal — nhưng đổi sang literal ở
+  // đây cho nhất quán với getSupabasePublicEnv(), để không ai sau này chép
+  // lại pattern `read(name)` động rồi vô tình dùng nó cho một biến
+  // NEXT_PUBLIC_ mới.
+  const key = normalize(process.env.SUPABASE_SERVICE_ROLE_KEY);
   if (!key) {
     throw new DomainError(
       'CONFIG_MISSING',
