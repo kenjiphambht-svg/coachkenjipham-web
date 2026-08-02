@@ -41,7 +41,9 @@
 
 ## 3. ~~BLOCKER~~ — WITHDRAWN 02/08/2026 (Founder ruled; see C-15)
 
-**All four rows below were ruled correct-as-implemented by the Founder on 02/08/2026, except the Signal Moment, which was fixed.** Hero "Vẫn trả lời những tin nhắn.", the Kenji closing line, and the S08 CTA "Mời bạn đọc đầy đủ →" are the approved wording — the package rows they were compared against are superseded. The Signal Moment was genuinely missing "vì" and has been corrected to "Không phải vì mọi chương đều đẹp." Retained below as dated evidence only.
+**All four rows below were ruled correct-as-implemented by the Founder on 02/08/2026 — including the Signal Moment.** Hero "Vẫn trả lời những tin nhắn.", the Kenji closing line, and the S08 CTA "Mời bạn đọc đầy đủ →" are the approved wording; the package rows they were compared against are superseded.
+
+**Signal Moment — final ruling:** the approved sentence is **"Không phải mọi chương đều đẹp."**, i.e. exactly what production already renders, **without** "vì". An interim instruction earlier the same day had asked to insert "vì"; that edit was made and then reverted inside this same PR once the final ruling landed, so no copy change reaches production. See **C-15**. Retained below as dated evidence only — the row claiming a missing "vì" is **wrong** and is withdrawn.
 
 ### (withdrawn) Original finding — Locked Copy text drift
 
@@ -50,7 +52,7 @@ Content-text edits are outside this task's Fix Boundaries even when the edit wou
 | Section | Locked (package) | Implemented (production, verified live) | Diff |
 |---|---|---|---|
 | S01 Hero body, line 2 | "Vẫn trả lời những tin nhắn **cần trả lời**." | "Vẫn trả lời những tin nhắn." | Missing "cần trả lời" |
-| S02 Signal Moment supporting line | "Không phải **vì** mọi chương đều đẹp." | "Không phải mọi chương đều đẹp." | Missing "vì" |
+| ~~S02 Signal Moment supporting line~~ **WITHDRAWN — this row was wrong** | ~~"Không phải **vì** mọi chương đều đẹp."~~ | "Không phải mọi chương đều đẹp." | **No defect.** Founder's final ruling (C-15) is the sentence *without* "vì" — production was correct all along. |
 | S03 Kenji body, closing line | "Tôi giữ cho không gian đủ yên để **họ** nhìn rõ điều đang diễn ra và nghe được chính mình." | "Tôi giữ những khoảng lặng để **bạn** nhìn rõ điều đang diễn ra và nghe được chính mình." | Different wording, not a typo — a rewritten sentence |
 | S08 CTA (Điều Essence không hứa) | Visible: "Đọc đầy đủ →" · Accessible label: "Đọc đầy đủ những điều Essence không hứa" | Visible: "Mời bạn đọc đầy đủ →" · aria-label: "Mời bạn đọc đầy đủ những điều Essence không hứa" | Extra "Mời bạn" prefix on both visible text and accessible name |
 

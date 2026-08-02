@@ -72,11 +72,12 @@ export default function VillaPage({ pageUrl }: VillaPageProps) {
             nó về "/" sẽ là một quyết định hợp nhất mà C-01 chưa cho phép suy ra.
             Cả 2 route đều noindex nên thẻ này hiện KHÔNG có tác dụng indexing;
             nó tồn tại để khi M6 kích hoạt index thì không phải sửa bù SEO.
-            LƯU Ý HẠ TẦNG (chưa sửa được từ repo): apex hiện 307 → www ở tầng
-            Vercel dashboard, tức NGƯỢC với quyết định trên — xem
-            docs/website/homepage/HOMEPAGE_FINAL_COMPLETION_RECORD.md mục
-            "Canonical domain". Không thêm redirect www→apex trong vercel.json
-            khi dashboard còn redirect apex→www: hai lớp sẽ tạo vòng lặp vô hạn. */}
+            HẠ TẦNG (đã xong 02/08/2026, verify live): apex là Primary Domain
+            trên Vercel, www trả 308 vĩnh viễn về apex, HTTP→HTTPS đúng, không
+            vòng lặp. Chuẩn hoá host CHỈ nằm ở Vercel dashboard — KHÔNG thêm
+            redirect theo host vào vercel.json (chồng 2 lớp = rủi ro vòng lặp).
+            Bằng chứng: docs/website/homepage/HOMEPAGE_FINAL_COMPLETION_RECORD.md
+            mục 4. */}
         <link rel="canonical" href={pageUrl} />
         {/* Favicon bộ 2026 — chỉ gắn riêng trang này (không sửa _document.tsx/SEO.tsx
             dùng chung, vì /kidbook và /ai-startup cũng gọi component đó). */}

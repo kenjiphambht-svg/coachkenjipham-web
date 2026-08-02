@@ -49,7 +49,7 @@ export default function KietTac() {
           .
         </h1>
         <p className="e26-reveal font-sans font-normal text-[18px] leading-[1.9] text-e26-text-dark-2 mt-8 max-w-lg mx-auto">
-          Không phải vì mọi chương đều đẹp.
+          Không phải mọi chương đều đẹp.
           <br />
           Mà vì ngay cả những đoạn bạn từng muốn bỏ qua
           <br />

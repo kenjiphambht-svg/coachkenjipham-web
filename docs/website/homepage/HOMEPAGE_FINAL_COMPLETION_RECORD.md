@@ -18,7 +18,7 @@ All Homepage-scoped layers are complete and verified. The canonical-domain infra
 
 `noindex` is unchanged everywhere. No sitemap, robots, or Search Console action was taken. When the Founder later authorizes M6, activation should require only removing the `noindex` directive and re-verifying production — no content, SEO, domain, security, accessibility or performance retrofit remains outstanding for `/`.
 
-**Two code changes land with the merge of PR #117** and are verified in the PR's built HTML but are not yet on production, since the PR is intentionally unmerged: the Signal Moment "vì" correction and the `<link rel="canonical">` tag. Everything else in this record is already live.
+**One code change lands with the merge of PR #117** — the `<link rel="canonical">` tag — verified in the PR's built HTML but not yet on production, since the PR is intentionally unmerged. Everything else in this record is already live. No copy change ships: the Signal Moment matches the Founder's final ruling exactly as production already renders it.
 
 ## 2. Founder Decisions of 02/08/2026 — reconciled into current truth
 
@@ -30,8 +30,9 @@ These supersede the corresponding rows of the earlier Editorial Completion Packa
 | 2 | Kenji section closing line reads **"Tôi giữ những khoảng lặng để bạn nhìn rõ điều đang diễn ra và nghe được chính mình."** | Already matches production. Earlier audit flagged this as drift — **withdrawn**. |
 | 3 | S08 CTA reads **"Mời bạn đọc đầy đủ →"** | Already matches production. Earlier audit flagged this as drift — **withdrawn**. |
 | 4 | S04 and S08 use the **current background images** (`two-paths-light-room.webp`, `not-promised-plaster-field.webp`) — Founder-approved. | Approved as-is. Earlier audit BLOCKER on "code background required" — **withdrawn**. Package §8.4/§8.5 and DoD #12/#13 are superseded on this point. |
-| 5 | Signal Moment reads **"Không phải vì mọi chương đều đẹp."** | Production was missing "vì". **FIXED** in this PR (`KietTac.tsx`). |
-| 6 | Canonical domain is **`https://coachkenjipham.com`** (apex, no `www`); `www` must redirect permanently to it. | Code layer applied (§3). Infrastructure layer outstanding (§4). Recorded as **L0 C-14**. |
+| 5 | Signal Moment reads exactly **"Không phải mọi chương đều đẹp."** — **without** "vì". | Already matches production. **No change ships.** An interim instruction earlier on 02/08 had asked to insert "vì"; that edit was made and then **reverted in this same PR** once the Founder's final ruling landed, so nothing reaches production. Recorded in **C-15**. |
+| 6 | Canonical domain is **`https://coachkenjipham.com`** (apex, no `www`); `www` redirects permanently to it. | Code layer applied (§3); infrastructure verified live (§4). Recorded as **L0 C-14**. |
+| 7 | **Typography scope:** each page may keep its own rhythm and hierarchy; the site keeps the two approved base fonts (Cormorant Garamond + Inter); no new font; no global font redesign inside a page task. | Verified: `globals.css` imports exactly those two families and nothing else. No typography change ships in this PR. Recorded as **L0 C-16**. |
 
 ## 3. Canonical domain — code layer (DONE)
 
@@ -109,9 +110,13 @@ Four runs: two against `www` before the domain flip, two against the apex after 
 
 **Accessibility 100 with no failing audits** on either form factor, including `color-contrast`, `image-alt`, `link-name`, `heading-order` and `html-has-lang` — this is the contrast evidence the task asked for.
 
-**Performance — root cause identified, deliberately not fixed here.** The dominant lever is a render-blocking stylesheet: `src/styles/globals.css` line 1 is an `@import url('https://fonts.googleapis.com/css2?...')` for Cormorant Garamond + Inter. Lighthouse attributes ~791 ms of direct blocking to it on mobile and ~3.9 s of total render-blocking opportunity. The LCP element is the Hero background image (`hero-hien-vuon1.webp`), which is already `priority`-loaded — it is late because the render-blocking font CSS delays the whole paint, not because the image itself is mishandled. CLS 0 and TBT 0 ms mean layout stability and interactivity are already ideal.
+**Font loading — system observation only, not a Homepage blocker.** Per **L0 C-16**, font *loading* performance is recorded as an observation and is explicitly **not** treated as a Homepage defect, and no optimisation task is opened here.
 
-Fixing this means editing **`globals.css`**, which is a shared file governing all 23 routes and is named explicitly in `AGENTS.md` / `PLAYBOOK.md` §5 exception (c) as requiring Kenji's prior approval. It is therefore recorded as a system dependency, not silently changed inside a Homepage task.
+The observation, with evidence: `src/styles/globals.css` line 1 loads the two approved base families via `@import url('https://fonts.googleapis.com/css2?...')`, which Lighthouse classifies as render-blocking (~791 ms mobile in one run, ~1042 ms in another). The LCP element is the Hero background image, already `priority`-loaded; it paints late because the stylesheet gates first paint, not because the image is mishandled.
+
+**Typography itself is correct and nothing is broken:** exactly the two approved families are loaded — Cormorant Garamond and Inter — with no third family anywhere, no missing-font fallback, no layout break at any tested viewport, **CLS 0** and **TBT 0 ms** on both form factors, and Accessibility 100 including `color-contrast`. Under C-16 each page keeps its own rhythm within those two fonts, so no cross-page hierarchy alignment is owed.
+
+Any future change here would touch `globals.css`, a shared file governing all 23 routes and named in `AGENTS.md` / `PLAYBOOK.md` §5 exception (c) as requiring Kenji's prior approval. Recorded for whenever the Founder chooses to open it — deliberately not opened by this task.
 
 ## 7. Build / typecheck / lint — exact results
 
@@ -147,7 +152,7 @@ Run in the `audit/homepage-index-readiness` worktree, checked out from `origin/m
 | # | Dependency | Owner | Required action |
 |---|---|---|---|
 | 1 | ~~Canonical domain flip~~ | — | ✅ **RESOLVED 02/08/2026** by the Founder and verified live (§4). Closed as O-07. |
-| 2 | Render-blocking Google Fonts `@import` in `globals.css` (§6) | Kenji | Approve a scoped, site-wide font-loading change (e.g. `next/font`, or preload + non-blocking load). Affects all 23 routes. This is the single structural performance lever for `/`, but it is not a Homepage-scoped defect and does not block index-readiness. |
+| 2 | Font-loading performance — **system observation, not a dependency** (§6, L0 C-16) | Kenji, if and when he chooses | Nothing is owed. Typography is correct: the two approved base fonts, no new font, nothing broken. Recorded with evidence only; no optimisation task opened. |
 | 3 | HSTS `preload` / `includeSubDomains` (§5) | Kenji | Separate decision; irreversible-by-nature, site-wide |
 | 4 | Additional security headers — CSP, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` (§5) | Kenji | Site-wide `vercel.json` header change; Best Practices already 100/100 without them |
 | 5 | `HomeHeader.tsx` uses `<img>` for two logo SVGs | Kenji | Shared file also on `/ve-kenji`'s render path; low-risk but deferred per shared-file caution |
