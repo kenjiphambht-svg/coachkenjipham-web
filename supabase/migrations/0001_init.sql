@@ -1,6 +1,6 @@
 -- ============================================================
 -- B0 · ESSENCE BACKEND FOUNDATION — migration khởi tạo
--- Ngày: 02/08/2026 · Work order B0 · Founder: Kenji Phạm
+-- Ngày: 02/08/2026 · Work order B0, vá thứ tự tại B0.2 · Founder: Kenji Phạm
 --
 -- NGUYÊN TẮC BẢO MẬT CỦA FILE NÀY (đọc trước khi sửa bất cứ dòng nào):
 --   1. MỌI bảng bật RLS và MẶC ĐỊNH TỪ CHỐI TẤT CẢ. Postgres coi
@@ -13,6 +13,24 @@
 --   3. hatmam_child_profiles là bảng nhạy cảm nhất hệ (dữ liệu trẻ em).
 --      Nó TÁCH HẲN khỏi hatmam_orders, chỉ nối bằng khoá ngoại, và có
 --      policy riêng chặt hơn mọi bảng khác. Không JOIN mặc định ở đâu.
+--
+-- NGUYÊN TẮC THỨ TỰ CỦA FILE NÀY (B0.2 — vá lỗi 42P01 "admin_users does
+-- not exist"):
+--   Postgres phân giải mọi tham chiếu tới bảng/hàm NGAY LÚC TẠO đối
+--   tượng — không đợi tới lúc chạy. Vì vậy file này đi theo đúng một
+--   chiều phụ thuộc, không được đảo:
+--     TYPE → hàm KHÔNG phụ thuộc bảng nào → TẤT CẢ BẢNG (comment + index
+--     đi kèm) → hàm CÓ phụ thuộc bảng (is_admin) → TRIGGER → RLS
+--     ENABLE/FORCE → REVOKE/GRANT → TOÀN BỘ POLICY.
+--   Hai hàm KHÔNG cùng nhóm dù cùng là "hàm":
+--     - generate_access_token(): không đọc bảng nào, nhưng bảng
+--       `publications` dùng nó làm DEFAULT cột — nên hàm này phải có
+--       TRƯỚC khi bảng đó được tạo. Ở nhóm "hàm không phụ thuộc bảng".
+--     - is_admin(): đọc bảng `admin_users` trong thân hàm (LANGUAGE SQL
+--       được Postgres phân giải ngay lúc CREATE FUNCTION, không phải
+--       plpgsql) — nên hàm này phải có SAU khi admin_users đã tồn tại.
+--       Đây chính là hàm gây lỗi 42P01 ở bản trước, vì nó từng đứng
+--       trước mọi CREATE TABLE.
 -- ============================================================
 
 -- ---------- Kiểu trạng thái (bộ luật ở tầng CSDL, không chỉ ở TS) ----------
@@ -44,7 +62,7 @@ create type payment_status as enum ('pending', 'confirmed', 'failed', 'refunded'
 
 create type subject_type as enum ('lang', 'hatmam');
 
--- ---------- Hàm dùng chung ----------
+-- ---------- Hàm KHÔNG phụ thuộc bảng nào (an toàn tạo trước mọi bảng) ----------
 
 -- Tự cập nhật updated_at mỗi lần UPDATE. Gắn trigger cho MỌI bảng bên dưới.
 create or replace function set_updated_at()
@@ -57,26 +75,13 @@ begin
 end;
 $$;
 
--- Người đang đăng nhập có phải admin không.
--- SECURITY DEFINER để hàm tự đọc được admin_users mà không cần policy
--- SELECT mở cho chính người dùng đó (tránh đệ quy policy).
--- search_path cố định = chống tấn công chiếm quyền qua schema giả.
-create or replace function is_admin()
-returns boolean
-language sql
-security definer
-set search_path = public
-stable
-as $$
-  select exists (
-    select 1 from admin_users
-    where admin_users.user_id = auth.uid()
-      and admin_users.is_active = true
-  );
-$$;
-
 -- Sinh token ngẫu nhiên 32 byte (256 bit) dạng base64url — không đoán được,
 -- không tuần tự. Dùng cho booking link và publication link.
+--
+-- Phải tạo TRƯỚC bảng `publications` (bên dưới dùng hàm này làm DEFAULT
+-- của cột access_token) — CREATE TABLE phân giải DEFAULT ngay lúc tạo,
+-- nên thứ tự ngược lại sẽ ra lỗi "function does not exist", giống hệt
+-- lỗi 42P01 đã gặp nhưng theo chiều ngược.
 create or replace function generate_access_token()
 returns text
 language sql
@@ -86,7 +91,7 @@ as $$
 $$;
 
 -- ============================================================
--- BẢNG
+-- BẢNG — tạo TOÀN BỘ trước, KHÔNG kèm policy nào ở đây.
 -- ============================================================
 
 -- ---------- 1. admin_users ----------
@@ -225,6 +230,8 @@ comment on table payments is
 create index payments_subject_idx on payments (subject, subject_id);
 
 -- ---------- 8. publications ----------
+-- access_token dùng generate_access_token() làm DEFAULT — hàm đó đã được
+-- tạo ở khối "hàm không phụ thuộc bảng" phía trên, trước bảng này.
 create table publications (
   id             uuid primary key default gen_random_uuid(),
   order_id       uuid not null references hatmam_orders(id) on delete cascade,
@@ -271,6 +278,34 @@ comment on table audit_log is
 create index audit_log_entity_idx on audit_log (entity_type, entity_id);
 create index audit_log_created_idx on audit_log (created_at desc);
 
+-- ============================================================
+-- HÀM PHỤ THUỘC BẢNG — chỉ sau khi bảng nó đọc đã tồn tại.
+-- ============================================================
+
+-- Người đang đăng nhập có phải admin không.
+-- SECURITY DEFINER để hàm tự đọc được admin_users mà không cần policy
+-- SELECT mở cho chính người dùng đó (tránh đệ quy policy).
+-- search_path cố định = chống tấn công chiếm quyền qua schema giả.
+--
+-- ⚠️ B0.2: hàm này đọc bảng admin_users trong thân hàm, và LANGUAGE SQL
+-- được Postgres phân giải toàn bộ ngay lúc CREATE FUNCTION (khác plpgsql,
+-- vốn chỉ được kiểm cú pháp lúc tạo, kiểm object thật lúc chạy). Ở bản
+-- trước, hàm này đứng TRƯỚC mọi CREATE TABLE nên admin_users chưa tồn
+-- tại → lỗi 42P01. Giờ đặt đúng sau khối bảng.
+create or replace function is_admin()
+returns boolean
+language sql
+security definer
+set search_path = public
+stable
+as $$
+  select exists (
+    select 1 from admin_users
+    where admin_users.user_id = auth.uid()
+      and admin_users.is_active = true
+  );
+$$;
+
 -- ---------- Trigger updated_at cho mọi bảng ----------
 create trigger set_updated_at before update on admin_users            for each row execute function set_updated_at();
 create trigger set_updated_at before update on contact_messages       for each row execute function set_updated_at();
@@ -315,7 +350,10 @@ grant select, insert, update on hatmam_child_profiles to authenticated;
 
 -- anon KHÔNG được gì cả. Cố ý bỏ trống — đây không phải thiếu sót.
 
--- ---------- Policy: mở từng quyền một, kèm lý do ----------
+-- ============================================================
+-- POLICY — khối cuối cùng. Mọi policy dưới đây dùng is_admin(), và
+-- is_admin() + toàn bộ bảng đích đều đã tồn tại ở điểm này.
+-- ============================================================
 
 -- admin_users: admin tự xem được danh sách admin (để biết ai có quyền).
 -- Không cho tự INSERT/UPDATE — thêm admin phải qua service_role.
