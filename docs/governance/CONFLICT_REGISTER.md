@@ -25,6 +25,8 @@
 | C-11 | Public giao thức | Allowed selectively only with approved plain-language context. |
 | C-12 | Image authority | Kenji portraits: FLUX.1 + Kenji LoRA. Non-Kenji images: FLUX.2 Klein 9B. |
 | C-13 | Agent merge authority | Historical self-merge permissions are superseded. An agent may merge only when a current task-specific Founder instruction explicitly authorizes that exact PR. A historical brief, earlier merge, prior standing permission or successful QA never authorizes a later PR. Without exact current approval, keep the PR Draft and stop for review. |
+| C-14 | Canonical domain (02/08/2026) | The official canonical domain is **`https://coachkenjipham.com`** (apex, no `www`). `www.coachkenjipham.com` must redirect **permanently** to it. All canonical, Open Graph, JSON-LD and other absolute URLs use the apex form. Recording this ruling does not authorize indexing, sitemap, robots or Search Console action — C-02 still governs those. |
+| C-15 | Homepage copy and background supersessions (02/08/2026) | For `/` these Founder Decisions supersede the corresponding rows of the Editorial Completion Package: Hero reads "Vẫn trả lời những tin nhắn."; Kenji closing line reads "Tôi giữ những khoảng lặng để bạn nhìn rõ điều đang diễn ra và nghe được chính mình."; S08 CTA reads "Mời bạn đọc đầy đủ →"; S04 and S08 keep their current approved background images, so package §8.4/§8.5 and DoD #12/#13 no longer apply. Signal Moment reads "Không phải **vì** mọi chương đều đẹp." Do not re-open these as defects. |
 
 ## Open conflicts and follow-up gaps
 
@@ -36,6 +38,7 @@
 | O-04 | Runtime gap | Kenji | Replace public Gmail references only in a scoped runtime task. |
 | O-05 | External dependency pending | Kenji | Approve any further external documentation intake after G0. |
 | O-06 | Runtime/entity gap — partially resolved | Kenji | Villa scope resolved by P1 (PR #112 at 733b199): / and /trang-chu-v2 JSON-LD entities now use Essence Coaching. Remaining inventory rows below still need their own approved metadata/public-copy tasks. |
+| O-07 | Infrastructure gap — C-14 not yet honoured in production | Kenji | Production currently does the **reverse** of C-14: `https://coachkenjipham.com` returns 307 → `https://www.coachkenjipham.com`, which serves 200. This is a Vercel **dashboard** domain setting; `vercel.json` and `next.config.mjs` contain no host redirect. Required: in Vercel project settings make the apex primary and set `www` to redirect permanently (308) to it. Adding a `www → apex` rule in `vercel.json` while the dashboard rule still points apex → www would create an **infinite redirect loop** — do not do that. No DNS change is needed. Evidence and re-verification steps: `docs/website/homepage/HOMEPAGE_FINAL_COMPLETION_RECORD.md` §4. |
 
 This register is an L2 operating container. Every Closed conflict ruling recorded above is L0. Open conflicts block assumptions, not safe documentation of the gap.
 

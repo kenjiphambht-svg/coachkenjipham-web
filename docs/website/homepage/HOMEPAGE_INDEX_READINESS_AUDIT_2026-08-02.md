@@ -1,5 +1,11 @@
 # HOMEPAGE INDEX-READINESS AUDIT — 2026-08-02
 
+> ## ⚠️ SUPERSEDED IN PART — read the completion record first
+>
+> Founder Decisions of **02/08/2026** (recorded as **L0 C-14 and C-15**) resolved every BLOCKER in this document. **§3 and §4 below are withdrawn** — do not re-open them as defects. The typecheck claim in §2 is also corrected.
+>
+> Current closeout: **[`HOMEPAGE_FINAL_COMPLETION_RECORD.md`](HOMEPAGE_FINAL_COMPLETION_RECORD.md)**. This file is retained as dated audit evidence only.
+
 > **Authority:** L4 — Implementation Evidence (audit findings only; no L0/L1/L2 ruling authority)
 > **Status:** Active
 > **Owner:** Kenji Phạm (ruling); Claude Code (evidence gathering)
@@ -27,11 +33,15 @@
 - **Accessibility (source + live DOM verified):** header menu implements focus trap, `Escape`-to-close-and-return-focus, `aria-expanded`/`aria-controls`/`role="dialog"`/`aria-modal`, `motion-reduce:` variants on the menu transition. All interactive CTAs carry explicit `aria-label` and visible `focus-visible:ring-2 ring-e26-gold` styling. S09 panels are static `<article>` content — no `<a>`/`<button>`/`role="button"`, no hover-as-clickable styling, confirmed against the package's explicit S09 interaction-state lock. No horizontal overflow at 375px or 1440px (`document.documentElement.scrollWidth === clientWidth`, verified live via DOM on production).
 - **No console errors or hydration warnings** on a fresh production navigation (`read_console_messages` — empty, checked immediately post-navigation).
 - **No broken images** — all `next/image` requests observed in the network log for `/` returned HTTP 200; four new PR #116 image assets (`ban-sac-cua-ban-quiet-pause.webp` 143KB, `kenji-section-light-wall.webp` 119KB, `not-promised-plaster-field.webp` 449KB, `two-paths-light-room.webp` 19KB) all present, reasonable payload, WebP format.
-- **Build / typecheck / lint** (run in a fresh worktree checked out from `origin/main`, `npm install` fresh): `npm run build` — 23/23 pages generate, `/` is 290 B page-specific / 144 kB First Load JS, no errors. `npx tsc --noEmit` — exactly one error, in `src/pages/kidbook.tsx` (a `next/head`-vs-`styled-jsx` typing conflict), pre-existing, unrelated to any file this task or PR #116 touched, in an explicitly out-of-scope legacy route (C-03). `npm run lint` — zero errors; warnings are all pre-existing (`<img>` vs `next/image` in `HomeHeader.tsx` and three unrelated landing components; unused imports in `_app.tsx`/`kidbook.tsx`).
+- **Build / typecheck / lint** (run in a fresh worktree checked out from `origin/main`, `npm install` fresh): `npm run build` — 23/23 pages generate, `/` is 290 B page-specific / 144 kB First Load JS, no errors. `npx tsc --noEmit` — ⚠️ **this claim was wrong and is corrected in the completion record §7.** The reported `src/pages/kidbook.tsx` error was an artifact of running `tsc` in a fresh worktree *before* the first `next build` (the untracked, generated `next-env.d.ts` references `.next/types/routes.d.ts`, which does not exist yet). After any successful build, typecheck exits **0** with no errors. There is no real TypeScript defect. `npm run lint` — zero errors; warnings are all pre-existing (`<img>` vs `next/image` in `HomeHeader.tsx` and three unrelated landing components; unused imports in `_app.tsx`/`kidbook.tsx`).
 - **Analytics/tracking: NOT IMPLEMENTED.** Repo-wide grep for `gtag`, `google-analytics`, Vercel Analytics package, Facebook pixel — no matches. Live network log during a full page load shows zero third-party requests; everything is same-origin `_next` assets and images. Per this task's own classification rule, this is recorded as NOT IMPLEMENTED, not a defect. No privacy/consent mismatch is possible because nothing is tracked.
 - **Section-by-section Locked Copy check — clean sections:** S04 (Hai Cánh Cửa) copy and both CTAs, S06 (An Định → An Thịnh — package required only that the trailing two sentences be removed; confirmed removed, nothing else was locked to compare), S07 (Image Bridge — no copy added, existing asset kept, matches package exactly), S09 (Một góc để quay lại — intro paragraph and all three panel titles/bodies/quotes/statuses match the package byte-for-byte; DOM order is Intro → Ebook → Ghi chép Essence → Khởi đầu as required; no `<a>`/`<button>`/hover-as-clickable, "Mời bạn đọc" fully removed), S10 (Signature Ending) all match the Founder-locked text exactly.
 
-## 3. BLOCKER — Locked Copy text drift (requires Founder ruling, not touched in this task)
+## 3. ~~BLOCKER~~ — WITHDRAWN 02/08/2026 (Founder ruled; see C-15)
+
+**All four rows below were ruled correct-as-implemented by the Founder on 02/08/2026, except the Signal Moment, which was fixed.** Hero "Vẫn trả lời những tin nhắn.", the Kenji closing line, and the S08 CTA "Mời bạn đọc đầy đủ →" are the approved wording — the package rows they were compared against are superseded. The Signal Moment was genuinely missing "vì" and has been corrected to "Không phải vì mọi chương đều đẹp." Retained below as dated evidence only.
+
+### (withdrawn) Original finding — Locked Copy text drift
 
 Content-text edits are outside this task's Fix Boundaries even when the edit would only restore already-approved wording, so these are reported, not applied. Four exact-wording mismatches between the Founder-locked package and the current production/source implementation (all four are genuine PR #116 authoring gaps, confirmed against the PR #116 diff itself — not pre-existing legacy text):
 
@@ -44,7 +54,11 @@ Content-text edits are outside this task's Fix Boundaries even when the edit wou
 
 **Required next action:** Kenji reviews the four rows above and rules one of: (a) production wording is fine, update the package to match reality; or (b) package is correct, authorize a scoped, content-only PR to restore the exact locked wording. Either ruling is a one-line decision per row; none of the four require design or layout work.
 
-## 4. BLOCKER — S04/S08 background asset contradicts Founder-locked decision (requires Founder ruling, not touched in this task)
+## 4. ~~BLOCKER~~ — WITHDRAWN 02/08/2026 (Founder ruled; see C-15)
+
+**The Founder approved the current S04 and S08 background images as-is.** Package §8.4/§8.5 and DoD #12/#13 ("code background") are superseded on this point. Nothing to fix. Retained below as dated evidence only.
+
+### (withdrawn) Original finding — S04/S08 background asset
 
 The package's own Definition of Done lists items #12 and #13 as required: *"Nền Hai Cánh Cửa chuyển sang code"* and *"Nền Điều Essence không hứa chuyển sang code"* — and §8.4/§8.5 are explicit: *"Bỏ ảnh nền kiến trúc hiện tại. Dùng code background cream/ivory canonical. … Không cửa, vòm, furniture, texture ảnh hoặc glow."*
 

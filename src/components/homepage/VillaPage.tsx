@@ -64,6 +64,20 @@ export default function VillaPage({ pageUrl }: VillaPageProps) {
 
       <Head>
         <meta name="robots" content="noindex" />
+        {/* CANONICAL — Founder Decision 02/08/2026: domain canonical chính thức
+            là apex `https://coachkenjipham.com` (KHÔNG www). Mọi absolute URL ở
+            đây (canonical, og:url, JSON-LD url) đã dùng đúng apex.
+            SELF-CANONICAL theo `pageUrl`, không hardcode "/": `/trang-chu-v2`
+            vẫn đang chờ Kenji quyết disposition (L0 C-01) — trỏ canonical của
+            nó về "/" sẽ là một quyết định hợp nhất mà C-01 chưa cho phép suy ra.
+            Cả 2 route đều noindex nên thẻ này hiện KHÔNG có tác dụng indexing;
+            nó tồn tại để khi M6 kích hoạt index thì không phải sửa bù SEO.
+            LƯU Ý HẠ TẦNG (chưa sửa được từ repo): apex hiện 307 → www ở tầng
+            Vercel dashboard, tức NGƯỢC với quyết định trên — xem
+            docs/website/homepage/HOMEPAGE_FINAL_COMPLETION_RECORD.md mục
+            "Canonical domain". Không thêm redirect www→apex trong vercel.json
+            khi dashboard còn redirect apex→www: hai lớp sẽ tạo vòng lặp vô hạn. */}
+        <link rel="canonical" href={pageUrl} />
         {/* Favicon bộ 2026 — chỉ gắn riêng trang này (không sửa _document.tsx/SEO.tsx
             dùng chung, vì /kidbook và /ai-startup cũng gọi component đó). */}
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
