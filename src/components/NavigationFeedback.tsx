@@ -13,6 +13,23 @@ import { useRouter } from "next/router";
 //     thật ở audit) KHÔNG nhấp nháy: vạch không biến mất đột ngột mà luôn
 //     hoàn thành trọn chu kỳ chạy-nốt + tan (~550ms) ĐÈ TRÊN trang mới —
 //     không chặn/không làm chậm việc hiển thị trang mới một mili giây nào.
+//
+// SỬA 02/08/2026 (Kenji xem preview PR #119: "quá nhanh, không kịp nhận ra"):
+// THỜI LƯỢNG HIỂN THỊ TỐI THIỂU (MIN_VISIBLE_MS) — kỹ thuật chuẩn của
+// NProgress/GitHub. Route xong ở ~200ms thì vạch mới trườn được một đoạn đã
+// bị lệnh chạy-nốt + tan, mắt không kịp đọc ra là có phản hồi. Nay finish()
+// đo thời gian đã trôi từ lúc start(); nếu chưa đủ MIN_VISIBLE_MS thì HOÃN
+// đúng phần kết (chạy nốt + tan) cho đủ ngưỡng. Trong lúc hoãn vạch KHÔNG
+// đứng hình — transition width 700ms→72% vẫn đang chạy nên nó tiếp tục trườn
+// mượt tới ~72% rồi mới chạy nốt.
+// ĐÁNH ĐỔI ĐÃ CÂN NHẮC: vạch sống thêm vài trăm ms SAU khi trang mới đã hiện
+// (hơi trễ nhịp so với thực tế). Chấp nhận được vì đây là overlay 2px,
+// pointer-events:none, aria-hidden — không chặn tương tác, không đọc bởi
+// screen reader, và KHÔNG làm chậm render trang mới một mili giây nào (chỉ
+// kéo dài phần "diễn", đúng nguyên tắc gốc của component).
+// Kèm theo: PEG SÁNG ở mút phải vạch (box-shadow gold toả nhẹ) — lý do vạch
+// NProgress dù mỏng vẫn dễ bắt mắt: mắt người bám vào đầu sáng đang chạy,
+// không bám vào thân vạch. Không thêm element, không đổi màu thương hiệu.
 // C — PHẢN HỒI TẠI LIÊN KẾT: link nội bộ vừa bấm được thêm class
 //     .nav-departing (mờ nhẹ, CSS ở globals.css) cho tới khi route xong.
 //
@@ -41,12 +58,19 @@ import { useRouter } from "next/router";
 //   .nav-departing được dọn qua hashChangeComplete + safety timeout 3s.
 // - Fixed 2px + pointer-events:none + aria-hidden → không CLS, không chặn
 //   tương tác, không lọt vào accessibility tree.
+// Ngưỡng "kịp nhận ra". 450ms là mức thấp nhất mà một chuyển động ngoại vi
+// (mép trên viewport, không phải nơi mắt đang nhìn) còn được đọc ra là có
+// chủ đích thay vì một cái chớp. Cộng chu kỳ kết (200ms chạy nốt + 350ms
+// tan) → trang nhanh nhất cũng cho tổng ~1s có phản hồi nhìn thấy được.
+const MIN_VISIBLE_MS = 450;
+
 export default function NavigationFeedback() {
   const router = useRouter();
   const barRef = useRef<HTMLDivElement>(null);
   const trickleRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const activeRef = useRef(false);
+  const startedAtRef = useRef(0);
   const departingRef = useRef<HTMLElement | null>(null);
   const departSafetyRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -76,6 +100,7 @@ export default function NavigationFeedback() {
       // không reset về 0 (tránh giật lùi).
       if (activeRef.current) return;
       activeRef.current = true;
+      startedAtRef.current = performance.now();
       clearTimers();
 
       if (reduced()) {
@@ -108,36 +133,49 @@ export default function NavigationFeedback() {
       clearDeparting();
       if (!activeRef.current) return;
       activeRef.current = false;
+      // Dừng trickle ngay, nhưng KHÔNG đụng transition width đang chạy —
+      // trong lúc chờ đủ ngưỡng vạch vẫn tự trườn tiếp về 72%.
       clearTimers();
 
-      if (reduced()) {
-        // Reduce: chỉ tan bằng opacity (opacity không phải "motion").
-        bar.style.transition = "opacity 250ms ease-out";
-        bar.style.opacity = "0";
+      // Chu kỳ kết — tách thành hàm để hoãn nguyên khối khi trang quá nhanh.
+      const end = () => {
+        if (reduced()) {
+          // Reduce: chỉ tan bằng opacity (opacity không phải "motion").
+          bar.style.transition = "opacity 250ms ease-out";
+          bar.style.opacity = "0";
+          timersRef.current.push(
+            setTimeout(() => {
+              bar.style.transition = "none";
+              bar.style.width = "0%";
+            }, 300)
+          );
+          return;
+        }
+
+        // Chạy nốt về 100% rồi tan — chu kỳ luôn trọn vẹn, không nhấp nháy.
+        bar.style.transition = "width 200ms ease-out";
+        bar.style.width = "100%";
+        timersRef.current.push(
+          setTimeout(() => {
+            bar.style.transition = "opacity 350ms ease-out";
+            bar.style.opacity = "0";
+          }, 220)
+        );
         timersRef.current.push(
           setTimeout(() => {
             bar.style.transition = "none";
             bar.style.width = "0%";
-          }, 300)
+          }, 650)
         );
-        return;
-      }
+      };
 
-      // Chạy nốt về 100% rồi tan — chu kỳ luôn trọn vẹn, không nhấp nháy.
-      bar.style.transition = "width 200ms ease-out";
-      bar.style.width = "100%";
-      timersRef.current.push(
-        setTimeout(() => {
-          bar.style.transition = "opacity 350ms ease-out";
-          bar.style.opacity = "0";
-        }, 220)
-      );
-      timersRef.current.push(
-        setTimeout(() => {
-          bar.style.transition = "none";
-          bar.style.width = "0%";
-        }, 650)
-      );
+      // Trang chậm (đã qua ngưỡng) → kết ngay, không thêm độ trễ nào.
+      // Trang nhanh → hoãn đúng phần còn thiếu. Ngưỡng áp dụng cho CẢ nhánh
+      // reduce: ở đó vạch hiện tĩnh nguyên chiều rộng nên càng dễ chớp mất
+      // nếu tan ngay.
+      const hold = MIN_VISIBLE_MS - (performance.now() - startedAtRef.current);
+      if (hold <= 0) end();
+      else timersRef.current.push(setTimeout(end, hold));
     };
 
     // C — đánh dấu link nội bộ vừa bấm. PHẢI nghe ở CAPTURE phase (đo thật
@@ -196,6 +234,12 @@ export default function NavigationFeedback() {
         zIndex: 70,
         background: "var(--essence-gold-2026)",
         borderRadius: "0 1px 1px 0",
+        // Peg: quầng sáng lệch về phải → mút vạch sáng hơn thân, mắt bám vào
+        // đầu đang chạy. Dùng color-mix để giữ nguyên token màu thương hiệu
+        // (không hardcode hex); trình duyệt không hỗ trợ color-mix chỉ đơn
+        // giản bỏ qua box-shadow — vạch vẫn chạy đúng, không vỡ gì.
+        boxShadow:
+          "2px 0 8px 0 color-mix(in srgb, var(--essence-gold-2026) 60%, transparent)",
         pointerEvents: "none",
       }}
     />
