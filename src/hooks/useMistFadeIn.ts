@@ -11,9 +11,18 @@ if (typeof window !== 'undefined') {
 
 export function useMistFadeIn() {
   const router = useRouter();
+  // PHẠM VI (SỬA 02/08/2026, brief MODE 5): hook này KHÔNG còn chạy toàn
+  // site — MistFadeProvider đã gỡ khỏi _app.tsx (và xoá file). Giờ chỉ 3
+  // trang legacy dùng .fade-in-section tự gọi nó: /kidbook,
+  // /thanh-toan-goi-1, /thanh-toan-goi-2 (cả 3 vốn đã tự gọi từ trước —
+  // provider toàn site từng làm hook chạy TRÙNG 2 lần trên chính các trang
+  // này). Listener routeChangeComplete bên dưới giữ nguyên: giờ gần như
+  // không còn việc (mount/unmount theo trang đã lo re-setup), nhưng vô hại
+  // nhờ cơ chế own-triggers idempotent — không đổi để giữ 3 trang C-03
+  // nguyên trạng runtime tuyệt đối.
   // SỬA 29/07/2026 (bug thật phát hiện khi làm /ve-kenji Signal parallax):
-  // hook này chạy TOÀN SITE qua MistFadeProvider (_app.tsx), nên
-  // `ScrollTrigger.getAll().forEach(kill)` cũ giết LUÔN mọi ScrollTrigger
+  // hook này (lúc đó chạy TOÀN SITE qua MistFadeProvider/_app.tsx) từng
+  // `ScrollTrigger.getAll().forEach(kill)` — giết LUÔN mọi ScrollTrigger
   // của bất kỳ component nào khác trên cùng trang (đo được: trigger tạo
   // trong useVeKenjiSignalReveal bị kill ngay ~100ms sau khi tạo, progress
   // đứng yên ở 0 vĩnh viễn dù đã cuộn qua). Chỉ kill đúng trigger CỦA HOOK
