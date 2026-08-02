@@ -25,6 +25,9 @@
 | C-11 | Public giao thức | Allowed selectively only with approved plain-language context. |
 | C-12 | Image authority | Kenji portraits: FLUX.1 + Kenji LoRA. Non-Kenji images: FLUX.2 Klein 9B. |
 | C-13 | Agent merge authority | Historical self-merge permissions are superseded. An agent may merge only when a current task-specific Founder instruction explicitly authorizes that exact PR. A historical brief, earlier merge, prior standing permission or successful QA never authorizes a later PR. Without exact current approval, keep the PR Draft and stop for review. |
+| C-14 | Canonical domain (02/08/2026) | The official canonical domain is **`https://coachkenjipham.com`** (apex, no `www`). `www.coachkenjipham.com` must redirect **permanently** to it. All canonical, Open Graph, JSON-LD and other absolute URLs use the apex form. Recording this ruling does not authorize indexing, sitemap, robots or Search Console action — C-02 still governs those. |
+| C-15 | Homepage copy and background supersessions (02/08/2026, final) | For `/` these Founder Decisions supersede the corresponding rows of the Editorial Completion Package: Hero reads "Vẫn trả lời những tin nhắn."; Kenji closing line reads "Tôi giữ những khoảng lặng để bạn nhìn rõ điều đang diễn ra và nghe được chính mình."; S08 CTA reads "Mời bạn đọc đầy đủ →"; S04 and S08 keep their current approved background images, so package §8.4/§8.5 and DoD #12/#13 no longer apply. **Signal Moment reads exactly "Không phải mọi chương đều đẹp." — without "vì".** (An interim instruction on 02/08 had asked to insert "vì"; the Founder's final ruling is the sentence without it, and the interim change was reverted before merge. Production was always correct.) Do not re-open any of these as defects. |
+| C-16 | Typography scope (02/08/2026) | Each page may have its **own typographic rhythm and hierarchy**; pages are not required to share one hierarchy or one font-pairing pattern. The whole site keeps the **two approved base fonts** — Cormorant Garamond (serif) and Inter (sans). **No new font may be added.** No global font redesign is to be performed as a side effect of a page-scoped task. Font *loading* performance is a system observation, not a page blocker (see the Homepage completion record §6). |
 
 ## Open conflicts and follow-up gaps
 
@@ -36,6 +39,7 @@
 | O-04 | Runtime gap | Kenji | Replace public Gmail references only in a scoped runtime task. |
 | O-05 | External dependency pending | Kenji | Approve any further external documentation intake after G0. |
 | O-06 | Runtime/entity gap — partially resolved | Kenji | Villa scope resolved by P1 (PR #112 at 733b199): / and /trang-chu-v2 JSON-LD entities now use Essence Coaching. Remaining inventory rows below still need their own approved metadata/public-copy tasks. |
+| O-07 | ✅ **CLOSED 02/08/2026** — C-14 honoured in production | Kenji (done) | Founder set the apex as Vercel Primary Domain and `www` as a 308 permanent redirect. Verified live: apex 200 with 0 redirects; `www` → 308 → apex; HTTP → HTTPS apex; no loop at any entry point; TLS valid on both hostnames. **Standing rule going forward:** host normalisation lives only in the Vercel dashboard — do **not** add host-based redirects to `vercel.json`, which would risk a redirect loop. Evidence: `docs/website/homepage/HOMEPAGE_FINAL_COMPLETION_RECORD.md` §4. |
 
 This register is an L2 operating container. Every Closed conflict ruling recorded above is L0. Open conflicts block assumptions, not safe documentation of the gap.
 

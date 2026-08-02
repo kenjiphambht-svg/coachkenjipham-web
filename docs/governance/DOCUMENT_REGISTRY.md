@@ -96,6 +96,8 @@ This registry records authority-bearing, default-reading, imported-canonical, ma
 | docs/website/current/OFFER_STATE_MATRIX.md | audited offer and flow state | L2 / Active / Kenji | offer/flow classification / no product or provider invention | current G1 truth / — | — | trigger + 90d |
 | docs/website/current/INDEXING_POLICY.md | current indexing truth and M6 gate | L2 / Active / Kenji | indexing policy and gaps / no indexing action | current G1 truth / — | — | trigger + 90d |
 | docs/website/current/PAGE_PORTFOLIO_AND_TRANSFORMATION_BLUEPRINT.md | page portfolio and transformation execution blueprint | L2 / Active / Kenji | transformation classification, sequence, gates and brief seeds / no runtime, Founder Decision, offer contract, Page Contract or indexing approval | current G1 transformation truth / — | — | trigger + 90d |
+| docs/website/homepage/HOMEPAGE_INDEX_READINESS_AUDIT_2026-08-02.md | Homepage index-readiness audit evidence after PR #116 | L4 / Superseded in part / Kenji | dated audit evidence / no ruling authority | measurement method and PASS rows / its BLOCKER sections §3–§4 and its typecheck claim | docs/website/homepage/HOMEPAGE_FINAL_COMPLETION_RECORD.md + C-14/C-15 | no cadence |
+| docs/website/homepage/HOMEPAGE_FINAL_COMPLETION_RECORD.md | Homepage `/` final completion record and closeout | L4 / Active / Kenji | records applied Founder Decisions, verification evidence and the outstanding infrastructure action / no indexing, sitemap, robots, Search Console or DNS authorization | current Homepage closeout / — | — | Founder Decision, or when the O-07 Vercel domain action is completed |
 
 ## Maintenance
 

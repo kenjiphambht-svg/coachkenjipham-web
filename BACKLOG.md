@@ -22,8 +22,11 @@ Roadmap chi tiết và decision log cũ chỉ là historical evidence, không ph
 | G1 | Current Website Truth v1 (journey map, route/offer matrix, indexing policy, blueprint) | #111 | fe0739d |
 | G1.1 | Governance end state (C-07 = Essence Coaching, C-13 khoá self-merge, registry 69 entries, load-chain thật, hết placeholder) | #113 | d8cfa93 |
 | P1 | Canonical Villa Cutover — `/` render Villa qua `VillaPage.tsx` dùng chung; `/trang-chu-v2` contained; cả hai noindex; entity Villa = Essence Coaching | #112 | 733b199 |
+| P1.5 | Homepage Editorial Completion — Locked Copy, S09 Editorial Reading Table redesign, SEO/GEO metadata, card asset swap | #116 | 887a631 |
 
 **Hiện trạng:** `/` là Villa canonical. Governance foundation ĐÓNG — không còn cleanup PR nào chờ. Roadmap thực tế = `docs/website/current/PAGE_PORTFOLIO_AND_TRANSFORMATION_BLUEPRINT.md` (mục 3, đã đánh dấu P1 COMPLETED).
+
+**Homepage `/` (branch `audit/homepage-index-readiness`, PR #117, chưa merge):** trạng thái **INDEX-READY LOCKED — NOINDEX PENDING FOUNDER ACTIVATION**. Closeout chính thức = `docs/website/homepage/HOMEPAGE_FINAL_COMPLETION_RECORD.md`. Founder Decisions 02/08/2026 ghi tại C-14/C-15; domain canonical đã lật xong và verify live (O-07 đóng). `noindex` không đổi, chưa kích hoạt sitemap/robots/Search Console — M6 vẫn là Founder Decision riêng.
 
 **Việc kế tiếp theo blueprint (mỗi việc cần Page Contract + approved copy + Kenji phê duyệt trước khi làm):** P2a (privacy/contact foundation) → P2b (trust suite) → P3 (Lặng private flow) → ... → M6 (indexing, Founder Decision riêng, luôn cuối cùng).
 
