@@ -9,8 +9,10 @@ import HomeFooter from "@/components/homepage/HomeFooter";
 // /lien-he — noindex (chờ Kenji duyệt). Theo brief: "một cửa rõ, không
 // rào cản". Copy NGUYÊN VĂN theo task.
 //
-// KÊNH GỬI FORM: repo KHÔNG có backend nhận form thật (chỉ có
-// src/pages/api/hello.ts stub — không phải API thật). Giải pháp đơn giản
+// KÊNH GỬI FORM: repo KHÔNG có backend nhận form thật — không có
+// thư mục pages/api hay app/api nào trong repo (đã xác minh lại
+// 02/08/2026, bản trước của comment này nhắc một file api/hello.ts
+// không tồn tại — đã sửa). Giải pháp đơn giản
 // nhất đang có sẵn trong repo là mailto (đúng pattern đã dùng ở
 // /lang-90/xac-nhan.tsx) — submit sẽ build 1 mailto: link từ 3 trường
 // và mở app mail của người dùng, đồng thời hiện thông báo cảm ơn ngay
