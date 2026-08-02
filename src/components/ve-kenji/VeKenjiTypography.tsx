@@ -41,7 +41,7 @@ export function EssenceDisplay({
   className,
   as: As = "h1",
   size = "hero",
-}: Common & { as?: ElementType; size?: "hero" | "signal" }) {
+}: Common & { as?: ElementType; size?: "hero" | "signal" | "mantra" | "values" }) {
   return (
     <As
       className={cn(
@@ -50,6 +50,10 @@ export function EssenceDisplay({
           "text-[34px] leading-[1.1] tracking-[-0.01em] md:text-[68px] md:leading-[1.05]",
         size === "signal" &&
           "text-[52px] leading-[0.98] tracking-[-0.015em] md:text-[92px] md:leading-[0.95]",
+        size === "mantra" &&
+          "text-[42px] leading-[1.03] tracking-[-0.012em] md:text-[62px] md:leading-[1]",
+        size === "values" &&
+          "text-[38px] leading-[1.08] tracking-[-0.012em] md:text-[56px] md:leading-[1.02]",
         className
       )}
     >
@@ -112,9 +116,15 @@ export function EssenceBody({ children, className, as: As = "p" }: Common & { as
 // màu đặc #1A1A1A tường minh (không kế thừa opacity từ span giải thích bọc
 // ngoài ở ⑦/⑦b — xem ve-kenji.tsx) để câu mở đầu LUÔN tiến lên trước dù đứng
 // cạnh phần giải thích đã lùi màu.
-export function EssenceLeadIn({ children }: { children: ReactNode }) {
+export function EssenceLeadIn({
+  children,
+  className,
+  as: As = "strong",
+}: Common & { as?: ElementType }) {
   return (
-    <strong className="font-semibold text-[18px] md:text-[20px] text-[#1A1A1A]">{children}</strong>
+    <As className={cn("font-sans font-semibold text-[18px] leading-[1.45] md:text-[20px] text-[#1A1A1A]", className)}>
+      {children}
+    </As>
   );
 }
 

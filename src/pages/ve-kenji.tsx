@@ -7,8 +7,10 @@ import HomeHeader from "@/components/homepage/HomeHeader";
 import HomeFooter from "@/components/homepage/HomeFooter";
 import {
   EssenceAnchor,
+  EssenceAccent,
   EssenceBody,
   EssenceDisplay,
+  EssenceLeadIn,
   EssenceSignalComposition,
   EssenceUtility,
 } from "@/components/ve-kenji/VeKenjiTypography";
@@ -97,13 +99,14 @@ const linkUnderline =
 const CREAM = "#F1EFE8";
 const BG = {
   base: CREAM,
-  lift: "#F3F1EA",
-  descend: "#DFDDD6",
-  recover: "#E5E3DC",
-  soft: "#EDEBE4",
-  weight: "#E9E7E0",
-  peak: "#FDFBF4",
-  close: "#F7F5EE",
+  story: "#E8E5DC",
+  identity: "#EAE7DF",
+  belief: "#E2DFD7",
+  values: "#FCFAF3",
+  presence: "#EEECE5",
+  boundaries: "#D8D5CC",
+  faq: "#F3F1EA",
+  discovery: "#F8F5EC",
 };
 
 function lighten(hex: string, amount: number) {
@@ -135,7 +138,7 @@ const RHYTHM = {
 
 function SectionLabel({ children }: { children: string }) {
   return (
-    <EssenceUtility as="p" className="text-[#1A1A1A]/45 mb-4 md:mb-5">
+    <EssenceUtility as="p" className="text-[#1A1A1A]/60 mb-4 md:mb-5">
       {children}
     </EssenceUtility>
   );
@@ -173,11 +176,11 @@ export default function VeKenjiPage() {
         <section className={`px-6 ${RHYTHM.mo}`} style={{ background: sectionBg(BG.base) }}>
           <div className="ve-kenji-reveal max-w-[660px] mx-auto">
             <SectionLabel>VÌ SAO TÔI Ở ĐÂY</SectionLabel>
-            <EssenceDisplay as="h1">
-              Vì sao tôi chọn ngồi lại với những điều thường bị đi qua quá nhanh?
+            <EssenceDisplay as="h1" className="max-w-[700px]">
+              Vì sao tôi chọn ngồi lại với những điều thường bị<br className="hidden md:block" /> đi qua quá nhanh?
             </EssenceDisplay>
             <div className="space-y-5 mt-8 md:mt-10">
-              <EssenceBody as="p">
+              <EssenceBody as="p" className="max-w-[580px]">
                 Phía sau một quyết định, một cơn giận hay sự mệt mỏi khó gọi tên, thường còn một điều chưa được nhìn thấy.
               </EssenceBody>
               <EssenceBody as="p">
@@ -189,12 +192,12 @@ export default function VeKenjiPage() {
               <EssenceBody as="p">
                 Tôi chọn công việc này để cùng một người nhìn vào điều đang vận hành bên dưới — không vội phán, không kéo họ đi nhanh hơn, cũng không quyết định thay họ.
               </EssenceBody>
-              <EssenceBody as="p">Lựa chọn ấy không bắt đầu từ một lý thuyết.</EssenceBody>
+              <EssenceAccent as="p" className="pt-3 md:pt-5">Lựa chọn ấy không bắt đầu từ một lý thuyết.</EssenceAccent>
             </div>
           </div>
         </section>
 
-        <section className={`px-6 ${RHYTHM.mo}`} style={{ background: sectionBg(BG.lift) }}>
+        <section className={`px-6 ${RHYTHM.mo}`} style={{ background: sectionBg(BG.story) }}>
           <div className="ve-kenji-reveal max-w-[660px] mx-auto">
             <SectionLabel>TÔI ĐẾN TỪ ĐÂU</SectionLabel>
             <EssenceAnchor as="h2" className="mb-10 md:mb-12">
@@ -217,13 +220,13 @@ export default function VeKenjiPage() {
             </div>
           </div>
 
-          <div className="ve-kenji-reveal max-w-[860px] mx-auto my-10 md:my-14">
+          <div className="ve-kenji-reveal max-w-[860px] mx-auto my-14 md:my-20">
             <Image
               src="/images/ve-kenji/05-chan-dung-kenji.webp"
               alt="Kenji Phạm ngồi trong không gian làm việc"
               width={440}
               height={550}
-              className="h-auto w-[280px] max-w-full md:w-[440px] object-cover mx-auto"
+              className="h-auto w-[256px] max-w-full md:w-[400px] object-cover mx-auto"
             />
           </div>
 
@@ -231,9 +234,9 @@ export default function VeKenjiPage() {
             <EssenceBody as="p">
               Qua hàng trăm buổi ngồi nghe, tôi dần biết điều gì thực sự đứng được. Điều gì chỉ nghe đẹp. Điều gì giúp một người sáng rõ hơn. Và điều gì cần được để xuống.
             </EssenceBody>
-            <EssenceBody as="p">
+            <EssenceAccent as="p" className="max-w-[620px]">
               Có lẽ vì chính tôi từng sống bằng cách gồng và tự giữ mọi thứ, tôi nhận ra khá nhanh khi một người vẫn đang ổn ở bên ngoài nhưng đã phải gánh quá nhiều quá lâu.
-            </EssenceBody>
+            </EssenceAccent>
             <EssenceBody as="p">
               Những gì tôi giữ hôm nay không phải câu chuyện về một người đã vượt qua tất cả.
             </EssenceBody>
@@ -245,25 +248,27 @@ export default function VeKenjiPage() {
 
         <VeKenjiDivider />
 
-        <VeKenjiSectionImage
-          src="/images/ve-kenji/01-khe-van-toi.webp"
-          overlay={0.18}
-          imgClassName="ve-kenji-signal-image scale-110"
-          className={`px-6 ${RHYTHM.lang}`}
-        >
-          <div ref={signalRef}>
-            <EssenceSignalComposition
-              onImage
-              tierA="Essence không sinh ra từ một ý tưởng đẹp."
-              tierB="Essence sinh ra từ những lần gãy đổ."
-            />
-          </div>
-        </VeKenjiSectionImage>
+        <div ref={signalRef}>
+          <VeKenjiSectionImage
+            src="/images/ve-kenji/01-khe-van-toi.webp"
+            overlay={0.18}
+            imgClassName="ve-kenji-signal-image scale-110"
+            className={`px-6 ${RHYTHM.lang}`}
+          >
+            <div>
+              <EssenceSignalComposition
+                onImage
+                tierA="Essence không sinh ra từ một ý tưởng đẹp."
+                tierB="Essence sinh ra từ những lần gãy đổ."
+              />
+            </div>
+          </VeKenjiSectionImage>
+        </div>
 
-        <section className={`px-6 ${RHYTHM.thuong}`} style={{ background: sectionBg(BG.recover) }}>
+        <section className={`px-6 ${RHYTHM.thuong}`} style={{ background: sectionBg(BG.identity) }}>
           <div className="ve-kenji-reveal max-w-[660px] mx-auto">
             <SectionLabel>TÔI LÀ AI HÔM NAY</SectionLabel>
-            <EssenceAnchor as="h2" className="mb-10 md:mb-12">
+            <EssenceAnchor as="h2" className="max-w-[720px] mb-10 md:mb-12">
               Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach.<br />
               Người sáng lập Essence Coaching.
             </EssenceAnchor>
@@ -273,7 +278,7 @@ export default function VeKenjiPage() {
                 Tám năm qua, tôi ngồi cùng người lớn trong những đoạn họ muốn nhìn lại chính mình, và cùng ba mẹ khi họ muốn hiểu con rõ hơn mà không vội dán nhãn.
               </EssenceBody>
               <EssenceBody as="p">
-                Coaching là khung nghề tôi dùng. Nhưng phần tôi dành nhiều thời gian nhất không phải để thúc một người tiến lên thật nhanh.
+                <EssenceLeadIn>Coaching là khung nghề tôi dùng.</EssenceLeadIn> Nhưng phần tôi dành nhiều thời gian nhất không phải để thúc một người tiến lên thật nhanh.
               </EssenceBody>
               <EssenceBody as="p">
                 Tôi ngồi cùng họ để đọc lại điều mình đã phải sống, nhận ra điều vẫn đang âm thầm quyết định thay mình, rồi tạo một khoảng đủ An định để họ có thể tự chọn lại.
@@ -289,13 +294,13 @@ export default function VeKenjiPage() {
           </div>
         </section>
 
-        <section className={`px-6 ${RHYTHM.mo}`} style={{ background: sectionBg(BG.soft) }}>
+        <section className={`px-6 ${RHYTHM.mo}`} style={{ background: sectionBg(BG.belief) }}>
           <div className="ve-kenji-reveal max-w-[660px] mx-auto">
             <SectionLabel>ĐIỀU TÔI TIN</SectionLabel>
-            <EssenceAnchor as="h2" className="mb-10 md:mb-12">
+            <EssenceDisplay as="h2" size="mantra" className="max-w-[640px] mb-12 md:mb-16">
               Tôi không sửa ai.<br />
               Tôi tạo khoảng An định.
-            </EssenceAnchor>
+            </EssenceDisplay>
             <div className="space-y-5">
               <EssenceBody as="p">Tôi không nhìn người mình đang ngồi cùng như một điều gì cần bị khắc phục.</EssenceBody>
               <EssenceBody as="p">
@@ -317,49 +322,49 @@ export default function VeKenjiPage() {
 
         <VeKenjiDivider />
 
-        <section className={`px-6 ${RHYTHM.mo}`} style={{ background: sectionBg(BG.peak) }}>
-          <div className="ve-kenji-reveal max-w-[660px] mx-auto">
+        <section className={`px-6 ${RHYTHM.mo}`} style={{ background: sectionBg(BG.values) }}>
+          <div className="ve-kenji-reveal max-w-[1040px] mx-auto">
             <SectionLabel>BA GIÁ TRỊ GỐC</SectionLabel>
-            <EssenceAnchor as="h2" className="mb-10 md:mb-12">
+            <EssenceDisplay as="h2" size="values" className="max-w-[700px] mb-10 md:mb-12">
               Tự Do — Trí Tuệ — Kiến Tạo
-            </EssenceAnchor>
-            <div className="space-y-5">
+            </EssenceDisplay>
+            <div className="max-w-[660px] space-y-5">
               <EssenceBody as="p">Đây là ba giá trị tôi tự giữ trong đời sống và trong cách làm việc.</EssenceBody>
               <EssenceBody as="p">
                 Chúng không đòi hỏi ai phải sống theo một khuôn giống nhau. Với tôi, đây là ba hướng để nhìn lại cách mình đang lựa chọn và sống.
               </EssenceBody>
             </div>
-            <div className="space-y-10 md:space-y-12 mt-12 md:mt-16">
-              <div>
+            <div className="grid gap-10 mt-12 md:grid-cols-3 md:gap-0 md:mt-16">
+              <div className="border-t border-e26-text/10 pt-6 md:pr-8">
                 <EssenceAnchor as="h3" level="h3" className="mb-3">Tự Do</EssenceAnchor>
-                <div className="space-y-5">
-                  <EssenceBody as="p">Tự Do là khi phản xạ cũ không còn quyết định thay mình trong mọi tình huống.</EssenceBody>
-                  <EssenceBody as="p">Có lúc mình bước tiếp. Có lúc mình từ chối. Và có lúc mình chọn lại.</EssenceBody>
+                <div className="space-y-5 max-w-[300px]">
+                  <EssenceBody as="p" className="max-w-none text-[#1A1A1A]/85">Tự Do là khi phản xạ cũ không còn quyết định thay mình trong mọi tình huống.</EssenceBody>
+                  <EssenceBody as="p" className="max-w-none text-[#1A1A1A]/85">Có lúc mình bước tiếp. Có lúc mình từ chối. Và có lúc mình chọn lại.</EssenceBody>
                 </div>
               </div>
-              <div>
+              <div className="border-t border-e26-text/10 pt-6 md:border-l md:px-8">
                 <EssenceAnchor as="h3" level="h3" className="mb-3">Trí Tuệ</EssenceAnchor>
-                <div className="space-y-5">
-                  <EssenceBody as="p">Trí Tuệ không phải biết thật nhiều.</EssenceBody>
-                  <EssenceBody as="p">Đó là khả năng nhìn điều đang xảy ra trong mình, trong người khác và trong hoàn cảnh — trước khi vội kết luận.</EssenceBody>
+                <div className="space-y-5 max-w-[300px]">
+                  <EssenceBody as="p" className="max-w-none text-[#1A1A1A]/85">Trí Tuệ không phải biết thật nhiều.</EssenceBody>
+                  <EssenceBody as="p" className="max-w-none text-[#1A1A1A]/85">Đó là khả năng nhìn điều đang xảy ra trong mình, trong người khác và trong hoàn cảnh — trước khi vội kết luận.</EssenceBody>
                 </div>
               </div>
-              <div>
+              <div className="border-t border-e26-text/10 pt-6 md:border-l md:pl-8">
                 <EssenceAnchor as="h3" level="h3" className="mb-3">Kiến Tạo</EssenceAnchor>
-                <div className="space-y-5">
-                  <EssenceBody as="p">Kiến Tạo là đưa điều đã nhận ra vào đời sống thật.</EssenceBody>
-                  <EssenceBody as="p">Một cuộc trò chuyện cần có. Một giới hạn cần được nói rõ. Một lựa chọn phù hợp hơn với điều mình thực sự muốn sống.</EssenceBody>
+                <div className="space-y-5 max-w-[300px]">
+                  <EssenceBody as="p" className="max-w-none text-[#1A1A1A]/85">Kiến Tạo là đưa điều đã nhận ra vào đời sống thật.</EssenceBody>
+                  <EssenceBody as="p" className="max-w-none text-[#1A1A1A]/85">Một cuộc trò chuyện cần có. Một giới hạn cần được nói rõ. Một lựa chọn phù hợp hơn với điều mình thực sự muốn sống.</EssenceBody>
                 </div>
               </div>
             </div>
-            <div className="space-y-5 mt-12 md:mt-16">
+            <div className="max-w-[660px] space-y-5 mt-12 md:mt-16">
               <EssenceBody as="p">Ở trang Phương pháp, tôi viết rõ hơn cách ba giá trị này đi vào từng nhịp làm việc.</EssenceBody>
               <EssenceBody as="p"><Link href="/phuong-phap" className={linkUnderline}>Đọc cách ba giá trị này đi vào phương pháp →</Link></EssenceBody>
             </div>
           </div>
         </section>
 
-        <section className={`px-6 ${RHYTHM.thuong}`} style={{ background: sectionBg(BG.weight) }}>
+        <section className={`px-6 ${RHYTHM.thuong}`} style={{ background: sectionBg(BG.presence) }}>
           <div className="ve-kenji-reveal max-w-[760px] mx-auto">
             <SectionLabel>CÁCH TÔI HIỆN DIỆN</SectionLabel>
             <EssenceAnchor as="h2" className="mb-10 md:mb-12">
@@ -367,29 +372,29 @@ export default function VeKenjiPage() {
             </EssenceAnchor>
             <div className="space-y-10 md:space-y-12">
               <div>
-                <EssenceAnchor as="h3" level="h3" className="mb-3">Tôi nghe trước khi giải thích.</EssenceAnchor>
-                <div className="space-y-5">
+                <EssenceLeadIn as="h3" className="mb-3">Tôi nghe trước khi giải thích.</EssenceLeadIn>
+                <div className="space-y-5 md:ml-7 md:max-w-[560px]">
                   <EssenceBody as="p">Tôi quan tâm đến điều đang vận hành bên dưới một lựa chọn, một phản ứng hay một vòng lặp.</EssenceBody>
                   <EssenceBody as="p">Nhưng điều tôi nhìn thấy chỉ là một góc để cùng xem lại, không phải kết luận cuối cùng về một người.</EssenceBody>
                 </div>
               </div>
               <div>
-                <EssenceAnchor as="h3" level="h3" className="mb-3">Tôi không vội biến điều chưa rõ thành một câu trả lời.</EssenceAnchor>
-                <div className="space-y-5">
+                <EssenceLeadIn as="h3" className="mb-3">Tôi không vội biến điều chưa rõ thành một câu trả lời.</EssenceLeadIn>
+                <div className="space-y-5 md:ml-7 md:max-w-[560px]">
                   <EssenceBody as="p">Có những lúc một người cần nhìn thêm, cảm thêm hoặc chỉ đơn giản là được ở lại với điều đang xảy ra.</EssenceBody>
                   <EssenceBody as="p">Tôi không đẩy họ đến một quyết định chỉ vì quyết định ấy nghe hợp lý.</EssenceBody>
                 </div>
               </div>
               <div>
-                <EssenceAnchor as="h3" level="h3" className="mb-3">Tôi không dùng kỹ thuật để làm ai trông ổn hơn.</EssenceAnchor>
-                <div className="space-y-5">
+                <EssenceLeadIn as="h3" className="mb-3">Tôi không dùng kỹ thuật để làm ai trông ổn hơn.</EssenceLeadIn>
+                <div className="space-y-5 md:ml-7 md:max-w-[560px]">
                   <EssenceBody as="p">Một người có thể nói chuyện bình tĩnh hơn nhưng bên trong vẫn đang tự ép mình.</EssenceBody>
                   <EssenceBody as="p">Điều tôi quan tâm không phải là họ có vẻ ổn đến đâu, mà là họ có đang nhìn rõ hơn hay không.</EssenceBody>
                 </div>
               </div>
               <div>
-                <EssenceAnchor as="h3" level="h3" className="mb-3">Tôi muốn khả năng tự chọn dần trở về với bạn.</EssenceAnchor>
-                <div className="space-y-5">
+                <EssenceLeadIn as="h3" className="mb-3">Tôi muốn khả năng tự chọn dần trở về với bạn.</EssenceLeadIn>
+                <div className="space-y-5 md:ml-7 md:max-w-[560px]">
                   <EssenceBody as="p">Tôi không muốn bạn phải cần tôi để hiểu mình hay quyết định thay cho đời mình.</EssenceBody>
                   <EssenceBody as="p">Công việc chỉ có ý nghĩa khi bạn dần có thể tự nhìn, tự cân nhắc và tự chọn.</EssenceBody>
                 </div>
@@ -399,7 +404,7 @@ export default function VeKenjiPage() {
           </div>
         </section>
 
-        <section className={`px-6 ${RHYTHM.thuong}`} style={{ background: sectionBg(BG.descend) }}>
+        <section className={`px-6 ${RHYTHM.thuong}`} style={{ background: sectionBg(BG.boundaries) }}>
           <div className="ve-kenji-reveal max-w-[760px] mx-auto">
             <SectionLabel>NHỮNG ĐIỀU TÔI TỰ GIỮ</SectionLabel>
             <EssenceAnchor as="h2" className="mb-10 md:mb-12">
@@ -412,53 +417,55 @@ export default function VeKenjiPage() {
             </div>
             <div className="space-y-10 md:space-y-12 mt-12 md:mt-16">
               <div>
-                <EssenceAnchor as="h3" level="h3" className="mb-3">Tôi không chẩn đoán.</EssenceAnchor>
-                <div className="space-y-5">
+                <EssenceLeadIn as="h3" className="mb-3">Tôi không chẩn đoán.</EssenceLeadIn>
+                <div className="space-y-5 md:ml-7 md:max-w-[560px]">
                   <EssenceBody as="p">Coaching không thay thế bác sĩ, chuyên gia tâm lý lâm sàng hoặc chăm sóc sức khỏe tâm thần.</EssenceBody>
                   <EssenceBody as="p">Khi điều một người đang mang cần đến chuyên môn khác, tôi nói thẳng.</EssenceBody>
                 </div>
               </div>
               <div>
-                <EssenceAnchor as="h3" level="h3" className="mb-3">Tôi không tạo sự phụ thuộc.</EssenceAnchor>
-                <div className="space-y-5">
+                <EssenceLeadIn as="h3" className="mb-3">Tôi không tạo sự phụ thuộc.</EssenceLeadIn>
+                <div className="space-y-5 md:ml-7 md:max-w-[560px]">
                   <EssenceBody as="p">Tôi không muốn một người phải cần tôi để tiếp tục hiểu hoặc quyết định đời mình.</EssenceBody>
                   <EssenceBody as="p">Mục tiêu của công việc không phải giữ họ ở lại lâu, mà giúp khả năng tự nhìn và tự chọn trở nên vững hơn.</EssenceBody>
                 </div>
               </div>
               <div>
-                <EssenceAnchor as="h3" level="h3" className="mb-3">Tôi không để AI đóng vai tôi.</EssenceAnchor>
-                <div className="space-y-5">
+                <EssenceLeadIn as="h3" className="mb-3">Tôi không để AI đóng vai tôi.</EssenceLeadIn>
+                <div className="space-y-5 md:ml-7 md:max-w-[560px]">
                   <EssenceBody as="p">AI có thể hỗ trợ vận hành, sắp xếp, ghi lại và đối chiếu.</EssenceBody>
                   <EssenceBody as="p">AI không đồng hành thay tôi và không đưa ra quyết định thay tôi.</EssenceBody>
                   <EssenceBody as="p">Bản gửi đến khách do tôi đọc và viết từ đầu đến cuối.</EssenceBody>
                 </div>
               </div>
               <div>
-                <EssenceAnchor as="h3" level="h3" className="mb-3">Tôi không dán nhãn trẻ em.</EssenceAnchor>
-                <div className="space-y-5">
+                <EssenceLeadIn as="h3" className="mb-3">Tôi không dán nhãn trẻ em.</EssenceLeadIn>
+                <div className="space-y-5 md:ml-7 md:max-w-[560px]">
                   <EssenceBody as="p">Một góc nhìn chỉ nên giúp ba mẹ quan sát con dịu hơn.</EssenceBody>
                   <EssenceBody as="p">Nó không nên biến con thành một kết luận cố định, một dự báo tương lai hay một vai mà con phải sống theo.</EssenceBody>
-                  <EssenceBody as="p">Tôi cũng không lấy chứng chỉ hay danh tiếng làm bằng chứng rằng mình luôn đúng.</EssenceBody>
-                  <EssenceBody as="p">Khi đi sai nhịp, tôi quay lại, xin lỗi và chỉnh.</EssenceBody>
                 </div>
               </div>
+            </div>
+            <div className="max-w-[620px] mt-12 md:mt-16">
+              <EssenceAccent as="p">Tôi cũng không lấy chứng chỉ hay danh tiếng làm bằng chứng rằng mình luôn đúng.</EssenceAccent>
+              <EssenceAccent as="p" className="mt-5">Khi đi sai nhịp, tôi quay lại, xin lỗi và chỉnh.</EssenceAccent>
             </div>
           </div>
         </section>
 
         <VeKenjiDivider />
 
-        <section className={`px-6 ${RHYTHM.thuong}`} style={{ background: sectionBg(BG.base) }}>
-          <div className="ve-kenji-reveal max-w-[660px] mx-auto">
-            <EssenceUtility as="h2" className="text-[#1A1A1A]/45 mb-4 md:mb-5">
+        <section className={`px-6 ${RHYTHM.thuong}`} style={{ background: sectionBg(BG.faq) }}>
+          <div className="ve-kenji-reveal max-w-[1040px] mx-auto">
+            <EssenceUtility as="h2" className="text-[#1A1A1A]/60 mb-8 md:mb-10">
               NHỮNG ĐIỀU BẠN CÓ THỂ MUỐN BIẾT
             </EssenceUtility>
-            <div className="space-y-10 md:space-y-12">
+            <div className="grid gap-x-16 gap-y-10 md:grid-cols-2 md:gap-y-12">
               {faqs.map((faq) => (
-                <div key={faq.q}>
-                  <EssenceAnchor as="h3" level="h3" className="mb-3">{faq.q}</EssenceAnchor>
-                  <div className="space-y-5">
-                    {faq.a.split("\n\n").map((paragraph) => <EssenceBody as="p" key={paragraph}>{paragraph}</EssenceBody>)}
+                <div key={faq.q} className="border-t border-e26-text/10 pt-6">
+                  <EssenceLeadIn as="h3" className="mb-3">{faq.q}</EssenceLeadIn>
+                  <div className="space-y-5 md:ml-7 md:max-w-[430px]">
+                    {faq.a.split("\n\n").map((paragraph) => <EssenceBody as="p" className="text-[#1A1A1A]/85" key={paragraph}>{paragraph}</EssenceBody>)}
                   </div>
                 </div>
               ))}
@@ -466,27 +473,27 @@ export default function VeKenjiPage() {
           </div>
         </section>
 
-        <section className={`px-6 ${RHYTHM.lang}`} style={{ background: sectionBg(BG.close) }}>
-          <div className="ve-kenji-reveal max-w-[760px] mx-auto">
+        <section className={`px-6 ${RHYTHM.lang}`} style={{ background: sectionBg(BG.discovery) }}>
+          <div className="ve-kenji-reveal max-w-[960px] mx-auto">
             <SectionLabel>BẠN MUỐN HIỂU THÊM ĐIỀU GÌ?</SectionLabel>
             <EssenceAnchor as="h2" className="mb-12 md:mb-16">Mỗi cánh cửa trả lời một câu hỏi khác nhau.</EssenceAnchor>
             <div className="space-y-12 md:space-y-16">
-              <div className="max-w-[660px]">
-                <EssenceAnchor as="h3" level="h3" className="mb-3">Cách tôi làm việc</EssenceAnchor>
+              <div className="max-w-[660px] border-t border-e26-text/10 pt-7">
+                <EssenceAnchor as="h3" level="h3" className="text-[28px] md:text-[38px] mb-4">Cách tôi làm việc</EssenceAnchor>
                 <div className="space-y-5">
                   <EssenceBody as="p">Khoảng An định có vai trò gì? Một cuộc đồng hành diễn ra ra sao? Và Tự Do — Trí Tuệ — Kiến Tạo đi vào công việc như thế nào?</EssenceBody>
                   <EssenceBody as="p"><Link href="/phuong-phap" className={linkUnderline}>Đọc Phương pháp →</Link></EssenceBody>
                 </div>
               </div>
-              <div className="grid gap-12 md:grid-cols-2 md:gap-x-16 md:gap-y-14">
-                <div>
+              <div className="grid gap-12 md:grid-cols-2 md:gap-x-20 md:gap-y-14">
+                <div className="border-t border-e26-text/10 pt-6">
                   <EssenceAnchor as="h3" level="h3" className="mb-3">Tôi muốn nhìn lại chính mình</EssenceAnchor>
                   <div className="space-y-5">
                     <EssenceBody as="p">Khi bên ngoài vẫn tiếp tục nhưng bên trong đã phải gánh quá nhiều, bạn có thể bắt đầu từ câu chuyện của chính mình.</EssenceBody>
                     <EssenceBody as="p"><Link href="/ban-sac-cua-ban" className={linkUnderline}>Dành cho người lớn →</Link></EssenceBody>
                   </div>
                 </div>
-                <div>
+                <div className="border-t border-e26-text/10 pt-6">
                   <EssenceAnchor as="h3" level="h3" className="mb-3">Tôi muốn hiểu con rõ hơn</EssenceAnchor>
                   <div className="space-y-5">
                     <EssenceBody as="p">Một cánh cửa dành cho ba mẹ muốn quan sát con dịu hơn, bớt vội kết luận và hiểu điều đang diễn ra phía sau hành vi.</EssenceBody>
@@ -494,16 +501,16 @@ export default function VeKenjiPage() {
                   </div>
                 </div>
               </div>
-              <div className="grid gap-12 md:grid-cols-2 md:gap-x-16 md:gap-y-14">
+              <div className="grid gap-12 md:grid-cols-2 md:gap-x-20 md:gap-y-14 pt-2">
                 <div>
-                  <EssenceAnchor as="h3" level="h3" className="mb-3">Những điều Essence không hứa</EssenceAnchor>
+                  <EssenceLeadIn as="h3" className="mb-3">Những điều Essence không hứa</EssenceLeadIn>
                   <div className="space-y-5">
                     <EssenceBody as="p">Những giới hạn được nói rõ trước khi bạn đi sâu hơn — về kết quả, chuyên môn và trách nhiệm của mỗi bên.</EssenceBody>
                     <EssenceBody as="p"><Link href="/dieu-essence-khong-hua" className={linkUnderline}>Đọc Điều Essence không hứa →</Link></EssenceBody>
                   </div>
                 </div>
                 <div>
-                  <EssenceAnchor as="h3" level="h3" className="mb-3">Một câu hỏi dành cho Kenji</EssenceAnchor>
+                  <EssenceLeadIn as="h3" className="mb-3">Một câu hỏi dành cho Kenji</EssenceLeadIn>
                   <div className="space-y-5">
                     <EssenceBody as="p">Khi đã đọc nhưng vẫn còn một điều cần làm rõ, bạn có thể gửi cho tôi một câu hỏi.</EssenceBody>
                     <EssenceBody as="p"><Link href="/lien-he" className={linkUnderline}>Liên hệ với Kenji →</Link></EssenceBody>
