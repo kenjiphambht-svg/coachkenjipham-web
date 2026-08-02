@@ -385,3 +385,16 @@ body {
   user-select: none;
   pointer-events: none;
 }
+
+/* === ESSENCE 2026 — phản hồi chuyển trang (02/08/2026, brief MODE 5) ===
+   .nav-departing: NavigationFeedback.tsx gắn class này vào link nội bộ vừa
+   được bấm, gỡ khi route đổi xong — người dùng thấy ngay thao tác đã được
+   ghi nhận tại đúng chỗ vừa chạm. CHỈ đổi opacity (không translate/scale)
+   nên KHÔNG cần nhánh prefers-reduced-motion: giảm-chuyển-động nhắm vào
+   chuyển động thị giác (dịch/phóng/parallax), không cấm đổi độ mờ; toàn bộ
+   nhánh reduce của hệ phản hồi chuyển trang xử lý bằng JS matchMedia trong
+   NavigationFeedback.tsx (một kiểu duy nhất cho hệ này — xem ghi chú ở đó). */
+.nav-departing {
+  opacity: 0.55;
+  transition: opacity 180ms ease-out;
+}
