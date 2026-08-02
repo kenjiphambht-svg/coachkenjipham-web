@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { SEO } from "@/components/SEO";
 import HomeHeader from "@/components/homepage/HomeHeader";
 import HomeFooter from "@/components/homepage/HomeFooter";
@@ -101,7 +101,6 @@ const BG = {
   story: "#D9D5CB",
   identity: "#F0EDE5",
   belief: "#D9D4C9",
-  interlude: "#CFC9BD",
   values: "#FCFAF3",
   presence: "#E7E3D8",
   boundaries: "#C8C2B7",
@@ -147,6 +146,7 @@ function SectionLabel({ children }: { children: string }) {
 export default function VeKenjiPage() {
   const signalRef = useRef<HTMLDivElement>(null);
   const pageRef = useRef<HTMLElement>(null);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   useVeKenjiSignalReveal(signalRef);
   useVeKenjiSectionReveal(pageRef);
 
@@ -173,8 +173,28 @@ export default function VeKenjiPage() {
       <HomeHeader />
 
       <main ref={pageRef} className="text-e26-text">
-        <section className={`px-6 ${RHYTHM.mo}`} style={{ background: sectionBg(BG.base, 14, "38% 36%") }}>
-          <div className="max-w-[1180px] mx-auto">
+        <section className="relative isolate overflow-hidden px-6 py-28 md:py-44">
+          <Image
+            src="/images/ve-kenji/06-khoang-ngoi-cung.png"
+            alt=""
+            aria-hidden="true"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[56%_center] md:object-[58%_center]"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 md:hidden"
+            style={{ background: "linear-gradient(180deg, rgba(239, 237, 228, 0.94) 0%, rgba(239, 237, 228, 0.82) 55%, rgba(239, 237, 228, 0.38) 100%)" }}
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 hidden md:block"
+            style={{ background: "linear-gradient(90deg, rgba(239, 237, 228, 0.94) 0%, rgba(239, 237, 228, 0.82) 44%, rgba(239, 237, 228, 0.48) 72%, rgba(239, 237, 228, 0.18) 100%)" }}
+          />
+          <div aria-hidden="true" className="absolute inset-0" style={{ background: "radial-gradient(ellipse 78% 72% at 30% 38%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 72%)" }} />
+          <div className="relative z-10 max-w-[1180px] mx-auto">
             <div className="ve-kenji-reveal max-w-[660px] md:ml-[10%] lg:ml-[12%]">
               <SectionLabel>VÌ SAO TÔI Ở ĐÂY</SectionLabel>
               <EssenceDisplay as="h1" className="max-w-[700px]">
@@ -333,19 +353,6 @@ export default function VeKenjiPage() {
           </div>
         </section>
 
-        <section className="px-6 py-14 md:py-24" style={{ background: sectionBg(BG.interlude, 12, "58% 46%") }}>
-          <figure className="ve-kenji-reveal max-w-[1120px] mx-auto overflow-hidden">
-            <Image
-              src="/images/ve-kenji/06-khoang-ngoi-cung.png"
-              alt="Hai ghế trong một không gian yên tĩnh"
-              width={1536}
-              height={1024}
-              sizes="(min-width: 1120px) 1120px, calc(100vw - 48px)"
-              className="h-auto w-full object-cover"
-            />
-          </figure>
-        </section>
-
         <section className={`px-6 ${RHYTHM.mo}`} style={{ background: sectionBg(BG.values, 12, "42% 34%") }}>
           <div className="ve-kenji-reveal max-w-[1180px] mx-auto">
             <div className="md:grid md:grid-cols-[minmax(220px,0.6fr)_minmax(0,1.4fr)] md:gap-x-16 lg:gap-x-24">
@@ -385,14 +392,10 @@ export default function VeKenjiPage() {
                 </div>
               </div>
             </div>
-            <div className="max-w-[660px] space-y-5 mt-12 md:mt-16 md:ml-[30%]">
-              <EssenceBody as="p">Ở trang Phương pháp, tôi viết rõ hơn cách ba giá trị này đi vào từng nhịp làm việc.</EssenceBody>
-              <EssenceBody as="p"><Link href="/phuong-phap" className={linkUnderline}>Đọc cách ba giá trị này đi vào phương pháp →</Link></EssenceBody>
-            </div>
           </div>
         </section>
 
-        <section className={`px-6 ${RHYTHM.thuong}`} style={{ background: sectionBg(BG.presence, 12, "40% 40%") }}>
+        <section className="px-6 py-16 md:py-24" style={{ background: sectionBg(BG.presence, 12, "40% 40%") }}>
           <div className="ve-kenji-reveal max-w-[1180px] mx-auto md:grid md:grid-cols-[minmax(260px,0.72fr)_minmax(0,1.28fr)] md:gap-x-20 lg:gap-x-28">
             <div className="max-w-[420px]">
               <SectionLabel>CÁCH TÔI HIỆN DIỆN</SectionLabel>
@@ -413,7 +416,6 @@ export default function VeKenjiPage() {
                 <EssenceLeadIn as="h3" className="mb-3">Tôi không vội biến điều chưa rõ thành một câu trả lời.</EssenceLeadIn>
                 <div className="space-y-5 md:ml-7 md:max-w-[560px]">
                   <EssenceBody as="p">Có những lúc một người cần nhìn thêm, cảm thêm hoặc chỉ đơn giản là được ở lại với điều đang xảy ra.</EssenceBody>
-                  <EssenceBody as="p">Tôi không đẩy họ đến một quyết định chỉ vì quyết định ấy nghe hợp lý.</EssenceBody>
                 </div>
               </div>
               <div>
@@ -423,20 +425,12 @@ export default function VeKenjiPage() {
                   <EssenceBody as="p">Điều tôi quan tâm không phải là họ có vẻ ổn đến đâu, mà là họ có đang nhìn rõ hơn hay không.</EssenceBody>
                 </div>
               </div>
-              <div>
-                <EssenceLeadIn as="h3" className="mb-3">Tôi muốn khả năng tự chọn dần trở về với bạn.</EssenceLeadIn>
-                <div className="space-y-5 md:ml-7 md:max-w-[560px]">
-                  <EssenceBody as="p">Tôi không muốn bạn phải cần tôi để hiểu mình hay quyết định thay cho đời mình.</EssenceBody>
-                  <EssenceBody as="p">Công việc chỉ có ý nghĩa khi bạn dần có thể tự nhìn, tự cân nhắc và tự chọn.</EssenceBody>
-                </div>
               </div>
-              </div>
-              <EssenceBody as="p" className="mt-12 md:mt-16"><Link href="/phuong-phap" className={linkUnderline}>Đọc cách tôi làm việc →</Link></EssenceBody>
             </div>
           </div>
         </section>
 
-        <section className={`px-6 ${RHYTHM.thuong}`} style={{ background: sectionBg(BG.boundaries, 12, "62% 38%") }}>
+        <section className="px-6 py-16 md:py-24" style={{ background: sectionBg(BG.boundaries, 12, "62% 38%") }}>
           <div className="ve-kenji-reveal max-w-[1180px] mx-auto md:grid md:grid-cols-[minmax(0,1.2fr)_minmax(280px,0.8fr)] md:gap-x-20 lg:gap-x-28">
             <div className="max-w-[480px] md:col-start-2">
               <SectionLabel>NHỮNG ĐIỀU TÔI TỰ GIỮ</SectionLabel>
@@ -491,68 +485,63 @@ export default function VeKenjiPage() {
 
         <VeKenjiDivider />
 
-        <section className={`px-6 ${RHYTHM.thuong}`} style={{ background: sectionBg(BG.faq, 14, "38% 38%") }}>
+        <section className="px-6 py-16 md:py-24" style={{ background: sectionBg(BG.faq, 14, "38% 38%") }}>
           <div className="ve-kenji-reveal max-w-[1180px] mx-auto md:grid md:grid-cols-[minmax(240px,0.55fr)_minmax(0,1.45fr)] md:gap-x-16 lg:gap-x-24">
             <EssenceUtility as="h2" className="max-w-[260px] text-[#1A1A1A]/60 mb-8 md:mb-0">
               NHỮNG ĐIỀU BẠN CÓ THỂ MUỐN BIẾT
             </EssenceUtility>
             <div className="grid gap-x-16 gap-y-10 md:grid-cols-2 md:gap-y-12">
-              {faqs.map((faq) => (
-                  <div key={faq.q} className="border-t border-e26-text/10 pt-6">
-                    <EssenceLeadIn as="h3" className="mb-3">{faq.q}</EssenceLeadIn>
-                    <div className="space-y-5 md:ml-7 md:max-w-[430px]">
-                      {faq.a.split("\n\n").map((paragraph) => <EssenceBody as="p" className="text-[#1A1A1A]/85" key={paragraph}>{paragraph}</EssenceBody>)}
+              {faqs.map((faq, index) => {
+                const isOpen = openFaqIndex === index;
+                const questionId = `ve-kenji-faq-question-${index}`;
+                const answerId = `ve-kenji-faq-answer-${index}`;
+
+                return (
+                  <div key={faq.q} className="border-t border-e26-text/10 pt-1">
+                    <h3>
+                      <button
+                        id={questionId}
+                        type="button"
+                        aria-expanded={isOpen}
+                        aria-controls={answerId}
+                        onClick={() => setOpenFaqIndex(isOpen ? null : index)}
+                        className="flex w-full items-start justify-between gap-5 py-5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-transparent"
+                      >
+                        <EssenceLeadIn as="span">{faq.q}</EssenceLeadIn>
+                        <span aria-hidden="true" className="font-serif text-[30px] leading-none text-e26-text/70">{isOpen ? "−" : "+"}</span>
+                      </button>
+                    </h3>
+                    <div id={answerId} role="region" aria-labelledby={questionId} hidden={!isOpen} className="pb-6 md:pb-8">
+                      <div className="space-y-5 md:ml-7 md:max-w-[430px]">
+                        {faq.a.split("\n\n").map((paragraph) => <EssenceBody as="p" className="text-[#1A1A1A]/85" key={paragraph}>{paragraph}</EssenceBody>)}
+                      </div>
                     </div>
                   </div>
-                ))}
+                );
+              })}
             </div>
           </div>
         </section>
 
-        <section className={`px-6 ${RHYTHM.lang}`} style={{ background: sectionBg(BG.discovery, 14, "60% 34%") }}>
+        <section className="px-6 py-24 md:py-36" style={{ background: sectionBg(BG.discovery, 14, "60% 34%") }}>
           <div className="ve-kenji-reveal max-w-[1180px] mx-auto md:grid md:grid-cols-[minmax(260px,0.65fr)_minmax(0,1.35fr)] md:gap-x-16 lg:gap-x-24">
             <div className="max-w-[420px]">
               <SectionLabel>BẠN MUỐN HIỂU THÊM ĐIỀU GÌ?</SectionLabel>
               <EssenceAnchor as="h2" className="mb-12 md:mb-0">Mỗi cánh cửa trả lời một câu hỏi khác nhau.</EssenceAnchor>
             </div>
-            <div className="space-y-12 md:space-y-16 md:pt-1">
+            <div className="max-w-[660px] space-y-12 md:space-y-16 md:pt-1">
               <div className="max-w-[660px] border-t border-e26-text/10 pt-7">
                 <EssenceAnchor as="h3" level="h3" className="text-[28px] md:text-[38px] mb-4">Cách tôi làm việc</EssenceAnchor>
                 <div className="space-y-5">
                   <EssenceBody as="p">Khoảng An định có vai trò gì? Một cuộc đồng hành diễn ra ra sao? Và Tự Do — Trí Tuệ — Kiến Tạo đi vào công việc như thế nào?</EssenceBody>
-                  <EssenceBody as="p"><Link href="/phuong-phap" className={linkUnderline}>Đọc Phương pháp →</Link></EssenceBody>
+                  <EssenceBody as="p"><Link href="/phuong-phap" className={linkUnderline}>Đọc cách tôi làm việc →</Link></EssenceBody>
                 </div>
               </div>
-              <div className="grid gap-12 md:grid-cols-2 md:gap-x-20 md:gap-y-14">
-                <div className="border-t border-e26-text/10 pt-6">
-                  <EssenceAnchor as="h3" level="h3" className="mb-3">Tôi muốn nhìn lại chính mình</EssenceAnchor>
-                  <div className="space-y-5">
-                    <EssenceBody as="p">Khi bên ngoài vẫn tiếp tục nhưng bên trong đã phải gánh quá nhiều, bạn có thể bắt đầu từ câu chuyện của chính mình.</EssenceBody>
-                    <EssenceBody as="p"><Link href="/ban-sac-cua-ban" className={linkUnderline}>Dành cho người lớn →</Link></EssenceBody>
-                  </div>
-                </div>
-                <div className="border-t border-e26-text/10 pt-6">
-                  <EssenceAnchor as="h3" level="h3" className="mb-3">Tôi muốn hiểu con rõ hơn</EssenceAnchor>
-                  <div className="space-y-5">
-                    <EssenceBody as="p">Một cánh cửa dành cho ba mẹ muốn quan sát con dịu hơn, bớt vội kết luận và hiểu điều đang diễn ra phía sau hành vi.</EssenceBody>
-                    <EssenceBody as="p"><Link href="/ban-sac-cua-con" className={linkUnderline}>Dành cho ba mẹ →</Link></EssenceBody>
-                  </div>
-                </div>
-              </div>
-              <div className="grid gap-12 md:grid-cols-2 md:gap-x-20 md:gap-y-14 pt-2">
-                <div>
-                  <EssenceLeadIn as="h3" className="mb-3">Những điều Essence không hứa</EssenceLeadIn>
-                  <div className="space-y-5">
-                    <EssenceBody as="p">Những giới hạn được nói rõ trước khi bạn đi sâu hơn — về kết quả, chuyên môn và trách nhiệm của mỗi bên.</EssenceBody>
-                    <EssenceBody as="p"><Link href="/dieu-essence-khong-hua" className={linkUnderline}>Đọc Điều Essence không hứa →</Link></EssenceBody>
-                  </div>
-                </div>
-                <div>
-                  <EssenceLeadIn as="h3" className="mb-3">Một câu hỏi dành cho Kenji</EssenceLeadIn>
-                  <div className="space-y-5">
-                    <EssenceBody as="p">Khi đã đọc nhưng vẫn còn một điều cần làm rõ, bạn có thể gửi cho tôi một câu hỏi.</EssenceBody>
-                    <EssenceBody as="p"><Link href="/lien-he" className={linkUnderline}>Liên hệ với Kenji →</Link></EssenceBody>
-                  </div>
+              <div className="max-w-[520px] border-t border-e26-text/10 pt-6">
+                <EssenceLeadIn as="h3" className="mb-3">Những điều Essence không hứa</EssenceLeadIn>
+                <div className="space-y-5">
+                  <EssenceBody as="p">Những giới hạn được nói rõ trước khi bạn đi sâu hơn — về kết quả, chuyên môn và trách nhiệm của mỗi bên.</EssenceBody>
+                  <EssenceBody as="p"><Link href="/dieu-essence-khong-hua" className={linkUnderline}>Đọc những điều Essence không hứa →</Link></EssenceBody>
                 </div>
               </div>
             </div>
