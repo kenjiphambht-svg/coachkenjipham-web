@@ -20,7 +20,9 @@
 
 **Route:** `/` (and its contained migration-evidence twin `/trang-chu-v2`, same shared `VillaPage.tsx`)
 
-**Audit status:** **NOT READY** for `HOMEPAGE INDEX-READY LOCKED` classification. Technical layers (indexing, schema, links, accessibility basics, performance, analytics, build) are clean. Two categories of finding block the LOCKED status until Kenji rules on them: (a) four Founder Locked Copy text discrepancies, (b) two Founder-locked background-asset decisions (S04, S08) implemented as photographic images instead of the specified code backgrounds. `noindex` is unchanged and correctly rendered throughout; nothing in this audit touched indexing, routes, or Locked Copy content.
+**Audit status at the time of writing:** NOT READY. **Now superseded — `/` reached `INDEX-READY LOCKED — NOINDEX PENDING FOUNDER ACTIVATION` on 02/08/2026;** see the completion record. Original text retained below as dated evidence.
+
+**(historical)** **NOT READY** for `HOMEPAGE INDEX-READY LOCKED` classification. Technical layers (indexing, schema, links, accessibility basics, performance, analytics, build) are clean. Two categories of finding block the LOCKED status until Kenji rules on them: (a) four Founder Locked Copy text discrepancies, (b) two Founder-locked background-asset decisions (S04, S08) implemented as photographic images instead of the specified code backgrounds. `noindex` is unchanged and correctly rendered throughout; nothing in this audit touched indexing, routes, or Locked Copy content.
 
 ## 2. PASS (verified with evidence)
 

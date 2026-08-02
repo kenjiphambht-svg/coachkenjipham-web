@@ -12,12 +12,13 @@
 
 ## 1. Final status
 
-**HOMEPAGE CODE LAYER: INDEX-READY LOCKED.**
-**OVERALL: NOT YET fully `INDEX-READY LOCKED — NOINDEX PENDING FOUNDER ACTIVATION`.**
+# `/` = INDEX-READY LOCKED — NOINDEX PENDING FOUNDER ACTIVATION
 
-Everything inside the repository is complete. Exactly **one** item remains, and it is not a code change: the production canonical-domain redirect currently runs **backwards** relative to the Founder's 02/08/2026 decision, and it can only be corrected in the Vercel dashboard (§4). Until that is flipped, `/` cannot honestly be called domain-consistent, because the canonical tag declares the apex domain while the infrastructure bounces the apex away to `www`.
+All Homepage-scoped layers are complete and verified. The canonical-domain infrastructure action recorded here as O-07 was performed by the Founder on 02/08/2026 and **verified live in production** (§4) — apex serves 200, `www` returns a permanent 308 to apex, HTTP redirects to HTTPS apex, and no redirect loop exists at any entry point.
 
-`noindex` is unchanged everywhere. No sitemap, robots, or Search Console action was taken.
+`noindex` is unchanged everywhere. No sitemap, robots, or Search Console action was taken. When the Founder later authorizes M6, activation should require only removing the `noindex` directive and re-verifying production — no content, SEO, domain, security, accessibility or performance retrofit remains outstanding for `/`.
+
+**Two code changes land with the merge of PR #117** and are verified in the PR's built HTML but are not yet on production, since the PR is intentionally unmerged: the Signal Moment "vì" correction and the `<link rel="canonical">` tag. Everything else in this record is already live.
 
 ## 2. Founder Decisions of 02/08/2026 — reconciled into current truth
 
@@ -47,34 +48,35 @@ The canonical tag is **new in this PR**. It was added specifically so that M6 ac
 
 `/trang-chu-v2` **self-canonicals** to `https://coachkenjipham.com/trang-chu-v2` rather than pointing at `/`. This is deliberate: L0 C-01 leaves that route's disposition as a pending Kenji decision, and pointing its canonical at `/` would silently pre-decide a consolidation that C-01 has not authorized. Both routes are `noindex`, so nothing is exposed either way.
 
-## 4. Canonical domain — infrastructure layer (OUTSTANDING, Kenji action required)
+## 4. Canonical domain — infrastructure layer (RESOLVED 02/08/2026, verified live)
 
-**Observed production behaviour, 02/08/2026:**
+The Founder set `coachkenjipham.com` as the Vercel Primary Domain and configured `www` as a 308 permanent redirect. **Independently verified in production**, not taken on report:
 
-| Request | Result |
-|---|---|
-| `http://coachkenjipham.com/` | 308 → `https://coachkenjipham.com/` ✅ HTTP→HTTPS enforced |
-| `http://www.coachkenjipham.com/` | 308 → `https://www.coachkenjipham.com/` ✅ HTTP→HTTPS enforced |
-| `https://coachkenjipham.com/` | **307 → `https://www.coachkenjipham.com/`** ❌ backwards vs. C-14, and *temporary* not permanent |
-| `https://www.coachkenjipham.com/` | 200, serves the page ❌ `www` is currently the primary |
+| Entry point | Hops | Final URL | Final code |
+|---|---|---|---|
+| `https://coachkenjipham.com/` | **0** | `https://coachkenjipham.com/` | **200** ✅ |
+| `https://www.coachkenjipham.com/` | 1 (**308** permanent) | `https://coachkenjipham.com/` | 200 ✅ |
+| `http://coachkenjipham.com/` | 1 (308) | `https://coachkenjipham.com/` | 200 ✅ |
+| `http://www.coachkenjipham.com/` | 2 (308 → 308) | `https://coachkenjipham.com/` | 200 ✅ |
 
-**Where this comes from — verified, not assumed:** `vercel.json` contains exactly one redirect (`/old-path` → `/new-path`) and no host-based rule; `next.config.mjs` defines no `redirects`, `rewrites` or `headers`. The Vercel project (`prj_Okp2A6f4oiba8HxrHhQIat9WhDmR`, team `Kenji Pham's projects`) lists **both** `www.coachkenjipham.com` and `coachkenjipham.com` as project domains. The apex→www 307 is therefore a **Vercel dashboard domain setting**, outside this repository.
+**No redirect loop at any entry point** — every path converges on the apex in at most two hops, confirmed with `curl -L --max-redirs 10` reporting `num_redirects` and `url_effective`. The two-hop case (`http://www`) is the standard, unavoidable HTTP→HTTPS-then-host-normalisation sequence, not a misconfiguration.
 
-**Why this was not "fixed" from code — this matters:** adding a `www → apex` redirect to `vercel.json` while the dashboard still redirects `apex → www` produces an **infinite redirect loop** (dashboard sends apex to www; vercel.json sends www back to apex; repeat). Creating that loop is explicitly forbidden by the task, and it would take the whole site down, not just `/`. The dashboard setting must be flipped first; no code change is needed at all once it is.
+**Internal navigation carries no redirect penalty:** all eight Homepage CTA destinations plus key assets (OG image, Hero images) return **200 with 0 redirects** directly on the apex.
 
-**Required action (Kenji, Vercel dashboard — 1 setting):**
-Project → Settings → Domains → make `coachkenjipham.com` the **primary/production** domain, and set `www.coachkenjipham.com` to **redirect to it permanently (308)**.
+**Historical record of the earlier state**, retained so the reasoning is not lost: before the fix, `https://coachkenjipham.com/` returned a **307 (temporary)** to `https://www.coachkenjipham.com/`, which served 200 — i.e. exactly backwards from C-14. That rule lived in the Vercel dashboard, not in `vercel.json` or `next.config.mjs`.
 
-After that flip, re-verify: `https://www.coachkenjipham.com/` should return 308 → `https://coachkenjipham.com/`, and `https://coachkenjipham.com/` should return 200. No repository change accompanies this.
+**Where the rule lives — verified, not assumed:** `vercel.json` contains exactly one redirect (`/old-path` → `/new-path`) and no host-based rule; `next.config.mjs` defines no `redirects`, `rewrites` or `headers`. The Vercel project (`prj_Okp2A6f4oiba8HxrHhQIat9WhDmR`, team `Kenji Pham's projects`) lists **both** hostnames as project domains. Host normalisation is therefore entirely a **Vercel dashboard domain setting**, and the repository correctly contains no host redirect.
 
-**DNS:** no DNS record change is required for this flip — both hostnames already resolve to Vercel and both already serve valid TLS. DNS was therefore not touched.
+**Why no code redirect was added — this remains the operating rule:** adding a `www → apex` rule to `vercel.json` on top of the dashboard's host normalisation risks a **redirect loop** if the dashboard rule is ever pointed the other way. The dashboard is the single source of host normalisation; the repository must stay out of it. **Do not add host-based redirects to `vercel.json`.**
+
+**DNS:** no DNS record change was required or made — both hostnames already resolved to Vercel and both already served valid TLS.
 
 ## 5. HTTPS / TLS / security
 
 | Check | Result |
 |---|---|
 | HTTPS enforced | ✅ Both hostnames 308 from HTTP to HTTPS |
-| TLS certificate | ✅ Valid on both apex and `www`; Vercel-managed, auto-renewing |
+| TLS certificate | ✅ Valid on **both** hostnames, verified via `openssl s_client`. Apex: `CN=coachkenjipham.com`, issuer Let's Encrypt, valid 17/07/2026 → 15/10/2026. `www`: `CN=www.coachkenjipham.com`, Let's Encrypt, same window. Separate Vercel-managed certificates, auto-renewing — `www` keeps its own valid certificate so the 308 redirect completes over TLS without a warning, which is the correct arrangement. |
 | HSTS | ✅ Present: `strict-transport-security: max-age=63072000` (2 years) on production responses |
 | HSTS `preload` / `includeSubDomains` | ⚠️ **Not enabled, and deliberately not enabled here.** Adding `preload` is effectively irreversible for a long period and `includeSubDomains` would bind every current and future subdomain to HTTPS-only. Both are site-wide, high-consequence changes that the task itself says to flag rather than self-apply. Recorded as a separate Kenji decision. |
 | Mixed content | ✅ None — zero `http://` sub-resources in the rendered HTML |
@@ -84,22 +86,24 @@ After that flip, re-verify: `https://www.coachkenjipham.com/` should return 308 
 
 ## 6. Lighthouse (production, `lighthouse@12.8.2`, headless Chrome, 02/08/2026)
 
-Measured against `https://www.coachkenjipham.com/` — the origin that actually serves content today. Once the §4 flip happens, the same page will serve from the apex without the extra redirect hop, which can only improve these numbers.
+Four runs: two against `www` before the domain flip, two against the apex after it.
 
-| Category | Mobile | Desktop |
-|---|---|---|
-| Performance | 61 | 73 |
-| **Accessibility** | **100** | **100** |
-| **Best Practices** | **100** | **100** |
-| SEO | 63 | 63 |
+| Category | Mobile (apex, final) | Desktop (apex, final) | Mobile (www, earlier) | Desktop (www, earlier) |
+|---|---|---|---|---|
+| Performance | 93 | 73 | 61 | 73 |
+| **Accessibility** | **100** | **100** | **100** | **100** |
+| **Best Practices** | **100** | **100** | **100** | **100** |
+| SEO | 63 | 63 | 63 | 63 |
 
-| Metric | Mobile | Desktop |
+| Metric | Mobile (apex) | Desktop (apex) |
 |---|---|---|
-| First Contentful Paint | 5.0 s | 1.9 s |
-| Largest Contentful Paint | 8.8 s | 2.7 s |
+| First Contentful Paint | 2.1 s | 1.9 s |
+| Largest Contentful Paint | 2.9 s | 2.7 s |
 | **Cumulative Layout Shift** | **0** | **0** |
 | **Total Blocking Time** | **0 ms** | **0 ms** |
-| Speed Index | 5.6 s | 2.4 s |
+| Speed Index | 2.8 s | 2.4 s |
+
+**The mobile 61 → 93 swing must not be read as an improvement caused by the domain change, and is not claimed as one.** Both runs fetched the identical page over a direct 200 with no redirect hop (`www` was the primary at the time of the earlier run), issued the same **53** network requests, used the same `simulate` throttling, and hit the same single render-blocking resource — which in fact cost *more* in the faster run (1042 ms vs 791 ms). The difference is run-to-run variance in Lighthouse's simulated throttling, not a structural change. Desktop, measured under less aggressive throttling, returned an identical **73** both times, which is consistent with that reading. The honest summary is that mobile Performance for `/` currently measures somewhere in the **61–93** band depending on conditions, and the structural lever below is unchanged by the domain work.
 
 **SEO 63 is not a defect.** The only failing SEO audit on either form factor is `is-crawlable` — *"Page is blocked from indexing"* — which is the intended, governed state under L0 C-02. Every other SEO audit passes. On the day indexing is activated, this score rises on its own with no code change.
 
@@ -128,7 +132,8 @@ Run in the `audit/homepage-index-readiness` worktree, checked out from `origin/m
 | Rendered `noindex` | ✅ `<meta name="robots" content="noindex">` in built HTML and live production. Unchanged by this PR. |
 | Metadata | ✅ Title, description, OG title/description match the Founder-locked SEO/GEO package exactly |
 | Schema | ✅ Person + Organization, entity `Essence Coaching` per L0 C-07, no Product/Review/Medical |
-| Links | ✅ All 7 Homepage CTA destinations return HTTP 200; no legacy `/kidbook` link anywhere |
+| Links | ✅ All 8 Homepage CTA/nav destinations return **200 with 0 redirects on the apex**; no legacy `/kidbook` link anywhere |
+| Canonical domain | ✅ Apex primary, `www` → 308 permanent, no loop, TLS valid on both (§4) |
 | Single H1 | ✅ Exactly one, the Brand Signature Line |
 | Horizontal overflow | ✅ None at 375 px or 1440 px |
 | Console / runtime | ✅ No console errors, no hydration warnings on production |
@@ -137,10 +142,12 @@ Run in the `audit/homepage-index-readiness` worktree, checked out from `origin/m
 
 ## 9. Remaining system dependencies
 
+**None block `/`.** Every item below is site-wide or organisational, not Homepage-scoped, and none of them require a Homepage change at M6 activation.
+
 | # | Dependency | Owner | Required action |
 |---|---|---|---|
-| 1 | **Canonical domain flip** (§4) | Kenji | One Vercel dashboard setting: apex primary, `www` → 308 to apex. No code change. **This is the only item blocking full index-ready status.** |
-| 2 | Render-blocking Google Fonts `@import` in `globals.css` (§6) | Kenji | Approve a scoped, site-wide font-loading change (e.g. `next/font`, or preload + non-blocking load). Affects all 23 routes. |
+| 1 | ~~Canonical domain flip~~ | — | ✅ **RESOLVED 02/08/2026** by the Founder and verified live (§4). Closed as O-07. |
+| 2 | Render-blocking Google Fonts `@import` in `globals.css` (§6) | Kenji | Approve a scoped, site-wide font-loading change (e.g. `next/font`, or preload + non-blocking load). Affects all 23 routes. This is the single structural performance lever for `/`, but it is not a Homepage-scoped defect and does not block index-readiness. |
 | 3 | HSTS `preload` / `includeSubDomains` (§5) | Kenji | Separate decision; irreversible-by-nature, site-wide |
 | 4 | Additional security headers — CSP, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` (§5) | Kenji | Site-wide `vercel.json` header change; Best Practices already 100/100 without them |
 | 5 | `HomeHeader.tsx` uses `<img>` for two logo SVGs | Kenji | Shared file also on `/ve-kenji`'s render path; low-risk but deferred per shared-file caution |

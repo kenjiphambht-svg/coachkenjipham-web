@@ -26,7 +26,7 @@ Roadmap chi tiết và decision log cũ chỉ là historical evidence, không ph
 
 **Hiện trạng:** `/` là Villa canonical. Governance foundation ĐÓNG — không còn cleanup PR nào chờ. Roadmap thực tế = `docs/website/current/PAGE_PORTFOLIO_AND_TRANSFORMATION_BLUEPRINT.md` (mục 3, đã đánh dấu P1 COMPLETED).
 
-**Homepage `/` (branch `audit/homepage-index-readiness`, PR #117, chưa merge):** closeout chính thức = `docs/website/homepage/HOMEPAGE_FINAL_COMPLETION_RECORD.md`. Trạng thái: **code layer INDEX-READY LOCKED**; còn đúng 1 việc hạ tầng ngoài repo — lật domain canonical trên Vercel dashboard (L0 C-14, gap O-07). Founder Decisions 02/08/2026 đã ghi vào C-14/C-15; các blocker của bản audit cũ đã rút. `noindex` không đổi, không kích hoạt sitemap/robots/Search Console.
+**Homepage `/` (branch `audit/homepage-index-readiness`, PR #117, chưa merge):** trạng thái **INDEX-READY LOCKED — NOINDEX PENDING FOUNDER ACTIVATION**. Closeout chính thức = `docs/website/homepage/HOMEPAGE_FINAL_COMPLETION_RECORD.md`. Founder Decisions 02/08/2026 ghi tại C-14/C-15; domain canonical đã lật xong và verify live (O-07 đóng). `noindex` không đổi, chưa kích hoạt sitemap/robots/Search Console — M6 vẫn là Founder Decision riêng.
 
 **Việc kế tiếp theo blueprint (mỗi việc cần Page Contract + approved copy + Kenji phê duyệt trước khi làm):** P2a (privacy/contact foundation) → P2b (trust suite) → P3 (Lặng private flow) → ... → M6 (indexing, Founder Decision riêng, luôn cuối cùng).
 
