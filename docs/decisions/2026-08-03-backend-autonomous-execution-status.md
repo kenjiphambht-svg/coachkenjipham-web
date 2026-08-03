@@ -12,6 +12,7 @@
 | B9 | `feat/b9-backup-recovery` / #130 | no schema change | durable snapshot manifest and isolated-only recovery plan; 82 passed, 0 skipped |
 | B10 | `feat/b10-end-to-end` / #131 | no schema change | E2E release matrix and enforced fail-closed readiness state; 84 passed, 0 skipped |
 | B11 | `feat/b11-technical-map` / #132 | no schema change | security, data-flow, migration and release-gate technical map; 84 passed, 0 skipped |
+| B12 | `feat/b12-cutover` / #133 | no schema change | Founder-approved, all-gates-required manual cutover runbook; 87 passed, 0 skipped |
 
 Security: `app_private.is_admin()` replaces exposed public helper. Leaked Password Protection is PLAN-LIMITED PRODUCTION GATE. `api_idempotency_keys` and `rate_limit_buckets` require direct-denial evidence before final Advisor classification.
 
