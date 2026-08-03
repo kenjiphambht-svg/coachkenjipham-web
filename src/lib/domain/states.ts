@@ -117,13 +117,12 @@ export const LANG_SESSION_PRICE_VND = 10_000_000;
 
 /**
  * Hạn dùng của booking token (link chọn lịch qua email), tính bằng giờ.
- * Founder chốt 02/08/2026 (B0.1) — xem docs/decisions/2026-08-02-b0-followups.md
- * mục 3.
+ * Founder chốt 03/08/2026 (Đính kèm Master Prompt v1.0, Điểm 3): 24 giờ —
+ * THAY THẾ quyết định 48h ghi ở B0.1. Xem
+ * docs/decisions/2026-08-02-b0-followups.md mục 3 (đã cập nhật).
  *
  * ⚠️ Hằng số này CHƯA được nơi nào trong code đọc — B0 chưa xây bước phát
- * booking token (xem ghi chú trong src/pages/admin/lang/[id].tsx: "Bước
- * xếp lịch và phát link đặt lịch riêng sẽ làm ở vòng sau"). Đặt sẵn ở đây
- * để khi B1 xây bước đó, con số đến từ một nơi duy nhất đã được duyệt,
- * không phải một số mới ai đó đoán khi viết code.
+ * booking token. Đặt sẵn ở đây để khi Phase 3 xây bước đó, con số đến từ
+ * một nơi duy nhất đã được duyệt, không phải một số mới ai đó đoán.
  */
-export const BOOKING_TOKEN_TTL_HOURS = 48;
+export const BOOKING_TOKEN_TTL_HOURS = 24;

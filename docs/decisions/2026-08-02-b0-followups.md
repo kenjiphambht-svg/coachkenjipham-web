@@ -18,7 +18,10 @@ Kiểm tra lại nút hiện có (B0.1): nút đã đổi đúng trạng thái (
 
 ## 3. Booking token (link chọn lịch qua email)
 
-Hạn dùng: **chính xác 48 giờ** kể từ lúc phát ra.
+Hạn dùng: ~~48 giờ~~ → **24 giờ** kể từ lúc phát ra.
+**(Cập nhật 03/08/2026 — Đính kèm Master Prompt v1.0 Điểm 3 thay thế quyết định 48h bên dưới. Hằng số `BOOKING_TOKEN_TTL_HOURS` đã sửa thành 24.)**
+
+Quyết định gốc 02/08/2026 (đã bị thay thế): 48 giờ.
 
 Kiểm tra code hiện tại (B0.1): cột `booking_token_expires_at` đã có trong schema (`supabase/migrations/0001_init.sql`), nhưng **chưa có bất kỳ đoạn code nào phát hành booking token** — đúng theo phạm vi B0 đã ghi rõ trong `src/pages/admin/lang/[id].tsx`: "Bước xếp lịch và phát link đặt lịch riêng sẽ làm ở vòng sau." Vì vậy không có "giá trị placeholder sai" để sửa — chưa có giá trị nào cả.
 
