@@ -18,6 +18,7 @@ import { DomainError, HTTP_STATUS_BY_CODE } from '@/lib/domain/errors';
 import { transitionLang, type Actor } from '@/lib/domain/state-machine';
 import { LANG_SESSION_PRICE_VND, type LangStatus } from '@/lib/domain/states';
 import { toMonthKey } from '@/lib/domain/capacity';
+import { createPrivateLinkSecret } from '@/lib/security/private-link';
 
 type Action =
   | 'start_review'
@@ -172,18 +173,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Chỉ route đã qua requireAdmin() mới lấy được service role để gọi RPC.
     // RPC cũng tự khoá capacity, ghi audit và payment trong cùng transaction.
     const systemDb = createAdminSupabase();
-    const { data: transitionRows, error: transitionError } = await systemDb.rpc(
-      'transition_lang_application',
-      {
-        p_application_id: id,
-        p_expected_status: from,
-        p_next_status: to,
-        p_actor: result.audit.actor,
-        p_reason: declineReason,
-        p_target_session_month: targetSessionMonth,
-        p_payment_amount_vnd: action === 'confirm_payment' ? LANG_SESSION_PRICE_VND : null,
-      }
-    );
+    // Phát link thanh toán phải cùng transaction với việc khoá suất. Raw
+    // token chỉ sống trong biến này để trả một lần cho admin, CSDL nhận hash.
+    const paymentSecret = action === 'issue_payment' ? createPrivateLinkSecret() : null;
+    const transitionCall =
+      action === 'issue_payment'
+        ? systemDb.rpc('issue_lang_payment_request', {
+            p_application_id: id,
+            p_expected_status: from,
+            p_actor: result.audit.actor,
+            p_token_hash: paymentSecret?.tokenHash,
+            p_expires_at: paymentSecret?.expiresAt,
+          })
+        : systemDb.rpc('transition_lang_application', {
+            p_application_id: id,
+            p_expected_status: from,
+            p_next_status: to,
+            p_actor: result.audit.actor,
+            p_reason: declineReason,
+            p_target_session_month: targetSessionMonth,
+            p_payment_amount_vnd: action === 'confirm_payment' ? LANG_SESSION_PRICE_VND : null,
+          });
+    const { data: transitionRows, error: transitionError } = await transitionCall;
     if (transitionError) throwTransitionRpcError(transitionError);
 
     const applied = (transitionRows as TransitionRpcRow[] | null)?.[0];
@@ -218,6 +229,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 remaining: Math.max(0, applied.capacity_limit - applied.capacity_used),
               }
             : null,
+        paymentPath: paymentSecret ? `/lang-90/thanh-toan/${paymentSecret.rawToken}` : null,
       },
     });
   } catch (err) {
