@@ -151,12 +151,12 @@ const linkUnderline =
 
 const BG = {
   base: "#EFEDE4",
-  story: "#D9D5CB",
+  story: "#D5D1C7",
   identity: "#F0EDE5",
-  belief: "#D9D4C9",
+  belief: "#D6D1C6",
   values: "#FCFAF3",
   presence: "#E7E3D8",
-  boundaries: "#C8C2B7",
+  boundaries: "#C3BEB5",
   faq: "#F1EEE5",
   discovery: "#EDE6D8",
 };
@@ -172,7 +172,7 @@ function lighten(hex: string, amount: number) {
 function sectionBg(edge: string, depth = 10, position = "50% 40%", streakDirection = "120deg") {
   const center = lighten(edge, depth);
   const middle = lighten(edge, Math.round(depth * 0.42));
-  return `linear-gradient(${streakDirection}, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.08) 33%, rgba(65,55,42,0.055) 100%), radial-gradient(ellipse 120% 112% at ${position}, ${center} 0%, ${middle} 48%, ${edge} 100%)`;
+  return `linear-gradient(${streakDirection}, rgba(255,255,255,0.24) 0%, rgba(255,255,255,0.065) 36%, rgba(26,26,26,0.05) 100%), radial-gradient(ellipse 120% 112% at ${position}, ${center} 0%, ${middle} 48%, ${edge} 100%)`;
 }
 
 function VeKenjiDivider() {
@@ -184,7 +184,7 @@ function VeKenjiDivider() {
 }
 
 const RHYTHM = {
-  mo: "py-28 md:py-40",
+  mo: "py-24 sm:py-28 md:py-40",
   thuong: "py-20 md:py-28",
   lang: "py-36 md:py-56",
 };
@@ -256,14 +256,14 @@ export default function VeKenjiPage() {
           <div
             aria-hidden="true"
             className="absolute inset-0 md:hidden"
-            style={{ background: "linear-gradient(180deg, rgba(239, 237, 228, 0.96) 0%, rgba(239, 237, 228, 0.87) 48%, rgba(239, 237, 228, 0.48) 78%, rgba(239, 237, 228, 0.14) 100%)" }}
+            style={{ background: "linear-gradient(180deg, rgba(239, 237, 228, 0.93) 0%, rgba(239, 237, 228, 0.78) 46%, rgba(239, 237, 228, 0.35) 78%, rgba(239, 237, 228, 0.06) 100%)" }}
           />
           <div
             aria-hidden="true"
             className="absolute inset-0 hidden md:block"
-            style={{ background: "linear-gradient(90deg, rgba(239, 237, 228, 0.93) 0%, rgba(239, 237, 228, 0.84) 34%, rgba(239, 237, 228, 0.56) 53%, rgba(239, 237, 228, 0.20) 74%, rgba(239, 237, 228, 0.04) 100%)" }}
+            style={{ background: "linear-gradient(90deg, rgba(239, 237, 228, 0.88) 0%, rgba(239, 237, 228, 0.74) 32%, rgba(239, 237, 228, 0.36) 54%, rgba(239, 237, 228, 0.08) 73%, rgba(239, 237, 228, 0) 100%)" }}
           />
-          <div aria-hidden="true" className="absolute inset-0" style={{ background: "radial-gradient(ellipse 52% 68% at 25% 40%, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0) 76%)" }} />
+          <div aria-hidden="true" className="absolute inset-0" style={{ background: "radial-gradient(ellipse 52% 68% at 25% 40%, rgba(255,255,255,0.24) 0%, rgba(255,255,255,0) 76%)" }} />
           <div className="relative z-10 max-w-[1180px] mx-auto">
             <div className="ve-kenji-reveal max-w-[660px] md:ml-[10%] lg:ml-[12%]">
               <SectionLabel>VÌ SAO TÔI Ở ĐÂY</SectionLabel>
@@ -289,9 +289,10 @@ export default function VeKenjiPage() {
           </div>
         </section>
 
-        <section className={`px-6 ${RHYTHM.mo}`} style={{ background: sectionBg(BG.story, 14, "64% 36%", "125deg") }}>
-          <div className="max-w-[1180px] mx-auto">
-            <div className="ve-kenji-reveal md:grid md:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)] md:gap-x-20 lg:gap-x-28">
+        <section className={`relative isolate overflow-hidden px-6 ${RHYTHM.mo}`} style={{ background: sectionBg(BG.story, 18, "72% 38%", "126deg") }}>
+          <div aria-hidden="true" className="absolute inset-0" style={{ background: "radial-gradient(ellipse 48% 72% at 76% 34%, rgba(255,255,255,0.19) 0%, rgba(255,255,255,0) 76%)" }} />
+          <div className="relative max-w-[1180px] mx-auto">
+            <div className="ve-kenji-reveal md:grid md:grid-cols-[minmax(0,0.98fr)_minmax(400px,1.02fr)] md:gap-x-20 lg:gap-x-24">
               <div className="max-w-[660px] md:ml-[8%]">
                 <SectionLabel>TÔI ĐẾN TỪ ĐÂU</SectionLabel>
                 <EssenceAnchor as="h2" className="mb-10 md:mb-12">
@@ -314,13 +315,13 @@ export default function VeKenjiPage() {
                 </div>
               </div>
 
-              <figure className="mt-16 w-[min(84vw,460px)] justify-self-center border-t border-e26-text/20 pt-6 md:mt-20 md:w-full md:max-w-[520px] md:justify-self-end">
+              <figure className="relative mt-14 w-[min(82vw,420px)] justify-self-center md:mt-8 md:w-full md:max-w-[580px] md:justify-self-end">
                 <Image
-                  src="/images/ve-kenji/05-chan-dung-kenji.webp"
-                  alt="Kenji Phạm ngồi trong không gian làm việc"
-                  width={520}
-                  height={650}
-                  sizes="(min-width: 768px) 520px, 84vw"
+                  src="/images/ve-kenji/07-chan-dung-kenji-founder.webp"
+                  alt="Chân dung Kenji Phạm"
+                  width={1122}
+                  height={1402}
+                  sizes="(min-width: 1024px) 580px, (min-width: 768px) 46vw, 82vw"
                   className="h-auto w-full object-cover"
                 />
               </figure>
@@ -395,7 +396,7 @@ export default function VeKenjiPage() {
           </div>
         </section>
 
-        <section className={`px-6 ${RHYTHM.mo}`} style={{ background: sectionBg(BG.belief, 15, "62% 42%", "112deg") }}>
+        <section className={`px-6 ${RHYTHM.mo}`} style={{ background: sectionBg(BG.belief, 19, "62% 42%", "112deg") }}>
           <div className="max-w-[1180px] mx-auto">
             <div className="ve-kenji-reveal max-w-[660px] md:ml-[30%]">
               <SectionLabel>ĐIỀU TÔI TIN</SectionLabel>
@@ -423,12 +424,12 @@ export default function VeKenjiPage() {
           </div>
         </section>
 
-        <section className={`px-6 ${RHYTHM.mo}`} style={{ background: sectionBg(BG.values, 14, "42% 34%", "135deg") }}>
+        <section className={`px-6 ${RHYTHM.mo}`} style={{ background: sectionBg(BG.values, 16, "42% 34%", "135deg") }}>
           <div className="ve-kenji-reveal max-w-[1180px] mx-auto">
-            <div className="max-w-[920px] md:ml-[12%]">
+            <div className="max-w-[1080px] md:ml-[12%]">
               <SectionLabel>BA GIÁ TRỊ GỐC</SectionLabel>
-              <EssenceDisplay as="h2" size="values" className="max-w-[900px] text-e26-gold-deep text-[44px] leading-[1.02] md:text-[72px] md:leading-[0.98]">
-                Tự Do — Trí Tuệ — Kiến Tạo
+              <EssenceDisplay as="h2" size="values" className="max-w-[1080px] text-e26-gold-deep text-[46px] leading-[1.02] md:text-[80px] md:leading-[0.98]">
+                <span className="whitespace-nowrap">Tự Do</span>{" — "}<span className="whitespace-nowrap">Trí Tuệ</span>{" — "}<span className="whitespace-nowrap">Kiến Tạo</span>
               </EssenceDisplay>
               <div className="max-w-[630px] border-l-2 border-e26-gold-deep/60 pl-6 mt-10 md:mt-14 md:pl-8">
                 <div className="space-y-5">
@@ -470,8 +471,8 @@ export default function VeKenjiPage() {
           </div>
         </section>
 
-        <section className="relative isolate overflow-hidden px-6 py-24 md:py-40" style={{ background: sectionBg(BG.presence, 21, "28% 30%", "128deg") }}>
-          <div aria-hidden="true" className="absolute inset-0" style={{ background: "linear-gradient(96deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0) 44%, rgba(87,74,55,0.06) 100%)" }} />
+        <section className="relative isolate overflow-hidden px-6 py-20 md:py-40" style={{ background: sectionBg(BG.presence, 21, "28% 30%", "128deg") }}>
+          <div aria-hidden="true" className="absolute inset-0" style={{ background: "linear-gradient(96deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0) 44%, rgba(26,26,26,0.045) 100%)" }} />
           <div className="ve-kenji-reveal relative max-w-[1180px] mx-auto">
             <div className="relative max-w-[620px] md:ml-[8%]">
               <SectionLabel>CÁCH TÔI HIỆN DIỆN</SectionLabel>
@@ -503,15 +504,15 @@ export default function VeKenjiPage() {
           </div>
         </section>
 
-        <section className="relative isolate overflow-hidden px-6 py-24 md:py-40" style={{ background: sectionBg(BG.boundaries, 25, "70% 24%", "148deg") }}>
-          <div aria-hidden="true" className="absolute inset-0" style={{ background: "linear-gradient(140deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 43%, rgba(71,60,45,0.10) 100%)" }} />
+        <section className="relative isolate overflow-hidden px-6 py-20 md:py-40" style={{ background: sectionBg(BG.boundaries, 25, "70% 24%", "148deg") }}>
+          <div aria-hidden="true" className="absolute inset-0" style={{ background: "linear-gradient(140deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 43%, rgba(26,26,26,0.085) 100%)" }} />
           <div className="ve-kenji-reveal relative max-w-[1180px] mx-auto">
             <div className="relative max-w-[720px] md:ml-auto md:mr-[5%]">
               <SectionLabel>NHỮNG ĐIỀU TÔI TỰ GIỮ</SectionLabel>
-              <EssenceDisplay as="h2" size="mantra" className="relative max-w-[690px] text-[42px] leading-[1.04] md:text-[66px]">
+              <EssenceAnchor as="h2" className="relative max-w-[690px] text-[38px] leading-[1.1] md:text-[54px] md:leading-[1.04]">
                 Tin cậy không đến từ việc nói mình hiểu.<br />
                 Nó đến từ những giới hạn mình không bước qua.
-              </EssenceDisplay>
+              </EssenceAnchor>
             </div>
             <div className="relative mt-16 border-t border-e26-text/30 pt-9 md:mt-24 md:pt-12">
               <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-white/40" />
@@ -544,8 +545,8 @@ export default function VeKenjiPage() {
 
         <VeKenjiDivider />
 
-        <section className="relative isolate overflow-hidden px-6 py-24 md:py-40" style={{ background: sectionBg(BG.faq, 19, "35% 32%", "118deg") }}>
-          <div aria-hidden="true" className="absolute inset-0" style={{ background: "linear-gradient(112deg, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0) 48%, rgba(98,80,55,0.045) 100%)" }} />
+        <section className="relative isolate overflow-hidden px-6 py-20 md:py-40" style={{ background: sectionBg(BG.faq, 19, "35% 32%", "118deg") }}>
+          <div aria-hidden="true" className="absolute inset-0" style={{ background: "linear-gradient(112deg, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0) 48%, rgba(26,26,26,0.035) 100%)" }} />
           <div className="ve-kenji-reveal relative max-w-[1000px] mx-auto md:ml-[14%]">
             <div className="flex items-center gap-6 border-t border-e26-text/25 pt-6 md:gap-8 md:pt-8">
               <EssenceUtility as="h2" className="shrink-0 text-[#1A1A1A]/72">
@@ -587,7 +588,7 @@ export default function VeKenjiPage() {
           </div>
         </section>
 
-        <section className="px-6 py-24 md:py-36" style={{ background: sectionBg(BG.discovery, 16, "60% 34%", "142deg") }}>
+        <section className="px-6 py-20 md:py-36" style={{ background: sectionBg(BG.discovery, 16, "60% 34%", "142deg") }}>
           <div className="ve-kenji-reveal max-w-[1180px] mx-auto md:grid md:grid-cols-[minmax(260px,0.65fr)_minmax(0,1.35fr)] md:gap-x-16 lg:gap-x-24">
             <div className="max-w-[420px]">
               <SectionLabel>BẠN MUỐN HIỂU THÊM ĐIỀU GÌ?</SectionLabel>
