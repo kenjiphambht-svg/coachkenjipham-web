@@ -7,6 +7,8 @@ import { describe, expect, it } from 'vitest';
 import {
   ADMIN_LOGIN_PATH,
   ADMIN_MFA_PATH,
+  ADMIN_RECOVERY_PATH,
+  ADMIN_RESET_PASSWORD_PATH,
   decideAdminAccess,
   isAdminPath,
 } from '@/lib/auth/admin-gate';
@@ -39,6 +41,12 @@ describe('ca 6 — mở /admin khi chưa đăng nhập thì bị đẩy ra', () 
     expect(decideAdminAccess({ pathname: ADMIN_MFA_PATH, hasSession: false }).action).toBe('allow');
   });
 
+  it('hai trang recovery công khai nhưng không mở dữ liệu quản trị', () => {
+    for (const pathname of [ADMIN_RECOVERY_PATH, ADMIN_RESET_PASSWORD_PATH]) {
+      expect(decideAdminAccess({ pathname, hasSession: false }).action).toBe('allow');
+    }
+  });
+
   it('đã đăng nhập và AAL2 thì vào được mọi trang admin', () => {
     for (const pathname of ['/admin', '/admin/lang', '/admin/hat-mam', '/admin/thanh-toan', '/admin/xuat-ban', '/admin/xoa-du-lieu', '/admin/cai-dat', '/admin/lien-he']) {
       expect(decideAdminAccess({ pathname, hasSession: true, hasAal2: true }).action).toBe('allow');
@@ -51,7 +59,7 @@ describe('ca 6 — mở /admin khi chưa đăng nhập thì bị đẩy ra', () 
     expect(decision.destination).toBe('/admin');
   });
 
-  it('session AAL1 luôn bị đẩy sang bước MFA, trừ chính trang MFA', () => {
+  it('session AAL1 luôn bị đẩy sang bước MFA, trừ MFA và luồng recovery', () => {
     for (const pathname of ['/admin', '/admin/lang', ADMIN_LOGIN_PATH]) {
       const decision = decideAdminAccess({ pathname, hasSession: true, hasAal2: false });
       expect(decision.action).toBe('redirect-to-login');
@@ -60,6 +68,9 @@ describe('ca 6 — mở /admin khi chưa đăng nhập thì bị đẩy ra', () 
     expect(
       decideAdminAccess({ pathname: ADMIN_MFA_PATH, hasSession: true, hasAal2: false }).action
     ).toBe('allow');
+    for (const pathname of [ADMIN_RECOVERY_PATH, ADMIN_RESET_PASSWORD_PATH]) {
+      expect(decideAdminAccess({ pathname, hasSession: true, hasAal2: false }).action).toBe('allow');
+    }
   });
 });
 

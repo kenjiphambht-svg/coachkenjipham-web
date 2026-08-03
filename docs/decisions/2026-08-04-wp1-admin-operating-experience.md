@@ -86,14 +86,26 @@ recorded as OPEN in `docs/decisions/2026-08-03-release-gate-register.md`.
 | Resend and Cal.com | OFF; no provider connection was attempted |
 | Synthetic Hạt Mầm records | Staging test fixtures only; never customer/child data |
 
-## Founder setup after a Draft preview is available
+## Founder Auth enrollment and recovery
 
-One simple enrollment instruction: open the Supabase invitation for
-`kenjipham.bht@gmail.com`, set the account password, then scan the QR code on
-`/admin/xac-minh-mfa` with an authenticator app and enter its six-digit code.
+`/admin/dang-nhap` now offers **Quên mật khẩu?** and points a Founder who has
+not yet set a password to their Supabase email. `/admin/quen-mat-khau` always
+returns the same confirmation copy and only sends for the canonical Founder
+address; it never reveals whether an account exists. The recovery email uses
+the pre-allowlisted staging Vercel callback family and lands at
+`/admin/dat-lai-mat-khau`.
+
+The reset route exchanges a recovery code only in the browser, removes it from
+the visible URL, checks the current session against the canonical active-admin
+record on the server, then changes the password through Supabase Auth. It does
+not create an admin role, relax RLS, reset an MFA factor or grant AAL2. The
+session is signed out locally after a successful reset, so the Founder must log
+in and verify MFA again before any admin route is available. The UI requires at
+least 12 characters with lowercase, uppercase and a number.
 
 No key, secret, command, environment setting or manual debugging is required
-from the Founder.
+from the Founder. Passwords, recovery tokens, QR codes and provider errors are
+never written to repository evidence or application logs.
 
 ## Founder acceptance correction pass
 

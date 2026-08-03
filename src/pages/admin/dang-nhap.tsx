@@ -4,6 +4,7 @@
 // ============================================================
 
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState, type FormEvent } from 'react';
 import type { GetServerSideProps } from 'next';
@@ -113,6 +114,10 @@ export default function AdminLoginPage({ configured }: { configured: boolean }) 
               >
                 {busy ? 'Đang vào…' : 'Đăng nhập'}
               </button>
+              <div className="flex items-center justify-between gap-4 font-sans text-[13px]">
+                <Link href="/admin/quen-mat-khau" className="underline underline-offset-4 hover:text-e26-gold-deep">Quên mật khẩu?</Link>
+                <span className="text-right text-e26-text-2">Chưa thiết lập tài khoản? Kiểm tra email mời từ Supabase.</span>
+              </div>
             </form>
           )}
         </div>

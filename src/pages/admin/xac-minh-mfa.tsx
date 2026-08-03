@@ -18,7 +18,6 @@ export default function AdminMfaPage() {
   const [screen, setScreen] = useState<Screen>('loading');
   const [factorId, setFactorId] = useState('');
   const [qr, setQr] = useState('');
-  const [secret, setSecret] = useState('');
   const [code, setCode] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -55,7 +54,6 @@ export default function AdminMfaPage() {
         if (!mounted) return;
         setFactorId(enrollment.id);
         setQr(enrollment.totp.qr_code);
-        setSecret(enrollment.totp.secret);
         setScreen('enroll');
       } catch {
         if (!mounted) return;
@@ -114,8 +112,8 @@ export default function AdminMfaPage() {
                 Quét mã này bằng ứng dụng xác thực, rồi nhập mã 6 số ứng dụng vừa tạo.
               </p>
               {qr && <img src={qr} alt="Mã QR thiết lập xác minh hai bước" className="w-48 h-48 mx-auto mb-4" />}
-              <p className="font-sans text-[12px] text-e26-text-2 break-all mb-5">
-                Không quét được? Nhập khoá này vào ứng dụng: <code>{secret}</code>
+              <p className="font-sans text-[12px] text-e26-text-2 mb-5">
+                Chỉ quét QR trong phiên riêng tư này. Không chụp, sao chép hoặc gửi mã QR cho bất kỳ ai.
               </p>
             </>
           )}
