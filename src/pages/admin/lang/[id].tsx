@@ -67,6 +67,7 @@ export default function AdminLangDetail({ adminEmail, application, monthOptions 
   const [error, setError] = useState<string | null>(null);
   const [month, setMonth] = useState(monthOptions[0]?.value ?? '');
   const [reason, setReason] = useState('');
+  const [privatePath, setPrivatePath] = useState<string | null>(null);
 
   const status = application.status;
 
@@ -90,12 +91,25 @@ export default function AdminLangDetail({ adminEmail, application, monthOptions 
         setBusy(false);
         return;
       }
+      if (body?.data?.paymentPath) setPrivatePath(body.data.paymentPath);
       router.replace(router.asPath);
       setBusy(false);
     } catch {
       setError('Mất kết nối. Thử lại giúp tôi nhé.');
       setBusy(false);
     }
+  };
+
+  const issueBookingLink = async () => {
+    if (!window.confirm('Phát link đặt lịch riêng mới? Link cũ (nếu có) sẽ mất hiệu lực.')) return;
+    setBusy(true); setError(null);
+    try {
+      const res = await fetch(`/api/admin/lang/${application.id}/phat-link-dat-lich`, { method: 'POST' });
+      const body = await res.json();
+      if (!res.ok || !body.ok) setError(body?.error?.message ?? 'Chưa phát được link. Thử lại giúp tôi nhé.');
+      else setPrivatePath(body.data.bookingPath);
+    } catch { setError('Mất kết nối. Thử lại giúp tôi nhé.'); }
+    setBusy(false);
   };
 
   const btn =
@@ -169,6 +183,12 @@ export default function AdminLangDetail({ adminEmail, application, monthOptions 
             )}
 
             <div className="space-y-3">
+              {privatePath && (
+                <div className="border border-e26-gold-deep p-3 font-sans text-[13px] break-all">
+                  <p className="mb-2">Link riêng — chỉ hiện một lần, hãy gửi qua kênh riêng:</p>
+                  <a className="underline" href={privatePath} target="_blank" rel="noreferrer">{privatePath}</a>
+                </div>
+              )}
               {status === 'submitted' && (
                 <button
                   className={btnPrimary}
@@ -302,9 +322,10 @@ export default function AdminLangDetail({ adminEmail, application, monthOptions 
               )}
 
               {status === 'paid' && (
-                <p className="font-sans text-[14px] text-e26-text-2">
-                  Đã nhận tiền. Bước xếp lịch và phát link đặt lịch riêng sẽ làm ở vòng sau.
-                </p>
+                <>
+                  <button className={btnPrimary} disabled={busy} onClick={issueBookingLink}>Phát link đặt lịch riêng</button>
+                  <p className="font-sans text-[13px] text-e26-text-2">Cal.com chưa được nối: trang riêng hiển thị “Chờ Kenji kết nối”, không xác nhận lịch thay Kenji.</p>
+                </>
               )}
 
               {['declined', 'cancelled', 'completed'].includes(status) && (
