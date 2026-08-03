@@ -71,6 +71,27 @@ export const hatMamOrderSchema = z.object({
 });
 export type HatMamOrderInput = z.infer<typeof hatMamOrderSchema>;
 
+/** Native Hạt Mầm intake: deliberately minimal child data, no photo, address,
+ * medical record, or detailed family/marital information. */
+export const hatMamParentIntakeSchema = z.object({
+  package_code: z.enum(['HM-01', 'HM-02'], { error: 'Chọn giúp một gói Hạt Mầm.' }),
+  parent_name: requiredText('tên ba mẹ', 200),
+  parent_contact: requiredText('một cách liên hệ', 200),
+  child_name: z.string().trim().max(200).optional().or(z.literal('')),
+  birth_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Chọn ngày sinh của bé.'),
+  birth_time: z.string().regex(/^$|^\d{2}:\d{2}$/, 'Giờ sinh cần theo dạng HH:MM.').optional().or(z.literal('')),
+  birth_time_known: z.boolean().default(false),
+  birth_place: z.string().trim().max(300).optional().or(z.literal('')),
+  family_context: z.string().trim().max(1000).optional().or(z.literal('')),
+  parent_question: requiredText('điều ba mẹ đang muốn hiểu về con', 1500),
+  consent_version: z.literal('hatmam-parent-intake-v1', {
+    error: 'Cần xác nhận đồng ý xử lý thông tin tối thiểu của bé.',
+  }),
+  consent: z.literal(true, { error: 'Cần xác nhận đồng ý trước khi tiếp tục.' }),
+  company: honeypotField,
+});
+export type HatMamParentIntakeInput = z.infer<typeof hatMamParentIntakeSchema>;
+
 /**
  * Dữ liệu trẻ em — schema TÁCH RIÊNG, đúng như bảng tách riêng trong CSDL.
  * Không gộp vào hatMamOrderSchema, để không có chỗ nào trong code coi
