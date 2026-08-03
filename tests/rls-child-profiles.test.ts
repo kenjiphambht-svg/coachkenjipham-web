@@ -22,9 +22,13 @@ const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const hasDb = Boolean(url && anonKey);
 
-// describe.skipIf: không có CSDL thì bỏ qua, và vitest in rõ là đã bỏ qua —
-// khác hẳn với việc lặng lẽ báo pass.
-describe.skipIf(!hasDb)('ca 4 — RLS chặn đọc hồ sơ trẻ em khi không có quyền', () => {
+// Đây là integration test bắt buộc trên staging. Nếu credentials không được
+// inject, phải FAIL rõ ràng thay vì skip và vô tình che một release gate.
+describe('ca 4 — RLS chặn đọc hồ sơ trẻ em khi không có quyền', () => {
+  it('staging RLS credentials phải được cung cấp', () => {
+    expect(hasDb, 'Thiếu NEXT_PUBLIC_SUPABASE_URL hoặc NEXT_PUBLIC_SUPABASE_ANON_KEY').toBe(true);
+  });
+
   const anon = () => createClient(url as string, anonKey as string);
 
   it('khách chưa đăng nhập KHÔNG đọc được hatmam_child_profiles', async () => {
@@ -64,15 +68,5 @@ describe.skipIf(!hasDb)('ca 4 — RLS chặn đọc hồ sơ trẻ em khi không
     } else {
       expect(data).toEqual([]);
     }
-  });
-});
-
-describe.skipIf(hasDb)('ca 4 — bỏ qua vì chưa có kết nối cơ sở dữ liệu', () => {
-  it('nhắc cách chạy test RLS', () => {
-    console.warn(
-      '\n⚠️  Test RLS (ca 4) CHƯA CHẠY — thiếu NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY.\n' +
-        '   Đây KHÔNG phải là pass. Xem hướng dẫn ở đầu tests/rls-child-profiles.test.ts.\n'
-    );
-    expect(hasDb).toBe(false);
   });
 });
