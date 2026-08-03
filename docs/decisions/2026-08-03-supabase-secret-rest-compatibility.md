@@ -2,10 +2,17 @@
 
 ## Scope
 
-- UTC date: 2026-08-03
+- Evidence-record timestamp (UTC): `2026-08-03T14:25:20Z` (the commit time
+  of the redacted diagnostic record; the raw request timestamp was not
+  retained and is deliberately not reconstructed).
 - Project: `essence-staging` (`jmnkhlgumlvywdaeahmx`)
 - Canonical host: `jmnkhlgumlvywdaeahmx.supabase.co`
 - Affected service: PostgREST `/rest/v1`; Storage has a separate authorization requirement.
+- Probe implementation: direct server-side HTTP, not an SDK. Application
+  dependency inspected during final audit: `@supabase/supabase-js 2.111.0`;
+  authenticated Supabase CLI: `2.111.0`.
+- Correlation/request IDs: none were returned or retained by the redacted
+  direct-HTTP diagnostic. No value is invented here.
 
 ## Redacted reproduction
 
@@ -19,6 +26,24 @@ Keys were retrieved by authenticated Supabase CLI into a permission-600 temporar
 | PostgREST with legacy service-role API key | Compatibility diagnostic | HTTP 401; project states legacy API keys are disabled |
 
 No key, signed URL, request header value, customer data, or fixture was persisted or logged.
+
+## Minimal reproduction and consequence
+
+1. Authenticate the Supabase CLI for this project; write API-key output only
+   to an owner-read/write temporary file and delete it with a shell trap.
+2. Send a direct HTTPS request to the canonical `/rest/v1/` family with header
+   names `apikey` and `User-Agent` only. Do not send a raw value to logs.
+3. The expected elevated gateway acceptance instead returns HTTP 401. The
+   Storage family separately accepts the `apikey` format but requires an
+   `authorization` caller JWT, returning HTTP 400 if that header is absent.
+
+Security consequence: the application cannot safely use the observed
+new-secret/PostgREST transport to create a controlled fixture, verify
+user-scoped AAL2 metadata access, or delete object metadata. Current
+workaround is no workaround for production: keep the B4/B8 release gates OFF.
+The blocked operations are real private-publication E2E and real
+object-plus-metadata deletion. Do not repeatedly reprobe until Supabase gives
+a supported transport or asks for a new diagnostic.
 
 ## Impact and workaround
 
