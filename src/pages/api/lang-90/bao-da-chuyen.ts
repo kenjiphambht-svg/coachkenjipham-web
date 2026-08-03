@@ -20,29 +20,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await checkPostgresRateLimit(db, `lang-payment-report:${getClientIp(req)}`, DEFAULT_RATE_LIMIT);
     const { data: request, error } = await db
       .from('lang_payment_requests')
-      .select('id, application_id, expires_at, revoked_at, reported_transfer_at')
+      .select('expires_at, revoked_at')
       .eq('token_hash', hashPrivateLinkToken(token))
       .maybeSingle();
     if (error) throw error;
     if (!request || request.revoked_at || new Date(request.expires_at).getTime() <= Date.now()) {
       throw new DomainError('NOT_FOUND', 'Link này đã hết hạn hoặc đã được thu hồi.');
     }
-    if (!request.reported_transfer_at) {
-      const { error: updateError } = await db
-        .from('lang_payment_requests')
-        .update({ reported_transfer_at: new Date().toISOString(), report_reference: reference || null })
-        .eq('id', request.id)
-        .is('reported_transfer_at', null);
-      if (updateError) throw updateError;
-      const { error: auditError } = await db.from('audit_log').insert({
-        actor: 'customer:private_payment_link',
-        action: 'lang.payment_reported',
-        entity_type: 'lang_application',
-        entity_id: request.application_id,
-      });
-      if (auditError) throw auditError;
-    }
-    return res.status(200).json({ ok: true, data: { alreadyReported: Boolean(request.reported_transfer_at) } });
+    const { data: alreadyReported, error: reportError } = await db.rpc('report_lang_payment_transfer', {
+      p_token_hash: hashPrivateLinkToken(token), p_reference: reference || null,
+    });
+    if (reportError) throw reportError;
+    return res.status(200).json({ ok: true, data: { alreadyReported: Boolean(alreadyReported) } });
   } catch (error) {
     if (error instanceof DomainError) return res.status(HTTP_STATUS_BY_CODE[error.code]).json(error.toResponse());
     console.error('[public] payment report failed', { at: new Date().toISOString() });

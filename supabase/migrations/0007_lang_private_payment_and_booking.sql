@@ -115,7 +115,36 @@ begin
 end;
 $$;
 
+-- Public route chỉ truyền hash; RPC khoá record nên hai lần retry đồng thời
+-- không thể cùng ghi audit "đã báo chuyển".
+create or replace function report_lang_payment_transfer(
+  p_token_hash text,
+  p_reference text default null
+)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare v_request lang_payment_requests%rowtype;
+begin
+  select * into v_request from lang_payment_requests where token_hash = p_token_hash for update;
+  if not found or v_request.revoked_at is not null or v_request.expires_at <= now() then
+    raise exception using errcode = 'P0001', message = 'PAYMENT_LINK_INVALID';
+  end if;
+  if v_request.reported_transfer_at is not null then return true; end if;
+
+  update lang_payment_requests set reported_transfer_at = now(), report_reference = nullif(btrim(p_reference), '')
+    where id = v_request.id;
+  insert into audit_log (actor, action, entity_type, entity_id)
+    values ('customer:private_payment_link', 'lang.payment_reported', 'lang_application', v_request.application_id);
+  return false;
+end;
+$$;
+
 revoke all on function issue_lang_payment_request(uuid, lang_status, text, text, timestamptz) from public, anon, authenticated;
 grant execute on function issue_lang_payment_request(uuid, lang_status, text, text, timestamptz) to service_role;
 revoke all on function issue_lang_booking_token(uuid, text, text, timestamptz) from public, anon, authenticated;
 grant execute on function issue_lang_booking_token(uuid, text, text, timestamptz) to service_role;
+revoke all on function report_lang_payment_transfer(text, text) from public, anon, authenticated;
+grant execute on function report_lang_payment_transfer(text, text) to service_role;
