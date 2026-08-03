@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react";
+import { useRef, useState, FormEvent } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
@@ -9,18 +9,9 @@ import HomeFooter from "@/components/homepage/HomeFooter";
 // /lien-he — noindex (chờ Kenji duyệt). Theo brief: "một cửa rõ, không
 // rào cản". Copy NGUYÊN VĂN theo task.
 //
-// KÊNH GỬI FORM: repo KHÔNG có backend nhận form thật (chỉ có
-// src/pages/api/hello.ts stub — không phải API thật). Giải pháp đơn giản
-// nhất đang có sẵn trong repo là mailto (đúng pattern đã dùng ở
-// /lang-90/xac-nhan.tsx) — submit sẽ build 1 mailto: link từ 3 trường
-// và mở app mail của người dùng, đồng thời hiện thông báo cảm ơn ngay
-// (không phụ thuộc mail client có mở được hay không).
-// ⚠️ CẦN HỎI KENJI: nếu muốn form gửi thẳng vào hộp thư mà KHÔNG cần
-// người dùng tự bấm gửi trên app mail của họ (trải nghiệm mượt hơn),
-// cần một dịch vụ nhận form nhẹ (vd Web3Forms/Formspree) hoặc API route
-// tự viết + SMTP — cả hai đều cần thêm tài khoản/API key bên ngoài, nên
-// chưa tự làm mà không hỏi trước (đúng luật "không thêm dependency khi
-// chưa được duyệt").
+// KÊNH GỬI FORM: POST /api/lien-he ghi inbox nội bộ riêng tư. Không mở
+// mail client và không gửi email tự động; notification/email là adapter
+// vận hành riêng chỉ bật khi có cấu hình được duyệt.
 // Honeypot: trường ẩn "company" — bot thường tự điền mọi input thấy
 // được trong DOM, người thật không thấy nó nên luôn để trống. Có giá
 // trị: coi là bot, không mở mailto, nhưng vẫn hiện lời cảm ơn (không lộ
@@ -33,24 +24,46 @@ export default function LienHePage() {
   const [company, setCompany] = useState(""); // honeypot — người thật không điền
   const [showErrors, setShowErrors] = useState(false);
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const idempotencyKeyRef = useRef<string | null>(null);
 
   const valid = name.trim() !== "" && contact.trim() !== "" && message.trim() !== "";
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!valid) {
       setShowErrors(true);
       return;
     }
-    const isBot = company.trim() !== "";
-    if (!isBot) {
-      const subject = `Liên hệ từ ${name}`;
-      const body = [`Tên: ${name}`, `Liên hệ: ${contact}`, ``, message].join("\n");
-      window.location.href = `mailto:kenjipham.bht@gmail.com?subject=${encodeURIComponent(
-        subject
-      )}&body=${encodeURIComponent(body)}`;
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      const idempotencyKey =
+        idempotencyKeyRef.current ??
+        (window.crypto?.randomUUID?.() ??
+          `contact-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 14)}`);
+      idempotencyKeyRef.current = idempotencyKey;
+
+      const response = await fetch("/api/lien-he", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Idempotency-Key": idempotencyKey,
+        },
+        body: JSON.stringify({ name, contact, message, company }),
+      });
+      const body = await response.json();
+      if (!response.ok || !body.ok) {
+        setSubmitError(body?.error?.message ?? "Chưa gửi được. Thử lại giúp tôi nhé.");
+        setSubmitting(false);
+        return;
+      }
+      setSent(true);
+    } catch {
+      setSubmitError("Chưa gửi được. Kiểm tra kết nối rồi thử lại giúp tôi nhé.");
+      setSubmitting(false);
     }
-    setSent(true);
   };
 
   const labelCls = "block font-sans text-[15px] text-e26-text mb-2";
@@ -197,10 +210,16 @@ export default function LienHePage() {
 
                 <button
                   type="submit"
+                  disabled={submitting}
                   className="w-full bg-e26-gold text-e26-black rounded-none font-sans font-medium text-[13px] tracking-[0.08em] uppercase py-4 hover:bg-e26-gold-deep hover:text-e26-ivory transition-colors duration-300"
                 >
-                  Gửi lời nhắn
+                  {submitting ? "Đang gửi…" : "Gửi lời nhắn"}
                 </button>
+                {submitError && (
+                  <p className="font-sans text-[13px] text-e26-gold-deep" role="alert">
+                    {submitError}
+                  </p>
+                )}
               </form>
             )}
           </div>

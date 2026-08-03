@@ -23,7 +23,8 @@ import { useLandingReveal } from "@/components/landing-hat-mam/useLandingReveal"
 //   Phòng 6 — Quyết định (S12 hai gói + S13 phản hồi [ẩn] + S14 FAQ + S15 phù hợp)
 //   Phòng 7 — Cửa ra (S16 trên 7 tuổi + S17 CTA cuối + S18 cánh cửa sau + Footer signature)
 // Copy: NGUYÊN VĂN docs/product/landing-hat-mam-v3-copy.md — không tự viết.
-// Route live /kidbook giữ nguyên, không đụng (Migration Strategy — Phase 0 audit).
+// Route legacy /kidbook giữ nguyên; child-flow mới bị hard-block đến khi có đủ
+// Founder Decision về dữ liệu trẻ em, gói/giá, thanh toán và giao ấn phẩm.
 // Nút vàng đầy: 3 (Hero, Gói 1, CTA cuối) — mỗi viewport một.
 // ============================================================
 export default function LandingHatMamPage() {
@@ -61,24 +62,6 @@ export default function LandingHatMamPage() {
                 "Ấn phẩm cá nhân hóa dành cho bé 0–7 tuổi, thuộc dòng Bản Sắc Của Con — khoảng 30 trang, 5 chương, viết riêng cho từng bé.",
               brand: { "@type": "Brand", name: "Essence Coaching" },
               url: "https://coachkenjipham.com/an-pham-ban-sac-hat-mam",
-              offers: [
-                {
-                  "@type": "Offer",
-                  name: "Gói 1 — Ấn phẩm Bản Sắc",
-                  price: "2000000",
-                  priceCurrency: "VND",
-                  availability: "https://schema.org/InStock",
-                  url: "https://coachkenjipham.com/an-pham-ban-sac-hat-mam#hai-goi",
-                },
-                {
-                  "@type": "Offer",
-                  name: "Gói 2 — Trò Chuyện Cùng Kenji",
-                  price: "3500000",
-                  priceCurrency: "VND",
-                  availability: "https://schema.org/InStock",
-                  url: "https://coachkenjipham.com/an-pham-ban-sac-hat-mam#hai-goi",
-                },
-              ],
             }),
           }}
         />

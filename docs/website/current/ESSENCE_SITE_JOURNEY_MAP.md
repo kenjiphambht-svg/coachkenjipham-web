@@ -53,14 +53,14 @@ Every canonical public node must preserve clear headings, direct route labels, u
 1. **FACT:** /ban-sac-cua-ban renders three cards; only /lang-90 is labelled “Đang mở.”
 2. **L0 C-05:** Lặng is limited to five sessions/month: six questions → support report → Kenji Human Decision Gate → payment → Kenji payment confirmation → private booking link.
 3. **GOVERNED CONCLUSION:** adult conversion is not a direct checkout. Intake is the first operating step; payment and booking remain human-gated.
-4. **OPEN GAP:** source sends intake to confirmation immediately. It does not implement the L0 Human Decision Gate, payment confirmation by Kenji, or a private booking link.
+4. **CURRENT SOURCE:** intake is written server-side and confirmation stops before payment/booking; the admin state machine provides the Human Decision Gate. Support report, payment confirmation, private booking and staging integration proof remain open.
 
 ### Parent: observe, then enter the 0–7 offer safely
 
 1. **FACT:** /ban-sac-cua-con links 0–7, 7–14 and 14–21 landing pages; only 0–7 is labelled “Đang mở.”
 2. **L0 C-06:** Hạt Mầm is canonical for age 0–7 and requires a new form → payment → confirmation → delivery → email flow.
-3. **GOVERNED CONCLUSION:** a parent may discover Hạt Mầm at /an-pham-ban-sac-hat-mam, but existing Tally and legacy-payment links do not define the canonical new flow.
-4. **OPEN GAP:** no approved new-flow implementation, private delivery route, confirmation route, or email workflow exists in this repository.
+3. **CURRENT SOURCE:** a parent may discover Hạt Mầm at /an-pham-ban-sac-hat-mam, but package controls are hard-blocked and no Tally/legacy-payment link is active from this landing.
+4. **OPEN GAP:** no current Founder child-flow decision sheet, approved form, private delivery route, confirmation route, or email workflow exists in this repository.
 
 ### Trust and partner boundaries
 
@@ -104,7 +104,7 @@ Never include intake, payment, confirmation, booking, private delivery, legacy p
 |---|---|---|---|
 | J-01 | ~~Root is a stub whose only CTA is /kidbook.~~ **Resolved by PR #112 (733b199):** root renders the canonical Villa with adult/parent/trust doors; the /kidbook CTA is gone. | None — closed. /trang-chu-v2 post-cutover disposition remains a separate pending decision. | Closed |
 | J-02 | Lặng bypasses the L0 Human Decision Gate. | Scoped private-flow task. | Kenji |
-| J-03 | Hạt Mầm uses legacy Tally/payment entrypoints. | Scoped child-data/payment/delivery task. | Kenji approval |
+| J-03 | Hạt Mầm landing controls are hard-blocked; a current child-data/commercial/fulfilment sheet is absent. | Scoped child-data/payment/delivery task after Founder decision. | Kenji approval |
 | J-04 | Trust-page Page Contracts are Planned/Missing. | Task must provide approved contract. | Kenji |
 | J-05 | /ai-startup has no observed noindex. | Scoped runtime noindex/rewrite task. | Kenji approval |
 | J-06 | Several JSON-LD/product schema blocks still use the former organization suffix, while others already use “Essence Coaching.” | Apply the C-07 runtime impact inventory in the Conflict Register through a scoped metadata/entity task; no G1.1 runtime edit. | Kenji approval |

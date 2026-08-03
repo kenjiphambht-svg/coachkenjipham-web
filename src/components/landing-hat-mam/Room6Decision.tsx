@@ -9,9 +9,8 @@ import {
 // PHÒNG 6 — QUYẾT ĐỊNH (Section 12 hai gói + Section 13 phản hồi + Section 14 FAQ
 // + Section 15 phù hợp/chưa phù hợp)
 // Nhịp màu: S12 cream → S14 ivory → S15 cream.
-// S12: nút vàng CHỈ ở Gói 1 (2/3 nút vàng toàn trang), Gói 2 nút viền;
-// giá gạch hiển thị điềm đạm, không đỏ. CTA gói trỏ Tally form live (funnel thật
-// đang chạy) — không đụng payment pages.
+// S12: Gói chỉ là nội dung tham khảo khi child-flow chưa đủ quyết định Founder.
+// Không gửi phụ huynh sang Tally/legacy funnel và không thu dữ liệu trẻ em.
 // S13: render ẩn sau flag — chỉ bật khi có phản hồi thật được phép — VoC mức 2+.
 // S14: FAQ accordion (Radix) — mở được bằng bàn phím.
 // Copy nguyên văn docs/product/landing-hat-mam-v3-copy.md.
@@ -106,12 +105,13 @@ export default function Room6Decision() {
               <p className="font-sans text-[15px] leading-[1.65] text-e26-text-2 mb-8">
                 Dành cho ba mẹ muốn tự đọc, tự cảm, tự ngẫm về con.
               </p>
-              <a
-                href="https://tally.so/r/1ANjJ4"
-                className="mt-auto inline-block text-center bg-e26-gold text-e26-black rounded-none font-sans font-medium text-[13px] tracking-[0.08em] uppercase px-9 py-4 hover:bg-e26-gold-deep hover:text-e26-ivory transition-colors duration-300"
+              <button
+                type="button"
+                disabled
+                className="mt-auto inline-block text-center bg-e26-gold text-e26-black rounded-none font-sans font-medium text-[13px] tracking-[0.08em] uppercase px-9 py-4 opacity-60 cursor-not-allowed"
               >
-                Tôi muốn nhận ấn phẩm
-              </a>
+                Tạm chưa mở
+              </button>
             </div>
 
             {/* Gói 2 — nút viền */}
@@ -140,16 +140,20 @@ export default function Room6Decision() {
                 <br />
                 Buổi trò chuyện giúp ba mẹ biết cách đi.
               </p>
-              <a
-                href="https://tally.so/r/Y5J2VN"
-                className="mt-auto inline-block text-center border border-e26-text text-e26-text rounded-none font-sans font-medium text-[13px] tracking-[0.08em] uppercase px-9 py-4 hover:border-e26-gold-deep hover:text-e26-gold-deep transition-colors duration-300"
+              <button
+                type="button"
+                disabled
+                className="mt-auto inline-block text-center border border-e26-text text-e26-text rounded-none font-sans font-medium text-[13px] tracking-[0.08em] uppercase px-9 py-4 opacity-60 cursor-not-allowed"
               >
-                Tôi muốn Kenji cùng đọc với mình
-              </a>
+                Tạm chưa mở
+              </button>
             </div>
           </div>
 
           <div className="hm-reveal max-w-[720px] font-sans text-[15px] leading-[1.7] text-e26-text-2 space-y-4">
+            <p className="text-e26-text">
+              Luồng đặt ấn phẩm đang được rà soát riêng để bảo vệ dữ liệu của bé. Hiện chưa mở nhận thông tin hay thanh toán qua website.
+            </p>
             <p>
               Nếu ba mẹ chưa chắc nên chọn gói nào, hãy bắt đầu bằng Gói 1. Sau khi nhận ấn phẩm,
               nếu muốn Kenji cùng đọc sâu hơn, ba mẹ có thể hỏi thêm về buổi trò chuyện.

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { SEO } from "@/components/SEO";
@@ -11,8 +11,8 @@ import { SEO } from "@/components/SEO";
 //  - Câu 5 = C: cảnh báo thẳng, KHÔNG chặn.
 //  - Câu 3 = B: ghi chú thông tin, KHÔNG chặn.
 //  - Consent bắt buộc (checkbox).
-// Lưu trữ: không backend — đáp án đưa qua sessionStorage sang trang xác nhận,
-// người dùng gửi cho Kenji qua nút mailto ở trang đó. Nhánh chặn: gửi/không lưu gì.
+// Lưu trữ: API server-side nhận câu trả lời sau khi qua validation; browser chỉ
+// giữ mã đơn không nhạy cảm để hiển thị ở trang xác nhận. Nhánh chặn: không gửi.
 //
 // ⚠️ THÔNG ĐIỆP CHẶN (khối .crisis) — copy đã được Kenji duyệt.
 // ============================================================
@@ -28,8 +28,12 @@ export default function Lang90Form() {
   const [q6, setQ6] = useState("");
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
+  const [company, setCompany] = useState("");
   const [consent, setConsent] = useState(false);
   const [showErrors, setShowErrors] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const idempotencyKeyRef = useRef<string | null>(null);
 
   const blocked = q2 === "C";
 
@@ -44,21 +48,77 @@ export default function Lang90Form() {
     contact.trim() !== "" &&
     consent;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!valid) {
       setShowErrors(true);
       return;
     }
-    // Mã đơn — không chứa dữ liệu cá nhân, dùng để đối soát VietQR ↔ intake.
-    const orderCode = "LANG90-" + Date.now().toString(36).toUpperCase().slice(-6);
-    const intake = { orderCode, q1, q2, q3, q4, q5, q6, name, contact };
+    setSubmitting(true);
+    setSubmitError(null);
+
     try {
-      sessionStorage.setItem("lang90-intake", JSON.stringify(intake));
+      const storageKey = "lang90-idempotency-key";
+      let storedKey: string | null = null;
+      try {
+        storedKey = sessionStorage.getItem(storageKey);
+      } catch {
+        // Browser chặn storage không được phép chặn luôn việc gửi form.
+      }
+      const existingKey = idempotencyKeyRef.current ?? storedKey;
+      const idempotencyKey =
+        existingKey ??
+        (window.crypto?.randomUUID?.() ??
+          `lang90-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 14)}`);
+      idempotencyKeyRef.current = idempotencyKey;
+      try {
+        sessionStorage.setItem(storageKey, idempotencyKey);
+      } catch {
+        // idempotency vẫn giữ trong ref cho retry của tab hiện tại.
+      }
+
+      const response = await fetch("/api/lang-90/dang-ky", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Idempotency-Key": idempotencyKey,
+        },
+        body: JSON.stringify({
+          q1_situation: q1,
+          q2_level: q2,
+          q3_prior_help: q3,
+          q4_want: q4,
+          q5_openness: q5,
+          q6_extra: q6,
+          applicant_name: name,
+          applicant_contact: contact,
+          consent,
+          company,
+        }),
+      });
+      const body = await response.json();
+      if (!response.ok || !body.ok) {
+        setSubmitError(body?.error?.message ?? "Chưa gửi được. Thử lại giúp tôi nhé.");
+        setSubmitting(false);
+        return;
+      }
+
+      // Chỉ lưu mã đơn — không giữ sáu câu trả lời/liên hệ ở browser sau khi gửi.
+      try {
+        sessionStorage.setItem(
+          "lang90-confirmation",
+          JSON.stringify({ orderCode: body.data?.orderCode ?? "—" })
+        );
+        sessionStorage.removeItem(storageKey);
+      } catch {
+        // Trang xác nhận vẫn mở được; chỉ không hiện lại mã đơn sau refresh.
+      }
+      idempotencyKeyRef.current = null;
+      await router.push("/lang-90/xac-nhan");
     } catch {
-      // sessionStorage có thể bị chặn — vẫn điều hướng, trang xác nhận có nhánh dự phòng.
+      setSubmitError("Chưa gửi được. Kiểm tra kết nối rồi thử lại giúp tôi nhé.");
+      setSubmitting(false);
     }
-    router.push("/lang-90/xac-nhan");
   };
 
   const labelCls = "block font-serif text-lg text-e26-text mb-1";
@@ -266,16 +326,38 @@ export default function Lang90Form() {
                   )}
                 </div>
 
+                {/* Honeypot — người thật không nhìn thấy, bot thường tự điền. */}
+                <div
+                  aria-hidden="true"
+                  style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}
+                >
+                  <label htmlFor="company">Company</label>
+                  <input
+                    id="company"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                  />
+                </div>
+
                 {/* SUBMIT (nút vàng duy nhất của trang) */}
                 <div>
+                  {submitError && (
+                    <p className="font-sans text-[13px] text-e26-gold-deep text-center mb-3" role="alert">
+                      {submitError}
+                    </p>
+                  )}
                   <button
                     type="submit"
-                    className="w-full bg-e26-gold text-e26-black rounded-none font-sans font-medium text-[13px] tracking-[0.08em] uppercase py-4 hover:bg-e26-gold-deep hover:text-e26-ivory transition-colors duration-300"
+                    disabled={submitting}
+                    className="w-full bg-e26-gold text-e26-black rounded-none font-sans font-medium text-[13px] tracking-[0.08em] uppercase py-4 hover:bg-e26-gold-deep hover:text-e26-ivory transition-colors duration-300 disabled:opacity-60"
                   >
-                    Tiếp tục — giữ chỗ
+                    {submitting ? "Đang gửi…" : "Gửi để Kenji xem"}
                   </button>
                   <p className="font-sans text-[13px] text-e26-text-2 text-center mt-3">
-                    Bước tiếp theo: hướng dẫn thanh toán. Chưa thanh toán — chưa giữ chỗ.
+                    Kenji sẽ tự đọc trước khi quyết định bước tiếp theo. Chưa có thanh toán hay đặt lịch ở bước này.
                   </p>
                 </div>
               </>

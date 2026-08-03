@@ -6,7 +6,8 @@
 
 - `POST /api/lang-90/dang-ky`: server-only DB write; schema validation, honeypot, crisis stop before persistence, Postgres shared rate limit, idempotency, consent and non-sensitive audit metadata.
 - `POST /api/lien-he`: server-only inbox write; validation, honeypot, Postgres shared rate limit and idempotency.
-- Neither endpoint sends email. Neither current public page calls these endpoints yet; this keeps the existing page/UI/CTA/mailto behaviour unchanged while the API is verified.
+- Neither endpoint sends email. `/lang-90/dat-phien` and `/lien-he` now call these endpoints; the Lặng confirmation no longer exposes a `mailto`, payment instruction or booking before Kenji’s Human Decision Gate.
+- The existing Hạt Mầm Tally CTAs are hard-blocked as “Tạm chưa mở”; no child data, payment or legacy funnel is activated.
 
 ## FOUNDER DECISION REQUIRED — Hạt Mầm public flow
 
