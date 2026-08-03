@@ -9,6 +9,7 @@
 | B6 | `feat/b6-email-resend` / #127 | 0015 applied | mock outbox/provider; Resend account is still required for real delivery |
 | B7 | `feat/b7-private-calcom` / #128 | 0016 applied | noindex private route and mock calendar; Cal.com account is still required |
 | B8 | `feat/b8-data-deletion` / #129 | 0017 applied | approval-only deletion ledger and mock adapter; 80 passed, 0 skipped; real drill is a B4 platform gate |
+| B9 | `feat/b9-backup-recovery` / #130 | no schema change | durable snapshot manifest and isolated-only recovery plan; 82 passed, 0 skipped |
 
 Security: `app_private.is_admin()` replaces exposed public helper. Leaked Password Protection is PLAN-LIMITED PRODUCTION GATE. `api_idempotency_keys` and `rate_limit_buckets` require direct-denial evidence before final Advisor classification.
 
