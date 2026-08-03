@@ -50,7 +50,15 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const decision = decideAdminAccess({ pathname, hasSession: Boolean(user) });
+  // `getUser()` chỉ xác minh đăng nhập. Khu vực admin còn đòi AAL2; nếu
+  // tra AAL lỗi thì giữ `false` để fail-closed sang màn hình xác minh.
+  let hasAal2 = false;
+  if (user) {
+    const { data: assurance } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+    hasAal2 = assurance?.currentLevel === 'aal2';
+  }
+
+  const decision = decideAdminAccess({ pathname, hasSession: Boolean(user), hasAal2 });
 
   if (decision.action === 'allow') return response;
 

@@ -10,7 +10,8 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { createServerSupabase } from '@/lib/db/client';
+import { requireAdmin } from '@/lib/auth/require-admin';
+import { createAdminSupabase, createServerSupabase } from '@/lib/db/client';
 import { getLangApplication } from '@/lib/db/queries';
 import { countLangSlotsUsed, getMonthlyLimit } from '@/lib/db/queries';
 import { DomainError, HTTP_STATUS_BY_CODE } from '@/lib/domain/errors';
@@ -37,6 +38,50 @@ const TARGET_BY_ACTION: Record<Action, LangStatus> = {
   cancel: 'cancelled',
 };
 
+interface TransitionRpcRow {
+  from_status: LangStatus;
+  to_status: LangStatus;
+  capacity_month: string | null;
+  capacity_used: number | null;
+  capacity_limit: number | null;
+}
+
+function throwTransitionRpcError(error: { message?: string }): never {
+  switch (error.message) {
+    case 'APPLICATION_NOT_FOUND':
+      throw new DomainError('NOT_FOUND', 'Không tìm thấy hồ sơ này.');
+    case 'CONCURRENT_UPDATE':
+      throw new DomainError(
+        'CONCURRENT_UPDATE',
+        'Hồ sơ vừa được cập nhật ở một cửa sổ khác. Tải lại trang rồi kiểm tra lại giúp tôi nhé.'
+      );
+    case 'CAPACITY_FULL':
+      throw new DomainError(
+        'CAPACITY_FULL',
+        'Tháng dự kiến đã đủ suất. Chọn tháng khác hoặc điều chỉnh giới hạn trước khi phát link thanh toán.'
+      );
+    case 'TARGET_MONTH_REQUIRED':
+      throw new DomainError(
+        'TARGET_MONTH_REQUIRED',
+        'Chọn giúp tháng dự kiến diễn ra phiên trước khi tiếp tục.'
+      );
+    case 'DECLINE_REASON_REQUIRED':
+      throw new DomainError('VALIDATION_FAILED', 'Ghi giúp một dòng lý do từ chối.');
+    case 'HUMAN_DECISION_REQUIRED':
+      throw new DomainError(
+        'HUMAN_DECISION_REQUIRED',
+        'Bước này phải do người thật quyết định.'
+      );
+    case 'INVALID_TRANSITION':
+      throw new DomainError(
+        'INVALID_TRANSITION',
+        'Hồ sơ đang ở trạng thái không thể thực hiện hành động này. Tải lại trang rồi thử lại giúp tôi nhé.'
+      );
+    default:
+      throw error;
+  }
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -50,27 +95,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const db = createServerSupabase({ req, res });
-
-    // ---- Xác thực + kiểm tra quyền admin ----
-    const {
-      data: { user },
-    } = await db.auth.getUser();
-    if (!user) throw new DomainError('UNAUTHORIZED', 'Cần đăng nhập.');
-
-    const { data: adminRow } = await db
-      .from('admin_users')
-      .select('email, is_active')
-      .eq('user_id', user.id)
-      .maybeSingle();
-    if (!adminRow || adminRow.is_active !== true) {
-      throw new DomainError('UNAUTHORIZED', 'Tài khoản này không có quyền quản trị.');
-    }
+    const admin = await requireAdmin(db);
 
     // Nút trong /admin luôn do người thật bấm → actor là human.
     // Đây là điều cho phép các bước accepted/declined/more_info_needed đi qua
     // Cửa 1 của C-05. Webhook ngân hàng sau này sẽ dùng actor 'system' và
     // vì vậy KHÔNG thể tự nhận hồ sơ.
-    const actor: Actor = { kind: 'human', id: user.id, label: adminRow.email as string };
+    const {
+      data: { user },
+    } = await db.auth.getUser();
+    if (!user) throw new DomainError('UNAUTHORIZED', 'Cần đăng nhập.');
+    const actor: Actor = { kind: 'human', id: user.id, label: admin.adminEmail };
 
     const action = req.body?.action as Action | undefined;
     if (!action || !(action in TARGET_BY_ACTION)) {
@@ -84,7 +119,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const to = TARGET_BY_ACTION[action];
 
     // ---- Chuẩn bị dữ liệu ghi kèm theo từng hành động ----
-    const patch: Record<string, unknown> = { status: to };
+    let targetSessionMonth: string | null = null;
+    let declineReason: string | null = null;
     let capacityInput;
 
     if (action === 'accept') {
@@ -95,8 +131,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           'Chọn giúp tháng dự kiến diễn ra phiên trước khi nhận hồ sơ.'
         );
       }
-      patch.target_session_month = `${raw}-01`;
-      patch.decided_at = new Date().toISOString();
+      targetSessionMonth = `${raw}-01`;
     }
 
     if (action === 'decline') {
@@ -104,8 +139,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (typeof reason !== 'string' || reason.trim() === '') {
         throw new DomainError('VALIDATION_FAILED', 'Ghi giúp một dòng lý do từ chối.');
       }
-      patch.decline_reason = reason.trim();
-      patch.decided_at = new Date().toISOString();
+      declineReason = reason.trim();
     }
 
     // ---- Bộ đếm suất: chỉ ở bước phát link thanh toán ----
@@ -134,58 +168,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       capacity: capacityInput,
     });
 
-    // ---- Ghi trạng thái mới ----
-    const { error: updateError } = await db
-      .from('lang_applications')
-      .update(patch)
-      .eq('id', id)
-      .eq('status', from); // khoá lạc quan: chặn hai tab cùng bấm
-
-    if (updateError) throw updateError;
-
-    // ---- Ghi audit (bắt buộc, mọi lần chuyển) ----
-    const { error: auditError } = await db.from('audit_log').insert({
-      actor: result.audit.actor,
-      action: result.audit.action,
-      entity_type: result.audit.entityType,
-      entity_id: result.audit.entityId,
-      from_state: result.audit.fromState,
-      to_state: result.audit.toState,
-      reason: result.audit.reason ?? null,
-    });
-    if (auditError) {
-      // Không chặn hành động đã thành công, nhưng phải kêu to.
-      console.error('[admin] audit_log insert failed', {
-        applicationId: id,
-        action: result.audit.action,
-        at: new Date().toISOString(),
-      });
-    }
-
-    // ---- Cửa 2 (FD-B/B0.1): "Đã nhận tiền" phải để lại một dòng sổ sách ----
-    // Trước bản vá này nút chỉ đổi status, không ghi gì vào payments — nghĩa
-    // là không có bằng chứng kế toán cho việc Kenji vừa xác nhận. Giai đoạn
-    // đầu là Kenji tự bấm (không webhook), nhưng đây vẫn là "sự thật kế
-    // toán" nên phải có dòng ghi lại, không chỉ đổi một cột trạng thái.
-    if (action === 'confirm_payment') {
-      const { error: paymentError } = await db.from('payments').insert({
-        subject: 'lang',
-        subject_id: id,
-        amount_vnd: LANG_SESSION_PRICE_VND,
-        status: 'confirmed',
-        confirmed_at: new Date().toISOString(),
-      });
-      if (paymentError) {
-        // Trạng thái hồ sơ đã đổi thành công (transitionLang + update ở trên
-        // đã qua) — không rollback nó ở đây, vì rollback một transition đã
-        // audit lại là một việc khác cần thiết kế riêng. Kêu to để không ai
-        // âm thầm mất một dòng sổ sách.
-        console.error('[admin] payments insert failed sau confirm_payment', {
-          applicationId: id,
-          at: new Date().toISOString(),
-        });
+    // ---- Ghi nguyên tử ở CSDL ----
+    // Chỉ route đã qua requireAdmin() mới lấy được service role để gọi RPC.
+    // RPC cũng tự khoá capacity, ghi audit và payment trong cùng transaction.
+    const systemDb = createAdminSupabase();
+    const { data: transitionRows, error: transitionError } = await systemDb.rpc(
+      'transition_lang_application',
+      {
+        p_application_id: id,
+        p_expected_status: from,
+        p_next_status: to,
+        p_actor: result.audit.actor,
+        p_reason: declineReason,
+        p_target_session_month: targetSessionMonth,
+        p_payment_amount_vnd: action === 'confirm_payment' ? LANG_SESSION_PRICE_VND : null,
       }
-    }
+    );
+    if (transitionError) throwTransitionRpcError(transitionError);
+
+    const applied = (transitionRows as TransitionRpcRow[] | null)?.[0];
 
     // TODO(vòng sau — B1 email): gửi email theo từng bước.
     //   accept            → thư mời + hướng dẫn bước tiếp theo
@@ -203,7 +204,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     return res.status(200).json({
       ok: true,
-      data: { from: result.from, to: result.to, capacity: result.capacity ?? null },
+      data: {
+        from: applied?.from_status ?? result.from,
+        to: applied?.to_status ?? result.to,
+        capacity:
+          applied?.capacity_month &&
+          applied.capacity_used !== null &&
+          applied.capacity_limit !== null
+            ? {
+                monthKey: applied.capacity_month,
+                usedSlots: applied.capacity_used,
+                maxSlots: applied.capacity_limit,
+                remaining: Math.max(0, applied.capacity_limit - applied.capacity_used),
+              }
+            : null,
+      },
     });
   } catch (err) {
     if (err instanceof DomainError) {

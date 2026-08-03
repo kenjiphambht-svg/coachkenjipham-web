@@ -10,6 +10,7 @@ import type { GetServerSideProps } from 'next';
 
 import { createBrowserSupabase } from '@/lib/db/client';
 import { isSupabaseConfigured } from '@/lib/db/env';
+import { ADMIN_MFA_PATH } from '@/lib/auth/admin-gate';
 
 export default function AdminLoginPage({ configured }: { configured: boolean }) {
   const router = useRouter();
@@ -34,7 +35,10 @@ export default function AdminLoginPage({ configured }: { configured: boolean }) 
         setBusy(false);
         return;
       }
-      router.replace('/admin');
+      const { data: assurance, error: assuranceError } =
+        await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+      if (assuranceError) throw assuranceError;
+      router.replace(assurance?.currentLevel === 'aal2' ? '/admin' : ADMIN_MFA_PATH);
     } catch {
       setError('Chưa đăng nhập được. Thử lại sau giúp tôi nhé.');
       setBusy(false);

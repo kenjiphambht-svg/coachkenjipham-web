@@ -79,10 +79,10 @@ interface Bucket {
   resetAt: number;
 }
 
-// Bộ nhớ trong tiến trình. Đủ cho B0 (chưa nối form public, lưu lượng bằng 0).
-// TODO(vòng sau): khi nối form thật, chuyển sang bộ đếm dùng chung
-// (Upstash/Redis hoặc bảng Postgres) — bộ nhớ trong không sống sót qua
-// serverless cold start và không chia sẻ giữa các instance.
+// Bộ nhớ trong tiến trình chỉ phục vụ unit test/B0 khi chưa có public API.
+// Khi nối form thật, route PHẢI gọi checkPostgresRateLimit() từ
+// src/lib/security/rate-limit.ts. Không dùng Map này cho lưu lượng thật:
+// serverless cold start không chia sẻ bộ đếm giữa các instance.
 const buckets = new Map<string, Bucket>();
 
 export interface RateLimitOptions {

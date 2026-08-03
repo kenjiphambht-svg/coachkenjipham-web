@@ -13,6 +13,8 @@ export type DomainErrorCode =
   | 'SPAM_SUSPECTED'
   | 'NOT_FOUND'
   | 'UNAUTHORIZED'
+  | 'MFA_REQUIRED'
+  | 'CONCURRENT_UPDATE'
   | 'CONFIG_MISSING';
 
 export class DomainError extends Error {
@@ -53,5 +55,7 @@ export const HTTP_STATUS_BY_CODE: Record<DomainErrorCode, number> = {
   SPAM_SUSPECTED: 400,
   NOT_FOUND: 404,
   UNAUTHORIZED: 401,
+  MFA_REQUIRED: 403,
+  CONCURRENT_UPDATE: 409,
   CONFIG_MISSING: 500,
 };

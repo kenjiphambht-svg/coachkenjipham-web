@@ -4,9 +4,10 @@
 // ============================================================
 
 export const ADMIN_LOGIN_PATH = '/admin/dang-nhap';
+export const ADMIN_MFA_PATH = '/admin/xac-minh-mfa';
 
 /** Đường dẫn admin nào được xem mà chưa đăng nhập. Chỉ đúng trang đăng nhập. */
-const PUBLIC_ADMIN_PATHS = new Set<string>([ADMIN_LOGIN_PATH]);
+const PUBLIC_ADMIN_PATHS = new Set<string>([ADMIN_LOGIN_PATH, ADMIN_MFA_PATH]);
 
 export function isAdminPath(pathname: string): boolean {
   return pathname === '/admin' || pathname.startsWith('/admin/');
@@ -26,21 +27,32 @@ export interface GateDecision {
 export function decideAdminAccess(params: {
   pathname: string;
   hasSession: boolean;
+  hasAal2?: boolean;
 }): GateDecision {
-  const { pathname, hasSession } = params;
+  const { pathname, hasSession, hasAal2 = false } = params;
 
   if (!isAdminPath(pathname)) return { action: 'allow' };
 
-  const isLoginPage = PUBLIC_ADMIN_PATHS.has(pathname);
+  const isLoginPage = pathname === ADMIN_LOGIN_PATH;
+  const isMfaPage = pathname === ADMIN_MFA_PATH;
+  const isPublicAdminPage = PUBLIC_ADMIN_PATHS.has(pathname);
 
   if (hasSession) {
-    // Đã đăng nhập mà còn mở trang đăng nhập → đẩy về tổng quan.
-    return isLoginPage
+    // Session chỉ ở AAL1 chưa được phép thấy dữ liệu quản trị. Người dùng
+    // phải vào đúng màn hình xác minh/enroll MFA; mọi route khác fail-closed.
+    if (!hasAal2) {
+      return isMfaPage
+        ? { action: 'allow' }
+        : { action: 'redirect-to-login', destination: ADMIN_MFA_PATH };
+    }
+
+    // Đã đạt AAL2 mà còn mở login/MFA → đẩy về tổng quan.
+    return isLoginPage || isMfaPage
       ? { action: 'redirect-to-dashboard', destination: '/admin' }
       : { action: 'allow' };
   }
 
-  if (isLoginPage) return { action: 'allow' };
+  if (isPublicAdminPage) return { action: 'allow' };
 
   return { action: 'redirect-to-login', destination: ADMIN_LOGIN_PATH };
 }

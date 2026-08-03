@@ -4,7 +4,12 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { ADMIN_LOGIN_PATH, decideAdminAccess, isAdminPath } from '@/lib/auth/admin-gate';
+import {
+  ADMIN_LOGIN_PATH,
+  ADMIN_MFA_PATH,
+  decideAdminAccess,
+  isAdminPath,
+} from '@/lib/auth/admin-gate';
 
 describe('ca 6 — mở /admin khi chưa đăng nhập thì bị đẩy ra', () => {
   it.each([
@@ -25,16 +30,31 @@ describe('ca 6 — mở /admin khi chưa đăng nhập thì bị đẩy ra', () 
     );
   });
 
-  it('đã đăng nhập thì vào được mọi trang admin', () => {
+  it('trang xác minh MFA vẫn xem được để hoàn tất AAL2', () => {
+    expect(decideAdminAccess({ pathname: ADMIN_MFA_PATH, hasSession: false }).action).toBe('allow');
+  });
+
+  it('đã đăng nhập và AAL2 thì vào được mọi trang admin', () => {
     for (const pathname of ['/admin', '/admin/lang', '/admin/hat-mam', '/admin/lien-he']) {
-      expect(decideAdminAccess({ pathname, hasSession: true }).action).toBe('allow');
+      expect(decideAdminAccess({ pathname, hasSession: true, hasAal2: true }).action).toBe('allow');
     }
   });
 
-  it('đã đăng nhập mà mở trang đăng nhập thì về tổng quan', () => {
-    const decision = decideAdminAccess({ pathname: ADMIN_LOGIN_PATH, hasSession: true });
+  it('đã đăng nhập AAL2 mà mở trang đăng nhập thì về tổng quan', () => {
+    const decision = decideAdminAccess({ pathname: ADMIN_LOGIN_PATH, hasSession: true, hasAal2: true });
     expect(decision.action).toBe('redirect-to-dashboard');
     expect(decision.destination).toBe('/admin');
+  });
+
+  it('session AAL1 luôn bị đẩy sang bước MFA, trừ chính trang MFA', () => {
+    for (const pathname of ['/admin', '/admin/lang', ADMIN_LOGIN_PATH]) {
+      const decision = decideAdminAccess({ pathname, hasSession: true, hasAal2: false });
+      expect(decision.action).toBe('redirect-to-login');
+      expect(decision.destination).toBe(ADMIN_MFA_PATH);
+    }
+    expect(
+      decideAdminAccess({ pathname: ADMIN_MFA_PATH, hasSession: true, hasAal2: false }).action
+    ).toBe('allow');
   });
 });
 
