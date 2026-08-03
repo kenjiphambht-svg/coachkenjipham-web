@@ -12,11 +12,11 @@ alter table publications rename column access_token to access_token_hash;
 -- B0 chưa phát link thật nên hai bảng staging hiện không có token sống.
 -- Vẫn chuyển hash an toàn nếu migration gặp một token cũ từ môi trường dev.
 update lang_applications
-  set booking_token_hash = encode(digest(booking_token_hash, 'sha256'), 'hex')
+  set booking_token_hash = encode(extensions.digest(booking_token_hash, 'sha256'), 'hex')
   where booking_token_hash is not null;
 
 update publications
-  set access_token_hash = encode(digest(access_token_hash, 'sha256'), 'hex')
+  set access_token_hash = encode(extensions.digest(access_token_hash, 'sha256'), 'hex')
   where access_token_hash is not null;
 
 alter table publications alter column access_token_hash drop default;

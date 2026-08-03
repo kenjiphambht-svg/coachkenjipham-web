@@ -1,7 +1,11 @@
 -- ============================================================
--- ROLLBACK cho 0001_init.sql
--- Chạy file này để gỡ sạch toàn bộ hệ B0 khỏi cơ sở dữ liệu.
--- CẢNH BÁO: xoá hết dữ liệu trong 10 bảng. Chỉ dùng trên môi trường thử.
+-- MANUAL ROLLBACK cho 0001_init.sql
+--
+-- `supabase/migrations/` CHỈ chứa forward migrations. Thư mục này chứa
+-- rollback scripts thủ công và Supabase CLI KHÔNG tự chạy chúng.
+--
+-- CẢNH BÁO: xoá hết dữ liệu trong 10 bảng. Chỉ dùng trên môi trường thử,
+-- sau snapshot đã được xác minh và với uỷ quyền phá huỷ riêng.
 -- ============================================================
 
 drop table if exists audit_log             cascade;
