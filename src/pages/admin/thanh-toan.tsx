@@ -16,13 +16,12 @@ import { withAdmin } from '@/lib/auth/require-admin';
 import {
   buildReceiptPreview,
   formatCurrencyVnd,
-  HATMAM_HM01_PRICE_VND,
-  HATMAM_HM02_PRICE_VND,
-  isHm02Package,
   LANG_PRICE_VND,
 } from '@/lib/admin/operational';
 import {
   listHatMamOrders,
+  getHatMamPackageSnapshot,
+  listHatMamPaymentEvidence,
   listHatMamPaymentRequests,
   listLangApplications,
   listLangPaymentRequests,
@@ -31,6 +30,7 @@ import {
   type LangApplicationRow,
   type PaymentRequestRow,
   type PaymentRow,
+  type HatMamPaymentEvidenceRow,
 } from '@/lib/db/queries';
 
 interface Props {
@@ -40,6 +40,8 @@ interface Props {
   langRequests: PaymentRequestRow[];
   hatmamRequests: PaymentRequestRow[];
   payments: PaymentRow[];
+  hatmamEvidence: HatMamPaymentEvidenceRow[];
+  hatmamSnapshots: Record<string, { amount_vnd: number; package_name: string | null }>;
 }
 
 export default function AdminPayments({
@@ -49,12 +51,15 @@ export default function AdminPayments({
   langRequests,
   hatmamRequests,
   payments,
+  hatmamEvidence,
+  hatmamSnapshots,
 }: Props) {
   const langById = new Map(lang.map((row) => [row.id, row]));
   const hatmamById = new Map(hatmam.map((row) => [row.id, row]));
   const reportedLang = langRequests.filter((row) => row.reported_transfer_at && !row.revoked_at);
   const reportedHatMam = hatmamRequests.filter((row) => row.reported_transfer_at && !row.revoked_at);
   const pending = payments.filter((row) => row.status === 'pending');
+  const evidenceByRequest = new Map(hatmamEvidence.map((row) => [row.payment_request_id, row]));
 
   return (
     <AdminShell title="Thanh toán" adminEmail={adminEmail}>
@@ -105,12 +110,13 @@ export default function AdminPayments({
                 {reportedHatMam.map((request) => {
                   const row = request.order_id ? hatmamById.get(request.order_id) : undefined;
                   if (!row) return null;
-                  const receipt = buildReceiptPreview('hatmam', row.order_code, isHm02Package(row.package) ? HATMAM_HM02_PRICE_VND : HATMAM_HM01_PRICE_VND);
+                  const evidence = evidenceByRequest.get(request.id);
+                  const snapshot = hatmamSnapshots[row.id];
                   return (
                     <tr key={request.id}>
                       <Td>{row.order_code}</Td>
-                      <Td><span className="block max-w-[240px]">{receipt.fileName}</span><span className="text-[12px] text-e26-text-2">{receipt.transferReference}</span></Td>
-                      <Td>{formatCurrencyVnd(receipt.amountVnd)}</Td>
+                      <Td>{evidence ? <><span className="block max-w-[240px]">{evidence.receipt_file_name}</span><span className="text-[12px] text-e26-text-2">{evidence.transfer_reference}</span></> : <span className="text-e26-gold-deep">Thiếu evidence — không thể confirm</span>}</Td>
+                      <Td>{snapshot ? <><span className="block">Snapshot: {formatCurrencyVnd(snapshot.amount_vnd)}</span>{evidence && <span className="text-[12px] text-e26-text-2">Báo: {formatCurrencyVnd(evidence.reported_amount_vnd)}</span>}</> : 'Thiếu snapshot'}</Td>
                       <Td><StatusBadge>{row.status}</StatusBadge></Td>
                       <Td><Link href={`/admin/hat-mam/${row.id}`} className="underline underline-offset-4 hover:text-e26-gold-deep">Xem & xác nhận</Link></Td>
                     </tr>
@@ -147,12 +153,15 @@ export default function AdminPayments({
 }
 
 export const getServerSideProps: GetServerSideProps = withAdmin(async (_ctx, { db, adminEmail }) => {
-  const [lang, hatmam, langRequests, hatmamRequests, payments] = await Promise.all([
+  const [lang, hatmam, langRequests, hatmamRequests, payments, hatmamEvidence] = await Promise.all([
     listLangApplications(db),
     listHatMamOrders(db),
     listLangPaymentRequests(db),
     listHatMamPaymentRequests(db),
     listPayments(db),
+    listHatMamPaymentEvidence(db),
   ]);
-  return { props: { adminEmail, lang, hatmam, langRequests, hatmamRequests, payments } };
+  const snapshotPairs = await Promise.all(hatmam.map(async (order) => [order.id, await getHatMamPackageSnapshot(db, order.id)] as const));
+  const hatmamSnapshots = Object.fromEntries(snapshotPairs.filter(([, snapshot]) => !!snapshot).map(([id, snapshot]) => [id, { amount_vnd: Number(snapshot?.amount_vnd), package_name: typeof snapshot?.package_name === 'string' ? snapshot.package_name : null }]));
+  return { props: { adminEmail, lang, hatmam, langRequests, hatmamRequests, payments, hatmamEvidence, hatmamSnapshots } };
 });

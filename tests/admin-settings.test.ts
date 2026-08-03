@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { DEFAULT_ADMIN_SETTINGS, getActiveSettings, hydrateOperationalSettings } from '@/lib/admin/settings';
+import { DEFAULT_ADMIN_SETTINGS, getActiveSettings, hydrateOperationalSettings, validateSettingsPayload } from '@/lib/admin/settings';
 
 describe('Admin versioned settings', () => {
   it('keeps release and provider readiness off by default', () => {
@@ -29,5 +29,14 @@ describe('Admin versioned settings', () => {
     ]);
     expect(row?.id).toBe('current');
     expect(values.lang.priceVnd).toBe(11_000_000);
+  });
+
+  it('rejects invalid deadlines, negative values, mismatched capacity and unlocked release flags server-side', () => {
+    const valid = structuredClone(DEFAULT_ADMIN_SETTINGS);
+    expect(validateSettingsPayload(valid)).toEqual(valid);
+    expect(() => validateSettingsPayload({ ...valid, hatmam: { ...valid.hatmam, hm01ReferencePriceVnd: 1 } })).toThrow(/tham chiếu/i);
+    expect(() => validateSettingsPayload({ ...valid, lang: { ...valid.lang, capacityMonth: -1 } })).toThrow(/Capacity Lặng/i);
+    expect(() => validateSettingsPayload({ ...valid, lang: { ...valid.lang, bookingDefaults: { ...valid.lang.bookingDefaults, hardMonthlyCapacity: 4 } } })).toThrow(/Hard capacity/i);
+    expect(() => validateSettingsPayload({ ...valid, integrations: { ...valid.integrations, privateStorageReady: true } })).toThrow(/khóa OFF/i);
   });
 });

@@ -3,9 +3,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { requireAdmin } from '@/lib/auth/require-admin';
 import { createAdminSupabase, createServerSupabase } from '@/lib/db/client';
 import { DomainError, HTTP_STATUS_BY_CODE } from '@/lib/domain/errors';
-import { getSettingsAuditActor, sanitizeSettingsPayload } from '@/lib/admin/settings';
+import { getSettingsAuditActor, validateSettingsPayload } from '@/lib/admin/settings';
 
-function assertFrozenReadiness(values: ReturnType<typeof sanitizeSettingsPayload>) {
+function assertFrozenReadiness(values: ReturnType<typeof validateSettingsPayload>) {
   if (
     values.hatmam.publicActivationEnabled ||
     values.integrations.privateStorageReady ||
@@ -29,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const db = createServerSupabase({ req, res });
     const admin = await requireAdmin(db);
-    const values = sanitizeSettingsPayload(req.body?.values);
+    const values = validateSettingsPayload(req.body?.values);
     assertFrozenReadiness(values);
 
     const systemDb = createAdminSupabase();

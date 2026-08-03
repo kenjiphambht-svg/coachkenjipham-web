@@ -7,6 +7,7 @@ import {
   HATMAM_HM02_REFERENCE_VND,
   LANG_PRICE_VND,
 } from './operational';
+import { DomainError } from '@/lib/domain/errors';
 
 export interface AdminOperationalSettings {
   lang: {
@@ -232,9 +233,74 @@ export function getActiveSettings(rows: OperationalSettingsVersionRow[]) {
   };
 }
 
-export function sanitizeSettingsPayload(input: unknown): AdminOperationalSettings {
-  return hydrateOperationalSettings(input);
+export function validateSettingsPayload(input: unknown): AdminOperationalSettings {
+  const root = requiredRecord(input, 'Dữ liệu cài đặt không hợp lệ.');
+  const lang = requiredRecord(root.lang, 'Thiếu nhóm cài đặt Lặng.');
+  const hatmam = requiredRecord(root.hatmam, 'Thiếu nhóm cài đặt Hạt Mầm.');
+  const integrations = requiredRecord(root.integrations, 'Thiếu nhóm tích hợp.');
+  const booking = requiredRecord(lang.bookingDefaults, 'Thiếu booking defaults.');
+
+  const values: AdminOperationalSettings = {
+    lang: {
+      priceVnd: requiredInteger(lang.priceVnd, 'Giá Lặng', 0, 100_000_000),
+      capacityMonth: requiredInteger(lang.capacityMonth, 'Capacity Lặng', 1, 100),
+      responseSlaMinutes: requiredInteger(lang.responseSlaMinutes, 'SLA phản hồi', 1, 1440),
+      paymentConfirmationSlaMinutes: requiredInteger(lang.paymentConfirmationSlaMinutes, 'SLA xác nhận tiền', 1, 1440),
+      sessionDurationMinutes: requiredInteger(lang.sessionDurationMinutes, 'Thời lượng phiên', 15, 480),
+      publicLocationLabel: requiredText(lang.publicLocationLabel, 'Địa điểm công khai', 200),
+      bookingDefaults: {
+        tuesday0930: requiredBoolean(booking.tuesday0930, 'Lịch Thứ Ba'),
+        thursday1430: requiredBoolean(booking.thursday1430, 'Lịch Thứ Năm'),
+        postSessionBufferMinutes: requiredInteger(booking.postSessionBufferMinutes, 'Buffer', 0, 480),
+        minNoticeHours: requiredInteger(booking.minNoticeHours, 'Notice tối thiểu', 0, 720),
+        bookingHorizonDays: requiredInteger(booking.bookingHorizonDays, 'Booking horizon', 1, 365),
+        rescheduleDeadlineHours: requiredInteger(booking.rescheduleDeadlineHours, 'Reschedule deadline', 0, 720),
+        maxBookingsPerWeek: requiredInteger(booking.maxBookingsPerWeek, 'Booking mỗi tuần', 1, 20),
+        hardMonthlyCapacity: requiredInteger(booking.hardMonthlyCapacity, 'Hard capacity', 1, 100),
+      },
+    },
+    hatmam: {
+      hm01Name: requiredText(hatmam.hm01Name, 'Tên HM-01', 120),
+      hm01LaunchPriceVnd: requiredInteger(hatmam.hm01LaunchPriceVnd, 'Giá launch HM-01', 0, 100_000_000),
+      hm01ReferencePriceVnd: requiredInteger(hatmam.hm01ReferencePriceVnd, 'Giá reference HM-01', 0, 100_000_000),
+      hm02Name: requiredText(hatmam.hm02Name, 'Tên HM-02', 120),
+      hm02LaunchPriceVnd: requiredInteger(hatmam.hm02LaunchPriceVnd, 'Giá launch HM-02', 0, 100_000_000),
+      hm02ReferencePriceVnd: requiredInteger(hatmam.hm02ReferencePriceVnd, 'Giá reference HM-02', 0, 100_000_000),
+      capacityMonth: requiredInteger(hatmam.capacityMonth, 'Capacity Hạt Mầm', 1, 100),
+      deliveryBusinessDays: requiredInteger(hatmam.deliveryBusinessDays, 'Hạn giao', 1, 60),
+      revisionWindowDays: requiredInteger(hatmam.revisionWindowDays, 'Revision window', 0, 60),
+      rawIntakeRetentionMonths: requiredInteger(hatmam.rawIntakeRetentionMonths, 'Raw intake retention', 1, 120),
+      publicationRetentionMonths: requiredInteger(hatmam.publicationRetentionMonths, 'Publication retention', 1, 120),
+      publicActivationEnabled: requiredBoolean(hatmam.publicActivationEnabled, 'Public activation'),
+    },
+    integrations: {
+      privateStorageReady: requiredBoolean(integrations.privateStorageReady, 'Private Storage'),
+      deletionWorkflowReady: requiredBoolean(integrations.deletionWorkflowReady, 'Deletion workflow'),
+      resendReadiness: requiredReadiness(integrations.resendReadiness, 'Resend'),
+      calcomReadiness: requiredReadiness(integrations.calcomReadiness, 'Cal.com'),
+    },
+  };
+
+  if (values.hatmam.hm01ReferencePriceVnd < values.hatmam.hm01LaunchPriceVnd || values.hatmam.hm02ReferencePriceVnd < values.hatmam.hm02LaunchPriceVnd) {
+    throw new DomainError('VALIDATION_FAILED', 'Giá tham chiếu không được thấp hơn giá launch.');
+  }
+  if (values.lang.bookingDefaults.hardMonthlyCapacity !== values.lang.capacityMonth) {
+    throw new DomainError('VALIDATION_FAILED', 'Hard capacity phải khớp capacity Lặng đang hiệu lực.');
+  }
+  if (
+    values.hatmam.publicActivationEnabled ||
+    values.integrations.privateStorageReady ||
+    values.integrations.deletionWorkflowReady ||
+    values.integrations.resendReadiness !== 'off' ||
+    values.integrations.calcomReadiness !== 'off'
+  ) {
+    throw new DomainError('VALIDATION_FAILED', 'Release gates và provider readiness đang bị khóa OFF trong staging.');
+  }
+  return values;
 }
+
+/** Compatibility alias used by historical callers. New writes must validate. */
+export const sanitizeSettingsPayload = validateSettingsPayload;
 
 export function getSettingsAuditActor(adminEmail: string = ADMIN_EMAIL) {
   return `human:settings (${adminEmail})`;
@@ -267,4 +333,37 @@ function readinessOr(
     value === 'off'
     ? value
     : fallback;
+}
+
+function requiredRecord(value: unknown, message: string) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    throw new DomainError('VALIDATION_FAILED', message);
+  }
+  return value as Record<string, unknown>;
+}
+
+function requiredInteger(value: unknown, label: string, min: number, max: number) {
+  if (!Number.isInteger(value) || (value as number) < min || (value as number) > max) {
+    throw new DomainError('VALIDATION_FAILED', `${label} phải là số nguyên từ ${min} đến ${max}.`);
+  }
+  return value as number;
+}
+
+function requiredText(value: unknown, label: string, max: number) {
+  if (typeof value !== 'string' || !value.trim() || value.trim().length > max) {
+    throw new DomainError('VALIDATION_FAILED', `${label} không được để trống hoặc quá ${max} ký tự.`);
+  }
+  return value.trim();
+}
+
+function requiredBoolean(value: unknown, label: string) {
+  if (typeof value !== 'boolean') throw new DomainError('VALIDATION_FAILED', `${label} không hợp lệ.`);
+  return value;
+}
+
+function requiredReadiness(value: unknown, label: string): AdminOperationalSettings['integrations']['resendReadiness'] {
+  if (value !== 'off' && value !== 'waiting_for_secure_session' && value !== 'verified') {
+    throw new DomainError('VALIDATION_FAILED', `${label} readiness không hợp lệ.`);
+  }
+  return value;
 }

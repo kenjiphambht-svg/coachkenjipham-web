@@ -24,6 +24,8 @@ export const HATMAM_STATUSES = [
   'awaiting_payment',
   'paid',
   'in_production',
+  'review_pending',
+  'revision_requested',
   'ready',
   'delivered',
   'cancelled',
@@ -62,8 +64,12 @@ export const HATMAM_TRANSITIONS: Record<HatMamStatus, readonly HatMamStatus[]> =
   submitted: ['awaiting_payment', 'cancelled'],
   awaiting_payment: ['paid', 'cancelled'],
   paid: ['in_production', 'cancelled'],
-  in_production: ['ready', 'cancelled'],
-  ready: ['delivered', 'cancelled'],
+  in_production: ['review_pending', 'cancelled'],
+  review_pending: ['revision_requested', 'ready', 'cancelled'],
+  revision_requested: ['in_production', 'cancelled'],
+  // `delivered` remains a historical terminal state only. New deliveries are
+  // deliberately impossible while private Storage/B4 is fail-closed.
+  ready: ['cancelled'],
   delivered: [],
   cancelled: [],
 };

@@ -2,18 +2,19 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { requireAdmin } from '@/lib/auth/require-admin';
 import { createAdminSupabase, createServerSupabase } from '@/lib/db/client';
-import { getHatMamOrder } from '@/lib/db/queries';
+import { getHatMamOrder, getHatMamPackageSnapshot } from '@/lib/db/queries';
 import { DomainError, HTTP_STATUS_BY_CODE } from '@/lib/domain/errors';
 import { transitionHatMam, type Actor } from '@/lib/domain/state-machine';
 import { type HatMamStatus } from '@/lib/domain/states';
-import { HATMAM_HM01_PRICE_VND, HATMAM_HM02_PRICE_VND, isHm02Package } from '@/lib/admin/operational';
 
-type Action = 'issue_payment' | 'confirm_payment' | 'start_production' | 'mark_ready' | 'cancel';
+type Action = 'issue_payment' | 'confirm_payment' | 'start_production' | 'submit_for_review' | 'request_revision' | 'mark_ready' | 'cancel';
 
 const targetByAction: Record<Action, HatMamStatus> = {
   issue_payment: 'awaiting_payment',
   confirm_payment: 'paid',
   start_production: 'in_production',
+  submit_for_review: 'review_pending',
+  request_revision: 'revision_requested',
   mark_ready: 'ready',
   cancel: 'cancelled',
 };
@@ -53,10 +54,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       actor,
     });
 
+    const snapshot = action === 'confirm_payment' ? await getHatMamPackageSnapshot(db, id) : null;
+    if (action === 'confirm_payment' && !snapshot) {
+      throw new DomainError('VALIDATION_FAILED', 'Đơn chưa có package snapshot nên không thể xác nhận thanh toán.');
+    }
     const systemDb = createAdminSupabase();
-    const amount = action === 'confirm_payment'
-      ? isHm02Package(order.package) ? HATMAM_HM02_PRICE_VND : HATMAM_HM01_PRICE_VND
-      : null;
+    const amount = action === 'confirm_payment' ? Number(snapshot?.amount_vnd) : null;
     const { error: transitionError } = await systemDb.rpc('transition_hatmam_order', {
       p_order_id: id,
       p_expected_status: result.from,
@@ -70,6 +73,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
       if (transitionError.message === 'INVALID_TRANSITION') {
         throw new DomainError('INVALID_TRANSITION', 'Đơn đang ở trạng thái không thể thực hiện hành động này.');
+      }
+      if (transitionError.message === 'PAYMENT_EVIDENCE_INVALID') {
+        throw new DomainError('VALIDATION_FAILED', 'Chưa đủ evidence thanh toán hợp lệ: cần payment report, receipt, số tiền và nội dung chuyển khoản khớp package snapshot.');
       }
       throw transitionError;
     }

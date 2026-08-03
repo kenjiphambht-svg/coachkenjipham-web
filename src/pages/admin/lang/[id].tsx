@@ -26,17 +26,16 @@ import { withAdmin } from '@/lib/auth/require-admin';
 import {
   countLangSlotsUsed,
   getLangApplication,
-  getMonthlyLimit,
+  listOperationalSettings,
   type LangApplicationRow,
 } from '@/lib/db/queries';
 import { evaluateCapacity, toMonthKey } from '@/lib/domain/capacity';
+import { getActiveSettings, type AdminOperationalSettings } from '@/lib/admin/settings';
 import {
-  BOOKING_DEFAULTS,
   buildLangCustomerPreview,
   buildLangSupportSummary,
   buildReceiptPreview,
   formatCurrencyVnd,
-  LANG_PRICE_VND,
 } from '@/lib/admin/operational';
 
 interface MonthOption {
@@ -50,6 +49,7 @@ interface Props {
   adminEmail: string;
   application: LangApplicationRow;
   monthOptions: MonthOption[];
+  settings: AdminOperationalSettings['lang'];
 }
 
 const Q2_VI: Record<string, string> = {
@@ -78,7 +78,7 @@ function Answer({ label, children }: { label: string; children: React.ReactNode 
   );
 }
 
-export default function AdminLangDetail({ adminEmail, application, monthOptions }: Props) {
+export default function AdminLangDetail({ adminEmail, application, monthOptions, settings }: Props) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -88,7 +88,7 @@ export default function AdminLangDetail({ adminEmail, application, monthOptions 
 
   const status = application.status;
   const summary = buildLangSupportSummary(application);
-  const receipt = buildReceiptPreview('lang', application.order_code, LANG_PRICE_VND);
+  const receipt = buildReceiptPreview('lang', application.order_code, settings.priceVnd);
 
   const run = async (
     action: string,
@@ -382,7 +382,7 @@ export default function AdminLangDetail({ adminEmail, application, monthOptions 
             </dl>
             <p className="font-sans text-[13px] leading-[1.7] text-e26-text-2 mt-4">{receipt.summary}</p>
             <p className="font-sans text-[13px] leading-[1.7] text-e26-text-2 mt-3">
-              Lịch mặc định: Thứ Ba 09:30 hoặc Thứ Năm 14:30 · {BOOKING_DEFAULTS.sessionDurationMinutes} phút · buffer {BOOKING_DEFAULTS.postSessionBufferMinutes} phút · tối đa {BOOKING_DEFAULTS.hardMonthlyCapacity} phiên/tháng. Cal.com vẫn OFF.
+              Lịch từ active settings: {settings.bookingDefaults.tuesday0930 ? 'Thứ Ba 09:30' : ''}{settings.bookingDefaults.tuesday0930 && settings.bookingDefaults.thursday1430 ? ' hoặc ' : ''}{settings.bookingDefaults.thursday1430 ? 'Thứ Năm 14:30' : ''} · {settings.sessionDurationMinutes} phút · buffer {settings.bookingDefaults.postSessionBufferMinutes} phút · tối đa {settings.bookingDefaults.hardMonthlyCapacity} phiên/tháng. Cal.com vẫn OFF.
             </p>
           </Card>
         </div>
@@ -400,16 +400,14 @@ export const getServerSideProps: GetServerSideProps = withAdmin(async (ctx, { db
 
   // 6 tháng tới, kèm số suất còn lại — để Kenji thấy trước khi bấm Nhận,
   // không phải nhận xong mới biết tháng đó đã đầy.
+  const settings = getActiveSettings(await listOperationalSettings(db)).values;
   const now = new Date();
   const monthOptions: MonthOption[] = [];
   for (let i = 0; i < 6; i += 1) {
     const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + i, 1));
     const monthKey = toMonthKey(d);
-    const [used, limit] = await Promise.all([
-      countLangSlotsUsed(db, d),
-      getMonthlyLimit(db, d),
-    ]);
-    const cap = evaluateCapacity({ monthKey, usedSlots: used.usedSlots, maxSlots: limit });
+    const used = await countLangSlotsUsed(db, d);
+    const cap = evaluateCapacity({ monthKey, usedSlots: used.usedSlots, maxSlots: settings.lang.capacityMonth });
     monthOptions.push({
       value: monthKey.slice(0, 7),
       label: `${String(d.getUTCMonth() + 1).padStart(2, '0')}/${d.getUTCFullYear()}`,
@@ -418,5 +416,5 @@ export const getServerSideProps: GetServerSideProps = withAdmin(async (ctx, { db
     });
   }
 
-  return { props: { adminEmail, application, monthOptions } };
+  return { props: { adminEmail, application, monthOptions, settings: settings.lang } };
 });

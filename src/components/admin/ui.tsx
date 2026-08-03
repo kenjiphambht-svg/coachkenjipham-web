@@ -25,7 +25,9 @@ export const HATMAM_STATUS_VI: Record<HatMamStatus, string> = {
   awaiting_payment: 'Chờ thanh toán',
   paid: 'Đã nhận tiền',
   in_production: 'Đang viết',
-  ready: 'Viết xong',
+  review_pending: 'Chờ Kenji duyệt',
+  revision_requested: 'Cần chỉnh sửa',
+  ready: 'Sẵn sàng',
   delivered: 'Đã giao',
   cancelled: 'Đã huỷ',
 };

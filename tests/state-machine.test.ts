@@ -33,8 +33,11 @@ describe('ca 1 — chuyển trạng thái hợp lệ thì pass', () => {
     expect(step('submitted' as never, 'awaiting_payment' as never)).toBe('awaiting_payment');
     expect(step('awaiting_payment' as never, 'paid' as never)).toBe('paid');
     expect(step('paid' as never, 'in_production' as never)).toBe('in_production');
-    expect(step('in_production' as never, 'ready' as never)).toBe('ready');
-    expect(step('ready' as never, 'delivered' as never)).toBe('delivered');
+    expect(step('in_production' as never, 'review_pending' as never)).toBe('review_pending');
+    expect(step('review_pending' as never, 'revision_requested' as never)).toBe('revision_requested');
+    expect(step('revision_requested' as never, 'in_production' as never)).toBe('in_production');
+    expect(step('in_production' as never, 'review_pending' as never)).toBe('review_pending');
+    expect(step('review_pending' as never, 'ready' as never)).toBe('ready');
   });
 
   it('mỗi lần chuyển đều sinh một bản ghi audit', () => {
@@ -114,5 +117,9 @@ describe('trạng thái kết thúc', () => {
     for (const from of ['submitted', 'under_review', 'accepted', 'awaiting_payment', 'paid', 'scheduled'] as const) {
       expect(lang(from, 'cancelled').to).toBe('cancelled');
     }
+  });
+
+  it('không cho delivery mới khi B4 Storage còn fail-closed', () => {
+    expect(() => transitionHatMam({ orderId: 'o-1', from: 'ready', to: 'delivered', actor: kenji })).toThrowError(DomainError);
   });
 });

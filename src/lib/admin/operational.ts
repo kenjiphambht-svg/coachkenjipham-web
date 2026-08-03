@@ -28,6 +28,16 @@ export interface ReceiptPreview {
   summary: string;
 }
 
+export interface PaymentEvidenceView {
+  requestId: string;
+  receiptFileName: string;
+  receiptSha256: string;
+  reportedAmountVnd: number;
+  transferReference: string;
+  reportedAt: string;
+  revokedAt: string | null;
+}
+
 export interface BookingDefaultsView {
   slots: Array<{ label: string; value: string }>;
   sessionDurationMinutes: number;
@@ -122,12 +132,12 @@ export function buildLangSupportSummary(input: LangSummaryInput): SupportSummary
   }
 
   return {
-    headline: `Tóm tắt hỗ trợ AI cho ${input.order_code}`,
+    headline: `Tóm tắt hỗ trợ theo quy tắc — dữ liệu thử · ${input.order_code}`,
     observations,
     operatorNote:
       input.status === 'declined' && input.decline_reason
         ? `Hồ sơ đang ở trạng thái đã từ chối. Giữ phản hồi tôn trọng, nhất quán với lý do: ${input.decline_reason}`
-        : 'AI chỉ hỗ trợ gom tín hiệu để Kenji đọc nhanh hơn. Quyết định cuối cùng, lý do và cách phản hồi phải do Kenji tự ghi.',
+        : 'Bộ quy tắc chỉ gom tín hiệu để Kenji đọc nhanh hơn. Quyết định cuối cùng, lý do và cách phản hồi phải do Kenji tự ghi.',
     limitation:
       'Giới hạn của AI: không được phê duyệt, từ chối, chẩn đoán, dán nhãn hay giao tiếp quyết định cuối cùng với khách.',
   };
@@ -167,6 +177,43 @@ export function buildReceiptPreview(kind: 'lang' | 'hatmam', orderCode: string, 
   };
 }
 
+export function paymentEvidenceFromRecord(input: {
+  requestId: string;
+  receipt_file_name: string;
+  receipt_sha256: string;
+  reported_amount_vnd: number;
+  transfer_reference: string;
+  reported_at: string;
+  revoked_at: string | null;
+}): PaymentEvidenceView {
+  return {
+    requestId: input.requestId,
+    receiptFileName: input.receipt_file_name,
+    receiptSha256: input.receipt_sha256,
+    reportedAmountVnd: input.reported_amount_vnd,
+    transferReference: input.transfer_reference,
+    reportedAt: input.reported_at,
+    revokedAt: input.revoked_at,
+  };
+}
+
+export function isHatMamPaymentEvidenceEligible(input: {
+  expectedAmountVnd: number | null;
+  expectedReference: string;
+  paymentRequest: { reported_transfer_at: string | null; revoked_at: string | null; report_reference: string | null } | null;
+  evidence: { receipt_sha256: string; reported_amount_vnd: number; transfer_reference: string } | null;
+}) {
+  return Boolean(
+    input.expectedAmountVnd !== null &&
+    input.paymentRequest?.reported_transfer_at &&
+    !input.paymentRequest.revoked_at &&
+    input.evidence?.receipt_sha256 &&
+    input.evidence.reported_amount_vnd === input.expectedAmountVnd &&
+    input.evidence.transfer_reference === input.expectedReference &&
+    input.paymentRequest.report_reference === input.expectedReference
+  );
+}
+
 export function getHatMamPackageInfo(packageCode: string) {
   if (isHm02Package(packageCode)) {
     return {
@@ -192,44 +239,39 @@ export function isHm02Package(packageCode: string) {
 }
 
 export function buildHatMamStates(status: HatMamStatus): HatMamSyntheticState[] {
-  const doneStates =
-    status === 'delivered'
-      ? 7
-      : status === 'ready'
-        ? 6
-        : status === 'in_production'
-          ? 4
-          : status === 'paid'
-            ? 3
-            : status === 'awaiting_payment'
-              ? 2
-              : 1;
+  const currentIndex: Record<HatMamStatus, number> = {
+    submitted: 0,
+    awaiting_payment: 1,
+    paid: 2,
+    in_production: 3,
+    review_pending: 4,
+    revision_requested: 5,
+    ready: 6,
+    delivered: 7,
+    cancelled: 0,
+  };
 
   const sequence: Array<{ label: string; note: string }> = [
-    { label: 'Hồ sơ mới', note: 'Đơn vừa được ghi nhận, chờ Kenji xác nhận khả năng nhận đơn.' },
-    { label: 'Đã xác nhận', note: 'Đơn được chấp nhận ở tầng vận hành, chưa phải xác nhận thanh toán.' },
-    { label: 'Đang đọc', note: 'Kenji đọc dữ liệu cha mẹ cung cấp, không tạo chẩn đoán hay kết luận cố định về trẻ.' },
-    { label: 'Đang viết', note: 'Bản thảo đang được tạo và biên tập nội bộ.' },
+    { label: 'Hồ sơ mới', note: 'Đơn vừa được ghi nhận, chờ bước thanh toán.' },
+    { label: 'Đã báo chuyển khoản', note: 'Có payment report, nhưng Kenji vẫn phải kiểm tra evidence trước khi xác nhận.' },
+    { label: 'Đã xác nhận thanh toán', note: 'Số tiền được lấy từ package snapshot của đơn.' },
+    { label: 'Đang sản xuất', note: 'Kenji đang đọc và biên tập nội bộ, không tạo chẩn đoán về trẻ.' },
     { label: 'Chờ Kenji duyệt', note: 'Bản thảo chờ mắt đọc cuối cùng của Kenji.' },
-    { label: 'Cần chỉnh sửa', note: 'Đã có một vòng phản hồi nội bộ hoặc revision thử.' },
-    { label: 'Sẵn sàng phát hành', note: 'Metadata và checklist đã đủ, nhưng gate B4 còn chặn phát hành thật.' },
-    { label: 'Đã phát hành', note: 'Chỉ là nhãn synthetic kiểm UX; phát hành thật đang fail-closed vì private Storage chưa sẵn sàng.' },
-    { label: 'Đã thu hồi', note: 'Nhánh synthetic để kiểm thao tác thu hồi trong giao diện.' },
-    { label: 'Chờ xóa', note: 'Nhánh synthetic cho yêu cầu xóa sớm, không chạy destructive action thật.' },
-    { label: 'Đã xóa', note: 'Nhánh synthetic cuối cùng cho UX retention/deletion; không xóa dữ liệu thật.' },
+    { label: 'Cần chỉnh sửa', note: 'Kenji đã yêu cầu revision; đơn quay lại sản xuất sau khi điều chỉnh.' },
+    { label: 'Sẵn sàng', note: 'Nội dung đã sẵn sàng, nhưng delivery thật vẫn bị B4 chặn.' },
+    { label: 'Delivery bị B4 chặn', note: 'Không có private Storage E2E nên không phát hành hoặc giao file thật.' },
   ];
 
   return sequence.map((item, index) => {
-    const step = index + 1;
-    if (item.label === 'Đã phát hành' || item.label === 'Đã thu hồi' || item.label === 'Chờ xóa' || item.label === 'Đã xóa') {
+    if (item.label === 'Delivery bị B4 chặn') {
       return {
         label: item.label,
         state: 'blocked',
         note: item.note,
       };
     }
-    if (step < doneStates) return { label: item.label, state: 'done', note: item.note };
-    if (step === doneStates) return { label: item.label, state: 'current', note: item.note };
+    if (index < currentIndex[status]) return { label: item.label, state: 'done', note: item.note };
+    if (index === currentIndex[status]) return { label: item.label, state: 'current', note: item.note };
     return { label: item.label, state: 'pending', note: item.note };
   });
 }

@@ -94,3 +94,44 @@ One simple enrollment instruction: open the Supabase invitation for
 
 No key, secret, command, environment setting or manual debugging is required
 from the Founder.
+
+## Founder acceptance correction pass
+
+This correction remains on the same Draft PR and adds a complete
+synthetic-only operating loop:
+
+- Publication review can request revision, approve/re-approve and revoke a
+  synthetic metadata/checksum record. Every action writes synthetic audit
+  evidence; no private Storage operation is callable.
+- Deletion can open an affected-record preview, show object-before-metadata
+  order, confirm and retry. Confirmation deliberately records
+  `FAIL_CLOSED`; it never calls destructive SQL or Storage deletion.
+- Hạt Mầm distinguishes payment reported, confirmed, in production, awaiting
+  Kenji review, revision requested and ready. Delivery remains blocked by B4.
+  Due dates, revision deadline and overdue warnings are per-order values.
+- Payment confirmation is a single database transaction that locks the order,
+  reads its immutable package snapshot, requires a non-revoked reported
+  payment request plus a matching receipt-evidence record, then audits the
+  transition. Current price constants are not used for confirmation.
+- New parent-intake orders read the active versioned settings and snapshot
+  package name, amount, capacity, delivery, revision and retention. Existing
+  order snapshots are never rewritten by later settings changes.
+- Server-side validation rejects invalid integer/range/text values, reference
+  prices below launch prices and every attempt to turn on release/provider
+  readiness.
+
+### Correction migrations and verification
+
+- `0020_wp1_founder_acceptance_corrections.sql` — applied to staging.
+- `0021_fix_wp1_intake_lint.sql` — applied to staging; forward-only lint
+  repair of the active-settings intake function.
+- Migration history is aligned through `0021`.
+- `supabase db lint --linked` — no schema errors.
+- `npx tsc --noEmit` — pass.
+- `npx vitest run --exclude tests/rls-child-profiles.test.ts` — 19 files,
+  111 tests pass; no skipped tests.
+- `npm run lint` and production build — pass with only pre-existing legacy
+  warnings outside WP1 scope.
+
+The canonical staging Auth/RLS/AAL/Security-Advisor release gates remain OPEN.
+They are not represented as pass evidence in this document.
