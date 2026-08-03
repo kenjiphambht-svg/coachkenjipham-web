@@ -47,13 +47,13 @@ export function EssenceDisplay({
       className={cn(
         "font-serif font-medium text-e26-text [text-wrap:balance]",
         size === "hero" &&
-          "text-[34px] leading-[1.1] tracking-[-0.01em] md:text-[68px] md:leading-[1.05]",
+          "text-[36px] leading-[1.06] tracking-[-0.018em] md:text-[72px] md:leading-[0.98]",
         size === "signal" &&
           "text-[52px] leading-[0.98] tracking-[-0.015em] md:text-[92px] md:leading-[0.95]",
         size === "mantra" &&
-          "text-[42px] leading-[1.03] tracking-[-0.012em] md:text-[62px] md:leading-[1]",
+          "text-[44px] leading-[1.02] tracking-[-0.016em] md:text-[68px] md:leading-[0.96]",
         size === "values" &&
-          "text-[38px] leading-[1.08] tracking-[-0.012em] md:text-[56px] md:leading-[1.02]",
+          "text-[40px] leading-[1.04] tracking-[-0.016em] md:text-[60px] md:leading-[0.98]",
         className
       )}
     >
@@ -76,8 +76,8 @@ export function EssenceAnchor({
     <As
       className={cn(
         "font-serif font-medium text-e26-text [text-wrap:balance]",
-        level === "h2" && "text-[30px] leading-[1.25] tracking-normal md:text-[42px]",
-        level === "h3" && "text-[22px] leading-[1.25] tracking-normal md:text-[32px]",
+        level === "h2" && "text-[33px] leading-[1.14] tracking-[-0.012em] md:text-[50px] md:leading-[1.08]",
+        level === "h3" && "text-[24px] leading-[1.16] tracking-[-0.008em] md:text-[34px] md:leading-[1.1]",
         className
       )}
     >
@@ -95,7 +95,7 @@ export function EssenceBody({ children, className, as: As = "p" }: Common & { as
     <As
       className={cn(
         "font-sans font-normal text-e26-text [text-wrap:pretty]",
-        "text-[17px] leading-[1.7] tracking-normal md:text-[19px] md:leading-[1.75]",
+        "text-[17px] leading-[1.72] tracking-normal md:text-[18px] md:leading-[1.78]",
         "max-w-[660px]",
         className
       )}
@@ -122,7 +122,7 @@ export function EssenceLeadIn({
   as: As = "strong",
 }: Common & { as?: ElementType }) {
   return (
-    <As className={cn("font-sans font-semibold text-[18px] leading-[1.45] md:text-[20px] text-[#1A1A1A]", className)}>
+    <As className={cn("font-sans font-semibold text-[19px] leading-[1.4] md:text-[22px] text-[#1A1A1A]", className)}>
       {children}
     </As>
   );
@@ -159,8 +159,8 @@ export function EssenceUtility({ children, className, as: As = "p" }: Common & {
   return (
     <As
       className={cn(
-        "font-sans font-medium uppercase text-[#1A1A1A]/62",
-        "text-[12px] leading-[1.4] tracking-[0.18em] md:text-[13px]",
+        "font-sans font-semibold uppercase text-[#1A1A1A]/68",
+        "text-[11px] leading-[1.4] tracking-[0.22em] md:text-[12px]",
         className
       )}
     >

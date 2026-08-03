@@ -171,7 +171,8 @@ function lighten(hex: string, amount: number) {
 
 function sectionBg(edge: string, depth = 10, position = "50% 40%", streakDirection = "120deg") {
   const center = lighten(edge, depth);
-  return `linear-gradient(${streakDirection}, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 34%, rgba(26,26,26,0.025) 100%), radial-gradient(ellipse 130% 108% at ${position}, ${center} 0%, ${edge} 82%)`;
+  const middle = lighten(edge, Math.round(depth * 0.42));
+  return `linear-gradient(${streakDirection}, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.08) 33%, rgba(65,55,42,0.055) 100%), radial-gradient(ellipse 120% 112% at ${position}, ${center} 0%, ${middle} 48%, ${edge} 100%)`;
 }
 
 function VeKenjiDivider() {
@@ -198,16 +199,16 @@ function SectionLabel({ children }: { children: string }) {
 
 function PresenceEnvironmentalImageSlot() {
   return (
-    <figure aria-hidden="true" className="relative aspect-[4/3] overflow-hidden border-t border-e26-text/15 bg-[#D2CEC3]">
+    <figure aria-hidden="true" className="relative aspect-[16/11] overflow-hidden bg-[#D2CEC3]">
       <Image
         src="/images/ve-kenji/06-khoang-ngoi-cung.png"
         alt=""
         fill
-        sizes="(min-width: 768px) 58vw, calc(100vw - 48px)"
-        className="object-cover object-[58%_66%]"
+        sizes="(min-width: 768px) 70vw, calc(100vw - 48px)"
+        className="object-cover object-[57%_62%]"
       />
-      <div className="absolute inset-0" style={{ background: "linear-gradient(118deg, rgba(231,227,216,0.48) 0%, rgba(231,227,216,0.13) 43%, rgba(231,227,216,0.03) 100%)" }} />
-      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 66% 72% at 18% 24%, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0) 76%)" }} />
+      <div className="absolute inset-0" style={{ background: "linear-gradient(104deg, rgba(222,216,202,0.48) 0%, rgba(231,227,216,0.12) 48%, rgba(231,227,216,0) 82%)" }} />
+      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 72% 88% at 18% 26%, rgba(255,255,255,0.24) 0%, rgba(255,255,255,0) 76%)" }} />
     </figure>
   );
 }
@@ -469,65 +470,71 @@ export default function VeKenjiPage() {
           </div>
         </section>
 
-        <section className="px-6 py-20 md:py-32" style={{ background: sectionBg(BG.presence, 16, "36% 32%", "128deg") }}>
-          <div className="ve-kenji-reveal max-w-[1180px] mx-auto">
-            <div className="max-w-[520px] md:ml-[8%]">
+        <section className="relative isolate overflow-hidden px-6 py-24 md:py-40" style={{ background: sectionBg(BG.presence, 21, "28% 30%", "128deg") }}>
+          <div aria-hidden="true" className="absolute inset-0" style={{ background: "linear-gradient(96deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0) 44%, rgba(87,74,55,0.06) 100%)" }} />
+          <div className="ve-kenji-reveal relative max-w-[1180px] mx-auto">
+            <div className="relative max-w-[620px] md:ml-[8%]">
               <SectionLabel>CÁCH TÔI HIỆN DIỆN</SectionLabel>
-              <EssenceAnchor as="h2">
+              <EssenceAnchor as="h2" className="relative max-w-[590px]">
                 Tôi đọc để hiểu — <em>không để phán</em>.
               </EssenceAnchor>
             </div>
-            <div className="mt-14 grid gap-14 md:mt-20 md:grid-cols-12 md:items-start md:gap-x-16 lg:gap-x-24">
-              <div className="md:col-span-7 md:pt-10">
+            <div className="relative mt-14 md:mt-20 md:grid md:grid-cols-12 md:items-center">
+              <div className="md:col-span-8 md:col-start-1 md:row-start-1">
                 {/* Ảnh tạm giữ nhịp scene; thay trực tiếp bằng ảnh Kenji đã được Founder duyệt. */}
                 <PresenceEnvironmentalImageSlot />
               </div>
-              <ol className="md:col-span-5">
-                {presencePrinciples.map((principle, index) => (
-                  <li key={principle.title} className="grid grid-cols-[38px_minmax(0,1fr)] gap-x-4 border-t border-e26-text/20 py-7 first:pt-0 md:grid-cols-[44px_minmax(0,1fr)] md:gap-x-5 md:py-9">
-                    <EssenceUtility as="span" className="pt-1 text-e26-text/55">{String(index + 1).padStart(2, "0")}</EssenceUtility>
-                    <div>
-                      <EssenceLeadIn as="h3" className="mb-4">{principle.title}</EssenceLeadIn>
-                      <div className="space-y-5">
-                        {principle.paragraphs.map((paragraph) => <EssenceBody as="p" className="max-w-none text-[#1A1A1A]/85" key={paragraph}>{paragraph}</EssenceBody>)}
+              <div className="relative z-10 -mt-8 mx-4 bg-[#F0EDE4]/95 px-6 py-7 md:col-span-5 md:col-start-8 md:row-start-1 md:-ml-16 md:mt-20 md:mx-0 md:px-10 md:py-11 lg:-ml-20 lg:px-12">
+                <ol className="border-t border-e26-text/25">
+                  {presencePrinciples.map((principle, index) => (
+                    <li key={principle.title} className="grid grid-cols-[34px_minmax(0,1fr)] gap-x-4 border-b border-e26-text/20 py-7 last:border-b-0 md:grid-cols-[40px_minmax(0,1fr)] md:gap-x-5 md:py-9">
+                      <EssenceUtility as="span" className="pt-1 text-e26-text/62">{String(index + 1).padStart(2, "0")}</EssenceUtility>
+                      <div>
+                        <EssenceLeadIn as="h3" className="mb-4 md:mb-5">{principle.title}</EssenceLeadIn>
+                        <div className="space-y-4">
+                          {principle.paragraphs.map((paragraph) => <EssenceBody as="p" className="max-w-none text-[16px] leading-[1.68] text-[#1A1A1A]/82 md:text-[17px]" key={paragraph}>{paragraph}</EssenceBody>)}
+                        </div>
                       </div>
-                    </div>
-                  </li>
-                ))}
-              </ol>
+                    </li>
+                  ))}
+                </ol>
+              </div>
             </div>
           </div>
         </section>
 
-        <section className="px-6 py-20 md:py-32" style={{ background: sectionBg(BG.boundaries, 18, "62% 38%", "148deg") }}>
-          <div className="ve-kenji-reveal max-w-[1180px] mx-auto">
-            <div className="max-w-[560px] md:ml-auto md:mr-[8%]">
+        <section className="relative isolate overflow-hidden px-6 py-24 md:py-40" style={{ background: sectionBg(BG.boundaries, 25, "70% 24%", "148deg") }}>
+          <div aria-hidden="true" className="absolute inset-0" style={{ background: "linear-gradient(140deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 43%, rgba(71,60,45,0.10) 100%)" }} />
+          <div className="ve-kenji-reveal relative max-w-[1180px] mx-auto">
+            <div className="relative max-w-[720px] md:ml-auto md:mr-[5%]">
               <SectionLabel>NHỮNG ĐIỀU TÔI TỰ GIỮ</SectionLabel>
-              <EssenceAnchor as="h2">
+              <EssenceDisplay as="h2" size="mantra" className="relative max-w-[690px] text-[42px] leading-[1.04] md:text-[66px]">
                 Tin cậy không đến từ việc nói mình hiểu.<br />
                 Nó đến từ những giới hạn mình không bước qua.
-              </EssenceAnchor>
+              </EssenceDisplay>
             </div>
-            <div className="relative mt-14 border-t border-e26-text/25 md:mt-20">
-              <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-white/35" />
-              <div className="max-w-[620px] py-8 md:ml-[8%] md:py-11">
+            <div className="relative mt-16 border-t border-e26-text/30 pt-9 md:mt-24 md:pt-12">
+              <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-white/40" />
+              <div className="max-w-[620px] border-l border-e26-text/25 pl-6 md:ml-[10%] md:pl-9">
                 <div className="space-y-5">
                   <EssenceBody as="p">Những ranh giới này không làm một cuộc đồng hành trở nên lạnh hơn.</EssenceBody>
                   <EssenceBody as="p">Chúng giúp cả hai biết mình đang đứng ở đâu.</EssenceBody>
                 </div>
               </div>
-              <ol>
+              <ol className="mt-12 max-w-[980px] md:mt-16 md:ml-[8%]">
                 {boundaryPrinciples.map((principle, index) => (
-                  <li key={principle.title} className="grid gap-y-4 border-t border-e26-text/20 py-8 md:grid-cols-[74px_minmax(220px,0.72fr)_minmax(0,1.28fr)] md:gap-x-10 md:py-11 lg:gap-x-16">
-                    <EssenceUtility as="span" className="text-e26-text/55">{String(index + 1).padStart(2, "0")}</EssenceUtility>
-                    <EssenceLeadIn as="h3" className="md:pr-5">{principle.title}</EssenceLeadIn>
-                    <div className="space-y-5 md:max-w-[560px]">
-                      {principle.paragraphs.map((paragraph) => <EssenceBody as="p" className="max-w-none text-[#1A1A1A]/85" key={paragraph}>{paragraph}</EssenceBody>)}
+                  <li key={principle.title} className="grid grid-cols-[46px_minmax(0,1fr)] gap-x-4 border-t border-e26-text/25 py-10 md:grid-cols-[68px_minmax(0,1fr)] md:gap-x-8 md:py-14">
+                    <EssenceUtility as="span" className="pt-1 text-e26-text/65">{String(index + 1).padStart(2, "0")}</EssenceUtility>
+                    <div className="max-w-[720px]">
+                      <EssenceAnchor as="h3" level="h3" className="mb-6 max-w-[510px]">{principle.title}</EssenceAnchor>
+                      <div className="max-w-[620px] space-y-5">
+                        {principle.paragraphs.map((paragraph) => <EssenceBody as="p" className="max-w-none text-[#1A1A1A]/84" key={paragraph}>{paragraph}</EssenceBody>)}
+                      </div>
                     </div>
                   </li>
                 ))}
               </ol>
-              <div className="max-w-[620px] border-t border-e26-text/20 pt-8 md:ml-[8%] md:pt-10">
+              <div className="max-w-[700px] border-t border-e26-text/25 pt-9 md:ml-[18%] md:pt-12">
                 <EssenceAccent as="p">Tôi cũng không lấy chứng chỉ hay danh tiếng làm bằng chứng rằng mình luôn đúng.</EssenceAccent>
                 <EssenceAccent as="p" className="mt-5">Khi đi sai nhịp, tôi quay lại, xin lỗi và chỉnh.</EssenceAccent>
               </div>
@@ -537,22 +544,23 @@ export default function VeKenjiPage() {
 
         <VeKenjiDivider />
 
-        <section className="px-6 py-20 md:py-32" style={{ background: sectionBg(BG.faq, 16, "38% 38%", "120deg") }}>
-          <div className="ve-kenji-reveal max-w-[900px] mx-auto md:ml-[20%]">
-            <div className="flex items-center gap-6 border-b border-e26-text/20 pb-6 md:gap-8 md:pb-8">
-              <EssenceUtility as="h2" className="shrink-0 text-[#1A1A1A]/68">
+        <section className="relative isolate overflow-hidden px-6 py-24 md:py-40" style={{ background: sectionBg(BG.faq, 19, "35% 32%", "118deg") }}>
+          <div aria-hidden="true" className="absolute inset-0" style={{ background: "linear-gradient(112deg, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0) 48%, rgba(98,80,55,0.045) 100%)" }} />
+          <div className="ve-kenji-reveal relative max-w-[1000px] mx-auto md:ml-[14%]">
+            <div className="flex items-center gap-6 border-t border-e26-text/25 pt-6 md:gap-8 md:pt-8">
+              <EssenceUtility as="h2" className="shrink-0 text-[#1A1A1A]/72">
                 NHỮNG ĐIỀU BẠN CÓ THỂ MUỐN BIẾT
               </EssenceUtility>
-              <div aria-hidden="true" className="h-px flex-1 bg-e26-text/15" />
+              <div aria-hidden="true" className="h-px flex-1 bg-e26-text/20" />
             </div>
-            <ol className="border-b border-e26-text/20">
+            <ol className="mt-8 border-b border-e26-text/25 md:mt-10">
               {faqs.map((faq, index) => {
                 const isOpen = openFaqIndex === index;
                 const questionId = `ve-kenji-faq-question-${index}`;
                 const answerId = `ve-kenji-faq-answer-${index}`;
 
                 return (
-                  <li key={faq.q} className="border-t border-e26-text/20 first:border-t-0">
+                  <li key={faq.q} className={`border-t border-e26-text/25 transition-colors duration-300 ${isOpen ? "bg-white/25" : "hover:bg-white/15"}`}>
                     <h3>
                       <button
                         id={questionId}
@@ -560,15 +568,15 @@ export default function VeKenjiPage() {
                         aria-expanded={isOpen}
                         aria-controls={answerId}
                         onClick={() => setOpenFaqIndex(isOpen ? null : index)}
-                        className="grid w-full grid-cols-[38px_minmax(0,1fr)_28px] items-start gap-x-4 py-7 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-transparent md:grid-cols-[48px_minmax(0,1fr)_32px] md:gap-x-5 md:py-8"
+                        className="grid w-full grid-cols-[38px_minmax(0,1fr)_26px] items-start gap-x-4 px-1 py-8 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-transparent md:grid-cols-[56px_minmax(0,1fr)_34px] md:gap-x-6 md:px-3 md:py-10"
                       >
-                        <EssenceUtility as="span" className="pt-1 text-e26-text/55">{String(index + 1).padStart(2, "0")}</EssenceUtility>
-                        <EssenceLeadIn as="span" className="pr-2">{faq.q}</EssenceLeadIn>
-                        <span aria-hidden="true" className="pt-0.5 text-right font-serif text-[30px] leading-none text-e26-text/70">{isOpen ? "−" : "+"}</span>
+                        <EssenceUtility as="span" className="pt-1 text-e26-text/65">{String(index + 1).padStart(2, "0")}</EssenceUtility>
+                        <EssenceAnchor as="span" level="h3" className="pr-3 text-[25px] leading-[1.15] md:text-[34px]">{faq.q}</EssenceAnchor>
+                        <span aria-hidden="true" className="pt-1 text-right font-serif text-[28px] leading-none text-e26-text/75 md:text-[32px]">{isOpen ? "−" : "+"}</span>
                       </button>
                     </h3>
-                    <div id={answerId} role="region" aria-labelledby={questionId} hidden={!isOpen} className="pb-8 pl-[54px] pr-8 md:pb-10 md:pl-[68px]">
-                      <div className="space-y-5 max-w-[620px]">
+                    <div id={answerId} role="region" aria-labelledby={questionId} hidden={!isOpen} className="mb-10 ml-[54px] border-l border-e26-gold-deep/45 pb-1 pl-5 pr-6 md:mb-12 md:ml-[77px] md:pl-8">
+                      <div className="max-w-[620px] space-y-5">
                         {faq.a.split("\n\n").map((paragraph) => <EssenceBody as="p" className="text-[#1A1A1A]/85" key={paragraph}>{paragraph}</EssenceBody>)}
                       </div>
                     </div>
