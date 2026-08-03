@@ -7,3 +7,5 @@
 | B4 | `feat/b4-private-publication` / #125 | 0012–0013 applied | canonical-host probe: publishable works for Auth/Storage; new secret is rejected by the installed JS client because it sends it as Bearer. Direct Storage `apikey` probe reaches gateway (400, not invalid-key); replace runner with server-only HTTP protocol before E2E. `private_storage_ready=false` |
 
 Security: `app_private.is_admin()` replaces exposed public helper. Leaked Password Protection is PLAN-LIMITED PRODUCTION GATE. `api_idempotency_keys` and `rate_limit_buckets` require direct-denial evidence before final Advisor classification.
+
+Track B evidence: `docs/decisions/2026-08-03-supabase-secret-rest-compatibility.md`. B4 production readiness remains blocked on user-scoped AAL2 route or Supabase PostgREST secret-key compatibility; work packages B5–B12 continue independently.
