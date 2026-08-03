@@ -17,6 +17,11 @@ describe('ca 6 — mở /admin khi chưa đăng nhập thì bị đẩy ra', () 
     '/admin/lang',
     '/admin/lang/abc-123',
     '/admin/hat-mam',
+    '/admin/hat-mam/abc-123',
+    '/admin/thanh-toan',
+    '/admin/xuat-ban',
+    '/admin/xoa-du-lieu',
+    '/admin/cai-dat',
     '/admin/lien-he',
   ])('%s → đẩy về trang đăng nhập', (pathname) => {
     const decision = decideAdminAccess({ pathname, hasSession: false });
@@ -35,7 +40,7 @@ describe('ca 6 — mở /admin khi chưa đăng nhập thì bị đẩy ra', () 
   });
 
   it('đã đăng nhập và AAL2 thì vào được mọi trang admin', () => {
-    for (const pathname of ['/admin', '/admin/lang', '/admin/hat-mam', '/admin/lien-he']) {
+    for (const pathname of ['/admin', '/admin/lang', '/admin/hat-mam', '/admin/thanh-toan', '/admin/xuat-ban', '/admin/xoa-du-lieu', '/admin/cai-dat', '/admin/lien-he']) {
       expect(decideAdminAccess({ pathname, hasSession: true, hasAal2: true }).action).toBe('allow');
     }
   });

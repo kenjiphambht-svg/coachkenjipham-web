@@ -22,7 +22,7 @@ Reserved server-only variable names:
 | `RESEND_API_KEY` | scoped Resend API credential; server only |
 | `RESEND_FROM_EMAIL` | `Kenji Phạm <hello@mail.coachkenjipham.com>` after that exact sending domain is verified |
 | `RESEND_REPLY_TO` | `contact@coachkenjipham.com` |
-| `RESEND_INTERNAL_ALERT_TO` | `kenjiphambht@gmail.com` |
+| `RESEND_INTERNAL_ALERT_TO` | `kenjipham.bht@gmail.com` |
 | `RESEND_TEST_RECIPIENT` | controlled non-customer verification mailbox, used once and removed/rotated afterwards |
 
 The sender domain/subdomain must be owned by the Founder and fully verified in

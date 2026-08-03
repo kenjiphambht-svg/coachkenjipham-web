@@ -43,7 +43,98 @@ export interface HatMamOrderRow {
   package: string;
   parent_name: string;
   parent_contact: string;
+  target_delivery_month?: string | null;
+  submission_validated_at?: string | null;
   created_at: string;
+}
+
+export interface PaymentRow {
+  id: string;
+  subject: 'lang' | 'hatmam';
+  subject_id: string;
+  amount_vnd: number;
+  status: 'pending' | 'confirmed' | 'failed' | 'refunded';
+  bank_ref: string | null;
+  confirmed_at: string | null;
+  created_at: string;
+}
+
+export interface PaymentRequestRow {
+  id: string;
+  application_id?: string;
+  order_id?: string;
+  expires_at: string;
+  revoked_at: string | null;
+  reported_transfer_at: string | null;
+  report_reference: string | null;
+  created_at: string;
+}
+
+export interface PublicationRow {
+  id: string;
+  order_id: string;
+  token_expires_at: string | null;
+  delivered_at: string | null;
+  created_at: string;
+}
+
+export interface PublicationAssetRow {
+  publication_id: string;
+  storage_bucket: string;
+  storage_object_path: string;
+  content_sha256: string;
+  created_at: string;
+}
+
+export interface AuditRow {
+  id: string;
+  actor: string;
+  action: string;
+  entity_type: string;
+  entity_id: string | null;
+  from_state: string | null;
+  to_state: string | null;
+  reason: string | null;
+  created_at: string;
+}
+
+export interface ReleaseGateRow {
+  public_activation_enabled: boolean;
+  deletion_workflow_ready: boolean;
+  private_storage_ready: boolean;
+  updated_at: string;
+}
+
+export interface DeletionRequestRow {
+  id: string;
+  subject_type: 'hatmam_order' | 'hatmam_publication' | 'lang_lead';
+  subject_id: string;
+  reason_code: string;
+  status: 'received' | 'identity_verified' | 'approved' | 'executing' | 'completed' | 'failed' | 'rejected';
+  requested_at: string;
+  identity_verified_at: string | null;
+  approved_at: string | null;
+  execution_attempts: number;
+  execution_evidence: Record<string, unknown>;
+  last_error_code: string | null;
+  completed_at: string | null;
+}
+
+export interface RetentionRuleRow {
+  subject_type: 'hatmam_raw_intake' | 'hatmam_private_publication' | 'lang_private_room';
+  retention_months: number;
+  early_deletion_available: boolean;
+  updated_at: string;
+}
+
+export interface OperationalSettingsRow {
+  id: string;
+  version: number;
+  values: unknown;
+  active: boolean;
+  created_by: string;
+  created_at: string;
+  activated_at: string | null;
 }
 
 export interface ContactMessageRow {
@@ -91,10 +182,20 @@ export async function listHatMamOrders(db: SupabaseClient) {
   // CỐ Ý chỉ chọn cột của đơn. Không chạm hatmam_child_profiles.
   const { data, error } = await db
     .from('hatmam_orders')
-    .select('id, order_code, status, package, parent_name, parent_contact, created_at')
+    .select('id, order_code, status, package, parent_name, parent_contact, target_delivery_month, submission_validated_at, created_at')
     .order('created_at', { ascending: false });
   if (error) throw error;
   return (data ?? []) as HatMamOrderRow[];
+}
+
+export async function getHatMamOrder(db: SupabaseClient, id: string) {
+  const { data, error } = await db
+    .from('hatmam_orders')
+    .select('id, order_code, status, package, parent_name, parent_contact, target_delivery_month, submission_validated_at, created_at')
+    .eq('id', id)
+    .maybeSingle();
+  if (error) throw error;
+  return (data as HatMamOrderRow | null) ?? null;
 }
 
 export async function listContactMessages(db: SupabaseClient) {
@@ -118,6 +219,146 @@ export async function getChildProfile(db: SupabaseClient, orderId: string) {
     .maybeSingle();
   if (error) throw error;
   return data;
+}
+
+export async function getHatMamPackageSnapshot(db: SupabaseClient, orderId: string) {
+  const { data, error } = await db
+    .from('hatmam_package_snapshots')
+    .select('package_code, package_version, amount_vnd, delivery_business_days, revision_window_days, raw_intake_retention_months, publication_retention_months, created_at')
+    .eq('order_id', orderId)
+    .maybeSingle();
+  if (error) throw error;
+  return data;
+}
+
+export async function getLatestConsent(db: SupabaseClient, subject: string, subjectId: string) {
+  const { data, error } = await db
+    .from('consents')
+    .select('consent_type, consent_version, granted, granted_at, evidence, created_at')
+    .eq('subject', subject)
+    .eq('subject_id', subjectId)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) throw error;
+  return data;
+}
+
+export async function listPayments(db: SupabaseClient, status?: PaymentRow['status']) {
+  let query = db
+    .from('payments')
+    .select('id, subject, subject_id, amount_vnd, status, bank_ref, confirmed_at, created_at')
+    .order('created_at', { ascending: false });
+  if (status) query = query.eq('status', status);
+  const { data, error } = await query;
+  if (error) throw error;
+  return (data ?? []) as PaymentRow[];
+}
+
+export async function getPaymentsForSubject(db: SupabaseClient, subject: PaymentRow['subject'], subjectId: string) {
+  const { data, error } = await db
+    .from('payments')
+    .select('id, subject, subject_id, amount_vnd, status, bank_ref, confirmed_at, created_at')
+    .eq('subject', subject)
+    .eq('subject_id', subjectId)
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as PaymentRow[];
+}
+
+export async function listLangPaymentRequests(db: SupabaseClient) {
+  const { data, error } = await db
+    .from('lang_payment_requests')
+    .select('id, application_id, expires_at, revoked_at, reported_transfer_at, report_reference, created_at')
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as PaymentRequestRow[];
+}
+
+export async function listHatMamPaymentRequests(db: SupabaseClient) {
+  const { data, error } = await db
+    .from('hatmam_payment_requests')
+    .select('id, order_id, expires_at, revoked_at, reported_transfer_at, report_reference, created_at')
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as PaymentRequestRow[];
+}
+
+export async function getPublicationForOrder(db: SupabaseClient, orderId: string) {
+  const { data, error } = await db
+    .from('publications')
+    .select('id, order_id, token_expires_at, delivered_at, created_at')
+    .eq('order_id', orderId)
+    .maybeSingle();
+  if (error) throw error;
+  return (data as PublicationRow | null) ?? null;
+}
+
+export async function listPublications(db: SupabaseClient) {
+  const { data, error } = await db
+    .from('publications')
+    .select('id, order_id, token_expires_at, delivered_at, created_at')
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as PublicationRow[];
+}
+
+export async function getPublicationAsset(db: SupabaseClient, publicationId: string) {
+  const { data, error } = await db
+    .from('hatmam_publication_assets')
+    .select('publication_id, storage_bucket, storage_object_path, content_sha256, created_at')
+    .eq('publication_id', publicationId)
+    .maybeSingle();
+  if (error) throw error;
+  return (data as PublicationAssetRow | null) ?? null;
+}
+
+export async function listAuditRows(db: SupabaseClient, entityType: string, entityId: string) {
+  const { data, error } = await db
+    .from('audit_log')
+    .select('id, actor, action, entity_type, entity_id, from_state, to_state, reason, created_at')
+    .eq('entity_type', entityType)
+    .eq('entity_id', entityId)
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as AuditRow[];
+}
+
+export async function getReleaseGates(db: SupabaseClient) {
+  const { data, error } = await db
+    .from('hatmam_release_gates')
+    .select('public_activation_enabled, deletion_workflow_ready, private_storage_ready, updated_at')
+    .eq('id', true)
+    .maybeSingle();
+  if (error) throw error;
+  return (data as ReleaseGateRow | null) ?? null;
+}
+
+export async function listDeletionRequests(db: SupabaseClient) {
+  const { data, error } = await db
+    .from('data_deletion_requests')
+    .select('id, subject_type, subject_id, reason_code, status, requested_at, identity_verified_at, approved_at, execution_attempts, execution_evidence, last_error_code, completed_at')
+    .order('requested_at', { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as DeletionRequestRow[];
+}
+
+export async function listRetentionRules(db: SupabaseClient) {
+  const { data, error } = await db
+    .from('data_retention_rules')
+    .select('subject_type, retention_months, early_deletion_available, updated_at')
+    .order('subject_type');
+  if (error) throw error;
+  return (data ?? []) as RetentionRuleRow[];
+}
+
+export async function listOperationalSettings(db: SupabaseClient) {
+  const { data, error } = await db
+    .from('operational_settings_versions')
+    .select('id, version, values, active, created_by, created_at, activated_at')
+    .order('version', { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as OperationalSettingsRow[];
 }
 
 /**

@@ -29,4 +29,17 @@ describe('B10 private-route indexing and public-flow safety', () => {
     expect(fs.existsSync(path.join(root, 'src', 'pages', 'sitemap.xml.ts'))).toBe(false);
     expect(read('src/pages/an-pham-ban-sac-hat-mam.tsx')).not.toContain('tally.so');
   });
+
+  it.each([
+    'src/pages/admin/index.tsx',
+    'src/pages/admin/lang/[id].tsx',
+    'src/pages/admin/hat-mam.tsx',
+    'src/pages/admin/hat-mam/[id].tsx',
+    'src/pages/admin/thanh-toan.tsx',
+    'src/pages/admin/xuat-ban.tsx',
+    'src/pages/admin/xoa-du-lieu.tsx',
+    'src/pages/admin/cai-dat.tsx',
+  ])('%s inherits noindex from AdminShell', (relativePath) => {
+    expect(read(relativePath)).toMatch(/AdminShell/);
+  });
 });

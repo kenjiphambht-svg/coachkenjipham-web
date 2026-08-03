@@ -12,7 +12,16 @@ import { useState } from 'react';
 import type { GetServerSideProps } from 'next';
 
 import AdminShell from '@/components/admin/AdminShell';
-import { Card, LANG_STATUS_VI, StatusBadge, formatDate, formatMonth } from '@/components/admin/ui';
+import {
+  Card,
+  LANG_STATUS_VI,
+  OperationalNotice,
+  StatusBadge,
+  adminPrimaryButton,
+  adminSecondaryButton,
+  formatDate,
+  formatMonth,
+} from '@/components/admin/ui';
 import { withAdmin } from '@/lib/auth/require-admin';
 import {
   countLangSlotsUsed,
@@ -21,6 +30,14 @@ import {
   type LangApplicationRow,
 } from '@/lib/db/queries';
 import { evaluateCapacity, toMonthKey } from '@/lib/domain/capacity';
+import {
+  BOOKING_DEFAULTS,
+  buildLangCustomerPreview,
+  buildLangSupportSummary,
+  buildReceiptPreview,
+  formatCurrencyVnd,
+  LANG_PRICE_VND,
+} from '@/lib/admin/operational';
 
 interface MonthOption {
   value: string; // YYYY-MM
@@ -70,6 +87,8 @@ export default function AdminLangDetail({ adminEmail, application, monthOptions 
   const [privatePath, setPrivatePath] = useState<string | null>(null);
 
   const status = application.status;
+  const summary = buildLangSupportSummary(application);
+  const receipt = buildReceiptPreview('lang', application.order_code, LANG_PRICE_VND);
 
   const run = async (
     action: string,
@@ -112,17 +131,16 @@ export default function AdminLangDetail({ adminEmail, application, monthOptions 
     setBusy(false);
   };
 
-  const btn =
-    'font-sans text-[14px] px-4 py-3 border border-e26-text hover:border-e26-gold-deep hover:text-e26-gold-deep transition-colors disabled:opacity-50 w-full sm:w-auto';
-  const btnPrimary =
-    'font-sans font-medium text-[13px] tracking-[0.08em] uppercase px-6 py-3 bg-e26-gold text-e26-black hover:bg-e26-gold-deep hover:text-e26-ivory transition-colors disabled:opacity-50 w-full sm:w-auto';
-
   const selectedMonth = monthOptions.find((m) => m.value === month);
 
   return (
     <AdminShell title={`Hồ sơ ${application.order_code}`} adminEmail={adminEmail}>
       <div className="grid lg:grid-cols-[1fr_340px] gap-5">
-        <div>
+        <div className="space-y-4">
+          <OperationalNotice title="Human Decision Gate">
+            AI chỉ hỗ trợ Kenji đọc nhanh hơn. AI không được nhận, từ chối hay gửi quyết định cuối cùng cho khách.
+          </OperationalNotice>
+
           <Card title="Sáu câu trả lời">
             <Answer label="Câu 1 — điều đang trải qua">{application.q1_situation}</Answer>
             <Answer label="Câu 2 — mức độ hiện tại">
@@ -138,6 +156,22 @@ export default function AdminLangDetail({ adminEmail, application, monthOptions 
             <Answer label="Câu 6 — muốn Kenji biết trước">
               {application.q6_extra?.trim() || '(không có)'}
             </Answer>
+          </Card>
+
+          <Card title={summary.headline}>
+            <ul className="font-sans text-[14px] leading-[1.7] space-y-2 list-disc pl-5">
+              {summary.observations.map((observation) => (
+                <li key={observation}>{observation}</li>
+              ))}
+            </ul>
+            <p className="font-sans text-[14px] leading-[1.7] mt-4">{summary.operatorNote}</p>
+            <p className="font-sans text-[13px] leading-[1.7] text-e26-text-2 mt-3">{summary.limitation}</p>
+          </Card>
+
+          <Card title="Bản xem trước phản hồi khách">
+            <p className="font-sans text-[14px] leading-[1.7] whitespace-pre-line">
+              {buildLangCustomerPreview(application)}
+            </p>
           </Card>
         </div>
 
@@ -182,6 +216,22 @@ export default function AdminLangDetail({ adminEmail, application, monthOptions 
               </p>
             )}
 
+            {status === 'under_review' && (
+              <div className="pb-3 border-b border-e26-border mb-3">
+                <label htmlFor="reason" className="block font-sans text-[13px] text-e26-text-2 mb-2">
+                  Ghi chú nội bộ / lý do quyết định
+                </label>
+                <textarea
+                  id="reason"
+                  rows={3}
+                  value={reason}
+                  onChange={(e) => setReason(e.target.value)}
+                  placeholder="Chỉ dùng nội bộ. Bắt buộc nếu chọn Chưa phù hợp."
+                  className="w-full px-3 py-2.5 border border-e26-border bg-e26-white font-sans text-[14px] resize-none focus:outline-none focus:border-e26-gold-deep"
+                />
+              </div>
+            )}
+
             <div className="space-y-3">
               {privatePath && (
                 <div className="border border-e26-gold-deep p-3 font-sans text-[13px] break-all">
@@ -191,7 +241,7 @@ export default function AdminLangDetail({ adminEmail, application, monthOptions 
               )}
               {status === 'submitted' && (
                 <button
-                  className={btnPrimary}
+                  className={adminPrimaryButton}
                   disabled={busy}
                   onClick={() =>
                     run('start_review', {}, 'Bắt đầu đọc hồ sơ này?')
@@ -225,36 +275,36 @@ export default function AdminLangDetail({ adminEmail, application, monthOptions 
                         ))}
                       </select>
                       <button
-                        className={btnPrimary}
+                        className={adminPrimaryButton}
                         disabled={busy || !selectedMonth || selectedMonth.remaining <= 0}
                         onClick={() =>
                           run(
                             'accept',
-                            { target_session_month: month },
+                            { target_session_month: month, reason },
                             `Nhận hồ sơ này cho tháng ${selectedMonth?.label}?`
                           )
                         }
                       >
-                        Nhận
+                        Ghi quyết định: Phù hợp
                       </button>
                     </div>
                   )}
 
                   {status === 'under_review' && (
                     <button
-                      className={btn}
+                      className={adminSecondaryButton}
                       disabled={busy}
                       onClick={() =>
-                        run('request_more_info', {}, 'Chuyển hồ sơ sang "cần hỏi thêm"?')
+                        run('request_more_info', { reason }, 'Chuyển hồ sơ sang "cần hỏi thêm"?')
                       }
                     >
-                      Hỏi thêm
+                      Ghi quyết định: Chờ thêm
                     </button>
                   )}
 
                   {status === 'more_info_needed' && (
                     <button
-                      className={btnPrimary}
+                      className={adminPrimaryButton}
                       disabled={busy}
                       onClick={() => run('start_review', {}, 'Quay lại đọc hồ sơ này?')}
                     >
@@ -264,27 +314,14 @@ export default function AdminLangDetail({ adminEmail, application, monthOptions 
 
                   {status === 'under_review' && (
                     <div>
-                      <label
-                        htmlFor="reason"
-                        className="block font-sans text-[13px] text-e26-text-2 mb-2"
-                      >
-                        Lý do từ chối
-                      </label>
-                      <textarea
-                        id="reason"
-                        rows={3}
-                        value={reason}
-                        onChange={(e) => setReason(e.target.value)}
-                        className="w-full px-3 py-2.5 border border-e26-border bg-e26-white font-sans text-[14px] resize-none focus:outline-none focus:border-e26-gold-deep mb-2"
-                      />
                       <button
-                        className={btn}
+                        className={adminSecondaryButton}
                         disabled={busy || reason.trim() === ''}
                         onClick={() =>
                           run('decline', { reason }, 'Từ chối hồ sơ này?')
                         }
                       >
-                        Từ chối
+                        Ghi quyết định: Chưa phù hợp
                       </button>
                     </div>
                   )}
@@ -293,7 +330,7 @@ export default function AdminLangDetail({ adminEmail, application, monthOptions 
 
               {status === 'accepted' && (
                 <button
-                  className={btnPrimary}
+                  className={adminPrimaryButton}
                   disabled={busy}
                   onClick={() =>
                     run(
@@ -311,7 +348,7 @@ export default function AdminLangDetail({ adminEmail, application, monthOptions 
 
               {status === 'awaiting_payment' && (
                 <button
-                  className={btnPrimary}
+                  className={adminPrimaryButton}
                   disabled={busy}
                   onClick={() =>
                     run('confirm_payment', {}, 'Xác nhận đã nhận đủ tiền cho hồ sơ này?')
@@ -323,7 +360,7 @@ export default function AdminLangDetail({ adminEmail, application, monthOptions 
 
               {status === 'paid' && (
                 <>
-                  <button className={btnPrimary} disabled={busy} onClick={issueBookingLink}>Phát link đặt lịch riêng</button>
+                  <button className={adminPrimaryButton} disabled={busy} onClick={issueBookingLink}>Phát link đặt lịch riêng</button>
                   <p className="font-sans text-[13px] text-e26-text-2">Cal.com chưa được nối: trang riêng hiển thị “Chờ Kenji kết nối”, không xác nhận lịch thay Kenji.</p>
                 </>
               )}
@@ -334,6 +371,19 @@ export default function AdminLangDetail({ adminEmail, application, monthOptions 
                 </p>
               )}
             </div>
+          </Card>
+
+          <Card title="Thanh toán & booking">
+            <dl className="font-sans text-[14px] space-y-2">
+              <div className="flex justify-between gap-3"><dt className="text-e26-text-2">Số tiền kỳ vọng</dt><dd>{formatCurrencyVnd(receipt.amountVnd)}</dd></div>
+              <div className="flex justify-between gap-3"><dt className="text-e26-text-2">Nội dung chuyển khoản</dt><dd className="font-medium">{receipt.transferReference}</dd></div>
+              <div><dt className="text-e26-text-2 mb-1">Biên nhận thử</dt><dd>{receipt.fileName}</dd></div>
+              <div><dt className="text-e26-text-2 mb-1">Checksum</dt><dd className="text-[12px] break-all">{receipt.checksum}</dd></div>
+            </dl>
+            <p className="font-sans text-[13px] leading-[1.7] text-e26-text-2 mt-4">{receipt.summary}</p>
+            <p className="font-sans text-[13px] leading-[1.7] text-e26-text-2 mt-3">
+              Lịch mặc định: Thứ Ba 09:30 hoặc Thứ Năm 14:30 · {BOOKING_DEFAULTS.sessionDurationMinutes} phút · buffer {BOOKING_DEFAULTS.postSessionBufferMinutes} phút · tối đa {BOOKING_DEFAULTS.hardMonthlyCapacity} phiên/tháng. Cal.com vẫn OFF.
+            </p>
           </Card>
         </div>
       </div>

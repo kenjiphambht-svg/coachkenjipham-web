@@ -38,6 +38,20 @@ export function StatusBadge({ children }: { children: ReactNode }) {
   );
 }
 
+export function ReadinessBadge({ ready, children }: { ready: boolean; children: ReactNode }) {
+  return (
+    <span
+      className={`inline-block font-sans text-[12px] px-2 py-1 border whitespace-nowrap ${
+        ready
+          ? 'border-[#bdd5bf] bg-[#eef5ea] text-[#2d5b35]'
+          : 'border-[#dcb3a6] bg-[#f8ece8] text-[#8a4b38]'
+      }`}
+    >
+      {children}
+    </span>
+  );
+}
+
 export function Card({ title, children }: { title?: string; children: ReactNode }) {
   return (
     <div className="border border-e26-border bg-e26-white p-4 md:p-5">
@@ -61,6 +75,21 @@ export function EmptyState({ children }: { children: ReactNode }) {
     <p className="font-sans text-[14px] text-e26-text-2 py-8 text-center">{children}</p>
   );
 }
+
+export function OperationalNotice({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <div className="border border-[#d9c38c] bg-[#faf2dd] p-4 font-sans text-[14px] leading-[1.7] text-e26-text">
+      <h2 className="font-medium mb-1">{title}</h2>
+      <div className="text-e26-text-2">{children}</div>
+    </div>
+  );
+}
+
+export const adminPrimaryButton =
+  'font-sans font-medium text-[13px] tracking-[0.06em] uppercase px-4 py-3 bg-e26-gold text-e26-black hover:bg-e26-gold-deep hover:text-e26-ivory transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto';
+
+export const adminSecondaryButton =
+  'font-sans text-[14px] px-4 py-3 border border-e26-text hover:border-e26-gold-deep hover:text-e26-gold-deep transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto';
 
 /**
  * Bảng cuộn ngang được trên điện thoại — không để nội dung đẩy cả trang
