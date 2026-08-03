@@ -11,6 +11,7 @@
 | B8 | `feat/b8-data-deletion` / #129 | 0017 applied | approval-only deletion ledger and mock adapter; 80 passed, 0 skipped; real drill is a B4 platform gate |
 | B9 | `feat/b9-backup-recovery` / #130 | no schema change | durable snapshot manifest and isolated-only recovery plan; 82 passed, 0 skipped |
 | B10 | `feat/b10-end-to-end` / #131 | no schema change | E2E release matrix and enforced fail-closed readiness state; 84 passed, 0 skipped |
+| B11 | `feat/b11-technical-map` / #132 | no schema change | security, data-flow, migration and release-gate technical map; 84 passed, 0 skipped |
 
 Security: `app_private.is_admin()` replaces exposed public helper. Leaked Password Protection is PLAN-LIMITED PRODUCTION GATE. `api_idempotency_keys` and `rate_limit_buckets` require direct-denial evidence before final Advisor classification.
 
