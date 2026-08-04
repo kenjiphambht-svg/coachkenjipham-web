@@ -36,6 +36,19 @@ The future progression is: anonymous reader → optional subscriber → optional
 
 **MISSING FOUNDER INPUT:** whether there will be a membership product, its offer, price, benefits, renewal/refund, consent, retention and relationship to subscriber access. The Founder Review Demo labels membership only as a future access level; it creates no membership implementation.
 
+## Future CRM lifecycle classification
+
+**FUTURE IMPLEMENTATION:** an anonymous reader has no identified CRM contact,
+customer record or personal tracking. A subscriber has verified email, reading
+source, consent state and permitted preference/interaction fields, but is not a
+customer by default. An assessment customer has an assessment order, payment
+confirmation, result entitlement and private result room. A product customer
+has identity, order, payment, item-specific entitlement and permitted support
+history. A future member has recurring knowledge entitlement and access period;
+an active future journey customer has a journey entitlement, milestones and
+customer/shared/Kenji-private visibility boundaries. WP2 implements none of
+these records or a CRM.
+
 ## Launch Core priority lock
 
 **FOUNDER DECISION:** the next backend capability sequence is limited to:
