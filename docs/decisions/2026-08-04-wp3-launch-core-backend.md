@@ -179,6 +179,12 @@ request denial; it also completed Hạt Mầm approved-version-before-entitlemen
 entitlement idempotency and checked every WP3 release flag OFF. This is not
 provider E2E and does not close the Storage gate.
 
+**STAGING EVIDENCE:** follow-up synthetic safety probes confirmed that an
+existing package snapshot cannot be rewritten, payment evidence cannot be
+reused across payment requests, and an entitlement-bound safe-code support
+record can be retained without exposing child data. No customer or child data
+was used in any probe.
+
 **STAGING EVIDENCE:** synthetic Supabase Auth users proved authenticated
 non-admin denial, active Admin AAL1 denial and AAL2 access against the real
 RLS policies. The temporary TOTP secret, sessions and API keys stayed only in
@@ -190,9 +196,9 @@ process memory. This verifies the technical gate, not Founder enrollment.
 download E2E, real deletion E2E, Resend, Cal.com and provider authorization.
 No local or synthetic result closes them. The manual bank-confirmation workflow
 has only synthetic evidence in WP3; it is not a connected banking integration.
-Vercel project protection correctly redirects the unshared WP3 Admin Preview
-to Vercel SSO; making a new branch Shareable Link requires a separate Founder
-authorization and is not an activation workaround.
+The Founder-authorized preview access is limited to WP3 review. It leaves
+Vercel project protection, provider gates and public activation unchanged, and
+does not grant access to Admin data without Supabase authentication and AAL2.
 
 **MISSING FOUNDER INPUT:** final customer route name, public/private delivery
 copy, real provider authorization and any later product-specific policy not
