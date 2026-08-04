@@ -27,6 +27,13 @@ implementation claim for either model.
 
 ## Customer experience architecture
 
+**SUPERSEDED ASSUMPTION (2026-08-04 correction):** the original WP2 framing
+could place an ebook/Góc đọc in the Customer Library. The later
+[Public reading, subscriber model and Launch Core](2026-08-04-public-reading-subscriber-model-and-launch-core.md)
+decision is controlling: a public ebook is complete web reading for an
+anonymous reader and is not a default paid-library entitlement. This historical
+record remains intact; the correction changes future implementation direction.
+
 **FOUNDER DECISION:** the private experience is a calm continuation of the
 Villa, not a generic account, CRM, LMS or download portal. The provisional
 **Không gian của tôi** Customer Home includes a warm orientation, Continue,
@@ -67,7 +74,7 @@ reflection/Kenji-approved summary. A missing block is a software change.
 
 | Family | Experience proposal | Binding/open boundary |
 | --- | --- | --- |
-| Ebook/Góc đọc | light, editorial, three sections, resume and optional resource | asset/route/consent/email remain open. |
+| Ebook/Góc đọc | public, complete web reading; local resume/share only and optional later subscriber invitation | public route, asset, consent, email and provider remain open; it is not a default paid-library item. |
 | Assessment 50k | calm result, dimensions, observation and one next step | deterministic rule/result and PDF approval remain open; never diagnosis/AI scoring. |
 | Bạn Là Duy Nhất | personal editorial chapters/reflection/PDF/quiet final door | all commercial/form/SLA/revision inputs remain open. |
 | Dấu Ấn | distinct two layers, session insight, day-30 return, update | price/form/refund/booking/fulfilment remain open. |
