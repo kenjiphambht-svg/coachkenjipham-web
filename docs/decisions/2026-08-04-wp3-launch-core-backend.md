@@ -127,22 +127,27 @@ private-object adapter fails; the request remains retryable and audited.
 `0022_wp3_launch_core_foundation.sql`,
 `0023_wp3_lang_payment_snapshot_and_confirmation.sql`,
 `0024_wp3_publication_approval_and_entitlement.sql` and
-`0025_wp3_fix_publication_function_lint.sql` are additive. They add only the
-new contracts, indexes, constraints, RLS/policies and OFF flags, plus a
-forward-only repair of two function definitions. No old migration was edited,
-no schema was dropped and no business data was rewritten. Manual rollback files
-are only for an empty/unconsumed scope; otherwise disable the affected route
-and use a reviewed forward repair or a verified staging restore. They must
-never run automatically.
+`0025_wp3_fix_publication_function_lint.sql`,
+`0026_wp3_bootstrap_operational_settings_v2.sql` and
+`0027_wp3_fix_publication_metadata_token_compat.sql` are forward-only. They
+add the new contracts, indexes, constraints, RLS/policies and OFF flags, then
+repair function compatibility and bootstrap a complete versioned settings v2
+only because staging v1 lacked the existing Lặng price contract. Existing order
+snapshots remain untouched. No old migration was edited and no schema was
+dropped. Manual rollback files are only for an empty/unconsumed scope;
+otherwise disable the affected route and use a reviewed forward repair or a
+verified staging restore. They must never run automatically.
 
 **STAGING EVIDENCE (2026-08-04):** canonical project
 `essence-staging` (`jmnkhlgumlvywdaeahmx`) showed `0001`–`0021` in sync. A
 dry-run listed only `0022`–`0024`, then they were applied. A database-lint
 error in the publication version function was repaired by forward migration
-`0025`; the final history is `0001`–`0025` in sync and `supabase db lint`
-returned no schema errors. All WP3 release flags remain constrained to false.
-The test transport used CLI-authenticated, in-memory credentials only; no key
-was committed, printed or retained.
+`0025`; then `0026` made the already-approved Working Defaults available as
+immutable future-order settings v2 and `0027` repaired the historical
+publication-hash compatibility. The final history is `0001`–`0027` in sync and
+`supabase db lint` returned no schema errors. All WP3 release flags remain
+constrained to false. The test transport used CLI-authenticated, in-memory
+credentials only; no key was committed, printed or retained.
 
 **STAGING EVIDENCE:** a pre-`0022`–`0024` schema/data snapshot is stored
 outside Git at
@@ -153,6 +158,15 @@ for `schema.sql` and
 for `data.sql`. A pre-`0025` schema snapshot is stored at
 `/Users/macos/Documents/03. RESOURCES/coachkenjipham-backups/essence-staging/2026-08-04-pre-0025/`
 with SHA-256 `cf1641c0907126d9f9d3dda9bc17926be7347a935af337cc9631fde6bd89566e`.
+Pre-`0026` schema/data snapshots are at
+`/Users/macos/Documents/03. RESOURCES/coachkenjipham-backups/essence-staging/2026-08-04-pre-0026/`
+with SHA-256 `efae90a60a602629af5b5c147ab22f14dbd199007fb482bac80f240f5f48a0b5`
+for `schema.sql` and
+`079a201d40e2b8929f46dd354fceb39609edb647a5c36cc72dd820eaae3220a5`
+for `data.sql`. A pre-`0027` schema snapshot is at
+`/Users/macos/Documents/03. RESOURCES/coachkenjipham-backups/essence-staging/2026-08-04-pre-0027/`
+with matching schema SHA-256
+`efae90a60a602629af5b5c147ab22f14dbd199007fb482bac80f240f5f48a0b5`.
 Restore is manual: take the affected route OFF, verify target project and
 checksum, restore to an isolated PostgreSQL environment first, then use a
 reviewed forward repair or the recorded staging restore procedure. Never run
@@ -163,15 +177,22 @@ The synthetic database E2E completed Lặng snapshot creation, hash-at-rest,
 report/evidence/confirmation atomicity, confirmation idempotency and revoked
 request denial; it also completed Hạt Mầm approved-version-before-entitlement,
 entitlement idempotency and checked every WP3 release flag OFF. This is not
-provider E2E and does not close the Auth/AAL or Storage gates.
+provider E2E and does not close the Storage gate.
+
+**STAGING EVIDENCE:** synthetic Supabase Auth users proved authenticated
+non-admin denial, active Admin AAL1 denial and AAL2 access against the real
+RLS policies. The temporary TOTP secret, sessions and API keys stayed only in
+process memory. This verifies the technical gate, not Founder enrollment.
 
 ## Open gates and deferred work
 
-**OPEN GATES:** canonical staging authenticated non-admin/AAL1/AAL2 evidence,
-fresh Security Advisor, private Storage object E2E, signed download E2E,
-real deletion E2E, Resend, Cal.com and provider authorization. No local or
-synthetic result closes them. The manual bank-confirmation workflow has only
-synthetic evidence in WP3; it is not a connected banking integration.
+**OPEN GATES:** fresh Security Advisor, private Storage object E2E, signed
+download E2E, real deletion E2E, Resend, Cal.com and provider authorization.
+No local or synthetic result closes them. The manual bank-confirmation workflow
+has only synthetic evidence in WP3; it is not a connected banking integration.
+Vercel project protection correctly redirects the unshared WP3 Admin Preview
+to Vercel SSO; making a new branch Shareable Link requires a separate Founder
+authorization and is not an activation workaround.
 
 **MISSING FOUNDER INPUT:** final customer route name, public/private delivery
 copy, real provider authorization and any later product-specific policy not
