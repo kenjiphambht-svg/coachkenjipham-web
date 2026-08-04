@@ -4,8 +4,8 @@ This directory is a deliberately isolated, static founder-review application.
 
 - It contains synthetic fixtures only.
 - It has no application API routes, Supabase dependency, environment variables,
-  analytics, provider connection, secrets or application data requests. (Vercel
-  may inject its own Preview feedback helper; it receives no product data.)
+  analytics, provider connection, secrets or application data requests. Its CSP
+  permits static same-origin assets only and blocks external script/connect use.
 - All interaction is browser-only state stored under `essence-founder-review-demo-v1` in `localStorage`.
 - The Vercel project for this directory must remain separate from the protected Admin staging project and must not receive environment variables.
 - It is `noindex, nofollow`, is not included in the main-site sitemap, and is not linked from the main website.
