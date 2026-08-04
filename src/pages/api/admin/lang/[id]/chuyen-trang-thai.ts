@@ -16,7 +16,7 @@ import { getLangApplication } from '@/lib/db/queries';
 import { countLangSlotsUsed, getMonthlyLimit } from '@/lib/db/queries';
 import { DomainError, HTTP_STATUS_BY_CODE } from '@/lib/domain/errors';
 import { transitionLang, type Actor } from '@/lib/domain/state-machine';
-import { LANG_SESSION_PRICE_VND, type LangStatus } from '@/lib/domain/states';
+import { type LangStatus } from '@/lib/domain/states';
 import { toMonthKey } from '@/lib/domain/capacity';
 import { createPrivateLinkSecret } from '@/lib/security/private-link';
 
@@ -69,10 +69,23 @@ function throwTransitionRpcError(error: { message?: string }): never {
     case 'DECLINE_REASON_REQUIRED':
       throw new DomainError('VALIDATION_FAILED', 'Ghi giúp một dòng lý do từ chối.');
     case 'HUMAN_DECISION_REQUIRED':
+    case 'HUMAN_ACTOR_REQUIRED':
       throw new DomainError(
         'HUMAN_DECISION_REQUIRED',
         'Bước này phải do người thật quyết định.'
       );
+    case 'LANG_SETTINGS_REQUIRED':
+      throw new DomainError('VALIDATION_FAILED', 'Thiếu cài đặt giá Lặng đang hiệu lực.');
+    case 'LANG_ORDER_SNAPSHOT_REQUIRED':
+    case 'PAYMENT_REQUEST_REQUIRED':
+      throw new DomainError('VALIDATION_FAILED', 'Thiếu snapshot hoặc yêu cầu thanh toán hợp lệ.');
+    case 'PAYMENT_EVIDENCE_INVALID':
+      throw new DomainError(
+        'VALIDATION_FAILED',
+        'Cần evidence hợp lệ: đã báo chuyển, còn hạn, đúng số tiền và đúng mã chuyển khoản.'
+      );
+    case 'PAYMENT_CONFIRMATION_ACTOR_INVALID':
+      throw new DomainError('UNAUTHORIZED', 'Tài khoản quản trị không còn hiệu lực để xác nhận thanh toán.');
     case 'INVALID_TRANSITION':
       throw new DomainError(
         'INVALID_TRANSITION',
@@ -178,21 +191,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const paymentSecret = action === 'issue_payment' ? createPrivateLinkSecret() : null;
     const transitionCall =
       action === 'issue_payment'
-        ? systemDb.rpc('issue_lang_payment_request', {
+        ? systemDb.rpc('issue_lang_payment_request_wp3', {
             p_application_id: id,
             p_expected_status: from,
             p_actor: result.audit.actor,
             p_token_hash: paymentSecret?.tokenHash,
             p_expires_at: paymentSecret?.expiresAt,
           })
-        : systemDb.rpc('transition_lang_application', {
+        : action === 'confirm_payment'
+          ? systemDb.rpc('confirm_lang_payment_with_evidence', {
+              p_application_id: id,
+              p_expected_status: from,
+              p_actor: result.audit.actor,
+              p_confirmed_by: admin.adminId,
+            })
+          : systemDb.rpc('transition_lang_application', {
             p_application_id: id,
             p_expected_status: from,
             p_next_status: to,
             p_actor: result.audit.actor,
             p_reason: declineReason,
             p_target_session_month: targetSessionMonth,
-            p_payment_amount_vnd: action === 'confirm_payment' ? LANG_SESSION_PRICE_VND : null,
+            p_payment_amount_vnd: null,
           });
     const { data: transitionRows, error: transitionError } = await transitionCall;
     if (transitionError) throwTransitionRpcError(transitionError);

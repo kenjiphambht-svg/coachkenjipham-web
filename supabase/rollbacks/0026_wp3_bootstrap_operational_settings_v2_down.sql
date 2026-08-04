@@ -1,0 +1,4 @@
+-- Manual rollback for 0026. Do not run automatically.
+-- This activates no provider and changes no order snapshot. If any new order
+-- has used settings v2, keep the version for audit and use a forward settings
+-- version instead. Only an unused v2 may be superseded after review.

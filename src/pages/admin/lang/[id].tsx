@@ -26,15 +26,16 @@ import { withAdmin } from '@/lib/auth/require-admin';
 import {
   countLangSlotsUsed,
   getLangApplication,
+  getLangPaymentReview,
   listOperationalSettings,
   type LangApplicationRow,
+  type LangPaymentReviewRow,
 } from '@/lib/db/queries';
 import { evaluateCapacity, toMonthKey } from '@/lib/domain/capacity';
 import { getActiveSettings, type AdminOperationalSettings } from '@/lib/admin/settings';
 import {
   buildLangCustomerPreview,
   buildLangSupportSummary,
-  buildReceiptPreview,
   formatCurrencyVnd,
 } from '@/lib/admin/operational';
 
@@ -50,6 +51,8 @@ interface Props {
   application: LangApplicationRow;
   monthOptions: MonthOption[];
   settings: AdminOperationalSettings['lang'];
+  paymentReview: LangPaymentReviewRow | null;
+  paymentReviewAvailable: boolean;
 }
 
 const Q2_VI: Record<string, string> = {
@@ -78,7 +81,14 @@ function Answer({ label, children }: { label: string; children: React.ReactNode 
   );
 }
 
-export default function AdminLangDetail({ adminEmail, application, monthOptions, settings }: Props) {
+export default function AdminLangDetail({
+  adminEmail,
+  application,
+  monthOptions,
+  settings,
+  paymentReview,
+  paymentReviewAvailable,
+}: Props) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -88,7 +98,15 @@ export default function AdminLangDetail({ adminEmail, application, monthOptions,
 
   const status = application.status;
   const summary = buildLangSupportSummary(application);
-  const receipt = buildReceiptPreview('lang', application.order_code, settings.priceVnd);
+  const paymentCanBeConfirmed = Boolean(
+    paymentReview?.snapshot &&
+      paymentReview.request?.reported_transfer_at &&
+      !paymentReview.request.revoked_at &&
+      new Date(paymentReview.request.expires_at) > new Date() &&
+      paymentReview.evidence &&
+      paymentReview.evidence.reported_amount_vnd === paymentReview.snapshot.amount_vnd &&
+      paymentReview.evidence.transfer_reference === paymentReview.request.report_reference
+  );
 
   const run = async (
     action: string,
@@ -349,13 +367,18 @@ export default function AdminLangDetail({ adminEmail, application, monthOptions,
               {status === 'awaiting_payment' && (
                 <button
                   className={adminPrimaryButton}
-                  disabled={busy}
+                  disabled={busy || !paymentCanBeConfirmed}
                   onClick={() =>
                     run('confirm_payment', {}, 'Xác nhận đã nhận đủ tiền cho hồ sơ này?')
                   }
                 >
                   Đã nhận tiền
                 </button>
+              )}
+              {status === 'awaiting_payment' && !paymentCanBeConfirmed && (
+                <p className="font-sans text-[13px] leading-[1.7] text-e26-text-2">
+                  Chưa thể xác nhận: cần báo chuyển, evidence gắn đúng request, số tiền và mã chuyển khoản khớp snapshot.
+                </p>
               )}
 
               {status === 'paid' && (
@@ -374,13 +397,20 @@ export default function AdminLangDetail({ adminEmail, application, monthOptions,
           </Card>
 
           <Card title="Thanh toán & booking">
-            <dl className="font-sans text-[14px] space-y-2">
-              <div className="flex justify-between gap-3"><dt className="text-e26-text-2">Số tiền kỳ vọng</dt><dd>{formatCurrencyVnd(receipt.amountVnd)}</dd></div>
-              <div className="flex justify-between gap-3"><dt className="text-e26-text-2">Nội dung chuyển khoản</dt><dd className="font-medium">{receipt.transferReference}</dd></div>
-              <div><dt className="text-e26-text-2 mb-1">Biên nhận thử</dt><dd>{receipt.fileName}</dd></div>
-              <div><dt className="text-e26-text-2 mb-1">Checksum</dt><dd className="text-[12px] break-all">{receipt.checksum}</dd></div>
-            </dl>
-            <p className="font-sans text-[13px] leading-[1.7] text-e26-text-2 mt-4">{receipt.summary}</p>
+            {!paymentReviewAvailable ? (
+              <p className="font-sans text-[13px] leading-[1.7] text-e26-text-2">
+                Migration Launch Core chưa có trên môi trường này; evidence thanh toán bị fail-closed.
+              </p>
+            ) : (
+              <dl className="font-sans text-[14px] space-y-2">
+                <div className="flex justify-between gap-3"><dt className="text-e26-text-2">Snapshot giá</dt><dd>{paymentReview?.snapshot ? formatCurrencyVnd(paymentReview.snapshot.amount_vnd) : 'Chưa phát request'}</dd></div>
+                <div className="flex justify-between gap-3"><dt className="text-e26-text-2">Settings version</dt><dd>{paymentReview?.snapshot?.settings_version ?? '—'}</dd></div>
+                <div className="flex justify-between gap-3"><dt className="text-e26-text-2">Báo chuyển</dt><dd>{paymentReview?.request?.reported_transfer_at ? 'Đã nhận báo chuyển' : 'Chưa có'}</dd></div>
+                <div className="flex justify-between gap-3"><dt className="text-e26-text-2">Mã chuyển khoản</dt><dd className="font-medium text-right break-all">{paymentReview?.request?.report_reference ?? 'Chưa có'}</dd></div>
+                <div><dt className="text-e26-text-2 mb-1">Evidence gắn request</dt><dd>{paymentReview?.evidence ? paymentReview.evidence.evidence_kind : 'Chưa có evidence'}</dd></div>
+                <div><dt className="text-e26-text-2 mb-1">Checksum evidence</dt><dd className="text-[12px] break-all">{paymentReview?.evidence?.receipt_sha256 ?? 'Chưa có'}</dd></div>
+              </dl>
+            )}
             <p className="font-sans text-[13px] leading-[1.7] text-e26-text-2 mt-3">
               Lịch từ active settings: {settings.bookingDefaults.tuesday0930 ? 'Thứ Ba 09:30' : ''}{settings.bookingDefaults.tuesday0930 && settings.bookingDefaults.thursday1430 ? ' hoặc ' : ''}{settings.bookingDefaults.thursday1430 ? 'Thứ Năm 14:30' : ''} · {settings.sessionDurationMinutes} phút · buffer {settings.bookingDefaults.postSessionBufferMinutes} phút · tối đa {settings.bookingDefaults.hardMonthlyCapacity} phiên/tháng. Cal.com vẫn OFF.
             </p>
@@ -397,6 +427,18 @@ export const getServerSideProps: GetServerSideProps = withAdmin(async (ctx, { db
 
   const application = await getLangApplication(db, id);
   if (!application) return { notFound: true };
+
+  // Before 0022/0023 reaches an isolated Preview database the page still
+  // renders, but payment confirmation remains explicitly fail-closed.
+  let paymentReview: LangPaymentReviewRow | null = null;
+  let paymentReviewAvailable = true;
+  try {
+    paymentReview = await getLangPaymentReview(db, id);
+  } catch (error) {
+    const code = typeof error === 'object' && error && 'code' in error ? String(error.code) : '';
+    if (code !== '42P01') throw error;
+    paymentReviewAvailable = false;
+  }
 
   // 6 tháng tới, kèm số suất còn lại — để Kenji thấy trước khi bấm Nhận,
   // không phải nhận xong mới biết tháng đó đã đầy.
@@ -416,5 +458,7 @@ export const getServerSideProps: GetServerSideProps = withAdmin(async (ctx, { db
     });
   }
 
-  return { props: { adminEmail, application, monthOptions, settings: settings.lang } };
+  return {
+    props: { adminEmail, application, monthOptions, settings: settings.lang, paymentReview, paymentReviewAvailable },
+  };
 });

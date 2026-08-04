@@ -1,0 +1,4 @@
+-- 0025 repairs a lint/runtime defect in function definitions only.
+-- Do not roll it back: the prior definitions are known defective. If a future
+-- correction is needed, add a reviewed forward migration; preserve audit and
+-- payment evidence rather than restoring a faulty function.

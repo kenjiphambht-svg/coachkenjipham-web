@@ -73,6 +73,23 @@ export interface PaymentRequestRow {
   created_at: string;
 }
 
+export interface LangPaymentReviewRow {
+  request: PaymentRequestRow | null;
+  snapshot: {
+    amount_vnd: number;
+    settings_version: number;
+    capacity_month: string;
+    created_at: string;
+  } | null;
+  evidence: {
+    evidence_kind: 'synthetic_receipt' | 'manual_receipt_metadata';
+    receipt_sha256: string;
+    reported_amount_vnd: number;
+    transfer_reference: string;
+    created_at: string;
+  } | null;
+}
+
 export interface HatMamPaymentEvidenceRow {
   id: string;
   payment_request_id: string;
@@ -308,6 +325,43 @@ export async function listLangPaymentRequests(db: SupabaseClient) {
     .order('created_at', { ascending: false });
   if (error) throw error;
   return (data ?? []) as PaymentRequestRow[];
+}
+
+/**
+ * Payment-review facts for one Lặng application. The evidence is deliberately
+ * metadata/checksum only: no bank image or raw content is selected or logged.
+ */
+export async function getLangPaymentReview(db: SupabaseClient, applicationId: string): Promise<LangPaymentReviewRow> {
+  const { data: requestData, error: requestError } = await db
+    .from('lang_payment_requests')
+    .select('id, application_id, expires_at, revoked_at, reported_transfer_at, report_reference, created_at')
+    .eq('application_id', applicationId)
+    .maybeSingle();
+  if (requestError) throw requestError;
+
+  const { data: snapshotData, error: snapshotError } = await db
+    .from('lang_order_snapshots')
+    .select('amount_vnd, settings_version, capacity_month, created_at')
+    .eq('application_id', applicationId)
+    .maybeSingle();
+  if (snapshotError) throw snapshotError;
+
+  let evidenceData: LangPaymentReviewRow['evidence'] = null;
+  if (requestData?.id) {
+    const { data, error } = await db
+      .from('lang_payment_evidence')
+      .select('evidence_kind, receipt_sha256, reported_amount_vnd, transfer_reference, created_at')
+      .eq('payment_request_id', requestData.id)
+      .maybeSingle();
+    if (error) throw error;
+    evidenceData = data as LangPaymentReviewRow['evidence'];
+  }
+
+  return {
+    request: (requestData as PaymentRequestRow | null) ?? null,
+    snapshot: (snapshotData as LangPaymentReviewRow['snapshot']) ?? null,
+    evidence: evidenceData,
+  };
 }
 
 export async function listHatMamPaymentRequests(db: SupabaseClient) {
