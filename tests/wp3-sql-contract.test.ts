@@ -7,6 +7,10 @@ const langPaymentSql = readFileSync(
   resolve(process.cwd(), 'supabase/migrations/0023_wp3_lang_payment_snapshot_and_confirmation.sql'),
   'utf8'
 );
+const publicationSql = readFileSync(
+  resolve(process.cwd(), 'supabase/migrations/0024_wp3_publication_approval_and_entitlement.sql'),
+  'utf8'
+);
 
 describe('WP3 database contracts', () => {
   it('extends existing product records rather than duplicating order/payment foundations', () => {
@@ -45,5 +49,15 @@ describe('WP3 database contracts', () => {
     expect(langPaymentSql).toMatch(/PAYMENT_EVIDENCE_INVALID/);
     expect(langPaymentSql).toMatch(/payment_confirmation_idempotent/);
     expect(langPaymentSql).toMatch(/payment_confirmations\(payment_id, subject, subject_id, evidence_sha256/i);
+  });
+
+  it('requires Founder/Admin approval before an Hạt Mầm entitlement and keeps approved versions immutable', () => {
+    expect(publicationSql).toMatch(/APPROVED_PUBLICATION_IMMUTABLE/);
+    expect(publicationSql).toMatch(/review_hatmam_publication_version/i);
+    expect(publicationSql).toMatch(/PUBLICATION_NOT_APPROVED/);
+    expect(publicationSql).toMatch(/grant_hatmam_approved_entitlement/i);
+    expect(publicationSql).toMatch(/customer_identities where id = p_customer_identity_id for update/i);
+    expect(publicationSql).toMatch(/private-storage, Auth or release gates/i);
+    expect(publicationSql).toMatch(/to service_role/);
   });
 });

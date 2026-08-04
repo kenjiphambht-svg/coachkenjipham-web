@@ -53,6 +53,29 @@ export function canAccessPrivateReadingRoom(input: {
   return input.verifiedIdentity && input.entitlementStatus === 'active' && (!input.expiresAt || new Date(input.expiresAt) > now);
 }
 
+/**
+ * Authorization is deliberately separate from an unguessable publication
+ * token. A future route may only ask a Storage adapter for a signed URL after
+ * this check passes and its explicit release gates are enabled.
+ */
+export function authorizePrivateReadingDelivery(input: {
+  verifiedIdentity: boolean;
+  entitlementStatus: 'pending' | 'active' | 'suspended' | 'expired' | 'revoked' | 'pending_deletion' | 'deleted';
+  expiresAt: string | null;
+  publicationStatus: 'approved' | 'revoked' | 'draft' | 'review_pending' | 'revision_requested' | 'superseded';
+  privateStorageReady: boolean;
+  customerAuthReady: boolean;
+  privateReadingRoomEnabled: boolean;
+  now?: Date;
+}) {
+  if (!canAccessPrivateReadingRoom(input)) return { allowed: false as const, reason: 'ENTITLEMENT_DENIED' };
+  if (input.publicationStatus !== 'approved') return { allowed: false as const, reason: 'PUBLICATION_NOT_DELIVERABLE' };
+  if (!input.privateStorageReady || !input.customerAuthReady || !input.privateReadingRoomEnabled) {
+    return { allowed: false as const, reason: 'RELEASE_GATE_OFF' };
+  }
+  return { allowed: true as const, reason: 'AUTHORIZED' };
+}
+
 export function buildPrivateObjectPath(input: {
   productCode: 'lang' | 'hatmam';
   orderCode: string;

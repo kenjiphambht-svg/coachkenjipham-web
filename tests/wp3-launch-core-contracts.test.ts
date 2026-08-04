@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
 import { DomainError } from '@/lib/domain/errors';
-import { assertPaymentConfirmationEligible, buildPrivateObjectPath, canAccessPrivateReadingRoom, launchCoreFlagState, planDeletion } from '@/lib/launch-core/contracts';
+import { assertPaymentConfirmationEligible, authorizePrivateReadingDelivery, buildPrivateObjectPath, canAccessPrivateReadingRoom, launchCoreFlagState, planDeletion } from '@/lib/launch-core/contracts';
+import { FailClosedPrivateStorageAdapter } from '@/lib/launch-core/private-storage';
 
 const validEvidence = {
   requestId: 'req-1', requestState: 'under_review' as const, reportedAt: '2026-08-04T00:00:00Z', revokedAt: null,
@@ -23,6 +24,30 @@ describe('WP3 Launch Core contracts', () => {
     expect(canAccessPrivateReadingRoom({ verifiedIdentity: false, entitlementStatus: 'active', expiresAt: null })).toBe(false);
     expect(canAccessPrivateReadingRoom({ verifiedIdentity: true, entitlementStatus: 'revoked', expiresAt: null })).toBe(false);
     expect(canAccessPrivateReadingRoom({ verifiedIdentity: true, entitlementStatus: 'active', expiresAt: '2020-01-01T00:00:00Z' })).toBe(false);
+  });
+
+  it('requires verified identity, active entitlement, approved version and explicit gates before delivery', () => {
+    const permitted = {
+      verifiedIdentity: true,
+      entitlementStatus: 'active' as const,
+      expiresAt: null,
+      publicationStatus: 'approved' as const,
+      privateStorageReady: true,
+      customerAuthReady: true,
+      privateReadingRoomEnabled: true,
+    };
+    expect(authorizePrivateReadingDelivery(permitted)).toEqual({ allowed: true, reason: 'AUTHORIZED' });
+    expect(authorizePrivateReadingDelivery({ ...permitted, verifiedIdentity: false })).toEqual({ allowed: false, reason: 'ENTITLEMENT_DENIED' });
+    expect(authorizePrivateReadingDelivery({ ...permitted, publicationStatus: 'revoked' })).toEqual({ allowed: false, reason: 'PUBLICATION_NOT_DELIVERABLE' });
+    expect(authorizePrivateReadingDelivery({ ...permitted, privateStorageReady: false })).toEqual({ allowed: false, reason: 'RELEASE_GATE_OFF' });
+  });
+
+  it('does not issue a fake signed URL while the real Storage adapter is unconnected', async () => {
+    const adapter = new FailClosedPrivateStorageAdapter();
+    await expect(adapter.issueShortLivedDownload({
+      asset: { productCode: 'hatmam', orderCode: 'HM-018', publicationCode: 'PUB-HM-018', version: 2, checksumSha256: 'a'.repeat(64), approved: true },
+      authorization: { allowed: false, privateStorageReady: false, customerAuthReady: false, privateReadingRoomEnabled: false },
+    })).rejects.toThrowError(DomainError);
   });
 
   it('uses safe code-only object paths and blocks metadata-first deletion', () => {
