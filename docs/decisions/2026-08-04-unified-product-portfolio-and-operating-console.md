@@ -145,3 +145,8 @@ This decision supplements, not replaces, the Offer State Matrix, Route State
 Matrix, Site Journey Map, Conflict Register and WP1 decision. **CONFLICT:**
 older launch/checklist material can imply automatic noindex removal; current
 Founder authority keeps indexing exclusively under the separate M6 decision.
+
+The future customer entitlement, private-library and reading-room boundary is
+specified separately in
+[Customer Library and Private Reading Rooms](2026-08-04-customer-library-and-private-reading-rooms.md).
+It adds no public route, provider or product activation authority.
