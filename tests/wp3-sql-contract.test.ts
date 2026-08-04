@@ -15,6 +15,10 @@ const lintRepairSql = readFileSync(
   resolve(process.cwd(), 'supabase/migrations/0025_wp3_fix_publication_function_lint.sql'),
   'utf8'
 );
+const settingsBootstrapSql = readFileSync(
+  resolve(process.cwd(), 'supabase/migrations/0026_wp3_bootstrap_operational_settings_v2.sql'),
+  'utf8'
+);
 
 describe('WP3 database contracts', () => {
   it('extends existing product records rather than duplicating order/payment foundations', () => {
@@ -70,5 +74,15 @@ describe('WP3 database contracts', () => {
     expect(lintRepairSql).not.toMatch(/max\(version_number\)/i);
     expect(lintRepairSql).not.toMatch(/v_existing_confirmation/);
     expect(lintRepairSql).toMatch(/only function definitions/i);
+  });
+
+  it('bootstraps a complete, versioned Lặng price only when active settings are legacy and keeps all readiness OFF', () => {
+    expect(settingsBootstrapSql).toMatch(/operational_settings_versions where active = true for update/i);
+    expect(settingsBootstrapSql).toMatch(/\{lang,priceVnd\}/i);
+    expect(settingsBootstrapSql).toMatch(/assert_operational_settings_values/i);
+    expect(settingsBootstrapSql).toMatch(/publicActivationEnabled', false/i);
+    expect(settingsBootstrapSql).toMatch(/privateStorageReady', false/i);
+    expect(settingsBootstrapSql).toMatch(/calcomReadiness', 'off'/i);
+    expect(settingsBootstrapSql).toMatch(/Existing order snapshots stay/i);
   });
 });
