@@ -123,21 +123,55 @@ private-object adapter fails; the request remains retryable and audited.
 
 ## Migration, staging and rollback
 
-**PROPOSED IMPLEMENTATION:** forward migration `0022_wp3_launch_core_foundation.sql`
-adds only additive tables, indexes, constraints, RLS/policies and OFF flags.
-No old migration is edited, no schema is dropped and no business data is
-rewritten. Its paired manual rollback removes only empty WP3 tables/flags and
-must never run automatically; otherwise disable routes and use a reviewed
-forward repair/verified staging restore. Staging application requires the
-existing authenticated project authority, dry-run, non-destructive review and
-a fresh pre-migration dump.
+**CURRENT IMPLEMENTATION:** forward migrations
+`0022_wp3_launch_core_foundation.sql`,
+`0023_wp3_lang_payment_snapshot_and_confirmation.sql`,
+`0024_wp3_publication_approval_and_entitlement.sql` and
+`0025_wp3_fix_publication_function_lint.sql` are additive. They add only the
+new contracts, indexes, constraints, RLS/policies and OFF flags, plus a
+forward-only repair of two function definitions. No old migration was edited,
+no schema was dropped and no business data was rewritten. Manual rollback files
+are only for an empty/unconsumed scope; otherwise disable the affected route
+and use a reviewed forward repair or a verified staging restore. They must
+never run automatically.
+
+**STAGING EVIDENCE (2026-08-04):** canonical project
+`essence-staging` (`jmnkhlgumlvywdaeahmx`) showed `0001`–`0021` in sync. A
+dry-run listed only `0022`–`0024`, then they were applied. A database-lint
+error in the publication version function was repaired by forward migration
+`0025`; the final history is `0001`–`0025` in sync and `supabase db lint`
+returned no schema errors. All WP3 release flags remain constrained to false.
+The test transport used CLI-authenticated, in-memory credentials only; no key
+was committed, printed or retained.
+
+**STAGING EVIDENCE:** a pre-`0022`–`0024` schema/data snapshot is stored
+outside Git at
+`/Users/macos/Documents/03. RESOURCES/coachkenjipham-backups/essence-staging/2026-08-04-pre-0022-0024/`
+with SHA-256 `de1d7581eeb4519990f3b3d040e9a5aacd6f5e69170c740d045fa73e81ef3879`
+for `schema.sql` and
+`8b312379ac8142531b39e825f24a1d3f1346e37e4222b5d36bedc3598553183b`
+for `data.sql`. A pre-`0025` schema snapshot is stored at
+`/Users/macos/Documents/03. RESOURCES/coachkenjipham-backups/essence-staging/2026-08-04-pre-0025/`
+with SHA-256 `cf1641c0907126d9f9d3dda9bc17926be7347a935af337cc9631fde6bd89566e`.
+Restore is manual: take the affected route OFF, verify target project and
+checksum, restore to an isolated PostgreSQL environment first, then use a
+reviewed forward repair or the recorded staging restore procedure. Never run
+`db reset` or drop a schema.
+
+**SYNTHETIC EVIDENCE:** anonymous RLS denial passed 11/11 against staging.
+The synthetic database E2E completed Lặng snapshot creation, hash-at-rest,
+report/evidence/confirmation atomicity, confirmation idempotency and revoked
+request denial; it also completed Hạt Mầm approved-version-before-entitlement,
+entitlement idempotency and checked every WP3 release flag OFF. This is not
+provider E2E and does not close the Auth/AAL or Storage gates.
 
 ## Open gates and deferred work
 
 **OPEN GATES:** canonical staging authenticated non-admin/AAL1/AAL2 evidence,
 fresh Security Advisor, private Storage object E2E, signed download E2E,
-real deletion E2E, Resend, Cal.com, bank evidence and provider authorization.
-No local or synthetic result closes them.
+real deletion E2E, Resend, Cal.com and provider authorization. No local or
+synthetic result closes them. The manual bank-confirmation workflow has only
+synthetic evidence in WP3; it is not a connected banking integration.
 
 **MISSING FOUNDER INPUT:** final customer route name, public/private delivery
 copy, real provider authorization and any later product-specific policy not
