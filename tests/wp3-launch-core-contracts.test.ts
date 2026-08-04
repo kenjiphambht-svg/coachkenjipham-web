@@ -14,6 +14,7 @@ describe('WP3 Launch Core contracts', () => {
     expect(assertPaymentConfirmationEligible(validEvidence)).toEqual({ requestId: 'req-1', evidenceSha256: 'a'.repeat(64) });
     expect(() => assertPaymentConfirmationEligible({ ...validEvidence, reportedAmountVnd: 1 })).toThrowError(DomainError);
     expect(() => assertPaymentConfirmationEligible({ ...validEvidence, requestState: 'revoked' })).toThrowError(DomainError);
+    expect(() => assertPaymentConfirmationEligible({ ...validEvidence, revokedAt: '2026-08-04T01:00:00Z' })).toThrowError(DomainError);
     expect(() => assertPaymentConfirmationEligible({ ...validEvidence, evidenceReference: 'OTHER' })).toThrowError(DomainError);
   });
 

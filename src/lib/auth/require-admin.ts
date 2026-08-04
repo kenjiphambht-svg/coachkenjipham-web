@@ -13,6 +13,7 @@ import { ADMIN_LOGIN_PATH, ADMIN_MFA_PATH } from './admin-gate';
 
 export interface AdminContext {
   db: SupabaseClient;
+  adminId: string;
   adminEmail: string;
 }
 
@@ -56,7 +57,7 @@ export async function requireAdmin(db: SupabaseClient): Promise<AdminContext> {
 
   const { data: adminRow, error: adminError } = await db
     .from('admin_users')
-    .select('email, is_active')
+    .select('id, email, is_active')
     .eq('user_id', user.id)
     .maybeSingle();
 
@@ -64,7 +65,7 @@ export async function requireAdmin(db: SupabaseClient): Promise<AdminContext> {
     throw new DomainError('UNAUTHORIZED', 'Tài khoản này không có quyền quản trị.');
   }
 
-  return { db, adminEmail: adminRow.email as string };
+  return { db, adminId: adminRow.id as string, adminEmail: adminRow.email as string };
 }
 
 /**
