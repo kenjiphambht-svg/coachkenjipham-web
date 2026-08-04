@@ -15,6 +15,7 @@ const NAV = [
   { href: '/admin', label: 'Tổng quan' },
   { href: '/admin/lang', label: 'Lặng' },
   { href: '/admin/hat-mam', label: 'Hạt Mầm' },
+  { href: '/admin/launch-core', label: 'Launch Core' },
   { href: '/admin/thanh-toan', label: 'Thanh toán' },
   { href: '/admin/xuat-ban', label: 'Xuất bản' },
   { href: '/admin/xoa-du-lieu', label: 'Xóa dữ liệu' },
