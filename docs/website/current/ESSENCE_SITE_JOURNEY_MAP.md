@@ -22,6 +22,8 @@
 
 The Experience Bible supplies emotional architecture, not runtime CTA, payment, route, or indexing decisions. Clarity, accessibility and required information remain non-negotiable.
 
+The unified portfolio decision records future ebook/assessment/product operations only. It does not add a public funnel or change a route: all future discovery, product activation and indexing remain independently gated.
+
 ## 2. Canonical information architecture
 
 | Layer | Canonical role | Routes/nodes | Boundary |

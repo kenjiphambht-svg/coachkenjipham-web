@@ -16,6 +16,8 @@ Implemented means a source page exists. It does not mean canonical, approved, in
 
 Kenji Phạm owns every Founder Decision and approval gate. “Scoped task” in the final column means a separate task with Kenji approval; no row authorizes the runtime action it records.
 
+The unified portfolio decision (`docs/decisions/2026-08-04-unified-product-portfolio-and-operating-console.md`) is an operating-console contract, not route creation, activation or indexing authority. C-17 keeps noindex/M6 separate from every product state.
+
 | Route | Source/evidence | Current implementation | Canonical role / journey | Visibility and indexing | CTA / flow observation | Governing basis / gap / next action |
 |---|---|---|---|---|---|---|
 | / | src/pages/index.tsx → src/components/homepage/VillaPage.tsx | Implemented canonical Villa (P1 cutover, PR #112 at 733b199) | **L0 C-01:** canonical Villa public route; public-entry membership | Observed noindex (P1); governed noindex until M6 | Adult door → /ban-sac-cua-ban; parent door → /ban-sac-cua-con; trust links; no /kidbook CTA. | R-01 resolved by PR #112: legacy stub and its /kidbook CTA removed. |

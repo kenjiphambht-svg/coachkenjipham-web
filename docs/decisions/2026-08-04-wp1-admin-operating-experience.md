@@ -188,3 +188,13 @@ synthetic-only operating loop:
 
 The canonical staging Auth/RLS/AAL/Security-Advisor release gates remain OPEN.
 They are not represented as pass evidence in this document.
+
+## Portfolio-console alignment
+
+WP1 remains the implementation and evidence record for the protected Admin
+surfaces. The broader product inventory, future configurable contracts,
+workflow library, independent activation states and Founder Review Demo are
+governed by
+[the Unified Product Portfolio Founder Decision](2026-08-04-unified-product-portfolio-and-operating-console.md).
+That decision does not alter the frozen gates above or authorize product,
+provider, public or indexing activation.
