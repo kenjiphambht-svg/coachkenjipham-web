@@ -305,7 +305,7 @@
       ,'simulate-revision':()=>{data.library.revisionApplied=true;audit('Đã mô phỏng publication version v3 từ revision được duyệt; version cũ vẫn chỉ lưu nội bộ trong demo.');notice('Đã mô phỏng version mới; customer sẽ mặc định thấy bản hiện tại.');}
     };
     if (id.startsWith('open-room-')) { data.library.item=id.slice('open-room-'.length);data.library.chapter=1;save();go('reading-room');return; }
-    if (id.startsWith('chapter-')) { const pieces=id.split('-');data.library.item=pieces.slice(1,-1).join('-');data.library.chapter=Number(pieces.at(-1));save();render();return; }
+    if (id.startsWith('chapter-') && id !== 'chapter-prev' && id !== 'chapter-next') { const pieces=id.split('-');data.library.item=pieces.slice(1,-1).join('-');data.library.chapter=Number(pieces.at(-1));save();render();return; }
     if (id.startsWith('wizard-start-')) { data.wizard.start=Number(id.slice(-1));data.wizard.step=1;data.wizard.saved=false;notice('Đã chọn cách khởi tạo cho bản nháp local.');save();render();return; }
     if (updates[id]) { updates[id](); save(); render(); }
   }
