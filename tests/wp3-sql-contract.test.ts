@@ -19,6 +19,10 @@ const settingsBootstrapSql = readFileSync(
   resolve(process.cwd(), 'supabase/migrations/0026_wp3_bootstrap_operational_settings_v2.sql'),
   'utf8'
 );
+const publicationTokenCompatSql = readFileSync(
+  resolve(process.cwd(), 'supabase/migrations/0027_wp3_fix_publication_metadata_token_compat.sql'),
+  'utf8'
+);
 
 describe('WP3 database contracts', () => {
   it('extends existing product records rather than duplicating order/payment foundations', () => {
@@ -84,5 +88,11 @@ describe('WP3 database contracts', () => {
     expect(settingsBootstrapSql).toMatch(/privateStorageReady', false/i);
     expect(settingsBootstrapSql).toMatch(/calcomReadiness', 'off'/i);
     expect(settingsBootstrapSql).toMatch(/Existing order snapshots stay/i);
+  });
+
+  it('keeps the legacy publication hash opaque and never treats it as Reading Room authorization', () => {
+    expect(publicationTokenCompatSql).toMatch(/access_token_hash/);
+    expect(publicationTokenCompatSql).toMatch(/extensions\.gen_random_bytes\(32\)/);
+    expect(publicationTokenCompatSql).toMatch(/never returned, used as authorization/i);
   });
 });

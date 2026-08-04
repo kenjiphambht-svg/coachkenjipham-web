@@ -1,0 +1,3 @@
+-- 0027 repairs a compatibility omission in a function definition only.
+-- Do not roll it back to the defective definition. Use a reviewed forward
+-- repair; the generated legacy hash is not a usable access token.
