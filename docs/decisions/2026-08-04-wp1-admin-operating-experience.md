@@ -107,6 +107,16 @@ No key, secret, command, environment setting or manual debugging is required
 from the Founder. Passwords, recovery tokens, QR codes and provider errors are
 never written to repository evidence or application logs.
 
+### External staging blocker (2026-08-04)
+
+The recovery implementation is deployed to the Draft PR preview, but every
+allowlisted staging Vercel URL currently redirects an unauthenticated visitor
+to Vercel SSO. Sending a Supabase recovery email now would therefore give the
+Founder a link that cannot reach the reset route. No recovery email was sent.
+The only remaining prerequisite is an agent-operated, Founder-accessible
+staging callback domain (or an approved equivalent secure preview-access
+mechanism). This is deliberately not treated as public activation.
+
 ## Founder acceptance correction pass
 
 This correction remains on the same Draft PR and adds a complete
