@@ -34,6 +34,10 @@ yarn-error.log*
 .env.*
 !.env.example
 
+# Supabase CLI link/runtime metadata is local only and may contain connection
+# details. Migrations are the reviewed source of truth; never commit this.
+supabase/.temp/
+
 # vercel
 .vercel
 
