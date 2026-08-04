@@ -11,6 +11,10 @@ const publicationSql = readFileSync(
   resolve(process.cwd(), 'supabase/migrations/0024_wp3_publication_approval_and_entitlement.sql'),
   'utf8'
 );
+const lintRepairSql = readFileSync(
+  resolve(process.cwd(), 'supabase/migrations/0025_wp3_fix_publication_function_lint.sql'),
+  'utf8'
+);
 
 describe('WP3 database contracts', () => {
   it('extends existing product records rather than duplicating order/payment foundations', () => {
@@ -59,5 +63,12 @@ describe('WP3 database contracts', () => {
     expect(publicationSql).toMatch(/customer_identities where id = p_customer_identity_id for update/i);
     expect(publicationSql).toMatch(/private-storage, Auth or release gates/i);
     expect(publicationSql).toMatch(/to service_role/);
+  });
+
+  it('uses a forward-only lint repair that keeps version creation serialized without an ambiguous aggregate', () => {
+    expect(lintRepairSql).toMatch(/max\(pv\.version_number\)/i);
+    expect(lintRepairSql).not.toMatch(/max\(version_number\)/i);
+    expect(lintRepairSql).not.toMatch(/v_existing_confirmation/);
+    expect(lintRepairSql).toMatch(/only function definitions/i);
   });
 });
