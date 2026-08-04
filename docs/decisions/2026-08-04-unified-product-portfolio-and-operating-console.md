@@ -93,9 +93,12 @@ explicit Founder activation.
 **CURRENT IMPLEMENTATION:** the Founder Review Demo renders these journeys with
 synthetic fixtures only; delivery, payment, storage and providers remain OFF.
 
-- **Ebook:** visitor → email capture → operational delivery consent → optional
-  nurture consent → reading access/delivery → nurture or unsubscribe →
-  conversion event. Marketing consent is never required to receive the ebook.
+- **Ebook/Góc đọc:** anonymous visitor → complete public web reading → optional
+  reader-selected subscriber invitation after a meaningful reading moment →
+  future continuity/content preferences or unsubscribe → optional conversion
+  event. Email is not required to read; it never creates a paid entitlement or
+  Customer Library item. The earlier email-delivery framing is superseded by
+  [Public reading, subscriber model and Launch Core](2026-08-04-public-reading-subscriber-model-and-launch-core.md).
 - **Assessment 50.000 VND:** versioned answers lock to one version → result is
   locked → request/report/evidence/manual confirmation of payment →
   deterministic versioned result → delivery/failure record → optional follow-up.
@@ -149,4 +152,6 @@ Founder authority keeps indexing exclusively under the separate M6 decision.
 The future customer entitlement, private-library and reading-room boundary is
 specified separately in
 [Customer Library and Private Reading Rooms](2026-08-04-customer-library-and-private-reading-rooms.md).
-It adds no public route, provider or product activation authority.
+The public-reader/subscriber distinction and the three-item Launch Core lock are
+specified in [Public reading, subscriber model and Launch Core](2026-08-04-public-reading-subscriber-model-and-launch-core.md).
+Neither decision adds a public route, provider or product activation authority.

@@ -21,7 +21,13 @@ entitled item. The library groups only customer-safe states: **Đang chuẩn b�
 truy cập**. It never exposes provider names, technical gates, audit language or
 internal operating states.
 
-Eligible types are ebooks/approved downloadable resources; the paid assessment
+**SUPERSEDED ASSUMPTION (2026-08-04 correction):** this record formerly listed
+ebooks generically as eligible Library items. The public Góc đọc ebook now
+belongs to the anonymous public-reading model and is not a default paid-library
+item. An ebook may enter the Library only if a later, approved product-specific
+private entitlement explicitly requires it.
+
+Eligible types are approved downloadable/private resources; the paid assessment
 result/approved PDF; Bạn Là Duy Nhất, Dấu Ấn Của Bạn and an approved Lặng
 follow-up only where its product contract permits it; and Hạt Mầm, Khám Phá and
 Giao Mùa. A product page or order alone creates no library item: only approved
@@ -78,12 +84,15 @@ publication content in logs or analytics. A random slug alone is insufficient.
 
 ## Current synthetic demo
 
-`founder-review-demo/` provides localStorage-only fixtures: an ebook, a
-completed assessment result, Hạt Mầm preparing and ready records, an adult
+`founder-review-demo/` provides localStorage-only fixtures: a completed
+assessment result, Hạt Mầm preparing and ready records, an adult
 publication and an updated publication. It simulates chapter navigation, PDF
 authorization/download, support, revision versioning and audit. It contains no
 real PDF, magic link, email, customer/child data, Supabase/API/Storage/provider
 call or destructive operation.
+
+The separate public-reader fixture is deliberately outside the paid Library;
+see [Public reading, subscriber model and Launch Core](2026-08-04-public-reading-subscriber-model-and-launch-core.md).
 
 ## Open activation gates
 
