@@ -136,6 +136,18 @@ response used the required non-enumerating confirmation copy. No link,
 access value, recovery credential, password, MFA value or email content was
 recorded.
 
+### Cross-device recovery repair
+
+The first recovery request was created from a trusted server while the Founder
+opens the email on a separate device. A PKCE code flow would bind that code to
+the initiating browser's verifier and therefore cannot complete on the
+Founder's browser. Recovery mail now intentionally uses Supabase's implicit
+one-time recovery flow. The reset page accepts only the resulting canonical
+Founder session, immediately replaces the URL to remove the fragment and then
+requires a new sign-in plus MFA. The previous email cannot be relied upon; a
+single replacement recovery email is sent only after this repair reaches the
+protected branch Preview.
+
 ## Founder acceptance correction pass
 
 This correction remains on the same Draft PR and adds a complete

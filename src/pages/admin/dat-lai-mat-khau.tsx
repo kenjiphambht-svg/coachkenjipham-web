@@ -34,9 +34,17 @@ export default function ResetPasswordPage({ configured }: { configured: boolean 
         });
         unsubscribe = () => subscription.unsubscribe();
         const query = new URLSearchParams(window.location.search);
+        const fragment = new URLSearchParams(window.location.hash.replace(/^#/, ''));
         const code = query.get('code');
         const tokenHash = query.get('token_hash');
         const tokenType = query.get('type');
+        // Recovery emails initiated by the server intentionally use the
+        // implicit flow so they can be opened on the Founder's own device.
+        // The browser client consumes this fragment and emits
+        // PASSWORD_RECOVERY; the marker covers the small initialization race
+        // before the event subscriber is ready.
+        const hasImplicitRecovery =
+          fragment.get('type') === 'recovery' && Boolean(fragment.get('access_token'));
         if (code) {
           const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
           if (exchangeError) throw exchangeError;
@@ -48,6 +56,7 @@ export default function ResetPasswordPage({ configured }: { configured: boolean 
         }
         const { data, error: sessionError } = await supabase.auth.getSession();
         if (sessionError || !data.session || !isCanonicalFounderEmail(data.session.user.email)) throw new Error('invalid');
+        if (hasImplicitRecovery) recoverySessionSeen = true;
         // Vercel access and every Supabase recovery parameter are removed before
         // this page can submit a password; they must not reach history/referrers.
         window.history.replaceState({}, document.title, '/admin/dat-lai-mat-khau');

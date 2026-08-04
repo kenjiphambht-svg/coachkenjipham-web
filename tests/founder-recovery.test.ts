@@ -45,4 +45,22 @@ describe('Founder password recovery', () => {
     expect(resetRoute).not.toContain(".insert(");
     expect(resetRoute).not.toContain('mfa.unenroll');
   });
+
+  it('uses an implicit recovery link so a server-initiated email can be opened on the Founder device', () => {
+    const recoveryRoute = readFileSync(
+      resolve(process.cwd(), 'src/pages/api/admin/auth/quen-mat-khau.ts'),
+      'utf8'
+    );
+    const recoveryClient = readFileSync(
+      resolve(process.cwd(), 'src/lib/db/client.ts'),
+      'utf8'
+    );
+    const resetPage = readFileSync(
+      resolve(process.cwd(), 'src/pages/admin/dat-lai-mat-khau.tsx'),
+      'utf8'
+    );
+    expect(recoveryRoute).toContain('createRecoverySupabase');
+    expect(recoveryClient).toContain("flowType: 'implicit'");
+    expect(resetPage).toContain("fragment.get('type') === 'recovery'");
+  });
 });
