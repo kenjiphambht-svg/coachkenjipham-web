@@ -10,6 +10,7 @@ import {
   EssenceAccent,
   EssenceBody,
   EssenceDisplay,
+  EssenceEditorialNumeral,
   EssenceLeadIn,
   EssenceSignalComposition,
   EssenceUtility,
@@ -191,7 +192,7 @@ const RHYTHM = {
 
 function SectionLabel({ children }: { children: string }) {
   return (
-    <EssenceUtility as="p" className="text-[#1A1A1A]/68 mb-4 md:mb-5">
+    <EssenceUtility as="p" className="mb-4 md:mb-5">
       {children}
     </EssenceUtility>
   );
@@ -199,12 +200,12 @@ function SectionLabel({ children }: { children: string }) {
 
 function PresenceEnvironmentalImageSlot() {
   return (
-    <figure aria-hidden="true" className="relative aspect-[16/11] overflow-hidden bg-[#D2CEC3]">
+    <figure aria-hidden="true" className="relative aspect-[4/3] overflow-hidden bg-[#D2CEC3]">
       <Image
         src="/images/ve-kenji/06-khoang-ngoi-cung.png"
         alt=""
         fill
-        sizes="(min-width: 768px) 70vw, calc(100vw - 48px)"
+        sizes="(min-width: 768px) 58vw, calc(100vw - 48px)"
         className="object-cover object-[57%_62%]"
       />
       <div className="absolute inset-0" style={{ background: "linear-gradient(104deg, rgba(222,216,202,0.48) 0%, rgba(231,227,216,0.12) 48%, rgba(231,227,216,0) 82%)" }} />
@@ -364,26 +365,33 @@ export default function VeKenjiPage() {
         </div>
 
         <section className={`px-6 ${RHYTHM.thuong}`} style={{ background: sectionBg(BG.identity, 15, "38% 38%", "150deg") }}>
-          <div className="ve-kenji-reveal max-w-[1180px] mx-auto md:grid md:grid-cols-[minmax(260px,0.82fr)_minmax(0,1.18fr)] md:gap-x-20 lg:gap-x-28">
-            <div className="max-w-[520px]">
+          <div className="ve-kenji-reveal max-w-[1180px] mx-auto lg:grid lg:grid-cols-[minmax(0,0.4fr)_minmax(0,0.6fr)] lg:gap-x-24">
+            <div className="max-w-[440px]">
               <SectionLabel>TÔI LÀ AI HÔM NAY</SectionLabel>
-              <EssenceAnchor as="h2" className="mb-10 md:mb-0">
-                Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach.<br />
-                Người sáng lập Essence Coaching.
+              <EssenceAnchor as="h2" className="mb-0 text-[43px] leading-[1.04] md:text-[56px] md:leading-[1]">
+                <span className="block">Kenji Phạm</span>
+                <span className="mt-4 block max-w-[390px] font-sans font-normal text-[17px] leading-[1.58] tracking-normal text-[#1A1A1A]/80 md:mt-5 md:text-[18px] md:leading-[1.62]">
+                  — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach.<br />
+                  Người sáng lập Essence Coaching.
+                </span>
               </EssenceAnchor>
             </div>
-            <div className="max-w-[660px] md:pt-1">
+            <div className="mt-12 max-w-[660px] lg:mt-0 lg:pt-1">
               <div className="space-y-5">
                 <EssenceBody as="p">Tôi làm việc tại Sài Gòn, trực tiếp và trực tuyến.</EssenceBody>
                 <EssenceBody as="p">
                   Tám năm qua, tôi ngồi cùng người lớn trong những đoạn họ muốn nhìn lại chính mình, và cùng ba mẹ khi họ muốn hiểu con rõ hơn mà không vội dán nhãn.
                 </EssenceBody>
+              </div>
+              <div className="mt-9 space-y-5 border-t border-e26-text/18 pt-8 md:mt-10 md:pt-9">
                 <EssenceBody as="p">
-                  <EssenceLeadIn>Coaching là khung nghề tôi dùng.</EssenceLeadIn> Nhưng phần tôi dành nhiều thời gian nhất không phải để thúc một người tiến lên thật nhanh.
+                  <EssenceAccent as="em" className="text-[18px] leading-[1.7] md:text-[19px] md:leading-[1.72]">Coaching là khung nghề tôi dùng.</EssenceAccent> Nhưng phần tôi dành nhiều thời gian nhất không phải để thúc một người tiến lên thật nhanh.
                 </EssenceBody>
                 <EssenceBody as="p">
                   Tôi ngồi cùng họ để đọc lại điều mình đã phải sống, nhận ra điều vẫn đang âm thầm quyết định thay mình, rồi tạo một khoảng đủ An định để họ có thể tự chọn lại.
                 </EssenceBody>
+              </div>
+              <div className="mt-9 space-y-5 border-t border-e26-text/18 pt-8 md:mt-10 md:pt-9">
                 <EssenceBody as="p">ICF đến sau.</EssenceBody>
                 <EssenceBody as="p">
                   Tôi học vì cần một khung nghề rõ ràng và một bộ quy tắc từ bên ngoài để tự soi.
@@ -443,7 +451,7 @@ export default function VeKenjiPage() {
             <div className="mt-16 border-t border-e26-gold-deep/35 md:mt-24">
               <div className="grid md:grid-cols-3">
                 <div className="border-e26-gold-deep/25 py-8 md:border-r md:pr-10 md:py-10">
-                  <EssenceUtility as="p" className="text-e26-gold-deep/80 mb-5">01</EssenceUtility>
+                  <EssenceEditorialNumeral as="p" className="mb-5 text-e26-gold-deep/80">01</EssenceEditorialNumeral>
                   <EssenceAnchor as="h3" level="h3" className="mb-4">Tự Do</EssenceAnchor>
                   <div className="space-y-5 max-w-[300px]">
                     <EssenceBody as="p" className="max-w-none text-[#1A1A1A]/85">Tự Do là khi phản xạ cũ không còn quyết định thay mình trong mọi tình huống.</EssenceBody>
@@ -451,7 +459,7 @@ export default function VeKenjiPage() {
                   </div>
                 </div>
                 <div className="border-t border-e26-gold-deep/25 py-8 md:border-r md:border-t-0 md:px-10 md:py-10">
-                  <EssenceUtility as="p" className="text-e26-gold-deep/80 mb-5">02</EssenceUtility>
+                  <EssenceEditorialNumeral as="p" className="mb-5 text-e26-gold-deep/80">02</EssenceEditorialNumeral>
                   <EssenceAnchor as="h3" level="h3" className="mb-4">Trí Tuệ</EssenceAnchor>
                   <div className="space-y-5 max-w-[300px]">
                     <EssenceBody as="p" className="max-w-none text-[#1A1A1A]/85">Trí Tuệ không phải biết thật nhiều.</EssenceBody>
@@ -459,7 +467,7 @@ export default function VeKenjiPage() {
                   </div>
                 </div>
                 <div className="border-t border-e26-gold-deep/25 py-8 md:border-t-0 md:pl-10 md:py-10">
-                  <EssenceUtility as="p" className="text-e26-gold-deep/80 mb-5">03</EssenceUtility>
+                  <EssenceEditorialNumeral as="p" className="mb-5 text-e26-gold-deep/80">03</EssenceEditorialNumeral>
                   <EssenceAnchor as="h3" level="h3" className="mb-4">Kiến Tạo</EssenceAnchor>
                   <div className="space-y-5 max-w-[300px]">
                     <EssenceBody as="p" className="max-w-none text-[#1A1A1A]/85">Kiến Tạo là đưa điều đã nhận ra vào đời sống thật.</EssenceBody>
@@ -480,16 +488,16 @@ export default function VeKenjiPage() {
                 Tôi đọc để hiểu — <em>không để phán</em>.
               </EssenceAnchor>
             </div>
-            <div className="relative mt-14 md:mt-20 md:grid md:grid-cols-12 md:items-center">
-              <div className="md:col-span-8 md:col-start-1 md:row-start-1">
+            <div className="relative mt-14 md:mt-20 md:grid md:grid-cols-[minmax(0,1.3fr)_minmax(340px,1fr)] md:items-center md:gap-x-12 lg:gap-x-16">
+              <div>
                 {/* Ảnh tạm giữ nhịp scene; thay trực tiếp bằng ảnh Kenji đã được Founder duyệt. */}
                 <PresenceEnvironmentalImageSlot />
               </div>
-              <div className="relative z-10 -mt-8 mx-4 bg-[#F0EDE4]/95 px-6 py-7 md:col-span-5 md:col-start-8 md:row-start-1 md:-ml-16 md:mt-20 md:mx-0 md:px-10 md:py-11 lg:-ml-20 lg:px-12">
+              <div className="mt-10 border-t border-e26-text/25 pt-7 md:mt-0 md:pt-9">
                 <ol className="border-t border-e26-text/25">
                   {presencePrinciples.map((principle, index) => (
-                    <li key={principle.title} className="grid grid-cols-[34px_minmax(0,1fr)] gap-x-4 border-b border-e26-text/20 py-7 last:border-b-0 md:grid-cols-[40px_minmax(0,1fr)] md:gap-x-5 md:py-9">
-                      <EssenceUtility as="span" className="pt-1 text-e26-text/62">{String(index + 1).padStart(2, "0")}</EssenceUtility>
+                    <li key={principle.title} className="grid grid-cols-[44px_minmax(0,1fr)] gap-x-4 border-b border-e26-text/20 py-7 last:border-b-0 md:grid-cols-[50px_minmax(0,1fr)] md:gap-x-5 md:py-9">
+                      <EssenceEditorialNumeral className="pt-0.5 text-e26-text/72">{String(index + 1).padStart(2, "0")}</EssenceEditorialNumeral>
                       <div>
                         <EssenceLeadIn as="h3" className="mb-4 md:mb-5">{principle.title}</EssenceLeadIn>
                         <div className="space-y-4">
@@ -514,7 +522,7 @@ export default function VeKenjiPage() {
                 Nó đến từ những giới hạn mình không bước qua.
               </EssenceAnchor>
             </div>
-            <div className="relative mt-16 border-t border-e26-text/30 pt-9 md:mt-24 md:pt-12">
+            <div className="relative mt-14 border-t border-e26-text/30 pt-9 md:mt-20 md:pt-12">
               <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-white/40" />
               <div className="max-w-[620px] border-l border-e26-text/25 pl-6 md:ml-[10%] md:pl-9">
                 <div className="space-y-5">
@@ -522,10 +530,10 @@ export default function VeKenjiPage() {
                   <EssenceBody as="p">Chúng giúp cả hai biết mình đang đứng ở đâu.</EssenceBody>
                 </div>
               </div>
-              <ol className="mt-12 max-w-[980px] md:mt-16 md:ml-[8%]">
+              <ol className="mt-11 max-w-[980px] md:mt-[3.75rem] md:ml-[8%]">
                 {boundaryPrinciples.map((principle, index) => (
-                  <li key={principle.title} className="grid grid-cols-[46px_minmax(0,1fr)] gap-x-4 border-t border-e26-text/25 py-10 md:grid-cols-[68px_minmax(0,1fr)] md:gap-x-8 md:py-14">
-                    <EssenceUtility as="span" className="pt-1 text-e26-text/65">{String(index + 1).padStart(2, "0")}</EssenceUtility>
+                  <li key={principle.title} className="grid grid-cols-[52px_minmax(0,1fr)] gap-x-4 border-t border-e26-text/25 py-9 md:grid-cols-[64px_minmax(0,1fr)] md:gap-x-8 md:py-[52px]">
+                    <EssenceEditorialNumeral className="pt-0.5 text-e26-text/72">{String(index + 1).padStart(2, "0")}</EssenceEditorialNumeral>
                     <div className="max-w-[720px]">
                       <EssenceAnchor as="h3" level="h3" className="mb-6 max-w-[510px]">{principle.title}</EssenceAnchor>
                       <div className="max-w-[620px] space-y-5">
@@ -535,7 +543,7 @@ export default function VeKenjiPage() {
                   </li>
                 ))}
               </ol>
-              <div className="max-w-[700px] border-t border-e26-text/25 pt-9 md:ml-[18%] md:pt-12">
+              <div className="max-w-[700px] border-t border-e26-text/25 pt-9 md:ml-[18%] md:pt-11">
                 <EssenceAccent as="p">Tôi cũng không lấy chứng chỉ hay danh tiếng làm bằng chứng rằng mình luôn đúng.</EssenceAccent>
                 <EssenceAccent as="p" className="mt-5">Khi đi sai nhịp, tôi quay lại, xin lỗi và chỉnh.</EssenceAccent>
               </div>
@@ -569,14 +577,14 @@ export default function VeKenjiPage() {
                         aria-expanded={isOpen}
                         aria-controls={answerId}
                         onClick={() => setOpenFaqIndex(isOpen ? null : index)}
-                        className="grid w-full grid-cols-[38px_minmax(0,1fr)_26px] items-start gap-x-4 px-1 py-8 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-transparent md:grid-cols-[56px_minmax(0,1fr)_34px] md:gap-x-6 md:px-3 md:py-10"
+                        className="grid w-full grid-cols-[48px_minmax(0,1fr)_26px] items-start gap-x-4 px-1 py-8 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-transparent md:grid-cols-[64px_minmax(0,1fr)_34px] md:gap-x-6 md:px-3 md:py-10"
                       >
-                        <EssenceUtility as="span" className="pt-1 text-e26-text/65">{String(index + 1).padStart(2, "0")}</EssenceUtility>
+                        <EssenceEditorialNumeral className="pt-0.5 text-e26-text/72">{String(index + 1).padStart(2, "0")}</EssenceEditorialNumeral>
                         <EssenceAnchor as="span" level="h3" className="pr-3 text-[25px] leading-[1.15] md:text-[34px]">{faq.q}</EssenceAnchor>
                         <span aria-hidden="true" className="pt-1 text-right font-serif text-[28px] leading-none text-e26-text/75 md:text-[32px]">{isOpen ? "−" : "+"}</span>
                       </button>
                     </h3>
-                    <div id={answerId} role="region" aria-labelledby={questionId} hidden={!isOpen} className="mb-10 ml-[54px] border-l border-e26-gold-deep/45 pb-1 pl-5 pr-6 md:mb-12 md:ml-[77px] md:pl-8">
+                    <div id={answerId} role="region" aria-labelledby={questionId} hidden={!isOpen} className="mb-10 ml-[64px] border-l border-e26-gold-deep/45 pb-1 pl-5 pr-6 md:mb-12 md:ml-[88px] md:pl-8">
                       <div className="max-w-[620px] space-y-5">
                         {faq.a.split("\n\n").map((paragraph) => <EssenceBody as="p" className="text-[#1A1A1A]/85" key={paragraph}>{paragraph}</EssenceBody>)}
                       </div>

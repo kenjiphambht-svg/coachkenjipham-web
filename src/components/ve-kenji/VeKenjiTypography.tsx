@@ -159,8 +159,25 @@ export function EssenceUtility({ children, className, as: As = "p" }: Common & {
   return (
     <As
       className={cn(
-        "font-sans font-semibold uppercase text-[#1A1A1A]/68",
+        "font-sans font-medium uppercase text-[#1A1A1A]/72",
         "text-[11px] leading-[1.4] tracking-[0.22em] md:text-[12px]",
+        className
+      )}
+    >
+      {children}
+    </As>
+  );
+}
+
+// Editorial numeral voice — the exact canonical Homepage treatment used in
+// NotesTeaser's secondary sequence markers. It stays separate from Utility:
+// sequence numbers are Cormorant roman, not default sans UI metadata.
+export function EssenceEditorialNumeral({ children, className, as: As = "span" }: Common & { as?: ElementType }) {
+  return (
+    <As
+      className={cn(
+        "font-serif font-normal leading-none tracking-[0.02em] text-e26-text",
+        "text-[30px] md:text-[36px]",
         className
       )}
     >
