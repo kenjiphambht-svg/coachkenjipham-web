@@ -125,6 +125,17 @@ redirect input. The reset page immediately removes Vercel/Supabase parameters
 from the visible URL and uses `Cache-Control: no-store`, `Referrer-Policy:
 no-referrer` and `noindex, nofollow`.
 
+The staging Auth redirect allowlist contains the exact branch callback path
+pattern required for that protected route. A no-cookie preflight confirmed that
+the Shareable Link reaches the reset page, while the same route without link
+access reaches Vercel login. A no-cookie request through the link could not
+read an admin API (HTTP 401), and a reset route with no recovery credential
+showed the fail-closed invalid-link state. One recovery request was then
+submitted through the staging UI for the canonical Founder address; its
+response used the required non-enumerating confirmation copy. No link,
+access value, recovery credential, password, MFA value or email content was
+recorded.
+
 ## Founder acceptance correction pass
 
 This correction remains on the same Draft PR and adds a complete
