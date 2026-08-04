@@ -228,6 +228,16 @@ Không dùng serif italic trong Utility.
 
 ---
 
+## Founder Decision — Editorial numeral markers (04/08/2026)
+
+Editorial numeral markers across ESSENCE pages must reuse the canonical numeral typography established on the Homepage. Do not use default body sans numerals. Numeral markers must have sufficient scale and a distinct editorial role.
+
+- Nguồn implementation hiện hành là Homepage `src/components/homepage/NotesTeaser.tsx`: Cormorant Garamond qua `font-serif`, Roman 400 (`font-normal`), `leading-none`, `tracking-[0.02em]`, không có `font-feature-settings` riêng.
+- Áp dụng cho sequence marker có tính editorial như 01, 02, 03 ở scene, nguyên tắc, boundaries và FAQ index. Không áp dụng cho số factual trong body copy.
+- Numeral Voice không phải vai typography thứ sáu. Nó là cách biểu đạt editorial trong hệ Anchor/Utility: đủ rõ khi quét nhanh, nhưng không cạnh tranh với Anchor hoặc Display.
+
+---
+
 # 8. SIGNAL COMPOSITION
 
 Signal Composition là khoảnh khắc typography mạnh nhất của trang. Nó không phải một class.
