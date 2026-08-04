@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { getTrustedRecoveryRedirect, isCanonicalFounderEmail, RECOVERY_CONFIRMATION } from '@/lib/auth/founder-recovery';
+import { isCanonicalFounderEmail, RECOVERY_CONFIRMATION } from '@/lib/auth/founder-recovery';
+import { getCanonicalRecoveryRedirect } from '@/lib/auth/founder-recovery-server';
 import { getClientIp } from '@/lib/api/guard';
 import { createAdminSupabase, createServerSupabase } from '@/lib/db/client';
 import { checkPostgresRateLimit } from '@/lib/security/rate-limit';
@@ -11,11 +12,6 @@ function genericResponse(res: NextApiResponse) {
   return res.status(200).json({ ok: true, data: { message: RECOVERY_CONFIRMATION } });
 }
 
-function forwardedHost(req: NextApiRequest) {
-  const host = req.headers['x-forwarded-host'];
-  return Array.isArray(host) ? host[0] : host ?? req.headers.host;
-}
-
 /**
  * Password recovery intentionally has one indistinguishable response. It never
  * confirms whether an account exists, and only the canonical Founder address
@@ -23,6 +19,7 @@ function forwardedHost(req: NextApiRequest) {
  */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('Referrer-Policy', 'no-referrer');
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ ok: false, error: { code: 'METHOD_NOT_ALLOWED', message: 'Chỉ nhận POST.' } });
@@ -34,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const systemDb = createAdminSupabase();
     await checkPostgresRateLimit(systemDb, `admin-password-recovery:${getClientIp(req)}`, RECOVERY_LIMIT);
 
-    const redirectTo = getTrustedRecoveryRedirect(forwardedHost(req));
+    const redirectTo = getCanonicalRecoveryRedirect();
     const db = createServerSupabase({ req, res });
     const { error } = await db.auth.resetPasswordForEmail(req.body.email.trim().toLowerCase(), { redirectTo });
     if (error) return genericResponse(res);

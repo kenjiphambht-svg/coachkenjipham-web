@@ -17,6 +17,10 @@ import { ADMIN_LOGIN_PATH, decideAdminAccess } from '@/lib/auth/admin-gate';
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next({ request });
   const { pathname } = request.nextUrl;
+  if (pathname === '/admin/quen-mat-khau' || pathname === '/admin/dat-lai-mat-khau') {
+    response.headers.set('Cache-Control', 'no-store');
+    response.headers.set('Referrer-Policy', 'no-referrer');
+  }
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;

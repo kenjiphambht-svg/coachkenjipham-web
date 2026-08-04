@@ -4,11 +4,11 @@ import { describe, expect, it } from 'vitest';
 
 import {
   FOUNDER_ADMIN_EMAIL,
-  getTrustedRecoveryRedirect,
   isCanonicalFounderEmail,
   passwordPolicyError,
   RECOVERY_CONFIRMATION,
 } from '@/lib/auth/founder-recovery';
+import { buildCanonicalRecoveryRedirect } from '@/lib/auth/founder-recovery-server';
 
 describe('Founder password recovery', () => {
   it('only treats the canonical admin email as a recipient, without exposing that decision to the caller', () => {
@@ -17,11 +17,12 @@ describe('Founder password recovery', () => {
     expect(RECOVERY_CONFIRMATION).toContain('Nếu địa chỉ này có quyền truy cập');
   });
 
-  it('only accepts the preconfigured staging Vercel callback family', () => {
+  it('uses only the exact approved branch alias and one server-side share query', () => {
     expect(
-      getTrustedRecoveryRedirect('sg-307d0acd-2be8-4e65-a316-9997b5e2e979-git-5a6b97-kenji-pham-s-projects.vercel.app')
-    ).toBe('https://sg-307d0acd-2be8-4e65-a316-9997b5e2e979-git-5a6b97-kenji-pham-s-projects.vercel.app/admin/dat-lai-mat-khau');
-    expect(() => getTrustedRecoveryRedirect('attacker.example')).toThrow('allowlist');
+      buildCanonicalRecoveryRedirect('_vercel_share=BranchAccessOnly')
+    ).toBe('https://sg-307d0acd-2be8-4e65-a316-999-git-5a6b97-kenji-pham-s-projects.vercel.app/admin/dat-lai-mat-khau?_vercel_share=BranchAccessOnly');
+    expect(() => buildCanonicalRecoveryRedirect('_vercel_share=ok&redirect=https://attacker.example')).toThrow('cấu hình an toàn');
+    expect(() => buildCanonicalRecoveryRedirect(undefined)).toThrow('cấu hình an toàn');
   });
 
   it('blocks mismatched and weak passwords before an Auth update', () => {

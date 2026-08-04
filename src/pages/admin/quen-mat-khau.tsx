@@ -35,6 +35,7 @@ export default function ForgotPasswordPage({ configured }: { configured: boolean
       <Head>
         <title>Quên mật khẩu · Quản trị Essence</title>
         <meta name="robots" content="noindex, nofollow" />
+        <meta name="referrer" content="no-referrer" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main className="min-h-screen bg-e26-ivory flex items-center justify-center px-4 py-12">
@@ -87,6 +88,8 @@ export default function ForgotPasswordPage({ configured }: { configured: boolean
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => ({
-  props: { configured: isSupabaseConfigured() },
-});
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  ctx.res.setHeader('Cache-Control', 'no-store');
+  ctx.res.setHeader('Referrer-Policy', 'no-referrer');
+  return { props: { configured: isSupabaseConfigured() } };
+};

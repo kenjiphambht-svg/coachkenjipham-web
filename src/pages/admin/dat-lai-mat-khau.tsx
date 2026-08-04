@@ -33,15 +33,24 @@ export default function ResetPasswordPage({ configured }: { configured: boolean 
           }
         });
         unsubscribe = () => subscription.unsubscribe();
-        const code = new URLSearchParams(window.location.search).get('code');
+        const query = new URLSearchParams(window.location.search);
+        const code = query.get('code');
+        const tokenHash = query.get('token_hash');
+        const tokenType = query.get('type');
         if (code) {
           const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
           if (exchangeError) throw exchangeError;
-          window.history.replaceState({}, document.title, '/admin/dat-lai-mat-khau');
+          recoverySessionSeen = true;
+        } else if (tokenHash && tokenType === 'recovery') {
+          const { error: otpError } = await supabase.auth.verifyOtp({ type: 'recovery', token_hash: tokenHash });
+          if (otpError) throw otpError;
           recoverySessionSeen = true;
         }
         const { data, error: sessionError } = await supabase.auth.getSession();
         if (sessionError || !data.session || !isCanonicalFounderEmail(data.session.user.email)) throw new Error('invalid');
+        // Vercel access and every Supabase recovery parameter are removed before
+        // this page can submit a password; they must not reach history/referrers.
+        window.history.replaceState({}, document.title, '/admin/dat-lai-mat-khau');
         // Implicit recovery links emit PASSWORD_RECOVERY; PKCE links set the flag
         // immediately above. A normal signed-in session cannot open this form.
         window.setTimeout(() => {
@@ -91,6 +100,7 @@ export default function ResetPasswordPage({ configured }: { configured: boolean 
       <Head>
         <title>Đặt mật khẩu mới · Quản trị Essence</title>
         <meta name="robots" content="noindex, nofollow" />
+        <meta name="referrer" content="no-referrer" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main className="min-h-screen bg-e26-ivory flex items-center justify-center px-4 py-12">
@@ -134,6 +144,8 @@ export default function ResetPasswordPage({ configured }: { configured: boolean 
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => ({
-  props: { configured: isSupabaseConfigured() },
-});
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  ctx.res.setHeader('Cache-Control', 'no-store');
+  ctx.res.setHeader('Referrer-Policy', 'no-referrer');
+  return { props: { configured: isSupabaseConfigured() } };
+};

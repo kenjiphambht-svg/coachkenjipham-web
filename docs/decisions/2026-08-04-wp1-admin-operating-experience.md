@@ -92,8 +92,8 @@ recorded as OPEN in `docs/decisions/2026-08-03-release-gate-register.md`.
 not yet set a password to their Supabase email. `/admin/quen-mat-khau` always
 returns the same confirmation copy and only sends for the canonical Founder
 address; it never reveals whether an account exists. The recovery email uses
-the pre-allowlisted staging Vercel callback family and lands at
-`/admin/dat-lai-mat-khau`.
+one exact branch-alias callback path, `/admin/dat-lai-mat-khau`, and a
+server-only Vercel Preview access value.
 
 The reset route exchanges a recovery code only in the browser, removes it from
 the visible URL, checks the current session against the canonical active-admin
@@ -107,15 +107,23 @@ No key, secret, command, environment setting or manual debugging is required
 from the Founder. Passwords, recovery tokens, QR codes and provider errors are
 never written to repository evidence or application logs.
 
-### External staging blocker (2026-08-04)
+### Approved Vercel branch access (2026-08-04)
 
-The recovery implementation is deployed to the Draft PR preview, but every
-allowlisted staging Vercel URL currently redirects an unauthenticated visitor
-to Vercel SSO. Sending a Supabase recovery email now would therefore give the
-Founder a link that cannot reach the reset route. No recovery email was sent.
-The only remaining prerequisite is an agent-operated, Founder-accessible
-staging callback domain (or an approved equivalent secure preview-access
-mechanism). This is deliberately not treated as public activation.
+Founder authorised the one-link Hobby-plan replacement. Before replacement,
+Vercel reported only that one Shareable Link already existed; its target,
+creation date and label were not exposed in the project UI. Replacing it
+revoked access only: no deployment or domain was deleted. The new Shareable
+Link is bound to `feat/wp1-admin-operating-experience`, which follows its
+latest Preview deployment. Vercel Authentication remains ON.
+
+Its opaque access value is stored as the sensitive Preview variable
+`VERCEL_ADMIN_RECOVERY_SHARE_QUERY`, scoped to that branch. It is never placed
+in a `NEXT_PUBLIC_` variable, source, Git, PR text, runtime log or test
+evidence. The server builds `redirectTo` from a hard-coded exact branch alias
+and `/admin/dat-lai-mat-khau`; it ignores request Host headers and all client
+redirect input. The reset page immediately removes Vercel/Supabase parameters
+from the visible URL and uses `Cache-Control: no-store`, `Referrer-Policy:
+no-referrer` and `noindex, nofollow`.
 
 ## Founder acceptance correction pass
 
