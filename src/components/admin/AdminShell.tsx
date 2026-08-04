@@ -15,6 +15,10 @@ const NAV = [
   { href: '/admin', label: 'Tổng quan' },
   { href: '/admin/lang', label: 'Lặng' },
   { href: '/admin/hat-mam', label: 'Hạt Mầm' },
+  { href: '/admin/thanh-toan', label: 'Thanh toán' },
+  { href: '/admin/xuat-ban', label: 'Xuất bản' },
+  { href: '/admin/xoa-du-lieu', label: 'Xóa dữ liệu' },
+  { href: '/admin/cai-dat', label: 'Cài đặt' },
   { href: '/admin/lien-he', label: 'Liên hệ' },
 ];
 
@@ -39,8 +43,8 @@ export default function AdminShell({
 
       <div className="min-h-screen bg-e26-ivory text-e26-text">
         <header className="border-b border-e26-border bg-e26-white">
-          <div className="max-w-[1100px] mx-auto px-4 py-3 flex flex-wrap items-center gap-x-4 gap-y-2">
-            <span className="font-serif text-lg">Quản trị</span>
+          <div className="max-w-[1240px] mx-auto px-4 py-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+            <span className="font-serif text-lg">Quản trị Essence</span>
             <nav className="flex flex-wrap gap-x-1 gap-y-1 flex-1">
               {NAV.map((item) => {
                 const active =
@@ -78,7 +82,7 @@ export default function AdminShell({
           </div>
         </header>
 
-        <main className="max-w-[1100px] mx-auto px-4 py-6 md:py-8">
+        <main className="max-w-[1240px] mx-auto px-4 py-6 md:py-8">
           <h1 className="font-serif text-[24px] md:text-[30px] mb-6">{title}</h1>
           {children}
         </main>

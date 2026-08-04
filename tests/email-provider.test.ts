@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { MockEmailProvider } from '@/lib/email/provider';
+import { EMAIL_DEFAULTS, MockEmailProvider } from '@/lib/email/provider';
 
 describe('B6 mock email provider', () => {
   it('deduplicates idempotency keys without retaining sensitive payload', async () => {
@@ -9,4 +9,9 @@ describe('B6 mock email provider', () => {
     expect(provider.sent).toHaveLength(1);
     expect(JSON.stringify(provider.sent[0])).not.toContain('child_name');
   });
+});
+
+it('uses the corrected internal operational mailbox without changing the public reply-to mailbox', () => {
+  expect(EMAIL_DEFAULTS.internalAlert).toBe('kenjipham.bht@gmail.com');
+  expect(EMAIL_DEFAULTS.replyTo).toBe('contact@coachkenjipham.com');
 });

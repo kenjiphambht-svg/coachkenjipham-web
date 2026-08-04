@@ -59,6 +59,26 @@ export function createServerSupabase({ req, res }: ServerCtx) {
 }
 
 /**
+ * Password recovery email is deliberately created with the implicit flow.
+ * The Founder opens the email on their own device, while the request itself
+ * may be initiated by a trusted server. PKCE would bind the one-time code to
+ * a verifier cookie on the initiating device and make that cross-device flow
+ * fail. The reset page consumes the short-lived recovery session and removes
+ * the fragment before any password form is shown.
+ */
+export function createRecoverySupabase() {
+  const { url, anonKey } = getSupabasePublicEnv();
+  return createClient(url, anonKey, {
+    auth: {
+      flowType: 'implicit',
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false,
+    },
+  });
+}
+
+/**
  * Client toàn quyền, BỎ QUA RLS.
  *
  * Chỉ dùng khi thao tác thực sự là của hệ thống chứ không của một người:

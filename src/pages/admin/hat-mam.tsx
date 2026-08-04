@@ -7,6 +7,7 @@
 // có chủ đích — sẽ làm ở vòng sau khi có luồng sản xuất ấn phẩm.
 // ============================================================
 
+import Link from 'next/link';
 import type { GetServerSideProps } from 'next';
 
 import AdminShell from '@/components/admin/AdminShell';
@@ -33,7 +34,8 @@ export default function AdminHatMam({
     <AdminShell title="Đơn Hạt Mầm" adminEmail={adminEmail}>
       <p className="font-sans text-[14px] text-e26-text-2 mb-4 max-w-[640px]">
         Màn hình này chỉ hiện thông tin đơn. Dữ liệu của bé nằm ở bảng riêng, có
-        khoá riêng, và không được mở kèm danh sách.
+        khoá riêng, và không được mở kèm danh sách. Chọn “Xem hồ sơ” mới mở
+        tầng dữ liệu nhạy cảm sau AAL2.
       </p>
 
       {rows.length === 0 ? (
@@ -48,6 +50,7 @@ export default function AdminHatMam({
               <Th>Liên hệ</Th>
               <Th>Trạng thái</Th>
               <Th>Ngày tạo</Th>
+              <Th>&nbsp;</Th>
             </tr>
           </thead>
           <tbody>
@@ -63,6 +66,14 @@ export default function AdminHatMam({
                   <StatusBadge>{HATMAM_STATUS_VI[row.status]}</StatusBadge>
                 </Td>
                 <Td>{formatDate(row.created_at)}</Td>
+                <Td>
+                  <Link
+                    href={`/admin/hat-mam/${row.id}`}
+                    className="underline underline-offset-4 hover:text-e26-gold-deep whitespace-nowrap"
+                  >
+                    Xem hồ sơ
+                  </Link>
+                </Td>
               </tr>
             ))}
           </tbody>

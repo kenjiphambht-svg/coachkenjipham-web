@@ -26,6 +26,6 @@ export const EMAIL_DEFAULTS = {
   fromName: 'Kenji Phạm',
   replyTo: 'contact@coachkenjipham.com',
   proposedSender: 'hello@mail.coachkenjipham.com',
-  internalAlert: 'kenjiphambht@gmail.com',
+  internalAlert: 'kenjipham.bht@gmail.com',
   readiness: 'waiting_for_kenji' as const,
 };
