@@ -16,6 +16,7 @@ const NAV_GROUPS = [
     label: 'Điều hành',
     items: [
       { href: '/admin', label: 'Hôm nay' },
+      { href: '/admin/wp3-5-a', label: 'WP3.5-A Preview' },
       { href: '/admin/quan-he', label: 'Quan hệ' },
       { href: '/admin/hanh-trinh', label: 'Hành trình' },
       { href: '/admin/cham-soc', label: 'Chăm sóc & Phục hồi' },
