@@ -7,6 +7,7 @@ export default defineConfig({
     include: [
       'tests/**/*.test.ts',
       'src/lib/wp3-5/**/*.test.ts',
+      'src/components/founder-review/**/*.test.tsx',
     ],
   },
   resolve: {

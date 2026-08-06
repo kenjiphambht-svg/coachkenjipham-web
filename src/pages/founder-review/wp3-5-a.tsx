@@ -1,9 +1,9 @@
 // ============================================================
-// /founder-review/wp3-5-a — Founder Review Preview landing (Hôm nay).
+// /founder-review/wp3-5-a — Founder Review Preview (Hôm nay).
 //
-// Package C2 scope: route skeleton only. Full Hôm nay screen (buckets,
-// filters, item detail, cross-links) is Package C3/C4. This page renders a
-// compact, scenario-scoped summary through real synthetic selectors.
+// Package C3: complete Hôm nay screen — six locked priority buckets,
+// filters, item drawer with cross-links, local-only simulated actions.
+// Hành trình and Chăm sóc remain the Package C2 placeholders.
 //
 // Guarded server-side by founderReviewGuard — flag off => notFound (404).
 // No Supabase, no admin auth, no network, no writes.
@@ -13,7 +13,7 @@ import type { GetServerSideProps } from 'next';
 import Link from 'next/link';
 
 import FounderReviewShell from '@/components/founder-review/FounderReviewShell';
-import FounderReviewPlaceholder from '@/components/founder-review/FounderReviewPlaceholder';
+import TodayReview from '@/components/founder-review/TodayReview';
 import { founderReviewGuard } from '@/lib/wp3-5/founder-review-guard';
 import {
   parseSyntheticQuery,
@@ -54,30 +54,35 @@ export default function FounderReviewWp35APage({
 }: PageProps) {
   return (
     <FounderReviewShell title="Hôm nay" scenario={scenario} currentPathname={PATHNAME}>
-      <FounderReviewPlaceholder
-        heading="Tổng quan Hôm nay"
-        description="Route skeleton — màn hình Hôm nay đầy đủ (bucket, filter, chi tiết việc) thuộc Package C3/C4. Các số dưới đây lấy từ dữ liệu mô phỏng thật theo scenario hiện tại."
-        stats={[
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6 mb-6">
+        {[
           { label: 'Việc trong Hôm nay', value: todayItemCount },
           { label: 'Quan hệ', value: relationshipCount },
           { label: 'Hành trình', value: journeyCount },
-          { label: 'Care/Support/Recovery đang mở', value: openCareCount },
+          { label: 'Care đang mở', value: openCareCount },
           { label: 'Lời hứa quá hạn', value: overduePromiseCount },
           { label: 'Cánh cửa đủ điều kiện', value: eligibleDoorCount },
-        ]}
-      >
-        <div className="flex flex-wrap gap-3 mt-2">
-          {OTHER_AREAS.map((area) => (
-            <Link
-              key={area.href}
-              href={{ pathname: area.href, query: buildSafeSyntheticQuery({ scenario }) }}
-              className="border border-e26-border px-4 py-2 font-sans text-[13px] text-e26-text hover:text-e26-gold-deep hover:border-e26-gold-deep transition-colors"
-            >
-              {area.label} →
-            </Link>
-          ))}
-        </div>
-      </FounderReviewPlaceholder>
+        ].map((stat) => (
+          <div key={stat.label} className="border border-e26-border bg-e26-cream px-3 py-2">
+            <p className="font-sans text-[11px] uppercase tracking-[0.1em] text-e26-text-2">{stat.label}</p>
+            <p className="font-serif text-[20px] text-e26-text">{stat.value}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex flex-wrap gap-3 mb-8">
+        {OTHER_AREAS.map((area) => (
+          <Link
+            key={area.href}
+            href={{ pathname: area.href, query: buildSafeSyntheticQuery({ scenario }) }}
+            className="border border-e26-border px-4 py-2 font-sans text-[13px] text-e26-text hover:text-e26-gold-deep hover:border-e26-gold-deep transition-colors"
+          >
+            {area.label} →
+          </Link>
+        ))}
+      </div>
+
+      <TodayReview initialScenario={scenario} />
     </FounderReviewShell>
   );
 }

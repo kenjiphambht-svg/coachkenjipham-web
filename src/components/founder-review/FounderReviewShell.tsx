@@ -16,7 +16,13 @@
 
 import Head from 'next/head';
 import Link from 'next/link';
-import type { ReactNode } from 'react';
+// `React` is imported explicitly (Package C3 addition) even though Next's
+// build never needs it (automatic JSX runtime): this repo's
+// vitest.config.mts has no @vitejs/plugin-react, so Vitest's esbuild JSX
+// transform falls back to classic mode, which needs `React` in scope in
+// every file with JSX — this file is now rendered directly by
+// TodayReview.test.tsx (test 20, the locked-banner check).
+import React, { type ReactNode } from 'react';
 
 import { buildSafeSyntheticQuery, buildScenarioOnlyQuery, type ScenarioPreset } from '@/lib/wp3-5/review-selectors';
 

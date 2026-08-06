@@ -1,0 +1,37 @@
+/* ============================================================
+   Founder Review Preview — scoped module CSS, WP3.5-A2 Package C3.
+
+   Only what Tailwind utility classes cannot express cleanly: the drawer's
+   fixed positioning/backdrop and its responsive width. No new colors — the
+   drawer border/backdrop reuse the same --essence-*-2026 variables already
+   defined in globals.css (not modified here, only referenced).
+
+   globals.css, tailwind.config.ts, Header and Footer are untouched by this
+   file or this package.
+   ============================================================ */
+
+.drawerBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 26, 26, 0.32);
+  z-index: 40;
+}
+
+.drawerPanel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 480px;
+  overflow-y: auto;
+  z-index: 41;
+  background: var(--essence-white-2026);
+  border-left: 1px solid var(--essence-border-light-2026);
+}
+
+@media (max-width: 480px) {
+  .drawerPanel {
+    max-width: 100%;
+  }
+}
