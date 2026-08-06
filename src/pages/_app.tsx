@@ -2,6 +2,7 @@ import type { AppProps } from 'next/app';
 import NavigationFeedback from '@/components/NavigationFeedback';
 import FloatingZaloButton from '@/components/FloatingZaloButton';
 import '@/styles/globals.css';
+import '@/styles/ve-kenji-pass-a.css';
 
 // SỬA 02/08/2026 (brief MODE 5 — phản hồi chuyển trang + thu gọn motion):
 // (1) GỠ MistFadeProvider khỏi _app — hook useMistFadeIn (gsap+ScrollTrigger)
