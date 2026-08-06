@@ -97,7 +97,7 @@ export const PRIORITY_LABEL: Record<PriorityBucket, string> = {
 export const queueFixtures: FounderQueueItem[] = [
   {
     id: 'q-wrong-recipient',
-    bucket: 'safety_recovery',
+    bucket: 'safety_recovery' as PriorityBucket,
     title: 'Nghi ngờ gửi sai người nhận',
     relationship: 'Quan hệ M-104',
     journey: 'Hạt Mầm',
@@ -109,7 +109,7 @@ export const queueFixtures: FounderQueueItem[] = [
   },
   {
     id: 'q-lang-fit',
-    bucket: 'founder_gate',
+    bucket: 'founder_gate' as PriorityBucket,
     title: 'Hồ sơ Lặng chờ quyết định fit / wait / decline',
     relationship: 'Quan hệ L-207',
     journey: 'Lặng',
@@ -120,7 +120,7 @@ export const queueFixtures: FounderQueueItem[] = [
   },
   {
     id: 'q-followup-overdue',
-    bucket: 'promise_deadline',
+    bucket: 'promise_deadline' as PriorityBucket,
     title: 'Follow-up sau Lặng đã quá hạn',
     relationship: 'Quan hệ L-118',
     journey: 'Lặng',
@@ -132,7 +132,7 @@ export const queueFixtures: FounderQueueItem[] = [
   },
   {
     id: 'q-reading-room',
-    bucket: 'care_support',
+    bucket: 'care_support' as PriorityBucket,
     title: 'Khách không truy cập được Reading Room',
     relationship: 'Quan hệ M-221',
     journey: 'Hạt Mầm',
@@ -144,7 +144,7 @@ export const queueFixtures: FounderQueueItem[] = [
   },
   {
     id: 'q-suppressed',
-    bucket: 'waiting_quiet',
+    bucket: 'waiting_quiet' as PriorityBucket,
     title: 'Không gửi gì lúc này',
     relationship: 'Quan hệ L-304',
     journey: 'Lặng',
@@ -155,7 +155,7 @@ export const queueFixtures: FounderQueueItem[] = [
   },
   {
     id: 'q-next-door',
-    bucket: 'next_door',
+    bucket: 'next_door' as PriorityBucket,
     title: 'Cánh cửa tiếp theo đủ điều kiện để Founder xem',
     relationship: 'Quan hệ L-412',
     journey: 'Lặng đã khép',
