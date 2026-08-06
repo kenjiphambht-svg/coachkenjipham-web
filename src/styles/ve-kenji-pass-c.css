@@ -121,6 +121,22 @@ main.text-e26-text:has(.ve-kenji-signal-tier-b)
   padding-top: 1.5rem;
 }
 
+/* Founder correction: both closing-path headings use the same Anchor typography. */
+main.text-e26-text:has(.ve-kenji-signal-tier-b)
+  > section:nth-of-type(9)
+  > div
+  > div:last-child
+  > div:nth-child(2)
+  h3 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 28px;
+  line-height: 1.16;
+  font-weight: 500;
+  letter-spacing: -0.008em;
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+}
+
 main.text-e26-text:has(.ve-kenji-signal-tier-b)
   > section:nth-of-type(9)
   h3 {
@@ -132,6 +148,18 @@ main.text-e26-text:has(.ve-kenji-signal-tier-b)
   a {
   display: inline-block;
   margin-top: 0.25rem;
+}
+
+@media (min-width: 768px) {
+  main.text-e26-text:has(.ve-kenji-signal-tier-b)
+    > section:nth-of-type(9)
+    > div
+    > div:last-child
+    > div:nth-child(2)
+    h3 {
+    font-size: 38px;
+    line-height: 1.1;
+  }
 }
 
 @media (max-width: 1023px) {
