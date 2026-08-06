@@ -1,10 +1,9 @@
 # WP3 — Launch Core backend
 
-**Authority:** Founder-approved WP3 work order.  
-**Scope:** shared foundation, Lặng vertical slice, Hạt Mầm vertical slice and
-private Reading Room authorization.  
-**Out of scope:** public activation/routes, CRM, subscriber identity,
-assessment, membership, deferred products, providers and production deployment.
+- **Authority:** Founder-approved WP3 work order, governed by L0 Founder Decision [FD-2026-08-06](FD-2026-08-06_ESSENCE_LANGUAGE_METHOD_AND_JOURNEY_RHYTHM.md).
+- **Scope:** shared foundation, Lặng vertical slice, Hạt Mầm vertical slice and private Reading Room authorization.
+- **Backend & Care OS Philosophy (L0 FD-2026-08-06):** "Nhịp hành trình" is a care orchestration principle (presence/silence/recovery/next step via events, consent, suppression, care tasks), not a database field, score, enum or psychological profile. Next Best Care before Next Best Offer.
+- **Out of scope:** public activation/routes, CRM, subscriber identity, assessment, membership, deferred products, providers and production deployment.
 
 ## Evidence labels and authority reconciliation
 

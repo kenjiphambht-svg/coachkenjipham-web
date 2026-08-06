@@ -2,14 +2,15 @@
 
 ### **Designing a place where people meet themselves.**
 
-**Phiên bản:** V1.1
-**Authority:** L1 — Canonical Brand & Experience Truth
-**Status:** Active
-**Owner:** Kenji Phạm
-**Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-**Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
-**Phạm vi:** Triết lý trải nghiệm, emotional architecture, nhịp điệu, vai trò hình ảnh, ánh sáng, chuyển động, khoảng lặng và sự hiện diện của Kenji trên toàn website Essence.
-**Review trigger:** Khi thay đổi brand promise, Page Mode, visual system, image authority, typography authority, motion principle hoặc trải nghiệm cốt lõi.
+- **Phiên bản:** V1.1 (Active with Patch)
+- **Authority:** L1 — Canonical Brand & Experience Truth
+- **Status:** Active with Patch
+- **Owner:** Kenji Phạm
+- **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
+- **Last verified:** 63649b29d1c152e5e5f7fc2cb31575c3cc0e3c29
+- **L0 Precedence:** Governed by L0 Founder Decision [FD-2026-08-06](docs/decisions/FD-2026-08-06_ESSENCE_LANGUAGE_METHOD_AND_JOURNEY_RHYTHM.md) for the single canonical directional map (`LẶNG → AN ĐỊNH → NHẬN RA NHỊP RIÊNG → NHÌN RA BẢN SẮC → CHỌN MỘT NHỊP SỐNG CÓ THỂ GIỮ → AN THỊNH`) and exact canonical definitions.
+- **Phạm vi:** Triết lý trải nghiệm, emotional architecture, nhịp điệu, vai trò hình ảnh, ánh sáng, chuyển động, khoảng lặng và sự hiện diện của Kenji trên toàn website Essence.
+- **Review trigger:** Khi thay đổi brand promise, Page Mode, visual system, image authority, typography authority, motion principle hoặc trải nghiệm cốt lõi.
 
 ## **GOVERNANCE SCOPE**
 
