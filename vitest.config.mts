@@ -4,7 +4,10 @@ import { fileURLToPath } from 'node:url';
 export default defineConfig({
   test: {
     environment: 'node',
-    include: ['tests/**/*.test.ts'],
+    include: [
+      'tests/**/*.test.ts',
+      'src/lib/wp3-5/**/*.test.ts',
+    ],
   },
   resolve: {
     alias: {
