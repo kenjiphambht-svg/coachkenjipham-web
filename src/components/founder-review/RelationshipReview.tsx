@@ -24,41 +24,35 @@ import {
   resolveRelationshipContext,
   getJourneysForRelationship,
   getTimelineEventsForRelationship,
+  getCareCasesForRelationship,
+  getPromisesForRelationship,
+  getDoorForRelationship,
   getDoorBlockers,
   buildSafeSyntheticQuery,
   type ScenarioPreset,
 } from '@/lib/wp3-5/review-selectors';
 import {
   RELATIONSHIP_IDS,
-  CARE_IDS,
   CONSENT_RECORD_IDS,
   SUPPRESSION_RECORD_IDS,
-  DOOR_IDS,
   type RelationshipId,
 } from '@/lib/wp3-5/review-manifest';
 import {
   RELATIONSHIP_RECORDS,
-  CARE_RECORDS,
-  PROMISE_RECORDS,
   CONSENT_STATE_RECORDS,
   SUPPRESSION_STATE_RECORDS,
   FOUNDER_GATE_RECORDS,
   FOUNDER_GATE_IDS,
   ORDER_PAYMENT_TRUTH_RECORDS,
   PUBLICATION_ENTITLEMENT_TRUTH_RECORDS,
-  DOOR_RECORDS,
 } from '@/lib/wp3-5/review-universe';
 
 type JourneyStateFilter = 'all' | 'open' | 'closed';
 type OpenCareFilter = 'all' | 'has_open_care' | 'no_open_care';
 type DoorFilter = 'all' | 'eligible' | 'blocked' | 'no_door';
 
-function relationshipDoor(relationshipId: RelationshipId) {
-  return DOOR_IDS.map((id) => DOOR_RECORDS[id]).find((door) => door.relationshipId === relationshipId);
-}
-
 function relationshipHasOpenCare(relationshipId: RelationshipId): boolean {
-  return CARE_IDS.some((id) => CARE_RECORDS[id].relationshipId === relationshipId && CARE_RECORDS[id].status === 'open');
+  return getCareCasesForRelationship(relationshipId).some((rec) => rec.status === 'open');
 }
 
 function relationshipHasOpenJourney(relationshipId: RelationshipId): boolean {
@@ -90,7 +84,7 @@ export default function RelationshipReview({ scenario, initialRelationshipId = n
       if (openCareFilter === 'no_open_care' && relationshipHasOpenCare(id)) return false;
 
       if (doorFilter !== 'all') {
-        const door = relationshipDoor(id);
+        const door = getDoorForRelationship(id);
         if (doorFilter === 'no_door' && door) return false;
         if (doorFilter !== 'no_door') {
           if (!door) return false;
@@ -242,7 +236,7 @@ function RelationshipJourneys({ relationshipId, scenario }: { relationshipId: Re
 }
 
 function RelationshipCare({ relationshipId, scenario }: { relationshipId: RelationshipId; scenario: ScenarioPreset }) {
-  const cases = CARE_IDS.map((id) => CARE_RECORDS[id]).filter((rec) => rec.relationshipId === relationshipId);
+  const cases = getCareCasesForRelationship(relationshipId);
   const active = cases.filter((c) => c.status === 'open');
   const historical = cases.filter((c) => c.status === 'closed');
   return (
@@ -286,7 +280,7 @@ function RelationshipCare({ relationshipId, scenario }: { relationshipId: Relati
 }
 
 function RelationshipPromises({ relationshipId }: { relationshipId: RelationshipId }) {
-  const promises = Object.values(PROMISE_RECORDS).filter((p) => p.relationshipId === relationshipId);
+  const promises = getPromisesForRelationship(relationshipId);
   return (
     <Section title={`Lời hứa (${promises.length})`}>
       {promises.length === 0 ? (
@@ -349,7 +343,7 @@ function RelationshipTruths({ relationshipId }: { relationshipId: RelationshipId
 }
 
 function RelationshipDoor({ relationshipId }: { relationshipId: RelationshipId }) {
-  const door = relationshipDoor(relationshipId);
+  const door = getDoorForRelationship(relationshipId);
   const eligibility = door ? getDoorBlockers(door.id) : undefined;
   return (
     <Section title="Cánh cửa tiếp theo">

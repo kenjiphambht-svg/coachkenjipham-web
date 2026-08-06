@@ -23,6 +23,7 @@ import {
   CARE_IDS,
   type CareId,
   type PromiseId,
+  DOOR_IDS,
   type DoorId,
   TODAY_QUEUE_IDS,
   TODAY_QUEUE_MANIFEST,
@@ -169,6 +170,46 @@ export function getCareAndPromisesForJourney(journeyId: unknown): JourneyCareAnd
   const care = CARE_IDS.map((id) => CARE_RECORDS[id]).filter((rec) => rec.journeyId === journeyId);
   const promises = Object.values(PROMISE_RECORDS).filter((rec) => rec.journeyId === journeyId);
   return { care, promises };
+}
+
+// ---------------------------------------------------------------------------
+// Whole-collection reads (used by the Hành trình and Chăm sóc workspaces)
+// ---------------------------------------------------------------------------
+
+/** All 24 Journey records, in canonical JRN order. */
+export function getAllJourneys(): readonly JourneyRecord[] {
+  return JOURNEY_IDS.map((id) => JOURNEY_RECORDS[id]);
+}
+
+/** All 14 Care/Support/Recovery records, in canonical CARE order. */
+export function getAllCareCases(): readonly CareRecord[] {
+  return CARE_IDS.map((id) => CARE_RECORDS[id]);
+}
+
+export function getCareCasesForRelationship(relationshipId: unknown): readonly CareRecord[] {
+  if (!isValidRelationshipId(relationshipId)) return [];
+  return getAllCareCases().filter((rec) => rec.relationshipId === relationshipId);
+}
+
+export function getPromisesForRelationship(relationshipId: unknown): readonly PromiseRecord[] {
+  if (!isValidRelationshipId(relationshipId)) return [];
+  return Object.values(PROMISE_RECORDS).filter((rec) => rec.relationshipId === relationshipId);
+}
+
+// ---------------------------------------------------------------------------
+// Door lookup — a Relationship owns at most one Door proposal (manifest §B/§C),
+// so both lookups return a single record or undefined. Shared by the Quan hệ,
+// Hành trình and Chăm sóc workspaces so the rule lives in exactly one place.
+// ---------------------------------------------------------------------------
+
+export function getDoorForRelationship(relationshipId: unknown): DoorRecord | undefined {
+  if (!isValidRelationshipId(relationshipId)) return undefined;
+  return DOOR_IDS.map((id) => DOOR_RECORDS[id]).find((door) => door.relationshipId === relationshipId);
+}
+
+export function getDoorForJourney(journeyId: unknown): DoorRecord | undefined {
+  if (!isValidJourneyId(journeyId)) return undefined;
+  return DOOR_IDS.map((id) => DOOR_RECORDS[id]).find((door) => door.journeyId === journeyId);
 }
 
 // ---------------------------------------------------------------------------
