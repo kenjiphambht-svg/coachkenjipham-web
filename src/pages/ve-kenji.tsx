@@ -305,7 +305,7 @@ export default function VeKenjiPage() {
                     Tôi đã đi qua nhiều công việc — phục vụ, lái xe, bảo hiểm, trợ lý, kinh doanh, truyền thông. Mỗi công việc đều giúp tôi sống và đi tiếp, nhưng chưa có nơi nào khiến tôi cảm thấy mình có thể ở lại lâu dài.
                   </EssenceBody>
                   <EssenceBody as="p">
-                    Coaching không cho tôi một câu trả lời cho mọi thứ. Nó giúp tôi nhận ra một điều mình đã làm từ lâu: ngồi lại, nghe kỹ và cùng một người nhìn ra điều đang âm thầm kéo họ.
+                    Coaching không cho tôi một câu trả lời cho mọi thứ. Nó giúp tôi nhận ra điều mình đã làm từ lâu: ngồi lại, nghe kỹ và cùng những người tôi đồng hành nhìn ra điều đang âm thầm kéo họ.
                   </EssenceBody>
                 </div>
               </div>
@@ -324,7 +324,7 @@ export default function VeKenjiPage() {
 
             <div className="ve-kenji-reveal max-w-[620px] mt-16 md:mt-24 md:ml-[18%] space-y-5">
               <EssenceBody as="p">
-                Qua hàng trăm lần ngồi cùng một người, tôi dần biết điều gì thật sự có ích, điều gì chỉ nghe hay, và lúc nào họ cần thêm thời gian thay vì thêm một lời giải thích.
+                Qua hàng trăm buổi làm việc, tôi dần biết điều gì thật sự có ích, điều gì chỉ nghe hay, và lúc nào cần thêm thời gian thay vì thêm một lời giải thích.
               </EssenceBody>
               <EssenceAccent as="p" className="max-w-[620px]">
                 Có lẽ vì chính tôi từng sống bằng cách gồng và tự giữ mọi thứ, tôi nhận ra khá nhanh khi một người vẫn ổn ở bên ngoài nhưng đã phải gánh quá nhiều quá lâu.
@@ -576,8 +576,7 @@ export default function VeKenjiPage() {
         <section className="px-6 py-24 md:py-36" style={{ background: sectionBg(BG.discovery, 16, "60% 34%", "142deg") }}>
           <div className="ve-kenji-reveal max-w-[1180px] mx-auto md:grid md:grid-cols-[minmax(260px,0.65fr)_minmax(0,1.35fr)] md:gap-x-16 lg:gap-x-24">
             <div className="max-w-[420px]">
-              <SectionLabel>ĐỌC TIẾP TỪ ĐÂY</SectionLabel>
-              <EssenceAnchor as="h2" className="mb-12 md:mb-0">Hai điều để hiểu rõ hơn.</EssenceAnchor>
+              <EssenceAnchor as="h2" className="mb-12 md:mb-0">Hai điều để bạn hiểu rõ hơn.</EssenceAnchor>
             </div>
             <div className="max-w-[660px] space-y-12 md:space-y-16 md:pt-1">
               <div className="max-w-[660px] border-t border-e26-text/10 pt-7">
