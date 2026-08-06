@@ -1,0 +1,49 @@
+name: Trigger Ve Kenji Content Pass
+
+on:
+  pull_request_target:
+    branches:
+      - feat/ve-kenji-final-content-pass
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+permissions:
+  contents: write
+
+jobs:
+  apply-content:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/ve-kenji-final-content-pass
+          fetch-depth: 0
+
+      - name: Execute approved content patch
+        shell: bash
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          import textwrap
+
+          workflow = Path('.github/workflows/ve-kenji-content-pass.yml').read_text(encoding='utf-8')
+          start_marker = "          python <<'PY'\n"
+          end_marker = "\n          PY\n\n      - name: Remove one-time workflow and commit"
+          start = workflow.index(start_marker) + len(start_marker)
+          end = workflow.index(end_marker, start)
+          script = textwrap.dedent(workflow[start:end])
+          exec(compile(script, 've-kenji-content-pass', 'exec'))
+          PY
+
+      - name: Commit final content and remove temporary automation
+        shell: bash
+        run: |
+          rm .github/workflows/ve-kenji-content-pass.yml
+          rm .github/workflows/ve-kenji-content-trigger.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/pages/ve-kenji.tsx .github/workflows/ve-kenji-content-pass.yml .github/workflows/ve-kenji-content-trigger.yml
+          git commit -m "feat: apply Founder-approved ve-kenji content pass"
+          git push origin HEAD:feat/ve-kenji-final-content-pass
