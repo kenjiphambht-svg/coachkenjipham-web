@@ -5,7 +5,7 @@
 > **Owner:** Kenji Phạm
 > **Purpose:** Portfolio-wide transformation classification, approval gates, execution sequence and page-brief seeds derived from the current website audit.
 > **Decision scope:** Transformation class, relative sequence, dependencies, risks, approval gates and brief seeds. **Non-decision scope:** Runtime/public-copy change, Founder Decision, offer contract, Page Contract, price, payment, booking, data architecture, redirect, deletion, indexing or deployment approval.
-> **Governing basis:** [FD-2026-08-06](docs/decisions/FD-2026-08-06_ESSENCE_LANGUAGE_METHOD_AND_JOURNEY_RHYTHM.md); [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-01–C-12; [Site Journey Map](ESSENCE_SITE_JOURNEY_MAP.md); [Route State Matrix](ROUTE_STATE_MATRIX.md); [Offer State Matrix](OFFER_STATE_MATRIX.md); [Indexing Policy](INDEXING_POLICY.md).
+> **Governing basis:** [FD-2026-08-06](../../decisions/FD-2026-08-06_ESSENCE_LANGUAGE_METHOD_AND_JOURNEY_RHYTHM.md); [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-01–C-12; [Site Journey Map](ESSENCE_SITE_JOURNEY_MAP.md); [Route State Matrix](ROUTE_STATE_MATRIX.md); [Offer State Matrix](OFFER_STATE_MATRIX.md); [Indexing Policy](INDEXING_POLICY.md).
 > **Baseline evidence commit:** origin/main at a45e4242c0e68f52e0004ee8dd5d02745e4212dd; P1 re-baseline at 733b19900d3f8c471fb90cbd6f17bc4acf8b1332
 > **Last verified:** 63649b29d1c152e5e5f7fc2cb31575c3cc0e3c29
 > **Review:** Founder Decision, material page/route/offer/dependency change, or 90 days.
