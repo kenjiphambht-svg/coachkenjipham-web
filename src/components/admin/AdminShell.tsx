@@ -11,16 +11,34 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { ReactNode } from 'react';
 
-const NAV = [
-  { href: '/admin', label: 'Tổng quan' },
-  { href: '/admin/lang', label: 'Lặng' },
-  { href: '/admin/hat-mam', label: 'Hạt Mầm' },
-  { href: '/admin/launch-core', label: 'Launch Core' },
-  { href: '/admin/thanh-toan', label: 'Thanh toán' },
-  { href: '/admin/xuat-ban', label: 'Xuất bản' },
-  { href: '/admin/xoa-du-lieu', label: 'Xóa dữ liệu' },
-  { href: '/admin/cai-dat', label: 'Cài đặt' },
-  { href: '/admin/lien-he', label: 'Liên hệ' },
+const NAV_GROUPS = [
+  {
+    label: 'Điều hành',
+    items: [
+      { href: '/admin', label: 'Hôm nay' },
+      { href: '/admin/quan-he', label: 'Quan hệ' },
+      { href: '/admin/hanh-trinh', label: 'Hành trình' },
+      { href: '/admin/cham-soc', label: 'Chăm sóc & Phục hồi' },
+    ],
+  },
+  {
+    label: 'Workspaces',
+    items: [
+      { href: '/admin/lang', label: 'Lặng' },
+      { href: '/admin/hat-mam', label: 'Hạt Mầm' },
+      { href: '/admin/thanh-toan', label: 'Thanh toán' },
+      { href: '/admin/xuat-ban', label: 'Xuất bản' },
+      { href: '/admin/xoa-du-lieu', label: 'Xóa dữ liệu' },
+      { href: '/admin/lien-he', label: 'Liên hệ' },
+    ],
+  },
+  {
+    label: 'Hệ thống',
+    items: [
+      { href: '/admin/cai-dat', label: 'Cài đặt' },
+      { href: '/admin/launch-core', label: 'Launch Core' },
+    ],
+  },
 ];
 
 export default function AdminShell({
@@ -44,42 +62,52 @@ export default function AdminShell({
 
       <div className="min-h-screen bg-e26-ivory text-e26-text">
         <header className="border-b border-e26-border bg-e26-white">
-          <div className="max-w-[1240px] mx-auto px-4 py-3 flex flex-wrap items-center gap-x-4 gap-y-2">
-            <span className="font-serif text-lg">Quản trị Essence</span>
-            <nav className="flex flex-wrap gap-x-1 gap-y-1 flex-1">
-              {NAV.map((item) => {
-                const active =
-                  item.href === '/admin'
-                    ? router.pathname === '/admin'
-                    : router.pathname.startsWith(item.href);
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`font-sans text-[14px] px-3 py-2 rounded-none transition-colors ${
-                      active
-                        ? 'bg-e26-cream text-e26-text font-medium'
-                        : 'text-e26-text-2 hover:text-e26-gold-deep'
-                    }`}
+          <div className="max-w-[1240px] mx-auto px-4 py-3">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+              <span className="font-serif text-lg">Quản trị Essence</span>
+              {adminEmail && (
+                <form action="/api/admin/dang-xuat" method="post" className="ml-auto flex items-center gap-3">
+                  <span className="font-sans text-[13px] text-e26-text-2 hidden sm:inline">
+                    {adminEmail}
+                  </span>
+                  <button
+                    type="submit"
+                    className="font-sans text-[13px] underline underline-offset-4 text-e26-text-2 hover:text-e26-gold-deep"
                   >
-                    {item.label}
-                  </Link>
-                );
-              })}
+                    Đăng xuất
+                  </button>
+                </form>
+              )}
+            </div>
+
+            <nav className="mt-3 flex flex-col gap-2 lg:flex-row lg:flex-wrap lg:gap-x-5" aria-label="Điều hướng quản trị">
+              {NAV_GROUPS.map((group) => (
+                <div key={group.label} className="flex flex-wrap items-center gap-1">
+                  <span className="mr-1 font-sans text-[11px] uppercase tracking-[0.14em] text-e26-text-2">
+                    {group.label}
+                  </span>
+                  {group.items.map((item) => {
+                    const active =
+                      item.href === '/admin'
+                        ? router.pathname === '/admin'
+                        : router.pathname.startsWith(item.href);
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className={`font-sans text-[14px] px-3 py-2 rounded-none transition-colors ${
+                          active
+                            ? 'bg-e26-cream text-e26-text font-medium'
+                            : 'text-e26-text-2 hover:text-e26-gold-deep'
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
+                    );
+                  })}
+                </div>
+              ))}
             </nav>
-            {adminEmail && (
-              <form action="/api/admin/dang-xuat" method="post" className="flex items-center gap-3">
-                <span className="font-sans text-[13px] text-e26-text-2 hidden sm:inline">
-                  {adminEmail}
-                </span>
-                <button
-                  type="submit"
-                  className="font-sans text-[13px] underline underline-offset-4 text-e26-text-2 hover:text-e26-gold-deep"
-                >
-                  Đăng xuất
-                </button>
-              </form>
-            )}
           </div>
         </header>
 
