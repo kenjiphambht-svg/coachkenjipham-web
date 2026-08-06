@@ -46,19 +46,19 @@ const faqs = [
   },
   {
     q: "Kenji có chứng chỉ gì?",
-    a: "Tôi có chứng chỉ ICF — International Coaching Federation.\n\nTôi dùng ICF như một khung kỷ luật nghề nghiệp và bộ quy tắc để tự soi; không dùng chứng chỉ như bằng chứng rằng mình hiểu ai sâu hơn.",
+    a: "Tôi có chứng chỉ ICF — International Coaching Federation.\n\nTôi dùng ICF như một khung kỷ luật nghề nghiệp và bộ quy tắc để tự soi, không như bằng chứng rằng mình hiểu ai sâu hơn.",
   },
   {
     q: "Coaching có thay thế chuyên gia sức khỏe tâm thần không?",
-    a: "Không.\n\nCoaching không chẩn đoán và không thay thế chuyên gia tâm lý lâm sàng hay bác sĩ.\n\nKhi điều một người đang mang cần đến chuyên môn khác, tôi nói thẳng và khuyến nghị họ tìm sự hỗ trợ phù hợp.",
+    a: "Không. Coaching không chẩn đoán và không thay thế chuyên gia tâm lý lâm sàng hay bác sĩ.\n\nKhi cần chuyên môn khác, tôi nói thẳng và khuyến nghị người đó tìm sự hỗ trợ phù hợp.",
   },
   {
     q: "Kenji làm việc ở đâu?",
-    a: "Tôi làm việc tại Sài Gòn, Việt Nam — trực tiếp và trực tuyến.",
+    a: "Tôi làm việc tại Sài Gòn, Việt Nam — trực tiếp và online.",
   },
   {
     q: "AI tham gia vào quá trình như thế nào?",
-    a: "AI hỗ trợ những việc phía sau như sắp xếp, ghi lại và đối chiếu thông tin.\n\nAI không đóng vai Kenji, không đồng hành thay Kenji và không đưa ra quyết định thay Kenji.\n\nBản gửi đến khách do Kenji đọc và viết từ đầu đến cuối.",
+    a: "AI hỗ trợ những việc phía sau như sắp xếp, ghi lại và đối chiếu thông tin.\n\nAI không đóng vai Kenji, không đồng hành hoặc quyết định thay Kenji. Bản gửi đến khách do Kenji đọc và viết từ đầu đến cuối.",
   },
 ];
 
@@ -72,13 +72,13 @@ const presencePrinciples = [
   },
   {
     title: "Tôi không vội biến điều chưa rõ thành một câu trả lời.",
-    paragraphs: ["Có những lúc một người cần nhìn thêm, cảm thêm hoặc chỉ đơn giản là được ở lại với điều đang xảy ra."],
+    paragraphs: ["Có lúc một người cần nhìn thêm, cảm thêm, hoặc chỉ ở lại với điều đang xảy ra lâu hơn một chút."],
   },
   {
-    title: "Tôi không dùng kỹ thuật để làm ai trông ổn hơn.",
+    title: "Tôi không dùng kỹ thuật để làm một người trông ổn hơn.",
     paragraphs: [
-      "Một người có thể nói chuyện bình tĩnh hơn nhưng bên trong vẫn đang tự ép mình.",
-      "Điều tôi quan tâm không phải là họ có vẻ ổn đến đâu, mà là họ có đang nhìn rõ hơn hay không.",
+      "Một người có thể nói chuyện bình tĩnh hơn mà bên trong vẫn đang tự ép mình.",
+      "Điều tôi quan tâm không phải họ trông ổn đến đâu, mà là họ có đang nhìn rõ hơn hay không.",
     ],
   },
 ];
@@ -95,22 +95,21 @@ const boundaryPrinciples = [
     title: "Tôi không tạo sự phụ thuộc.",
     paragraphs: [
       "Tôi không muốn một người phải cần tôi để tiếp tục hiểu hoặc quyết định đời mình.",
-      "Mục tiêu của công việc không phải giữ họ ở lại lâu, mà giúp khả năng tự nhìn và tự chọn trở nên vững hơn.",
+      "Mục tiêu không phải giữ họ ở lại lâu, mà giúp khả năng tự nhìn và tự chọn trở nên vững vàng và An Thịnh.",
     ],
   },
   {
     title: "Tôi không để AI đóng vai tôi.",
     paragraphs: [
       "AI có thể hỗ trợ vận hành, sắp xếp, ghi lại và đối chiếu.",
-      "AI không đồng hành thay tôi và không đưa ra quyết định thay tôi.",
-      "Bản gửi đến khách do tôi đọc và viết từ đầu đến cuối.",
+      "AI không đồng hành thay tôi, không quyết định thay tôi. Bản gửi đến khách do tôi đọc và viết từ đầu đến cuối.",
     ],
   },
   {
     title: "Tôi không dán nhãn trẻ em.",
     paragraphs: [
-      "Một góc nhìn chỉ nên giúp ba mẹ quan sát con dịu hơn.",
-      "Nó không nên biến con thành một kết luận cố định, một dự báo tương lai hay một vai mà con phải sống theo.",
+      "Một góc nhìn chỉ nên giúp ba mẹ quan sát con dịu dàng, nhìn con rõ hơn.",
+      "Nó không biến con thành một kết luận cố định, một dự báo tương lai hay một vai mà con phải sống theo.",
     ],
   },
 ];
@@ -279,12 +278,12 @@ export default function VeKenjiPage() {
                   Có người vẫn làm việc, vẫn chăm lo cho mọi người, vẫn nói mình ổn — nhưng bên trong đã phải gánh quá lâu.
                 </EssenceBody>
                 <EssenceBody as="p">
-                  Có những phản ứng từng giúp mình trụ lại. Đến một lúc nào đó, chính chúng lại âm thầm quyết định thay cách mình sống, yêu thương và lựa chọn.
+                  Có những phản ứng từng giúp mình trụ lại. Đến một lúc, chính chúng lại âm thầm quyết định cách mình sống, yêu thương và lựa chọn.
                 </EssenceBody>
                 <EssenceBody as="p">
-                  Tôi chọn công việc này để cùng một người nhìn vào điều đang vận hành bên dưới — không vội phán, không kéo họ đi nhanh hơn, cũng không quyết định thay họ.
+                  Tôi chọn công việc này để ngồi cùng một người và nhìn vào điều đang vận hành bên dưới — không vội phán, không kéo họ đi nhanh hơn, cũng không quyết định thay họ.
                 </EssenceBody>
-                <EssenceAccent as="p" className="pt-3 md:pt-5">Lựa chọn ấy không bắt đầu từ một lý thuyết.</EssenceAccent>
+                <EssenceAccent as="p" className="pt-3 md:pt-5">Lựa chọn này không bắt đầu từ một lý thuyết.</EssenceAccent>
               </div>
             </div>
           </div>
@@ -303,15 +302,12 @@ export default function VeKenjiPage() {
                   <EssenceBody as="p">Tôi lớn lên trong một môi trường mà từ rất sớm, tôi phải học cách trụ lại.</EssenceBody>
                   <EssenceBody as="p">Không phải bằng sự dịu dàng.</EssenceBody>
                   <EssenceBody as="p">Bằng gồng. Bằng kiểm soát. Bằng việc phải chứng minh rằng mình không yếu.</EssenceBody>
-                  <EssenceBody as="p">Sau này, tôi phá sản ba lần. Hôn nhân tan vỡ. Từ năm 2015, tôi một mình nuôi hai con trai và bắt đầu lại.</EssenceBody>
+                  <EssenceBody as="p">Sau này, tôi phá sản ba lần, hôn nhân tan vỡ. Từ năm 2015, tôi một mình nuôi hai con trai và bắt đầu lại từ đầu.</EssenceBody>
                   <EssenceBody as="p">
-                    Tôi đã đi qua nhiều nghề — phục vụ, lái xe, bảo hiểm, kinh doanh, truyền thông. Những công việc ấy giúp tôi sống. Nhưng tôi vẫn chưa thấy đó là công việc mình có thể ở lại lâu dài.
+                    Tôi đã đi qua nhiều công việc — phục vụ, lái xe, bảo hiểm, trợ lý, kinh doanh, truyền thông. Mỗi công việc đều giúp tôi sống và đi tiếp, nhưng chưa có nơi nào khiến tôi cảm thấy mình có thể ở lại lâu dài.
                   </EssenceBody>
                   <EssenceBody as="p">
-                    Coaching không xuất hiện như một câu trả lời cứu tôi.
-                  </EssenceBody>
-                  <EssenceBody as="p">
-                    Nó giúp tôi nhận ra một điều mình đã làm từ lâu: ngồi lại, nghe kỹ và cùng một người nhìn ra điều đang âm thầm kéo họ.
+                    Coaching không cho tôi một câu trả lời cho mọi thứ. Nó giúp tôi nhận ra điều mình đã làm từ lâu: ngồi lại, nghe kỹ và cùng những người tôi đồng hành nhìn ra điều đang âm thầm kéo họ.
                   </EssenceBody>
                 </div>
               </div>
@@ -330,16 +326,16 @@ export default function VeKenjiPage() {
 
             <div className="ve-kenji-reveal max-w-[620px] mt-16 md:mt-24 md:ml-[18%] space-y-5">
               <EssenceBody as="p">
-                Qua hàng trăm buổi ngồi nghe, tôi dần biết điều gì thực sự đứng được. Điều gì chỉ nghe đẹp. Điều gì giúp một người sáng rõ hơn. Và điều gì cần được để xuống.
+                Qua hàng trăm buổi làm việc, tôi dần biết điều gì thật sự có ích, điều gì chỉ nghe hay, và lúc nào cần thêm thời gian thay vì thêm một lời giải thích.
               </EssenceBody>
               <EssenceAccent as="p" className="max-w-[620px]">
-                Có lẽ vì chính tôi từng sống bằng cách gồng và tự giữ mọi thứ, tôi nhận ra khá nhanh khi một người vẫn đang ổn ở bên ngoài nhưng đã phải gánh quá nhiều quá lâu.
+                Có lẽ vì chính tôi từng sống bằng cách gồng và tự giữ mọi thứ, tôi nhận ra khá nhanh khi một người vẫn ổn ở bên ngoài nhưng đã phải gánh quá nhiều quá lâu.
               </EssenceAccent>
               <EssenceBody as="p">
-                Những gì tôi giữ hôm nay không phải câu chuyện về một người đã vượt qua tất cả.
+                Tôi không kể câu chuyện này như một người đã vượt qua tất cả.
               </EssenceBody>
               <EssenceBody as="p">
-                Đó là cách nhìn được hình thành sau nhiều lần phải dừng, nhìn lại và chọn lại.
+                Đó chỉ là cách nhìn được hình thành sau nhiều lần phải dừng, nhìn lại và chọn lại.
               </EssenceBody>
             </div>
           </div>
@@ -378,26 +374,25 @@ export default function VeKenjiPage() {
             </div>
             <div className="mt-12 max-w-[660px] lg:mt-0 lg:pt-1">
               <div className="space-y-5">
-                <EssenceBody as="p">Tôi làm việc tại Sài Gòn, trực tiếp và trực tuyến.</EssenceBody>
+                <EssenceBody as="p">Tôi làm việc tại Sài Gòn, trực tiếp và online.</EssenceBody>
                 <EssenceBody as="p">
-                  Tám năm qua, tôi ngồi cùng người lớn trong những đoạn họ muốn nhìn lại chính mình, và cùng ba mẹ khi họ muốn hiểu con rõ hơn mà không vội dán nhãn.
+                  Năm năm qua, tôi ngồi cùng người lớn khi họ muốn nhìn lại chính mình, và cùng ba mẹ khi họ muốn hiểu con rõ hơn mà không vội dán nhãn.
                 </EssenceBody>
               </div>
               <div className="mt-9 space-y-5 border-t border-e26-text/18 pt-8 md:mt-10 md:pt-9">
                 <EssenceBody as="p">
-                  <EssenceAccent as="em" className="text-[18px] leading-[1.7] md:text-[19px] md:leading-[1.72]">Coaching là khung nghề tôi dùng.</EssenceAccent> Nhưng phần tôi dành nhiều thời gian nhất không phải để thúc một người tiến lên thật nhanh.
+                  <EssenceAccent as="em" className="text-[18px] leading-[1.7] md:text-[19px] md:leading-[1.72]">Coaching là khung nghề tôi dùng.</EssenceAccent> Phần lớn thời gian của tôi không dành để thúc một người tiến lên thật nhanh.
                 </EssenceBody>
                 <EssenceBody as="p">
-                  Tôi ngồi cùng họ để đọc lại điều mình đã phải sống, nhận ra điều vẫn đang âm thầm quyết định thay mình, rồi tạo một khoảng đủ An định để họ có thể tự chọn lại.
+                  Tôi ngồi cùng họ để đọc lại điều họ đã phải sống, nhận ra điều vẫn đang âm thầm quyết định thay họ, rồi tạo một khoảng đủ An định để họ có thể tự chọn lại.
                 </EssenceBody>
               </div>
               <div className="mt-9 space-y-5 border-t border-e26-text/18 pt-8 md:mt-10 md:pt-9">
-                <EssenceBody as="p">ICF đến sau.</EssenceBody>
                 <EssenceBody as="p">
-                  Tôi học vì cần một khung nghề rõ ràng và một bộ quy tắc từ bên ngoài để tự soi.
+                  ICF đến sau, khi tôi cần một khung nghề rõ ràng và một bộ quy tắc từ bên ngoài để tự soi.
                 </EssenceBody>
                 <EssenceBody as="p">
-                  Chứng chỉ ICF — International Coaching Federation — không chứng minh rằng tôi hiểu ai sâu hơn. Nó nhắc tôi phải làm việc có kỷ luật, có trách nhiệm và biết giới hạn của mình.
+                  Chứng chỉ ICF — International Coaching Federation — không chứng minh rằng tôi hiểu ai sâu hơn. Nó nhắc tôi làm việc có kỷ luật, có trách nhiệm và biết giới hạn của mình.
                 </EssenceBody>
               </div>
             </div>
@@ -413,20 +408,14 @@ export default function VeKenjiPage() {
                 Tôi tạo khoảng An định.
               </EssenceDisplay>
               <div className="space-y-5">
-                <EssenceBody as="p">Tôi không nhìn người mình đang ngồi cùng như một điều gì cần bị khắc phục.</EssenceBody>
+                <EssenceBody as="p">Tôi không nhìn người mình đang ngồi cùng như một điều cần được khắc phục.</EssenceBody>
                 <EssenceBody as="p">
-                  Điều đang kéo họ có thể là một nỗi sợ, một phản xạ tự bảo vệ, hoặc một cách sống đã phải giữ quá lâu.
-                </EssenceBody>
-                <EssenceBody as="p">Những điều ấy từng có lý do để tồn tại.</EssenceBody>
-                <EssenceBody as="p">Vì vậy, tôi không vội yêu cầu ai buông bỏ chúng.</EssenceBody>
-                <EssenceBody as="p">
-                  Khoảng An định không có nghĩa là không còn cảm xúc hay lúc nào cũng bình thản.
+                  Điều đang kéo họ có thể là một nỗi sợ, một phản xạ tự bảo vệ hoặc một cách sống đã phải giữ quá lâu. Những điều đó từng có lý do để tồn tại.
                 </EssenceBody>
                 <EssenceBody as="p">
-                  Đó là một khoảng dừng đủ để mình không phản ứng ngay như mọi lần. Đầu óc có thể nhìn rõ hơn. Và lựa chọn không chỉ lặp lại rãnh cũ.
+                  Khoảng An định không có nghĩa là không còn cảm xúc hay lúc nào cũng bình thản. Đó là khoảng dừng đủ để mình không phản ứng ngay như mọi lần, mà nhìn rõ hơn cùng với những lựa chọn mới không để nhịp cũ lặp lại.
                 </EssenceBody>
-                <EssenceBody as="p">Trong khoảng ấy, tôi không chọn thay.</EssenceBody>
-                <EssenceBody as="p">Người tôi đang ngồi cùng vẫn là người quyết định bước tiếp theo.</EssenceBody>
+                <EssenceBody as="p">Tôi không chọn thay. Người tôi đang ngồi cùng vẫn quyết định bước tiếp theo.</EssenceBody>
               </div>
             </div>
           </div>
@@ -443,7 +432,7 @@ export default function VeKenjiPage() {
                 <div className="space-y-5">
                   <EssenceBody as="p">Đây là ba giá trị tôi tự giữ trong đời sống và trong cách làm việc.</EssenceBody>
                   <EssenceBody as="p">
-                    Chúng không đòi hỏi ai phải sống theo một khuôn giống nhau. Với tôi, đây là ba hướng để nhìn lại cách mình đang lựa chọn và sống.
+                    Chúng không yêu cầu ai phải sống theo cùng một khuôn. Với tôi, đó là ba hướng để nhìn lại cách mình đang lựa chọn và sống.
                   </EssenceBody>
                 </div>
               </div>
@@ -455,7 +444,7 @@ export default function VeKenjiPage() {
                   <EssenceAnchor as="h3" level="h3" className="mb-4">Tự Do</EssenceAnchor>
                   <div className="space-y-5 max-w-[300px]">
                     <EssenceBody as="p" className="max-w-none text-[#1A1A1A]/85">Tự Do là khi phản xạ cũ không còn quyết định thay mình trong mọi tình huống.</EssenceBody>
-                    <EssenceBody as="p" className="max-w-none text-[#1A1A1A]/85">Có lúc mình bước tiếp. Có lúc mình từ chối. Và có lúc mình chọn lại.</EssenceBody>
+                    <EssenceBody as="p" className="max-w-none text-[#1A1A1A]/85">Có lúc mình bước tiếp. Có lúc mình từ chối. Có lúc mình chọn lại.</EssenceBody>
                   </div>
                 </div>
                 <div className="border-t border-e26-gold-deep/25 py-8 md:border-r md:border-t-0 md:px-10 md:py-10">
@@ -463,7 +452,7 @@ export default function VeKenjiPage() {
                   <EssenceAnchor as="h3" level="h3" className="mb-4">Trí Tuệ</EssenceAnchor>
                   <div className="space-y-5 max-w-[300px]">
                     <EssenceBody as="p" className="max-w-none text-[#1A1A1A]/85">Trí Tuệ không phải biết thật nhiều.</EssenceBody>
-                    <EssenceBody as="p" className="max-w-none text-[#1A1A1A]/85">Đó là khả năng nhìn điều đang xảy ra trong mình, trong người khác và trong hoàn cảnh — trước khi vội kết luận.</EssenceBody>
+                    <EssenceBody as="p" className="max-w-none text-[#1A1A1A]/85">Đó là khả năng nhìn điều đang xảy ra bên trong mỗi hoàn cảnh — trước khi vội kết luận.</EssenceBody>
                   </div>
                 </div>
                 <div className="border-t border-e26-gold-deep/25 py-8 md:border-t-0 md:pl-10 md:py-10">
@@ -471,7 +460,7 @@ export default function VeKenjiPage() {
                   <EssenceAnchor as="h3" level="h3" className="mb-4">Kiến Tạo</EssenceAnchor>
                   <div className="space-y-5 max-w-[300px]">
                     <EssenceBody as="p" className="max-w-none text-[#1A1A1A]/85">Kiến Tạo là đưa điều đã nhận ra vào đời sống thật.</EssenceBody>
-                    <EssenceBody as="p" className="max-w-none text-[#1A1A1A]/85">Một cuộc trò chuyện cần có. Một giới hạn cần được nói rõ. Một lựa chọn phù hợp hơn với điều mình thực sự muốn sống.</EssenceBody>
+                    <EssenceBody as="p" className="max-w-none text-[#1A1A1A]/85">Một cuộc trò chuyện cần có. Một giới hạn cần nói rõ. Một lựa chọn phù hợp hơn với điều mình thật sự muốn sống.</EssenceBody>
                   </div>
                 </div>
               </div>
@@ -525,10 +514,7 @@ export default function VeKenjiPage() {
             <div className="relative mt-14 border-t border-e26-text/30 pt-9 md:mt-20 md:pt-12">
               <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-white/40" />
               <div className="max-w-[620px] border-l border-e26-text/25 pl-6 md:ml-[10%] md:pl-9">
-                <div className="space-y-5">
-                  <EssenceBody as="p">Những ranh giới này không làm một cuộc đồng hành trở nên lạnh hơn.</EssenceBody>
-                  <EssenceBody as="p">Chúng giúp cả hai biết mình đang đứng ở đâu.</EssenceBody>
-                </div>
+                <EssenceBody as="p">Những ranh giới này không làm một cuộc đồng hành lạnh hơn. Chúng giúp cả hai biết mình đang đứng ở đâu.</EssenceBody>
               </div>
               <ol className="mt-11 max-w-[980px] md:mt-[3.75rem] md:ml-[8%]">
                 {boundaryPrinciples.map((principle, index) => (
@@ -599,14 +585,13 @@ export default function VeKenjiPage() {
         <section className="px-6 py-20 md:py-36" style={{ background: sectionBg(BG.discovery, 16, "60% 34%", "142deg") }}>
           <div className="ve-kenji-reveal max-w-[1180px] mx-auto md:grid md:grid-cols-[minmax(260px,0.65fr)_minmax(0,1.35fr)] md:gap-x-16 lg:gap-x-24">
             <div className="max-w-[420px]">
-              <SectionLabel>BẠN MUỐN HIỂU THÊM ĐIỀU GÌ?</SectionLabel>
-              <EssenceAnchor as="h2" className="mb-12 md:mb-0">Mỗi cánh cửa trả lời một câu hỏi khác nhau.</EssenceAnchor>
+              <EssenceAnchor as="h2" className="mb-12 md:mb-0">Hai điều để bạn hiểu rõ hơn.</EssenceAnchor>
             </div>
             <div className="max-w-[660px] space-y-12 md:space-y-16 md:pt-1">
               <div className="max-w-[660px] border-t border-e26-text/10 pt-7">
                 <EssenceAnchor as="h3" level="h3" className="text-[28px] md:text-[38px] mb-4">Cách tôi làm việc</EssenceAnchor>
                 <div className="space-y-5">
-                  <EssenceBody as="p">Khoảng An định có vai trò gì? Một cuộc đồng hành diễn ra ra sao? Và Tự Do — Trí Tuệ — Kiến Tạo đi vào công việc như thế nào?</EssenceBody>
+                  <EssenceBody as="p">Khoảng An định có vai trò gì, một cuộc đồng hành diễn ra ra sao, và Tự Do — Trí Tuệ — Kiến Tạo đi vào công việc như thế nào?</EssenceBody>
                   <EssenceBody as="p"><Link href="/phuong-phap" className={linkUnderline}>Đọc cách tôi làm việc →</Link></EssenceBody>
                 </div>
               </div>
