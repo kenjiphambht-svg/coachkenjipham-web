@@ -5,7 +5,7 @@
 > **Owner:** Kenji Phạm
 > **Purpose:** Canonical information architecture and journey map; separates permitted journey intent from routes currently rendered by code.
 > **Decision scope:** Journey membership and operating boundaries. **Non-decision scope:** Public copy, route deletion/redirect, payment/booking architecture, indexing launch, or runtime changes.
-> **Governing basis:** [FD-2026-08-06](docs/decisions/FD-2026-08-06_ESSENCE_LANGUAGE_METHOD_AND_JOURNEY_RHYTHM.md); [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-01–C-09; [Route State Matrix](ROUTE_STATE_MATRIX.md); [Offer State Matrix](OFFER_STATE_MATRIX.md); [Indexing Policy](INDEXING_POLICY.md).
+> **Governing basis:** [FD-2026-08-06](../../decisions/FD-2026-08-06_ESSENCE_LANGUAGE_METHOD_AND_JOURNEY_RHYTHM.md); [Conflict Register](../../governance/CONFLICT_REGISTER.md) C-01–C-09; [Route State Matrix](ROUTE_STATE_MATRIX.md); [Offer State Matrix](OFFER_STATE_MATRIX.md); [Indexing Policy](INDEXING_POLICY.md).
 > **Baseline evidence commit:** origin/main at a45e4242c0e68f52e0004ee8dd5d02745e4212dd; P1 re-baseline at 733b19900d3f8c471fb90cbd6f17bc4acf8b1332
 > **Last verified:** 63649b29d1c152e5e5f7fc2cb31575c3cc0e3c29
 > **Review:** Founder Decision, material route/CTA change, or 90 days.
