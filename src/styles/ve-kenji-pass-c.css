@@ -150,6 +150,21 @@ main.text-e26-text:has(.ve-kenji-signal-tier-b)
   margin-top: 0.25rem;
 }
 
+/* Final Image Pass — Founder-approved responsive Hero. */
+main.text-e26-text:has(.ve-kenji-signal-tier-b)
+  > section:first-of-type {
+  background-image: url("/images/ve-kenji/08-hero-kenji-desktop.webp");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+main.text-e26-text:has(.ve-kenji-signal-tier-b)
+  > section:first-of-type
+  > img[aria-hidden="true"] {
+  opacity: 0;
+}
+
 @media (min-width: 768px) {
   main.text-e26-text:has(.ve-kenji-signal-tier-b)
     > section:nth-of-type(9)
@@ -186,6 +201,12 @@ main.text-e26-text:has(.ve-kenji-signal-tier-b)
 }
 
 @media (max-width: 767px) {
+  main.text-e26-text:has(.ve-kenji-signal-tier-b)
+    > section:first-of-type {
+    background-image: url("/images/ve-kenji/08-hero-kenji-mobile.webp");
+    background-position: center center;
+  }
+
   main.text-e26-text:has(.ve-kenji-signal-tier-b) > section:nth-of-type(8),
   main.text-e26-text:has(.ve-kenji-signal-tier-b) > section:nth-of-type(9) {
     padding-block: 6rem 6.75rem;
