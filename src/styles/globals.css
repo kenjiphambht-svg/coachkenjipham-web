@@ -202,8 +202,10 @@ body {
 }
 
 /* === ESSENCE 2026 — homepage reveal ("hơi thở": fade-up 250ms / 12px, một lần) ===
-   Scoped riêng cho homepage (/trang-chu-v2) qua class .e26-reveal — không đụng
-   .fade-in-section (hook mist dùng chung với /kidbook và payment pages). */
+   Scoped riêng cho homepage (/) qua class .e26-reveal — không đụng
+   .fade-in-section (hook mist dùng chung với /kidbook và payment pages).
+   (SỬA 07/08/2026: route /trang-chu-v2 — nơi class này từng được nhắc làm ví
+   dụ scope — đã retire; VillaPage giờ chỉ render ở /.) */
 .e26-reveal {
   opacity: 0;
   transform: translateY(12px);

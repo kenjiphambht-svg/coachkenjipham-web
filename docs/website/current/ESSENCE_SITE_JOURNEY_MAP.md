@@ -26,7 +26,7 @@ The Experience Bible supplies emotional architecture, not runtime CTA, payment, 
 
 | Layer | Canonical role | Routes/nodes | Boundary |
 |---|---|---|---|
-| Villa entry | **L0:** / is the canonical public Villa route. | / | Renders the canonical Villa since P1 (PR #112 at 733b199); /trang-chu-v2 remains contained evidence; no redirect is authorized. |
+| Villa entry | **L0:** / is the canonical public Villa route. | / | Renders the canonical Villa since P1 (PR #112 at 733b199). **07/08/2026 (L0 C-19):** /trang-chu-v2 is retired and removed (was: "remains contained evidence"). / is now the only Villa route; no redirect was authorized or added. |
 | Adult entry | Discover the appropriate adult path without treating every rendered offer as approved. | /ban-sac-cua-ban → /lang-90; planned adult offers | Lặng is governed by C-05; other adult offers require offer-specific approval. |
 | Parent entry | Observe a child without labels; discover the age-appropriate line. | /ban-sac-cua-con → /an-pham-ban-sac-hat-mam | **L0:** Hạt Mầm is 0–7 and uses a new flow, not the legacy funnel. |
 | Trust and identity | Explain identity, method, boundaries and privacy. | /ve-kenji, /phuong-phap, /dieu-essence-khong-hua, /chinh-sach-rieng-tu, /lien-he | Rendered support nodes; no indexing before M6. |
@@ -102,7 +102,7 @@ Never include intake, payment, confirmation, booking, private delivery, legacy p
 
 | ID | Gap | Required next action | Owner/gate |
 |---|---|---|---|
-| J-01 | ~~Root is a stub whose only CTA is /kidbook.~~ **Resolved by PR #112 (733b199):** root renders the canonical Villa with adult/parent/trust doors; the /kidbook CTA is gone. | None — closed. /trang-chu-v2 post-cutover disposition remains a separate pending decision. | Closed |
+| J-01 | ~~Root is a stub whose only CTA is /kidbook.~~ **Resolved by PR #112 (733b199):** root renders the canonical Villa with adult/parent/trust doors; the /kidbook CTA is gone. | None — closed. ~~/trang-chu-v2 post-cutover disposition remains a separate pending decision.~~ **Resolved 07/08/2026 (L0 C-19):** retired and removed. | Closed |
 | J-02 | Lặng bypasses the L0 Human Decision Gate. | Scoped private-flow task. | Kenji |
 | J-03 | Hạt Mầm uses legacy Tally/payment entrypoints. | Scoped child-data/payment/delivery task. | Kenji approval |
 | J-04 | Trust-page Page Contracts are Planned/Missing. | Task must provide approved contract. | Kenji |
