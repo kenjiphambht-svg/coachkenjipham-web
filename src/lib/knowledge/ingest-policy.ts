@@ -120,5 +120,7 @@ export function resolveKnowledgeIngestPolicy(
         runtimeEnabled: false,
         reasonCode: 'EXTERNAL_CONDITIONAL',
       };
+    default:
+      throw new Error('UNREACHABLE_KNOWLEDGE_ROOT_ZONE');
   }
 }
