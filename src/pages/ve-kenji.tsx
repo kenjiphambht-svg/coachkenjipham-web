@@ -525,7 +525,9 @@ export default function VeKenjiPage() {
                     <li key={principle.title} className="grid grid-cols-[44px_minmax(0,1fr)] gap-x-4 border-b border-e26-text/20 py-7 last:border-b-0 md:grid-cols-[50px_minmax(0,1fr)] md:gap-x-5 md:py-9">
                       <EssenceEditorialNumeral className="pt-0.5 text-e26-text/72">{String(index + 1).padStart(2, "0")}</EssenceEditorialNumeral>
                       <div>
-                        <EssenceLeadIn as="h3" className="mb-4 md:mb-5">{principle.title}</EssenceLeadIn>
+                        <EssenceLeadIn as="h3" className="mb-4 max-w-[300px] font-medium text-[18px] leading-[1.48] tracking-[-0.01em] md:mb-5 md:max-w-[390px] md:text-[20px] md:leading-[1.45]">
+                          {principle.title}
+                        </EssenceLeadIn>
                         <div className="space-y-4">
                           {principle.paragraphs.map((paragraph) => <EssenceBody as="p" className="max-w-none text-[16px] leading-[1.68] text-[#1A1A1A]/82 md:text-[17px]" key={paragraph}>{paragraph}</EssenceBody>)}
                         </div>
