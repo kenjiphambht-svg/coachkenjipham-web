@@ -4,7 +4,7 @@
 > **Owner:** Kenji Phạm
 > **Purpose:** Default safeguards for agents.
 > **Decision scope:** Task safety, scope and workflow. **Non-decision scope:** Founder Decisions, public positioning, route/indexing, product flow and image authority.
-> **Precedence:** Read [Documentation Authority](docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md), [Conflict Register](docs/governance/CONFLICT_REGISTER.md) and [Reading Bundles](docs/governance/READING_BUNDLES.md) first. L0 wins over every older statement below.
+> **Precedence:** Read [Documentation Authority](docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md), [Founder Decision FD-2026-08-06](docs/decisions/FD-2026-08-06_ESSENCE_LANGUAGE_METHOD_AND_JOURNEY_RHYTHM.md), [Conflict Register](docs/governance/CONFLICT_REGISTER.md) and [Reading Bundles](docs/governance/READING_BUNDLES.md) first. L0 wins over every older statement below.
 > **Still valid:** Scoped work, verification and protected-area rules. **Outdated/superseded:** Historical organization suffixes and old public AI-native/astrology positioning are not canonical public copy.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
 > **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
@@ -86,3 +86,6 @@ Historical/internal terms such as AI-native, Personal Psychology Engine, Solo AI
 - AI therapist
 - diagnosis
 - guaranteed transformation claims
+- Inferring "true rhythm", "true identity" or hidden needs of a person (L0 FD-2026-08-06)
+- Creating rhythm scores, personality types, psychological profiles or child profiles (L0 FD-2026-08-06)
+- Using private stories or child data for sales, targeting or upsell triggers (L0 FD-2026-08-06)
