@@ -15,7 +15,7 @@
 // `React` is imported explicitly for Vitest's classic-mode JSX transform.
 // ============================================================
 
-import React, { useMemo, useState, type ReactNode } from 'react';
+import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
 
 import {
@@ -30,6 +30,7 @@ import {
 } from '@/lib/wp3-5/review-selectors';
 import { SUPPRESSION_RECORD_IDS, type CareId } from '@/lib/wp3-5/review-manifest';
 import { SUPPRESSION_STATE_RECORDS, type CareRecord, type CareCaseType } from '@/lib/wp3-5/review-universe';
+import { DetailSection as Section, Badge, IdTag } from './founder-review-ui';
 
 type StatusFilter = 'all' | 'open' | 'closed';
 type TypeFilter = 'all' | CareCaseType;
@@ -176,7 +177,7 @@ function CareQueue({
   if (cases.length === 0) return null;
   return (
     <div className="mb-5" data-testid={testId}>
-      <h3 className="font-sans text-[12px] uppercase tracking-[0.12em] text-e26-text-2 mb-2">
+      <h3 className="font-sans text-[11px] font-bold uppercase tracking-[0.14em] text-e26-text-2 mb-2">
         {title} ({cases.length})
       </h3>
       <ul className="space-y-2">
@@ -191,25 +192,23 @@ function CareQueue({
                 data-relationship={rec.relationshipId}
                 data-journey={rec.journeyId}
                 className={`w-full text-left border px-3 py-2 font-sans text-[13px] transition-colors ${
+                  rec.offerBlocked ? 'border-l-4 border-l-e26-black' : 'border-l border-l-e26-border'
+                } ${
                   selectedId === rec.id
                     ? 'border-e26-gold-deep bg-e26-cream'
                     : 'border-e26-border bg-e26-white hover:bg-e26-cream'
                 }`}
               >
                 <span className="flex flex-wrap items-center justify-between gap-2">
-                  <span className="font-medium text-e26-text">
+                  <span className="font-sans text-[14px] font-semibold text-e26-text">
                     {rec.id} · {TYPE_LABEL[rec.type]}
                   </span>
-                  {rec.offerBlocked && (
-                    <span className="border border-e26-border px-2 py-0.5 text-[11px] text-e26-text-2">
-                      Chặn Cánh cửa
-                    </span>
-                  )}
+                  {rec.offerBlocked && <Badge variant="blocked">Chặn Cánh cửa</Badge>}
                 </span>
-                <span className="block text-e26-text-2 mt-1">
+                <span className="block text-e26-text-2 text-[12px] font-medium mt-0.5">
                   {relationship?.displayName} · {rec.relationshipId} · {rec.journeyId}
                 </span>
-                <span className="block text-e26-text-2 mt-1">Due: {rec.due}</span>
+                <span className="block text-e26-text-2 text-[12px] font-medium mt-0.5">Due: {rec.due}</span>
               </button>
             </li>
           );
@@ -219,14 +218,6 @@ function CareQueue({
   );
 }
 
-function Section({ title, children }: { title: string; children: ReactNode }) {
-  return (
-    <section className="mb-6">
-      <h3 className="font-sans text-[12px] uppercase tracking-[0.12em] text-e26-text-2 mb-2">{title}</h3>
-      {children}
-    </section>
-  );
-}
 
 function CareDetail({ care, scenario }: { care: CareRecord; scenario: ScenarioPreset }) {
   const relationship = resolveRelationshipContext(care.relationshipId);
@@ -238,10 +229,10 @@ function CareDetail({ care, scenario }: { care: CareRecord; scenario: ScenarioPr
 
   return (
     <div data-testid={`care-detail-${care.id}`}>
-      <h2 className="font-serif text-[22px] text-e26-text mb-1">
+      <h2 className="font-serif text-[24px] font-bold text-e26-black mb-1">
         {care.id} · {TYPE_LABEL[care.type]}
       </h2>
-      <p className="font-sans text-[13px] text-e26-text-2 mb-4">
+      <p className="font-sans text-[13px] font-semibold text-e26-text-2 mb-4">
         {relationship?.displayName} · {care.relationshipId} · {care.journeyId} ·{' '}
         {care.status === 'open' ? 'Đang mở' : 'Đã đóng'}
         {silence && ' · Im lặng có chủ đích'}
@@ -249,7 +240,7 @@ function CareDetail({ care, scenario }: { care: CareRecord; scenario: ScenarioPr
 
       {silence && (
         <p
-          className="border border-e26-border bg-e26-cream px-4 py-3 font-sans text-[13px] text-e26-text-2 mb-5"
+          className="border-l-4 border-l-e26-gold-deep border border-e26-border bg-e26-cream px-4 py-3 font-sans text-[13px] font-medium text-e26-text mb-5"
           data-testid={`care-silence-${care.id}`}
         >
           Giữ yên là một hành động hợp lệ ở đây. Không liên hệ trước ngày review đã hẹn.
@@ -257,38 +248,42 @@ function CareDetail({ care, scenario }: { care: CareRecord; scenario: ScenarioPr
       )}
 
       <Section title="Ảnh hưởng & Containment">
-        <p className="font-sans text-[14px] text-e26-text">{care.impact}</p>
-        <p className="font-sans text-[13px] text-e26-text-2 mt-2">Containment: {care.containment}</p>
+        <p className="font-sans text-[14px] font-medium text-e26-text">{care.impact}</p>
+        <p className="font-sans text-[13px] font-medium text-e26-text-2 mt-2">Containment: {care.containment}</p>
       </Section>
 
       <Section title="Next action / Owner / Due / Điều kiện đóng">
-        <div className="border border-e26-border bg-e26-white p-4 space-y-1">
-          <p className="font-sans text-[14px] text-e26-text">Next action: {care.nextAction}</p>
-          <p className="font-sans text-[13px] text-e26-text-2">
+        <div className={`border p-4 space-y-1 border-e26-border bg-e26-white ${care.offerBlocked ? 'border-l-4 border-l-e26-black' : ''}`}>
+          <p className="font-sans text-[14px] font-medium text-e26-text">Next action: {care.nextAction}</p>
+          <p className="font-sans text-[13px] font-medium text-e26-text-2">
             Owner: {care.owner} · Due: {care.due}
           </p>
-          <p className="font-sans text-[13px] text-e26-text-2">Điều kiện đóng: {care.closeCondition}</p>
+          <p className="font-sans text-[13px] font-medium text-e26-text-2">Điều kiện đóng: {care.closeCondition}</p>
         </div>
       </Section>
 
       <Section title="Suppression">
-        <p className="font-sans text-[13px] text-e26-text-2">
+        <p className="font-sans text-[13px] font-medium text-e26-text-2">
           {suppression?.id}: {suppression?.state} — {suppression?.note}
         </p>
-        <p className="font-sans text-[13px] text-e26-text-2 mt-1">Ảnh hưởng từ case này: {care.suppressionEffect}</p>
+        <p className="font-sans text-[13px] font-medium text-e26-text-2 mt-1">Ảnh hưởng từ case này: {care.suppressionEffect}</p>
       </Section>
 
       {/* Care and Recovery above; the Next Door consequence is stated last, as an
           outcome of the care state — never as a commercial surface. */}
       <Section title="Ảnh hưởng tới Cánh cửa tiếp theo">
-        <p className="font-sans text-[13px] text-e26-text-2" data-testid={`care-offer-${care.id}`}>
+        <p className="font-sans text-[13px] font-semibold text-e26-text" data-testid={`care-offer-${care.id}`}>
           Case này {care.offerBlocked ? 'đang chặn' : 'không chặn'} Cánh cửa tiếp theo.
         </p>
         {door ? (
           <>
-            <p className="font-sans text-[13px] text-e26-text-2 mt-1">
-              {door.id} · {door.proposalState} · {doorEligibility?.eligible ? 'Đủ điều kiện' : 'Đang bị chặn'}
-            </p>
+            <div className="flex items-center gap-2 mt-1">
+              <IdTag>{door.id}</IdTag>
+              <Badge variant={doorEligibility?.eligible ? 'eligible' : 'blocked'}>
+                {doorEligibility?.eligible ? 'Đủ điều kiện' : 'Đang bị chặn'}
+              </Badge>
+            </div>
+            <p className="font-sans text-[13px] font-medium text-e26-text mt-1">{door.proposalState}</p>
             {doorEligibility && doorEligibility.reasons.length > 0 && (
               <ul className="mt-1 list-disc list-inside font-sans text-[12px] text-e26-text-2">
                 {doorEligibility.reasons.map((reason) => (

@@ -46,6 +46,7 @@ import {
   type DoorRecord,
   TIMELINE_EVENTS,
   type TimelineEventRecord,
+  TODAY_QUEUE_DETAILS,
   SCENARIO_PRESET_ITEMS,
   DEFAULT_SCENARIO_PRESET,
   sortTodayQueueIdsByPriority,
@@ -281,4 +282,19 @@ export function buildSafeSyntheticQuery(state: SyntheticQueryState): Record<stri
 /** Used for "Reset phiên" — keeps only the current valid scenario. */
 export function buildScenarioOnlyQuery(scenario: unknown): Record<string, string> {
   return { scenario: resolveScenario(scenario) };
+}
+
+// ---------------------------------------------------------------------------
+// Today item blocked check — a single source of truth so the Hôm nay screen
+// and the AI Trợ lý summary (WP3.5-A2 clarity milestone) never diverge on
+// what counts as "blocked". Mirrors a Today item's own Door when one exists,
+// otherwise its own stated offerBlocked fact.
+// ---------------------------------------------------------------------------
+
+export function isTodayItemBlocked(todayId: TodayQueueId): boolean {
+  const manifestItem = TODAY_QUEUE_MANIFEST[todayId];
+  if (manifestItem.doorId) {
+    return getDoorBlockers(manifestItem.doorId)?.blocked ?? TODAY_QUEUE_DETAILS[todayId].offerBlocked;
+  }
+  return TODAY_QUEUE_DETAILS[todayId].offerBlocked;
 }

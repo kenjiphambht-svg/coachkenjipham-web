@@ -14,7 +14,7 @@
 // @vitejs/plugin-react, so Vitest's esbuild JSX transform runs in classic mode.
 // ============================================================
 
-import React, { useMemo, useState, type ReactNode } from 'react';
+import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
 
 import {
@@ -30,6 +30,7 @@ import {
 } from '@/lib/wp3-5/review-selectors';
 import type { JourneyId } from '@/lib/wp3-5/review-manifest';
 import type { JourneyRecord, JourneyStage } from '@/lib/wp3-5/review-universe';
+import { DetailSection as Section, Badge, IdTag } from './founder-review-ui';
 
 type StageFilter =
   | 'all'
@@ -184,16 +185,12 @@ export default function JourneyReview({ scenario, initialJourneyId = null }: Jou
                   }`}
                 >
                   <span className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="font-medium text-e26-text">
+                    <span className="font-sans text-[14px] font-semibold text-e26-text">
                       {journey.id} · {journey.productLine}
                     </span>
-                    {journey.blocked && (
-                      <span className="border border-e26-border px-2 py-0.5 text-[11px] text-e26-text-2">
-                        Đang bị chặn
-                      </span>
-                    )}
+                    {journey.blocked && <Badge variant="blocked">Đang bị chặn</Badge>}
                   </span>
-                  <span className="block text-e26-text-2 mt-1">
+                  <span className="block text-e26-text-2 text-[12px] font-medium mt-0.5">
                     {relationship?.displayName} · {journey.relationshipId} · {STAGE_LABEL[journey.stage]}
                   </span>
                 </button>
@@ -215,14 +212,6 @@ export default function JourneyReview({ scenario, initialJourneyId = null }: Jou
   );
 }
 
-function Section({ title, children }: { title: string; children: ReactNode }) {
-  return (
-    <section className="mb-6">
-      <h3 className="font-sans text-[12px] uppercase tracking-[0.12em] text-e26-text-2 mb-2">{title}</h3>
-      {children}
-    </section>
-  );
-}
 
 function JourneyDetail({ journey, scenario }: { journey: JourneyRecord; scenario: ScenarioPreset }) {
   const relationship = resolveRelationshipContext(journey.relationshipId);
@@ -238,22 +227,24 @@ function JourneyDetail({ journey, scenario }: { journey: JourneyRecord; scenario
 
   return (
     <div data-testid={`journey-detail-${journey.id}`}>
-      <h2 className="font-serif text-[22px] text-e26-text mb-1">
+      <h2 className="font-serif text-[24px] font-bold text-e26-black mb-1">
         {journey.id} · {journey.productLine}
       </h2>
-      <p className="font-sans text-[13px] text-e26-text-2 mb-4">
+      <p className="font-sans text-[13px] font-semibold text-e26-text-2 mb-4">
         {relationship?.displayName} · {journey.relationshipId} · {STAGE_LABEL[journey.stage]}
         {siblingCount > 1 && ` · 1 trong ${siblingCount} hành trình của Quan hệ này`}
       </p>
 
       <Section title="Now / Next / Owner / Due / Blocked">
-        <div className="border border-e26-border bg-e26-white p-4 space-y-1">
-          <p className="font-sans text-[14px] text-e26-text">Now: {journey.now}</p>
-          <p className="font-sans text-[14px] text-e26-text">Next: {journey.next}</p>
-          <p className="font-sans text-[13px] text-e26-text-2">
+        <div
+          className={`border p-4 space-y-1 ${journey.blocked ? 'border-l-4 border-l-e26-black border-e26-border bg-e26-white' : 'border-e26-border bg-e26-white'}`}
+        >
+          <p className="font-sans text-[14px] font-medium text-e26-text">Now: {journey.now}</p>
+          <p className="font-sans text-[14px] font-medium text-e26-text">Next: {journey.next}</p>
+          <p className="font-sans text-[13px] font-medium text-e26-text-2">
             Owner: {journey.owner} · Due: {journey.due}
           </p>
-          <p className="font-sans text-[13px] text-e26-text-2" data-testid={`journey-blocked-${journey.id}`}>
+          <p className="font-sans text-[13px] font-semibold text-e26-text" data-testid={`journey-blocked-${journey.id}`}>
             Blocked: {journey.blocked ? `Có — ${journey.blockedReason}` : 'Không'}
           </p>
         </div>
@@ -321,11 +312,16 @@ function JourneyDetail({ journey, scenario }: { journey: JourneyRecord; scenario
       <Section title="Cánh cửa tiếp theo">
         {door ? (
           <>
-            <p className="font-sans text-[13px] text-e26-text-2">
-              {door.id} · {door.proposedDoor} · {door.proposalState}
-            </p>
-            <p className="font-sans text-[13px] text-e26-text-2 mt-1" data-testid={`journey-door-${journey.id}`}>
-              {doorEligibility?.eligible ? 'Đủ điều kiện' : 'Đang bị chặn'}
+            <div className="flex items-center gap-2 mb-1">
+              <IdTag>{door.id}</IdTag>
+              <span data-testid={`journey-door-${journey.id}`}>
+                <Badge variant={doorEligibility?.eligible ? 'eligible' : 'blocked'}>
+                  {doorEligibility?.eligible ? 'Đủ điều kiện' : 'Đang bị chặn'}
+                </Badge>
+              </span>
+            </div>
+            <p className="font-sans text-[13px] font-medium text-e26-text">
+              {door.proposedDoor} · {door.proposalState}
             </p>
             {doorEligibility && doorEligibility.reasons.length > 0 && (
               <ul className="mt-1 list-disc list-inside font-sans text-[12px] text-e26-text-2">

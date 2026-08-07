@@ -17,7 +17,7 @@
 // of TodayReview.tsx — Vitest's esbuild JSX transform (no
 // @vitejs/plugin-react in this repo's vitest.config.mts) needs it in scope;
 // Next's own automatic runtime does not.
-import React, { useMemo, useState, type ReactNode } from 'react';
+import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
 
 import {
@@ -46,6 +46,7 @@ import {
   ORDER_PAYMENT_TRUTH_RECORDS,
   PUBLICATION_ENTITLEMENT_TRUTH_RECORDS,
 } from '@/lib/wp3-5/review-universe';
+import { DetailSection as Section, Badge, IdTag } from './founder-review-ui';
 
 type JourneyStateFilter = 'all' | 'open' | 'closed';
 type OpenCareFilter = 'all' | 'has_open_care' | 'no_open_care';
@@ -155,10 +156,10 @@ export default function RelationshipReview({ scenario, initialRelationshipId = n
                     selectedId === id ? 'border-e26-gold-deep bg-e26-cream' : 'border-e26-border bg-e26-white hover:bg-e26-cream'
                   }`}
                 >
-                  <span className="font-medium text-e26-text">
+                  <span className="block font-sans text-[14px] font-semibold text-e26-text">
                     {rec.displayName} · {rec.id}
                   </span>
-                  <span className="block text-e26-text-2 mt-1">{rec.journeyTruth}</span>
+                  <span className="block text-e26-text-2 text-[12px] font-medium mt-0.5">{rec.journeyTruth}</span>
                 </button>
               </li>
             );
@@ -175,11 +176,11 @@ export default function RelationshipReview({ scenario, initialRelationshipId = n
 
         {selected && (
           <div data-testid={`relationship-detail-${selected.id}`}>
-            <h2 className="font-serif text-[22px] text-e26-text mb-1">
+            <h2 className="font-serif text-[24px] font-bold text-e26-black mb-1">
               {selected.displayName} · {selected.id}
             </h2>
-            <p className="font-sans text-[13px] text-e26-text-2 mb-1">{selected.journeyTruth}</p>
-            <p className="font-sans text-[14px] text-e26-text mt-2 mb-6">{selected.currentOperatingTruth}</p>
+            <p className="font-sans text-[13px] font-semibold text-e26-text-2 mb-1">{selected.journeyTruth}</p>
+            <p className="font-sans text-[15px] font-medium text-e26-text mt-2 mb-6">{selected.currentOperatingTruth}</p>
 
             <RelationshipJourneys relationshipId={selected.id} scenario={scenario} />
             <RelationshipCare relationshipId={selected.id} scenario={scenario} />
@@ -196,14 +197,6 @@ export default function RelationshipReview({ scenario, initialRelationshipId = n
   );
 }
 
-function Section({ title, children }: { title: string; children: ReactNode }) {
-  return (
-    <section className="mb-6">
-      <h3 className="font-sans text-[12px] uppercase tracking-[0.12em] text-e26-text-2 mb-2">{title}</h3>
-      {children}
-    </section>
-  );
-}
 
 function RelationshipJourneys({ relationshipId, scenario }: { relationshipId: RelationshipId; scenario: ScenarioPreset }) {
   const journeys = getJourneysForRelationship(relationshipId);
@@ -213,20 +206,23 @@ function RelationshipJourneys({ relationshipId, scenario }: { relationshipId: Re
         {journeys.map((journey) => (
           <div key={journey.id} className="border border-e26-border bg-e26-white p-3" data-testid={`journey-${journey.id}`}>
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="font-serif text-[15px] text-e26-text">
+              <span className="font-sans text-[15px] font-semibold text-e26-text">
                 {journey.id} · {journey.productLine}
               </span>
-              <Link
-                href={{ pathname: '/founder-review/hanh-trinh', query: buildSafeSyntheticQuery({ scenario, journey: journey.id }) }}
-                className="font-sans text-[12px] underline underline-offset-4 text-e26-text-2 hover:text-e26-gold-deep"
-              >
-                Mở →
-              </Link>
+              <div className="flex items-center gap-2">
+                {journey.blocked && <Badge variant="blocked">Đang bị chặn</Badge>}
+                <Link
+                  href={{ pathname: '/founder-review/hanh-trinh', query: buildSafeSyntheticQuery({ scenario, journey: journey.id }) }}
+                  className="font-sans text-[12px] font-semibold underline underline-offset-4 text-e26-text-2 hover:text-e26-gold-deep"
+                >
+                  Mở →
+                </Link>
+              </div>
             </div>
-            <p className="font-sans text-[13px] text-e26-text-2 mt-1">Now: {journey.now}</p>
-            <p className="font-sans text-[13px] text-e26-text-2 mt-1">Next: {journey.next}</p>
-            <p className="font-sans text-[12px] text-e26-text-2 mt-1">
-              Owner: {journey.owner} · Due: {journey.due} · Blocked: {journey.blocked ? 'Có' : 'Không'}
+            <p className="font-sans text-[13px] font-medium text-e26-text mt-1">Now: {journey.now}</p>
+            <p className="font-sans text-[13px] font-medium text-e26-text mt-1">Next: {journey.next}</p>
+            <p className="font-sans text-[12px] font-medium text-e26-text-2 mt-1">
+              Owner: {journey.owner} · Due: {journey.due}
             </p>
           </div>
         ))}
@@ -349,11 +345,16 @@ function RelationshipDoor({ relationshipId }: { relationshipId: RelationshipId }
     <Section title="Cánh cửa tiếp theo">
       {door ? (
         <>
-          <p className="font-sans text-[13px] text-e26-text-2">
-            {door.id} · {door.proposedDoor} · {door.proposalState}
-          </p>
-          <p className="font-sans text-[13px] text-e26-text-2 mt-1" data-testid={`door-status-${relationshipId}`}>
-            {eligibility?.eligible ? 'Đủ điều kiện' : 'Đang bị chặn'}
+          <div className="flex items-center gap-2 mb-1">
+            <IdTag>{door.id}</IdTag>
+            <span data-testid={`door-status-${relationshipId}`}>
+              <Badge variant={eligibility?.eligible ? 'eligible' : 'blocked'}>
+                {eligibility?.eligible ? 'Đủ điều kiện' : 'Đang bị chặn'}
+              </Badge>
+            </span>
+          </div>
+          <p className="font-sans text-[13px] font-medium text-e26-text">
+            {door.proposedDoor} · {door.proposalState}
           </p>
           {eligibility && eligibility.reasons.length > 0 && (
             <ul className="mt-1 list-disc list-inside font-sans text-[12px] text-e26-text-2">

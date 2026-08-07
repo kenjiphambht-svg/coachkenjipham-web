@@ -23,7 +23,7 @@ import { describe, expect, it } from 'vitest';
 import { PRIORITY_BUCKETS, TODAY_QUEUE_MANIFEST, TODAY_QUEUE_IDS } from '@/lib/wp3-5/review-manifest';
 import { SCENARIO_PRESET_ITEMS, SCENARIO_PRESETS } from '@/lib/wp3-5/review-universe';
 
-import TodayReview from './TodayReview';
+import TodayReview, { type TodayReviewProps } from './TodayReview';
 import ReviewItemDrawer from './ReviewItemDrawer';
 import FounderReviewShell from './FounderReviewShell';
 import {
@@ -32,13 +32,34 @@ import {
   INITIAL_REVIEW_OVERLAY_STATE,
   type ReviewOverlayState,
 } from './ReviewStateContext';
+import { ReviewPreferencesProvider } from './SessionPreferencesContext';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+/**
+ * WP3.5-A2 clarity milestone: ReviewStateProvider and ReviewPreferencesProvider
+ * now live in FounderReviewShell (shared across all four workspaces, reachable
+ * from AI Trợ lý and Thiết lập phiên), so TodayReview only *consumes* them.
+ * Tests that render TodayReview standalone (not wrapped in the Shell) supply
+ * both providers directly through this helper.
+ */
+function renderToday(props: TodayReviewProps): string {
+  return renderToStaticMarkup(
+    <ReviewPreferencesProvider>
+      <ReviewStateProvider>
+        <TodayReview {...props} />
+      </ReviewStateProvider>
+    </ReviewPreferencesProvider>
+  );
+}
+
 function bucketOrderIn(html: string): string[] {
   // renderToStaticMarkup HTML-escapes attribute values (e.g. "&" -> "&amp;");
-  // unescape before comparing against PRIORITY_BUCKETS' literal "&".
-  const matches = [...html.matchAll(/data-testid="bucket-([^"]+)"/g)];
+  // unescape before comparing against PRIORITY_BUCKETS' literal "&". The
+  // negative lookahead excludes the sibling `bucket-toggle-<bucket>` testid
+  // (the WP3.5-A2 clarity milestone's expand/collapse control), which would
+  // otherwise also match the `bucket-` prefix.
+  const matches = [...html.matchAll(/data-testid="bucket-(?!toggle-)([^"]+)"/g)];
   return matches.map((m) => m[1].replace(/&amp;/g, '&'));
 }
 
@@ -53,7 +74,7 @@ function itemIdsIn(html: string): string[] {
 
 describe('1. Six buckets render in locked order', () => {
   it('peak scenario renders all six bucket sections in the locked order', () => {
-    const html = renderToStaticMarkup(<TodayReview initialScenario="peak" />);
+    const html = renderToday({ initialScenario: 'peak' });
     expect(bucketOrderIn(html)).toEqual([...PRIORITY_BUCKETS]);
   });
 });
@@ -64,7 +85,7 @@ describe('1. Six buckets render in locked order', () => {
 
 describe('2. Peak shows 18 items, exactly 3 per bucket', () => {
   it('holds', () => {
-    const html = renderToStaticMarkup(<TodayReview initialScenario="peak" />);
+    const html = renderToday({ initialScenario: 'peak' });
     const ids = itemIdsIn(html);
     expect(ids).toHaveLength(18);
     expect([...ids].sort()).toEqual([...TODAY_QUEUE_IDS].sort());
@@ -83,8 +104,8 @@ describe('2. Peak shows 18 items, exactly 3 per bucket', () => {
 describe('3. Scenario filter changes visible items deterministically', () => {
   it('each scenario renders exactly its locked item set, and repeated renders agree', () => {
     for (const scenario of SCENARIO_PRESETS) {
-      const htmlA = renderToStaticMarkup(<TodayReview initialScenario={scenario} />);
-      const htmlB = renderToStaticMarkup(<TodayReview initialScenario={scenario} />);
+      const htmlA = renderToday({ initialScenario: scenario });
+      const htmlB = renderToday({ initialScenario: scenario });
       expect([...itemIdsIn(htmlA)].sort()).toEqual([...SCENARIO_PRESET_ITEMS[scenario]].slice().sort());
       expect(itemIdsIn(htmlA)).toEqual(itemIdsIn(htmlB));
     }
@@ -97,7 +118,7 @@ describe('3. Scenario filter changes visible items deterministically', () => {
 
 describe('4. Safety & Recovery appears before Next Door', () => {
   it('in the rendered bucket order', () => {
-    const html = renderToStaticMarkup(<TodayReview initialScenario="peak" />);
+    const html = renderToday({ initialScenario: 'peak' });
     const order = bucketOrderIn(html);
     expect(order.indexOf('Safety & Recovery')).toBeLessThan(order.indexOf('Next Door Review'));
   });
@@ -109,7 +130,7 @@ describe('4. Safety & Recovery appears before Next Door', () => {
 
 describe('5. Q-017 shows no Door proposal', () => {
   it('the card itself flags no formal Door proposal', () => {
-    const html = renderToStaticMarkup(<TodayReview initialScenario="peak" />);
+    const html = renderToday({ initialScenario: 'peak' });
     expect(html).toContain('data-testid="no-door-Q-017"');
   });
 
@@ -129,7 +150,7 @@ describe('5. Q-017 shows no Door proposal', () => {
 
 describe('6. SYN-002 duplicate queue items remain separate', () => {
   it('Q-003 and Q-007 both render as distinct cards tagged with SYN-002', () => {
-    const html = renderToStaticMarkup(<TodayReview initialScenario="peak" />);
+    const html = renderToday({ initialScenario: 'peak' });
     expect(html).toContain('data-testid="today-item-Q-003" data-relationship="SYN-002"');
     expect(html).toContain('data-testid="today-item-Q-007" data-relationship="SYN-002"');
   });
@@ -137,7 +158,7 @@ describe('6. SYN-002 duplicate queue items remain separate', () => {
 
 describe('7. SYN-016 duplicate queue items remain separate', () => {
   it('Q-015 and Q-018 both render as distinct cards tagged with SYN-016', () => {
-    const html = renderToStaticMarkup(<TodayReview initialScenario="peak" />);
+    const html = renderToday({ initialScenario: 'peak' });
     expect(html).toContain('data-testid="today-item-Q-015" data-relationship="SYN-016"');
     expect(html).toContain('data-testid="today-item-Q-018" data-relationship="SYN-016"');
   });
@@ -250,15 +271,26 @@ const FILES_TO_SCAN = [
   'FounderReviewShell.tsx',
   'FounderReviewPlaceholder.tsx',
   'RelationshipReview.tsx',
+  'JourneyReview.tsx',
+  'CareReview.tsx',
+  'founder-review-ui.tsx',
+  'SessionPreferencesContext.tsx',
+  'AIAssistantPanel.tsx',
+  'SessionSettingsPanel.tsx',
 ];
 
 describe('17. No persistence API is used', () => {
-  it('scans every founder-review component for storage APIs', () => {
+  it('scans every founder-review component for actual storage API calls', () => {
+    // Requires real usage syntax (a following `.` or `[`), not just the bare
+    // word — SessionSettingsPanel.tsx's own disclosure text tells the
+    // Founder "Không dùng localStorage, cookie..." in plain prose, which a
+    // bare-word scan would false-positive on exactly like it's trying to
+    // detect the *absence* of.
     for (const file of FILES_TO_SCAN) {
       const source = stripComments(readFileSync(join(__dirname, file), 'utf-8'));
-      expect(/localStorage/.test(source)).toBe(false);
-      expect(/sessionStorage/.test(source)).toBe(false);
-      expect(/indexedDB/i.test(source)).toBe(false);
+      expect(/\blocalStorage\s*[.[]/.test(source)).toBe(false);
+      expect(/\bsessionStorage\s*[.[]/.test(source)).toBe(false);
+      expect(/\bindexedDB\s*[.[]/i.test(source)).toBe(false);
       expect(/document\.cookie/.test(source)).toBe(false);
     }
   });
@@ -281,7 +313,7 @@ describe('18. No network write occurs', () => {
 
 describe('19. No score/probability/profile language appears', () => {
   it('neither the rendered peak screen nor the source files use score/probability/profile wording', () => {
-    const html = renderToStaticMarkup(<TodayReview initialScenario="peak" />);
+    const html = renderToday({ initialScenario: 'peak' });
     expect(/score/i.test(html)).toBe(false);
     expect(/probability/i.test(html)).toBe(false);
     expect(/profile/i.test(html)).toBe(false);

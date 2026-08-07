@@ -1,9 +1,9 @@
 // ============================================================
 // /founder-review/wp3-5-a — Founder Review Preview (Hôm nay).
 //
-// Package C3: complete Hôm nay screen — six locked priority buckets,
-// filters, item drawer with cross-links, local-only simulated actions.
-// Hành trình and Chăm sóc remain the Package C2 placeholders.
+// Complete Hôm nay screen — six locked priority buckets, filters, item
+// drawer with cross-links, local-only simulated actions, AI Trợ lý and
+// Thiết lập phiên (both provided by FounderReviewShell).
 //
 // Guarded server-side by founderReviewGuard — flag off => notFound (404).
 // No Supabase, no admin auth, no network, no writes.
@@ -14,6 +14,8 @@ import Link from 'next/link';
 
 import FounderReviewShell from '@/components/founder-review/FounderReviewShell';
 import TodayReview from '@/components/founder-review/TodayReview';
+import { StatTile, ActionLink } from '@/components/founder-review/founder-review-ui';
+import { useReviewPreferences } from '@/components/founder-review/SessionPreferencesContext';
 import { founderReviewGuard } from '@/lib/wp3-5/founder-review-guard';
 import {
   parseSyntheticQuery,
@@ -43,6 +45,21 @@ interface PageProps {
   readonly eligibleDoorCount: number;
 }
 
+function TodaySummaryMetrics(props: Omit<PageProps, 'scenario'>) {
+  const { state: prefs } = useReviewPreferences();
+  if (!prefs.showSummaryMetrics) return null;
+  return (
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6 mb-6" data-testid="summary-metrics">
+      <StatTile label="Việc trong Hôm nay" value={props.todayItemCount} />
+      <StatTile label="Quan hệ" value={props.relationshipCount} />
+      <StatTile label="Hành trình" value={props.journeyCount} />
+      <StatTile label="Care đang mở" value={props.openCareCount} risk={props.openCareCount > 0} />
+      <StatTile label="Lời hứa quá hạn" value={props.overduePromiseCount} risk={props.overduePromiseCount > 0} />
+      <StatTile label="Cánh cửa đủ điều kiện" value={props.eligibleDoorCount} />
+    </div>
+  );
+}
+
 export default function FounderReviewWp35APage({
   scenario,
   todayItemCount,
@@ -54,30 +71,19 @@ export default function FounderReviewWp35APage({
 }: PageProps) {
   return (
     <FounderReviewShell title="Hôm nay" scenario={scenario} currentPathname={PATHNAME}>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6 mb-6">
-        {[
-          { label: 'Việc trong Hôm nay', value: todayItemCount },
-          { label: 'Quan hệ', value: relationshipCount },
-          { label: 'Hành trình', value: journeyCount },
-          { label: 'Care đang mở', value: openCareCount },
-          { label: 'Lời hứa quá hạn', value: overduePromiseCount },
-          { label: 'Cánh cửa đủ điều kiện', value: eligibleDoorCount },
-        ].map((stat) => (
-          <div key={stat.label} className="border border-e26-border bg-e26-cream px-3 py-2">
-            <p className="font-sans text-[11px] uppercase tracking-[0.1em] text-e26-text-2">{stat.label}</p>
-            <p className="font-serif text-[20px] text-e26-text">{stat.value}</p>
-          </div>
-        ))}
-      </div>
+      <TodaySummaryMetrics
+        todayItemCount={todayItemCount}
+        relationshipCount={relationshipCount}
+        journeyCount={journeyCount}
+        openCareCount={openCareCount}
+        overduePromiseCount={overduePromiseCount}
+        eligibleDoorCount={eligibleDoorCount}
+      />
 
       <div className="flex flex-wrap gap-3 mb-8">
         {OTHER_AREAS.map((area) => (
-          <Link
-            key={area.href}
-            href={{ pathname: area.href, query: buildSafeSyntheticQuery({ scenario }) }}
-            className="border border-e26-border px-4 py-2 font-sans text-[13px] text-e26-text hover:text-e26-gold-deep hover:border-e26-gold-deep transition-colors"
-          >
-            {area.label} →
+          <Link key={area.href} href={{ pathname: area.href, query: buildSafeSyntheticQuery({ scenario }) }}>
+            <ActionLink>{area.label} →</ActionLink>
           </Link>
         ))}
       </div>

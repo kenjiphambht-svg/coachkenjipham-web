@@ -33,7 +33,7 @@ const selectClass =
 export default function ReviewFilters({ filters, owners, onChange }: ReviewFiltersProps) {
   return (
     <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center mb-5" aria-label="Bộ lọc Hôm nay">
-      <label className="flex flex-col gap-1 font-sans text-[12px] text-e26-text-2">
+      <label className="flex flex-col gap-1 font-sans text-[12px] font-semibold text-e26-text-2">
         Scenario
         <select
           className={selectClass}
@@ -48,7 +48,7 @@ export default function ReviewFilters({ filters, owners, onChange }: ReviewFilte
         </select>
       </label>
 
-      <label className="flex flex-col gap-1 font-sans text-[12px] text-e26-text-2">
+      <label className="flex flex-col gap-1 font-sans text-[12px] font-semibold text-e26-text-2">
         Bucket
         <select
           className={selectClass}
@@ -66,7 +66,7 @@ export default function ReviewFilters({ filters, owners, onChange }: ReviewFilte
         </select>
       </label>
 
-      <label className="flex flex-col gap-1 font-sans text-[12px] text-e26-text-2">
+      <label className="flex flex-col gap-1 font-sans text-[12px] font-semibold text-e26-text-2">
         Owner
         <select
           className={selectClass}
@@ -82,7 +82,7 @@ export default function ReviewFilters({ filters, owners, onChange }: ReviewFilte
         </select>
       </label>
 
-      <label className="flex flex-col gap-1 font-sans text-[12px] text-e26-text-2">
+      <label className="flex flex-col gap-1 font-sans text-[12px] font-semibold text-e26-text-2">
         Blocked
         <select
           className={selectClass}
@@ -95,7 +95,7 @@ export default function ReviewFilters({ filters, owners, onChange }: ReviewFilte
         </select>
       </label>
 
-      <label className="flex flex-col gap-1 font-sans text-[12px] text-e26-text-2 flex-1 min-w-[180px]">
+      <label className="flex flex-col gap-1 font-sans text-[12px] font-semibold text-e26-text-2 flex-1 min-w-[180px]">
         Tìm Quan hệ (tên hoặc ID)
         <input
           type="text"
