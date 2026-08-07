@@ -14,10 +14,11 @@
 
 This document turns the G1 audit into an approval-gated execution plan. It does not approve code work. Before implementation, the task must supply the Page Contract, exact copy and every approval named in the relevant row or brief seed.
 
-The portfolio contains **28 route nodes**:
+The portfolio contains **27 route nodes** (was 28; updated post-FD-2026-08-02):
 
-- 22 source-served routes, including `/404`;
-- two technical redirect nodes, `/old-path` and its unresolved target `/new-path`;
+- 19 source-served routes, including `/404` (was 22 — `/kidbook`, `/thanh-toan-goi-1` and `/thanh-toan-goi-2` are now redirect-only, see C-17);
+- three retired-route redirect nodes (`/kidbook`, `/thanh-toan-goi-1`, `/thanh-toan-goi-2` → `/an-pham-ban-sac-hat-mam`);
+- one resolved/closed technical redirect node (`/old-path` → `/new-path` was removed from `vercel.json`, not merely held);
 - four Planned/Missing route families named by governance or historical evidence.
 
 The transformation sequence sits **under the active M0–M6 roadmap**. It neither replaces that roadmap nor revives the superseded 13-phase roadmap. M6 indexing remains a separately approved final gate.
@@ -64,13 +65,12 @@ Classification combines baseline source/configuration inspection, the four other
 | `/dieu-essence-khong-hua` | Boundary/trust page | Serviceable and well placed; some absolute privacy/AI language may exceed operations | **KEEP / REFINE — P2b** | Strong promises can conflict with actual handling → operationally true, plain-language boundaries | Gate: approved boundary copy, C-11 and verified privacy operations. |
 | `/chinh-sach-rieng-tu` | Privacy/legal support | Serviceable copy; implementation and contact truth are inconsistent; observed noindex gap | **RESTRUCTURE — P2a, blocked** | Policy statements are not fully reconciled to actual systems → accurate data map, rights, contact and retention disclosure | Gate: legal/operational review, data inventory, C-08 receiver decision and explicit pre-M6 noindex task. |
 | `/lien-he` | General support, not an offer | Form is a client-side mailto to legacy Gmail and can imply successful submission | **RESTRUCTURE — P2a, blocked** | Unreliable contact state → honest, accessible contact path to the approved public receiver | Gate: C-08 receiver and either backend specification or explicit honest-mailto contract; privacy/error/success behavior. Keep partner link separate. |
-| `/kidbook` | Legacy child sales funnel | Live legacy implementation; explicitly outside the new journey | **LEGACY CONTAINMENT — excluded** | Legacy continues to exist → no new journey, CTA, migration or authority derived from it | Preserve. Any child-data, privacy, noindex or retirement action requires its own approved task. |
-| `/thanh-toan-goi-1` | Legacy private payment instruction | Live manual/static payment evidence; not reusable | **LEGACY CONTAINMENT — excluded** | Historical payment surface → remain outside new flows | Preserve. Payment/privacy remediation requires a separate task; never link from new journey. |
-| `/thanh-toan-goi-2` | Legacy private payment/disabled booking | Live placeholder/manual evidence; not a canonical booking system | **LEGACY CONTAINMENT — excluded** | Historical payment/booking UI → remain outside new flows | Preserve. No inference of provider, booking or delivery authority. |
+| `/kidbook` | Retired legacy child sales funnel | **RETIRED (FD-2026-08-02, C-17)** — source archived to `archive/legacy-routes/`; 301 → `/an-pham-ban-sac-hat-mam` via vercel.json | **LEGACY RETIRED — approved, redirect live** | No live/pending orders (Founder-confirmed) → one-pass retirement was safe; no phased migration needed | Done via the P8-adjacent retirement PR (see below). Post-deploy: verify the redirect with `curl -I` on production. |
+| `/thanh-toan-goi-1` | Retired legacy private payment instruction | **RETIRED (FD-2026-08-02, C-17)** — source archived; 301 → `/an-pham-ban-sac-hat-mam` | **LEGACY RETIRED — approved, redirect live** | No live/pending orders → safe to retire without a phased migration | Precondition met at merge time: Tally form `tally.so/r/1ANjJ4` must not "redirect on completion" to this route. |
+| `/thanh-toan-goi-2` | Retired legacy private payment/disabled booking | **RETIRED (FD-2026-08-02, C-17)** — source archived; 301 → `/an-pham-ban-sac-hat-mam` | **LEGACY RETIRED — approved, redirect live** | No live/pending orders → safe to retire without a phased migration | Precondition met at merge time: Tally form `tally.so/r/Y5J2VN` must not "redirect on completion" to this route. |
 | `/ai-startup` | Independent partner dossier | Implemented; consumer separation is L0, rewrite/noindex gaps remain | **PARTNER ASSET — hold rewrite** | Partner narrative can leak into consumer journey and lacks observed noindex → isolated, explicitly noindex partner evidence | Gate: scoped partner Page Contract/rewrite and explicit runtime noindex approval. Do not add to consumer navigation. |
 | `/404` | Technical recovery page | Implemented but generic/English and visually outside the governed shell | **REFINE TECHNICAL — P8** | Dead end → concise Vietnamese recovery into canonical root/discovery | Dependency: final Villa/shared shell. Gate: technical Page Contract; no sitemap role. |
-| `/old-path` | Configured legacy redirect alias | Runtime config exists; ownership/meaning unknown | **TECHNICAL HOLD — P8, blocked** | Permanent redirect points to an unresolved target → verified target or explicit retirement decision | Gate: route owner, destination decision and runtime verification. G1 does not edit config. |
-| `/new-path` | Unresolved redirect target | No source page observed; not authority-ready | **TECHNICAL HOLD — P8, blocked** | Target is assumed by config but absent in source → define or replace only under an approved route decision | Gate: route owner/Page Contract or redirect correction scope. |
+| `/old-path` / `/new-path` | ~~Configured legacy redirect alias, unresolved target~~ | **RESOLVED (FD-2026-08-02, FD-A)** — the unowned `/old-path → /new-path` redirect was removed from `vercel.json` in the same change that added the three legacy-retirement redirects; it had no corresponding source route in the baseline. | **CLOSED — removed, not merely held** | — | No further action. Superseded the prior P8 hold. |
 | `/ve-essence` | Historical trust/partner candidate | No source route and no current Page Contract | **PLANNED/MISSING — future** | Historical name only → remain absent until role and overlap are approved | Gate: Founder-approved role, Page Contract and relationship to current trust/partner nodes. |
 | `/goc-doc` | Historical knowledge-hub candidate | No source route, content model or M6 decision | **PLANNED/MISSING — future** | Historical name only → remain absent until editorial system exists | Gate: Page Contract, content governance, ownership and M6 inclusion policy. |
 | `/an-pham/[random-slug]` | Possible private publication delivery family | No dynamic source/access architecture | **PLANNED/MISSING PRIVATE — future** | Guessable route concept without protection → secure, private delivery only if approved | Gate: access control, non-guessability, child/privacy, delivery and noindex architecture. Never public sitemap. |
@@ -78,7 +78,7 @@ Classification combines baseline source/configuration inspection, the four other
 
 ### Classification count
 
-The count is node-based and totals 28:
+The count is node-based and totals 27 (post-FD-2026-08-02; was 28):
 
 | Class | Nodes |
 |---|---:|
@@ -88,9 +88,9 @@ The count is node-based and totals 28:
 | RESTRUCTURE | 3 |
 | PRIVATE FLOW REBUILD | 2 |
 | HOLD offer candidates | 4 |
-| LEGACY CONTAINMENT | 3 |
+| LEGACY RETIRED (was LEGACY CONTAINMENT; superseded by C-17) | 3 |
 | PARTNER ASSET | 1 |
-| TECHNICAL HOLD | 2 |
+| CLOSED (was TECHNICAL HOLD 2 nodes; /old-path+/new-path resolved as one merged, closed row) | 1 |
 | PLANNED/MISSING | 4 |
 
 ### Cross-page quality and reuse findings
@@ -111,7 +111,7 @@ This is a dependency sequence, not permission to start code:
 5. **P5 — Hạt Mầm Private Chain:** design and build the wholly new C-06 form → payment → confirmation → delivery → email chain.
 6. **P6 — Parent Discovery:** refine `/ban-sac-cua-con` and restructure the Hạt Mầm public landing; activate only after P5 passes.
 7. **P7 — Held Offer Candidates:** treat each candidate as an independent future decision; no assumed order or shared approval.
-8. **P8 — Technical Housekeeping:** refine `/404` and resolve `/old-path` → `/new-path` only after route ownership is decided.
+8. **P8 — Technical Housekeeping:** refine `/404`. The `/old-path` → `/new-path` redirect is already resolved (removed, FD-2026-08-02) — no longer a P8 dependency.
 9. **M6 — Search Indexing Launch:** remains last, separate and Founder-approved; no preceding package opens indexing.
 
 Urgent observed gaps—root/partner noindex inconsistency, the non-conforming Lặng flow and visible crisis/payment placeholders—are approval-gated runtime risks. G1 records them; it does not silently remediate them.
@@ -216,7 +216,7 @@ These are seeds, not Page Contracts. A runtime task must replace every “task-a
 | Desired visitor shift | From a dead end to a clear return to the canonical Villa or discovery route. |
 | Primary message | Concise task-approved Vietnamese recovery language. |
 | Primary CTA state | Canonical root as the primary return; approved discovery links only if useful. |
-| Required sections/functions | Essence shell, status clarity, accessible links; explicit decision for `/old-path` and `/new-path`. |
+| Required sections/functions | Essence shell, status clarity, accessible links. (`/old-path`/`/new-path` no longer a dependency — resolved by FD-2026-08-02.) |
 | Content authority | Approved technical Page Contract and current route truth. |
 | Image mode | No image required; if used, non-Kenji imagery follows FLUX.2 Klein 9B. |
 | Typography mode | Functional canonical roles; error status and recovery action must be immediate. |
