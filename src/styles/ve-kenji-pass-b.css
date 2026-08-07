@@ -96,7 +96,7 @@ main.text-e26-text:has(.ve-kenji-signal-tier-b)
   margin-bottom: 1.125rem;
 }
 
-/* S07 — Presence: reserve the final 4:3 image bay and integrate the ledger. */
+/* S07 — Presence: let each approved source keep its native editorial composition. */
 main.text-e26-text:has(.ve-kenji-signal-tier-b) > section:nth-of-type(6) {
   padding-block: clamp(7rem, 10vw, 9.5rem);
 }
@@ -119,8 +119,16 @@ main.text-e26-text:has(.ve-kenji-signal-tier-b)
 main.text-e26-text:has(.ve-kenji-signal-tier-b)
   > section:nth-of-type(6)
   figure {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 4 / 5;
   width: 100%;
+}
+
+@media (min-width: 768px) {
+  main.text-e26-text:has(.ve-kenji-signal-tier-b)
+    > section:nth-of-type(6)
+    figure {
+    aspect-ratio: 16 / 9;
+  }
 }
 
 main.text-e26-text:has(.ve-kenji-signal-tier-b)
