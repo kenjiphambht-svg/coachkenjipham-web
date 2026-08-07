@@ -3,11 +3,11 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const sql = readFileSync(
-  resolve(process.cwd(), 'supabase/migrations/0028_ai_knowledge_library_foundation.sql'),
+  resolve(process.cwd(), 'supabase/migrations/20260807133314_ai_knowledge_library_foundation.sql'),
   'utf8'
 );
 const rollback = readFileSync(
-  resolve(process.cwd(), 'supabase/rollbacks/0028_ai_knowledge_library_foundation_down.sql'),
+  resolve(process.cwd(), 'supabase/rollbacks/20260807133314_ai_knowledge_library_foundation_down.sql'),
   'utf8'
 );
 
