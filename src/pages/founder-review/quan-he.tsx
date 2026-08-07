@@ -15,31 +15,35 @@ import type { GetServerSideProps } from 'next';
 import FounderReviewShell from '@/components/founder-review/FounderReviewShell';
 import RelationshipReview from '@/components/founder-review/RelationshipReview';
 import { founderReviewGuard } from '@/lib/wp3-5/founder-review-guard';
-import { parseSyntheticQuery, type ScenarioPreset } from '@/lib/wp3-5/review-selectors';
+import { parseSyntheticQuery, type ProductLensId, type RelationshipTabId, type ScenarioPreset } from '@/lib/wp3-5/review-selectors';
 import type { RelationshipId } from '@/lib/wp3-5/review-manifest';
 
 const PATHNAME = '/founder-review/quan-he';
 
 interface PageProps {
   readonly scenario: ScenarioPreset;
+  readonly product: ProductLensId;
   readonly initialRelationshipId: RelationshipId | null;
+  readonly initialTab: RelationshipTabId;
 }
 
-export default function FounderReviewQuanHePage({ scenario, initialRelationshipId }: PageProps) {
+export default function FounderReviewQuanHePage({ scenario, product, initialRelationshipId, initialTab }: PageProps) {
   return (
-    <FounderReviewShell title="Quan hệ" scenario={scenario} currentPathname={PATHNAME}>
-      <RelationshipReview scenario={scenario} initialRelationshipId={initialRelationshipId} />
+    <FounderReviewShell title="Quan hệ" scenario={scenario} product={product} currentPathname={PATHNAME} workspace="relationships" relationshipId={initialRelationshipId}>
+      <RelationshipReview scenario={scenario} product={product} initialRelationshipId={initialRelationshipId} initialTab={initialTab} />
     </FounderReviewShell>
   );
 }
 
 export const getServerSideProps: GetServerSideProps<PageProps> = founderReviewGuard<PageProps>(async (ctx) => {
-  const { scenario, relationship } = parseSyntheticQuery(ctx.query);
+  const { scenario, product, relationship, tab } = parseSyntheticQuery(ctx.query);
 
   return {
     props: {
       scenario,
+      product,
       initialRelationshipId: relationship ?? null,
+      initialTab: tab ?? 'overview',
     },
   };
 });

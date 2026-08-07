@@ -34,7 +34,7 @@ export interface ReviewPreferencesState {
 export const DEFAULT_REVIEW_PREFERENCES: ReviewPreferencesState = {
   density: 'comfortable',
   showSummaryMetrics: true,
-  bucketsExpandedByDefault: true,
+  bucketsExpandedByDefault: false,
   showGuidanceText: true,
 };
 

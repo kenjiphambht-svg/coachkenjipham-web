@@ -1,387 +1,221 @@
-// ============================================================
-// Quan hệ screen — WP3.5-A2 Package C3.
-//
-// Directory of all 16 Relationships with deterministic client-local search
-// and filters, plus a selected-Relationship detail panel showing every
-// linked entity kept as its own separate record (Journeys are never merged
-// into one combined mutable object — each JourneyRecord renders on its
-// own).
-//
-// `initialRelationshipId` is a validated id or null, resolved by the page's
-// getServerSideProps via review-selectors — an invalid query value never
-// reaches this component as anything other than null, so the directory
-// renders normally with no reflection of unvalidated input.
-// ============================================================
-
-// `React` is imported explicitly for the same reason documented at the top
-// of TodayReview.tsx — Vitest's esbuild JSX transform (no
-// @vitejs/plugin-react in this repo's vitest.config.mts) needs it in scope;
-// Next's own automatic runtime does not.
 import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
 
 import {
-  resolveRelationshipContext,
-  getJourneysForRelationship,
-  getTimelineEventsForRelationship,
-  getCareCasesForRelationship,
-  getPromisesForRelationship,
-  getDoorForRelationship,
-  getDoorBlockers,
   buildSafeSyntheticQuery,
+  getCareCasesForRelationship,
+  getDoorBlockers,
+  getDoorForRelationship,
+  getJourneysForRelationship,
+  getPromisesForRelationship,
+  getProductLinesForRelationship,
+  getTimelineEventsForRelationship,
+  relationshipMatchesProductLens,
+  resolveRelationshipContext,
+  type ProductLensId,
+  type RelationshipTabId,
   type ScenarioPreset,
 } from '@/lib/wp3-5/review-selectors';
+import { CONSENT_RECORD_IDS, RELATIONSHIP_IDS, SUPPRESSION_RECORD_IDS, type RelationshipId } from '@/lib/wp3-5/review-manifest';
 import {
-  RELATIONSHIP_IDS,
-  CONSENT_RECORD_IDS,
-  SUPPRESSION_RECORD_IDS,
-  type RelationshipId,
-} from '@/lib/wp3-5/review-manifest';
-import {
-  RELATIONSHIP_RECORDS,
   CONSENT_STATE_RECORDS,
-  SUPPRESSION_STATE_RECORDS,
-  FOUNDER_GATE_RECORDS,
   FOUNDER_GATE_IDS,
+  FOUNDER_GATE_RECORDS,
   ORDER_PAYMENT_TRUTH_RECORDS,
   PUBLICATION_ENTITLEMENT_TRUTH_RECORDS,
+  RELATIONSHIP_RECORDS,
+  SUPPRESSION_STATE_RECORDS,
 } from '@/lib/wp3-5/review-universe';
-import { DetailSection as Section, Badge, IdTag } from './founder-review-ui';
+import CustomerRoomPreview from './CustomerRoomPreview';
+import styles from './founder-review.module.css';
 
-type JourneyStateFilter = 'all' | 'open' | 'closed';
-type OpenCareFilter = 'all' | 'has_open_care' | 'no_open_care';
-type DoorFilter = 'all' | 'eligible' | 'blocked' | 'no_door';
-
-function relationshipHasOpenCare(relationshipId: RelationshipId): boolean {
-  return getCareCasesForRelationship(relationshipId).some((rec) => rec.status === 'open');
-}
-
-function relationshipHasOpenJourney(relationshipId: RelationshipId): boolean {
-  return getJourneysForRelationship(relationshipId).some((journey) => journey.stage !== 'closed');
-}
+const TABS: readonly { id: RelationshipTabId; label: string }[] = [
+  { id: 'overview', label: 'Tổng quan' },
+  { id: 'products', label: 'Sản phẩm' },
+  { id: 'room', label: 'Phòng đọc' },
+  { id: 'journeys', label: 'Hành trình' },
+  { id: 'care', label: 'Chăm sóc' },
+  { id: 'promises', label: 'Lời hứa' },
+  { id: 'timeline', label: 'Dòng thời gian' },
+];
 
 export interface RelationshipReviewProps {
   readonly scenario: ScenarioPreset;
+  readonly product?: ProductLensId;
   readonly initialRelationshipId?: RelationshipId | null;
+  readonly initialTab?: RelationshipTabId;
 }
 
-export default function RelationshipReview({ scenario, initialRelationshipId = null }: RelationshipReviewProps) {
+export default function RelationshipReview({ scenario, product = 'all', initialRelationshipId = null, initialTab = 'overview' }: RelationshipReviewProps) {
   const [search, setSearch] = useState('');
-  const [journeyStateFilter, setJourneyStateFilter] = useState<JourneyStateFilter>('all');
-  const [openCareFilter, setOpenCareFilter] = useState<OpenCareFilter>('all');
-  const [doorFilter, setDoorFilter] = useState<DoorFilter>('all');
   const [selectedId, setSelectedId] = useState<RelationshipId | null>(initialRelationshipId);
+  const [stateFilter, setStateFilter] = useState<'all' | 'attention' | 'open-care'>('all');
 
-  const filteredIds = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    return RELATIONSHIP_IDS.filter((id) => {
-      const rec = RELATIONSHIP_RECORDS[id];
-      if (q && !`${id} ${rec.displayName}`.toLowerCase().includes(q)) return false;
-
-      if (journeyStateFilter === 'open' && !relationshipHasOpenJourney(id)) return false;
-      if (journeyStateFilter === 'closed' && relationshipHasOpenJourney(id)) return false;
-
-      if (openCareFilter === 'has_open_care' && !relationshipHasOpenCare(id)) return false;
-      if (openCareFilter === 'no_open_care' && relationshipHasOpenCare(id)) return false;
-
-      if (doorFilter !== 'all') {
-        const door = getDoorForRelationship(id);
-        if (doorFilter === 'no_door' && door) return false;
-        if (doorFilter !== 'no_door') {
-          if (!door) return false;
-          const eligibility = getDoorBlockers(door.id);
-          if (doorFilter === 'eligible' && !eligibility?.eligible) return false;
-          if (doorFilter === 'blocked' && !eligibility?.blocked) return false;
-        }
-      }
-
-      return true;
-    });
-  }, [search, journeyStateFilter, openCareFilter, doorFilter]);
+  const filteredIds = useMemo(() => RELATIONSHIP_IDS.filter((id) => {
+    const record = RELATIONSHIP_RECORDS[id];
+    if (!relationshipMatchesProductLens(id, product)) return false;
+    if (search.trim() && !`${id} ${record.displayName}`.toLowerCase().includes(search.trim().toLowerCase())) return false;
+    if (stateFilter === 'open-care' && !getCareCasesForRelationship(id).some((care) => care.status === 'open')) return false;
+    if (stateFilter === 'attention') {
+      const door = getDoorForRelationship(id);
+      const needsAttention = getCareCasesForRelationship(id).some((care) => care.status === 'open') ||
+        getPromisesForRelationship(id).some((promise) => promise.dueStatus === 'overdue' || promise.dueStatus === 'due_today') ||
+        (door ? getDoorBlockers(door.id)?.blocked : false);
+      if (!needsAttention) return false;
+    }
+    return true;
+  }), [product, search, stateFilter]);
 
   const selected = selectedId ? resolveRelationshipContext(selectedId) : undefined;
 
   return (
-    <div className="grid lg:grid-cols-[320px_1fr] gap-6">
-      <div>
-        <div className="flex flex-col gap-2 mb-4">
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Tìm theo tên hoặc SYN-ID"
-            className="border border-e26-border bg-e26-white px-3 py-2 font-sans text-[13px] text-e26-text"
-            data-testid="relationship-search"
-          />
-          <select
-            className="border border-e26-border bg-e26-white px-2 py-2 font-sans text-[13px] text-e26-text"
-            value={journeyStateFilter}
-            onChange={(e) => setJourneyStateFilter(e.target.value as JourneyStateFilter)}
-          >
-            <option value="all">Mọi trạng thái hành trình</option>
-            <option value="open">Có hành trình đang mở</option>
-            <option value="closed">Tất cả hành trình đã khép</option>
-          </select>
-          <select
-            className="border border-e26-border bg-e26-white px-2 py-2 font-sans text-[13px] text-e26-text"
-            value={openCareFilter}
-            onChange={(e) => setOpenCareFilter(e.target.value as OpenCareFilter)}
-          >
-            <option value="all">Mọi trạng thái Care</option>
-            <option value="has_open_care">Có Care/Recovery đang mở</option>
-            <option value="no_open_care">Không có Care/Recovery đang mở</option>
-          </select>
-          <select
-            className="border border-e26-border bg-e26-white px-2 py-2 font-sans text-[13px] text-e26-text"
-            value={doorFilter}
-            onChange={(e) => setDoorFilter(e.target.value as DoorFilter)}
-          >
-            <option value="all">Mọi trạng thái Cánh cửa</option>
-            <option value="eligible">Đủ điều kiện</option>
-            <option value="blocked">Đang bị chặn</option>
-            <option value="no_door">Không có đề xuất</option>
+    <div className={styles.workspaceGrid}>
+      <aside className={styles.directory}>
+        <div className={styles.filterStack}>
+          <input className={styles.input} value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Tìm tên hoặc SYN-ID" data-testid="relationship-search" />
+          <select className={styles.select} value={stateFilter} onChange={(event) => setStateFilter(event.target.value as typeof stateFilter)}>
+            <option value="all">Mọi trạng thái</option>
+            <option value="attention">Cần chú ý</option>
+            <option value="open-care">Có Care/Recovery mở</option>
           </select>
         </div>
-
-        <ul className="space-y-2" data-testid="relationship-directory">
+        <p className={styles.recordMeta}>{filteredIds.length}/{RELATIONSHIP_IDS.length} quan hệ · Product Lens: {product === 'all' ? 'Tất cả' : product}</p>
+        <ul className={styles.directoryList} data-testid="relationship-directory">
           {filteredIds.map((id) => {
-            const rec = RELATIONSHIP_RECORDS[id];
+            const record = RELATIONSHIP_RECORDS[id];
+            const lines = getProductLinesForRelationship(id);
             return (
               <li key={id}>
                 <button
                   type="button"
                   onClick={() => setSelectedId(id)}
                   data-testid={`relationship-card-${id}`}
-                  className={`w-full text-left border px-3 py-2 font-sans text-[13px] transition-colors ${
-                    selectedId === id ? 'border-e26-gold-deep bg-e26-cream' : 'border-e26-border bg-e26-white hover:bg-e26-cream'
-                  }`}
+                  className={`${styles.directoryButton} ${selectedId === id ? styles.directorySelected : ''}`}
                 >
-                  <span className="block font-sans text-[14px] font-semibold text-e26-text">
-                    {rec.displayName} · {rec.id}
-                  </span>
-                  <span className="block text-e26-text-2 text-[12px] font-medium mt-0.5">{rec.journeyTruth}</span>
+                  <strong>{record.displayName} · {record.id}</strong>
+                  <span>{lines.join(' · ')}</span>
+                  <span>{record.currentOperatingTruth}</span>
                 </button>
               </li>
             );
           })}
         </ul>
-      </div>
+      </aside>
 
-      <div>
-        {!selected && (
-          <p className="font-sans text-[14px] text-e26-text-2" data-testid="relationship-no-selection">
-            Chọn một Quan hệ trong danh sách bên trái để xem chi tiết.
-          </p>
-        )}
-
+      <section>
+        {!selected && <div className={styles.emptyState} data-testid="relationship-no-selection">Chọn một Quan hệ để thấy việc cần chú ý, sản phẩm, hành trình và Phòng đọc.</div>}
         {selected && (
           <div data-testid={`relationship-detail-${selected.id}`}>
-            <h2 className="font-serif text-[24px] font-bold text-e26-black mb-1">
-              {selected.displayName} · {selected.id}
-            </h2>
-            <p className="font-sans text-[13px] font-semibold text-e26-text-2 mb-1">{selected.journeyTruth}</p>
-            <p className="font-sans text-[15px] font-medium text-e26-text mt-2 mb-6">{selected.currentOperatingTruth}</p>
-
-            <RelationshipJourneys relationshipId={selected.id} scenario={scenario} />
-            <RelationshipCare relationshipId={selected.id} scenario={scenario} />
-            <RelationshipPromises relationshipId={selected.id} />
-            <RelationshipConsentSuppression relationshipId={selected.id} />
-            <RelationshipFounderGates relationshipId={selected.id} />
-            <RelationshipTruths relationshipId={selected.id} />
-            <RelationshipDoor relationshipId={selected.id} />
-            <RelationshipTimeline relationshipId={selected.id} />
+            <RelationshipHeader relationshipId={selected.id} />
+            <nav className={styles.tabs} aria-label="Các phần của Quan hệ">
+              {TABS.map((tab) => (
+                <Link
+                  key={tab.id}
+                  href={{ pathname: '/founder-review/quan-he', query: buildSafeSyntheticQuery({ scenario, product, relationship: selected.id, tab: tab.id }) }}
+                  className={initialTab === tab.id ? styles.tabActive : undefined}
+                  aria-current={initialTab === tab.id ? 'page' : undefined}
+                  data-testid={`relationship-tab-${tab.id}`}
+                >
+                  {tab.label}
+                </Link>
+              ))}
+            </nav>
+            <RelationshipTabContent tab={initialTab} relationshipId={selected.id} scenario={scenario} product={product} />
           </div>
         )}
-      </div>
+      </section>
     </div>
   );
 }
 
-
-function RelationshipJourneys({ relationshipId, scenario }: { relationshipId: RelationshipId; scenario: ScenarioPreset }) {
+function RelationshipHeader({ relationshipId }: { relationshipId: RelationshipId }) {
+  const record = RELATIONSHIP_RECORDS[relationshipId];
   const journeys = getJourneysForRelationship(relationshipId);
+  const care = getCareCasesForRelationship(relationshipId).filter((item) => item.status === 'open');
+  const promises = getPromisesForRelationship(relationshipId).filter((item) => !['completed_on_time', 'missed_then_recovered'].includes(item.dueStatus));
+  const door = getDoorForRelationship(relationshipId);
+  const blockers = door ? getDoorBlockers(door.id) : undefined;
+  const nextJourney = journeys.find((journey) => journey.stage !== 'closed') ?? journeys[0];
   return (
-    <Section title={`Hành trình (${journeys.length})`}>
-      <div className="space-y-2">
-        {journeys.map((journey) => (
-          <div key={journey.id} className="border border-e26-border bg-e26-white p-3" data-testid={`journey-${journey.id}`}>
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="font-sans text-[15px] font-semibold text-e26-text">
-                {journey.id} · {journey.productLine}
-              </span>
-              <div className="flex items-center gap-2">
-                {journey.blocked && <Badge variant="blocked">Đang bị chặn</Badge>}
-                <Link
-                  href={{ pathname: '/founder-review/hanh-trinh', query: buildSafeSyntheticQuery({ scenario, journey: journey.id }) }}
-                  className="font-sans text-[12px] font-semibold underline underline-offset-4 text-e26-text-2 hover:text-e26-gold-deep"
-                >
-                  Mở →
-                </Link>
-              </div>
-            </div>
-            <p className="font-sans text-[13px] font-medium text-e26-text mt-1">Now: {journey.now}</p>
-            <p className="font-sans text-[13px] font-medium text-e26-text mt-1">Next: {journey.next}</p>
-            <p className="font-sans text-[12px] font-medium text-e26-text-2 mt-1">
-              Owner: {journey.owner} · Due: {journey.due}
-            </p>
-          </div>
-        ))}
+    <header className={styles.detailHeader}>
+      <p className={styles.eyebrow}>Synthetic Relationship</p>
+      <h2>{record.displayName} · {record.id}</h2>
+      <p>{record.journeyTruth}</p>
+      <div className={styles.attentionStrip}>
+        <div className={styles.attentionCell}><span>Cần nhìn ngay</span><strong>{record.currentOperatingTruth}</strong></div>
+        <div className={styles.attentionCell}><span>Đang chặn</span><strong>{care.length > 0 ? care.map((item) => item.id).join(' · ') : blockers?.blocked ? blockers.reasons[0] : 'Không có blocker hiện tại'}</strong></div>
+        <div className={styles.attentionCell}><span>Bước hợp lệ tiếp theo</span><strong>{care[0]?.nextAction ?? nextJourney?.next ?? 'Founder tiếp tục review'}</strong></div>
       </div>
-    </Section>
+      <div className={styles.badgeRow} style={{ marginTop: 9 }}>
+        {getProductLinesForRelationship(relationshipId).map((line) => <span key={line} className={styles.badge}>{line}</span>)}
+        {promises.length > 0 && <span className={`${styles.badge} ${styles.badgeFounder}`}>{promises.length} lời hứa đang mở</span>}
+        {care.length > 0 && <span className={`${styles.badge} ${styles.badgeWarning}`}>{care.length} Care/Recovery mở</span>}
+      </div>
+    </header>
   );
 }
 
-function RelationshipCare({ relationshipId, scenario }: { relationshipId: RelationshipId; scenario: ScenarioPreset }) {
-  const cases = getCareCasesForRelationship(relationshipId);
-  const active = cases.filter((c) => c.status === 'open');
-  const historical = cases.filter((c) => c.status === 'closed');
-  return (
-    <Section title={`Care / Support / Recovery (${cases.length})`}>
-      {active.length > 0 && (
-        <div className="mb-3">
-          <p className="font-sans text-[12px] text-e26-text-2 mb-1">Đang mở</p>
-          <div className="space-y-2">
-            {active.map((c) => (
-              <div key={c.id} className="border border-e26-border bg-e26-cream p-3" data-testid={`care-${c.id}`}>
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-sans text-[13px] text-e26-text">
-                    {c.id} · {c.type}
-                  </span>
-                  <Link
-                    href={{ pathname: '/founder-review/cham-soc', query: buildSafeSyntheticQuery({ scenario, care: c.id }) }}
-                    className="font-sans text-[12px] underline underline-offset-4 text-e26-text-2 hover:text-e26-gold-deep"
-                  >
-                    Mở →
-                  </Link>
-                </div>
-                <p className="font-sans text-[12px] text-e26-text-2 mt-1">{c.impact}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-      {historical.length > 0 && (
-        <div>
-          <p className="font-sans text-[12px] text-e26-text-2 mb-1">Lịch sử (đã đóng)</p>
-          <ul className="space-y-1 font-sans text-[12px] text-e26-text-2">
-            {historical.map((c) => (
-              <li key={c.id}>{c.id} · {c.closeCondition}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {cases.length === 0 && <p className="font-sans text-[13px] text-e26-text-2">Không có case nào.</p>}
-    </Section>
-  );
+function RelationshipTabContent({ tab, relationshipId, scenario, product }: { tab: RelationshipTabId; relationshipId: RelationshipId; scenario: ScenarioPreset; product: ProductLensId }) {
+  if (tab === 'room') return <CustomerRoomPreview relationshipId={relationshipId} scenario={scenario} product={product} />;
+  if (tab === 'products') return <ProductsView relationshipId={relationshipId} scenario={scenario} product={product} />;
+  if (tab === 'journeys') return <JourneysView relationshipId={relationshipId} scenario={scenario} product={product} />;
+  if (tab === 'care') return <CareView relationshipId={relationshipId} scenario={scenario} product={product} />;
+  if (tab === 'promises') return <PromisesView relationshipId={relationshipId} />;
+  if (tab === 'timeline') return <TimelineView relationshipId={relationshipId} />;
+  return <OverviewView relationshipId={relationshipId} scenario={scenario} product={product} />;
 }
 
-function RelationshipPromises({ relationshipId }: { relationshipId: RelationshipId }) {
-  const promises = getPromisesForRelationship(relationshipId);
-  return (
-    <Section title={`Lời hứa (${promises.length})`}>
-      {promises.length === 0 ? (
-        <p className="font-sans text-[13px] text-e26-text-2">Không có lời hứa nào.</p>
-      ) : (
-        <ul className="space-y-1 font-sans text-[13px] text-e26-text-2">
-          {promises.map((p) => (
-            <li key={p.id}>
-              {p.id} · {p.promiseText} · {p.dueStatus}
-            </li>
-          ))}
-        </ul>
-      )}
-    </Section>
-  );
-}
-
-function RelationshipConsentSuppression({ relationshipId }: { relationshipId: RelationshipId }) {
-  const consent = CONSENT_RECORD_IDS.map((id) => CONSENT_STATE_RECORDS[id]).find((c) => c.relationshipId === relationshipId);
-  const suppression = SUPPRESSION_RECORD_IDS.map((id) => SUPPRESSION_STATE_RECORDS[id]).find(
-    (s) => s.relationshipId === relationshipId
-  );
-  return (
-    <Section title="Consent & Suppression">
-      <p className="font-sans text-[13px] text-e26-text-2">
-        Consent ({consent?.id}): {consent?.state} — {consent?.note}
-      </p>
-      <p className="font-sans text-[13px] text-e26-text-2 mt-1">
-        Suppression ({suppression?.id}): {suppression?.state} — {suppression?.note}
-      </p>
-    </Section>
-  );
-}
-
-function RelationshipFounderGates({ relationshipId }: { relationshipId: RelationshipId }) {
-  const gates = FOUNDER_GATE_IDS.map((id) => FOUNDER_GATE_RECORDS[id]).filter((g) => g.relationshipId === relationshipId);
-  if (gates.length === 0) return null;
-  return (
-    <Section title={`Founder Gate (${gates.length})`}>
-      <ul className="space-y-1 font-sans text-[13px] text-e26-text-2">
-        {gates.map((g) => (
-          <li key={g.id}>
-            {g.decisionNeeded} · {g.dueLabel} · {g.status}
-          </li>
-        ))}
-      </ul>
-    </Section>
-  );
-}
-
-function RelationshipTruths({ relationshipId }: { relationshipId: RelationshipId }) {
-  const payment = ORDER_PAYMENT_TRUTH_RECORDS[relationshipId];
-  const publication = PUBLICATION_ENTITLEMENT_TRUTH_RECORDS[relationshipId];
-  return (
-    <Section title="Order/Payment & Publication/Entitlement truth">
-      <p className="font-sans text-[13px] text-e26-text-2">Payment: {payment.state} — {payment.note}</p>
-      <p className="font-sans text-[13px] text-e26-text-2 mt-1">Publication/Entitlement: {publication.state} — {publication.note}</p>
-    </Section>
-  );
-}
-
-function RelationshipDoor({ relationshipId }: { relationshipId: RelationshipId }) {
+function OverviewView({ relationshipId, scenario, product }: { relationshipId: RelationshipId; scenario: ScenarioPreset; product: ProductLensId }) {
+  const consent = CONSENT_RECORD_IDS.map((id) => CONSENT_STATE_RECORDS[id]).find((item) => item.relationshipId === relationshipId);
+  const suppression = SUPPRESSION_RECORD_IDS.map((id) => SUPPRESSION_STATE_RECORDS[id]).find((item) => item.relationshipId === relationshipId);
+  const gates = FOUNDER_GATE_IDS.map((id) => FOUNDER_GATE_RECORDS[id]).filter((item) => item.relationshipId === relationshipId);
   const door = getDoorForRelationship(relationshipId);
   const eligibility = door ? getDoorBlockers(door.id) : undefined;
   return (
-    <Section title="Cánh cửa tiếp theo">
-      {door ? (
-        <>
-          <div className="flex items-center gap-2 mb-1">
-            <IdTag>{door.id}</IdTag>
-            <span data-testid={`door-status-${relationshipId}`}>
-              <Badge variant={eligibility?.eligible ? 'eligible' : 'blocked'}>
-                {eligibility?.eligible ? 'Đủ điều kiện' : 'Đang bị chặn'}
-              </Badge>
-            </span>
-          </div>
-          <p className="font-sans text-[13px] font-medium text-e26-text">
-            {door.proposedDoor} · {door.proposalState}
-          </p>
-          {eligibility && eligibility.reasons.length > 0 && (
-            <ul className="mt-1 list-disc list-inside font-sans text-[12px] text-e26-text-2">
-              {eligibility.reasons.map((reason) => (
-                <li key={reason}>{reason}</li>
-              ))}
-            </ul>
-          )}
-        </>
-      ) : (
-        <p className="font-sans text-[13px] text-e26-text-2">Không có đề xuất Cánh cửa tiếp theo chính thức.</p>
-      )}
-    </Section>
+    <div className={styles.contentGrid}>
+      <div className={`${styles.panel} ${styles.panelWide}`}><h3>Hành trình không bị gộp</h3><JourneyCards relationshipId={relationshipId} scenario={scenario} product={product} /></div>
+      <div className={styles.panel}><h3>Consent & Suppression</h3><p>Consent {consent?.id}: {consent?.state}</p><p>{consent?.note}</p><p>Suppression {suppression?.id}: {suppression?.state}</p><p>{suppression?.note}</p></div>
+      <div className={styles.panel}><h3>Founder decisions</h3>{gates.length ? gates.map((gate) => <p key={gate.id}><strong>{gate.id}</strong> · {gate.decisionNeeded} · {gate.dueLabel}</p>) : <p>Không có Founder Gate đang chờ.</p>}</div>
+      <div className={styles.panel}><h3>Order & Payment truth</h3><p>{ORDER_PAYMENT_TRUTH_RECORDS[relationshipId].state}</p><p>{ORDER_PAYMENT_TRUTH_RECORDS[relationshipId].note}</p></div>
+      <div className={styles.panel}><h3>Publication & Entitlement truth</h3><p>{PUBLICATION_ENTITLEMENT_TRUTH_RECORDS[relationshipId].state}</p><p>{PUBLICATION_ENTITLEMENT_TRUTH_RECORDS[relationshipId].note}</p></div>
+      <div className={`${styles.panel} ${styles.panelWide}`}><h3>Cánh cửa tiếp theo</h3>{door ? <><div className={styles.badgeRow}><span className={styles.badge}>{door.id}</span><span data-testid={`door-status-${relationshipId}`} className={`${styles.badge} ${eligibility?.eligible ? styles.badgeSuccess : styles.badgeWarning}`}>{eligibility?.eligible ? 'Đủ điều kiện' : 'Đang bị chặn'}</span></div><p>{door.proposedDoor}</p>{eligibility?.reasons.map((reason) => <p key={reason}>{reason}</p>)}</> : <p>Không có đề xuất Cánh cửa tiếp theo chính thức.</p>}</div>
+    </div>
   );
 }
 
-function RelationshipTimeline({ relationshipId }: { relationshipId: RelationshipId }) {
-  const events = getTimelineEventsForRelationship(relationshipId);
+function ProductsView({ relationshipId, scenario, product }: { relationshipId: RelationshipId; scenario: ScenarioPreset; product: ProductLensId }) {
   return (
-    <Section title={`Timeline (${events.length})`}>
-      <ul className="space-y-1 font-sans text-[13px] text-e26-text-2">
-        {events.map((event) => (
-          <li key={event.id}>
-            {event.order}. {event.type}
-          </li>
-        ))}
-      </ul>
-    </Section>
+    <div className={styles.contentGrid}>
+      <div className={`${styles.panel} ${styles.panelWide}`}><h3>Sản phẩm sở hữu</h3><JourneyCards relationshipId={relationshipId} scenario={scenario} product={product} /></div>
+      <div className={styles.panel}><h3>Payment snapshot</h3><p>{ORDER_PAYMENT_TRUTH_RECORDS[relationshipId].state}</p><p>{ORDER_PAYMENT_TRUTH_RECORDS[relationshipId].note}</p></div>
+      <div className={styles.panel}><h3>Entitlement snapshot</h3><p>{PUBLICATION_ENTITLEMENT_TRUTH_RECORDS[relationshipId].state}</p><p>{PUBLICATION_ENTITLEMENT_TRUTH_RECORDS[relationshipId].note}</p></div>
+    </div>
   );
+}
+
+function JourneysView({ relationshipId, scenario, product }: { relationshipId: RelationshipId; scenario: ScenarioPreset; product: ProductLensId }) {
+  return <div className={styles.contentGrid}><div className={`${styles.panel} ${styles.panelWide}`}><h3>Mọi Journey instance</h3><JourneyCards relationshipId={relationshipId} scenario={scenario} product={product} /></div></div>;
+}
+
+function JourneyCards({ relationshipId, scenario, product }: { relationshipId: RelationshipId; scenario: ScenarioPreset; product: ProductLensId }) {
+  return <div className={styles.queueCards}>{getJourneysForRelationship(relationshipId).map((journey) => (
+    <div key={journey.id} className={`${styles.recordCard} ${journey.blocked ? styles.recordCardWarn : ''}`} data-testid={`journey-${journey.id}`}>
+      <div className={styles.recordTop}><span><strong className={styles.recordTitle}>{journey.productLine}</strong><span className={styles.recordMeta}>{journey.id} · {journey.stage}</span></span><Link className={styles.button} href={{ pathname: '/founder-review/hanh-trinh', query: buildSafeSyntheticQuery({ scenario, product, journey: journey.id }) }}>Mở →</Link></div>
+      <p className={styles.recordFact}>Now: {journey.now}</p><p className={styles.recordMeta}>Next: {journey.next} · Owner: {journey.owner} · Due: {journey.due}</p>
+    </div>
+  ))}</div>;
+}
+
+function CareView({ relationshipId, scenario, product }: { relationshipId: RelationshipId; scenario: ScenarioPreset; product: ProductLensId }) {
+  const cases = getCareCasesForRelationship(relationshipId);
+  return <div className={styles.queueCards}>{cases.length ? cases.map((care) => <div key={care.id} className={`${styles.recordCard} ${care.status === 'open' ? styles.recordCardWarn : ''}`}><div className={styles.recordTop}><strong>{care.id} · {care.type}</strong><Link className={styles.button} href={{ pathname: '/founder-review/cham-soc', query: buildSafeSyntheticQuery({ scenario, product, care: care.id }) }}>Mở →</Link></div><p>{care.impact}</p><p className={styles.recordMeta}>Next: {care.nextAction} · Due: {care.due}</p></div>) : <div className={styles.emptyState}>Không có Care/Recovery cho Quan hệ này.</div>}</div>;
+}
+
+function PromisesView({ relationshipId }: { relationshipId: RelationshipId }) {
+  const promises = getPromisesForRelationship(relationshipId);
+  return <div className={styles.queueCards}>{promises.length ? promises.map((promise) => <div key={promise.id} className={`${styles.recordCard} ${promise.dueStatus === 'overdue' ? styles.recordCardWarn : ''}`}><strong>{promise.id}</strong><p>{promise.promiseText}</p><p className={styles.recordMeta}>{promise.dueStatus}</p></div>) : <div className={styles.emptyState}>Không có lời hứa nào.</div>}</div>;
+}
+
+function TimelineView({ relationshipId }: { relationshipId: RelationshipId }) {
+  return <div className={styles.queueCards}>{getTimelineEventsForRelationship(relationshipId).map((event) => <div key={event.id} className={styles.recordCard}><strong>{event.id} · {event.type}</strong><p className={styles.recordMeta}>{event.visibility === 'customer_facing' ? 'Customer visible' : 'Founder internal'} · {event.journeyId}</p></div>)}</div>;
 }

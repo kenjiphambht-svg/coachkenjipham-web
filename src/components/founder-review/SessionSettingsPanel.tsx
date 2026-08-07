@@ -22,7 +22,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-import { buildScenarioOnlyQuery, SCENARIO_PRESETS, type ScenarioPreset } from '@/lib/wp3-5/review-selectors';
+import { buildSafeSyntheticQuery, PRODUCT_LENS_OPTIONS, SCENARIO_PRESETS, type ProductLensId, type ScenarioPreset } from '@/lib/wp3-5/review-selectors';
 import { useReviewState } from './ReviewStateContext';
 import { useReviewPreferences, type Density } from './SessionPreferencesContext';
 import { SectionHeading } from './founder-review-ui';
@@ -30,6 +30,7 @@ import styles from './founder-review.module.css';
 
 export interface SessionSettingsPanelProps {
   readonly scenario: ScenarioPreset;
+  readonly product?: ProductLensId;
   readonly currentPathname: string;
   readonly onClose: () => void;
 }
@@ -41,7 +42,7 @@ const SCENARIO_LABEL: Readonly<Record<ScenarioPreset, string>> = {
   recovery: 'Recovery — ngày phục hồi',
 };
 
-export default function SessionSettingsPanel({ scenario, currentPathname, onClose }: SessionSettingsPanelProps) {
+export default function SessionSettingsPanel({ scenario, product = 'all', currentPathname, onClose }: SessionSettingsPanelProps) {
   const { dispatch: reviewDispatch } = useReviewState();
   const { state: prefs, dispatch: prefsDispatch } = useReviewPreferences();
 
@@ -86,7 +87,7 @@ export default function SessionSettingsPanel({ scenario, currentPathname, onClos
           {SCENARIO_PRESETS.map((preset) => (
             <Link
               key={preset}
-              href={{ pathname: currentPathname, query: buildScenarioOnlyQuery(preset) }}
+              href={{ pathname: currentPathname, query: buildSafeSyntheticQuery({ scenario: preset, product }) }}
               aria-current={scenario === preset ? 'true' : undefined}
               data-testid={`settings-scenario-${preset}`}
               className={`border px-3 py-2 font-sans text-[13px] font-semibold transition-colors ${
@@ -96,6 +97,21 @@ export default function SessionSettingsPanel({ scenario, currentPathname, onClos
               }`}
             >
               {SCENARIO_LABEL[preset]}
+            </Link>
+          ))}
+        </div>
+
+        <SectionHeading>Product Lens</SectionHeading>
+        <div className="flex flex-wrap gap-2 mb-5" role="group" aria-label="Chọn Product Lens">
+          {PRODUCT_LENS_OPTIONS.map((option) => (
+            <Link
+              key={option.id}
+              href={{ pathname: currentPathname, query: buildSafeSyntheticQuery({ scenario, product: option.id }) }}
+              aria-current={product === option.id ? 'true' : undefined}
+              data-testid={`settings-product-${option.id}`}
+              className={`border px-3 py-2 font-sans text-[13px] font-semibold ${product === option.id ? 'border-e26-gold-deep bg-e26-cream text-e26-gold-deep' : 'border-e26-border bg-e26-white text-e26-text'}`}
+            >
+              {option.label}
             </Link>
           ))}
         </div>
@@ -153,7 +169,7 @@ export default function SessionSettingsPanel({ scenario, currentPathname, onClos
             Đặt lại hành động mô phỏng
           </button>
           <Link
-            href={{ pathname: currentPathname, query: buildScenarioOnlyQuery(scenario) }}
+            href={{ pathname: currentPathname, query: buildSafeSyntheticQuery({ scenario }) }}
             onClick={resetPreferencesOnly}
             data-testid="settings-reset-session"
             className="border border-e26-border bg-e26-white px-3 py-2 font-sans text-[13px] font-semibold text-e26-text hover:border-e26-gold-deep hover:text-e26-gold-deep text-left"

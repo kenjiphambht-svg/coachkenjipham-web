@@ -1,222 +1,262 @@
-// ============================================================
-// Hôm nay screen — WP3.5-A2 clarity milestone.
-//
-// Six locked priority buckets, in locked order, showing every Today Queue
-// item for the current scenario. All filtering is client-local (useState);
-// nothing is written outside React memory. Clicking an item opens
-// ReviewItemDrawer with full canonical context.
-//
-// `ReviewStateProvider` now lives in FounderReviewShell (shared across all
-// four workspaces so AI Trợ lý and Thiết lập phiên can reach the same
-// simulated-action overlay), so this component only *consumes*
-// `useReviewState()` — it no longer wraps itself in a Provider.
-//
-// `initialScenario` / `initialOpenItemId` are accepted as props (not only
-// derived from the URL) specifically so this component is directly
-// render-testable without simulating a click — this repo has no
-// jsdom/happy-dom installed.
-// ============================================================
-
-// `React` is imported explicitly (in addition to the named hooks) even
-// though Next's own build uses the automatic JSX runtime and never needs
-// it: this repo's vitest.config.mts has no @vitejs/plugin-react, so
-// Vitest's esbuild JSX transform falls back to classic mode, which
-// requires `React` in scope in every file containing JSX. Harmless under
-// Next; required under Vitest.
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { resolveRelationshipContext, isTodayItemBlocked, type ScenarioPreset } from '@/lib/wp3-5/review-selectors';
-import { PRIORITY_BUCKETS, TODAY_QUEUE_MANIFEST, type TodayQueueId, type PriorityBucket } from '@/lib/wp3-5/review-manifest';
-import { TODAY_QUEUE_DETAILS, SCENARIO_PRESET_ITEMS } from '@/lib/wp3-5/review-universe';
-import ReviewFilters, { type TodayFiltersState, type BlockedFilter } from './ReviewFilters';
+import {
+  getActionFirstTodayItems,
+  getTodayItemsForProduct,
+  isTodayItemBlocked,
+  resolveJourneyContext,
+  resolveRelationshipContext,
+  type ProductLensId,
+  type ScenarioPreset,
+} from '@/lib/wp3-5/review-selectors';
+import { PRIORITY_BUCKETS, TODAY_QUEUE_MANIFEST, type PriorityBucket, type TodayQueueId } from '@/lib/wp3-5/review-manifest';
+import { CARE_RECORDS, JOURNEY_RECORDS, PROMISE_RECORDS, RELATIONSHIP_RECORDS, TODAY_QUEUE_DETAILS } from '@/lib/wp3-5/review-universe';
+import ReviewFilters, { type BlockedFilter, type TodayFiltersState } from './ReviewFilters';
 import ReviewItemDrawer from './ReviewItemDrawer';
-import { useReviewState } from './ReviewStateContext';
 import { useReviewPreferences } from './SessionPreferencesContext';
-import { Badge } from './founder-review-ui';
+import { useReviewState } from './ReviewStateContext';
+import styles from './founder-review.module.css';
 
-function bucketLabel(bucket: PriorityBucket): string {
-  const RENAME: Record<PriorityBucket, string> = {
-    'Safety & Recovery': 'Safety & Recovery',
-    'Founder Gate': 'Founder Decision',
-    'Promise & Deadline': 'Promise / Deadline',
-    'Care & Support': 'Care Follow-up',
-    'Waiting & Deliberate Silence': 'Deliberate Silence',
-    'Next Door Review': 'Next Door Review',
-  };
-  return RENAME[bucket];
-}
+const BUCKET_LABEL: Readonly<Record<PriorityBucket, string>> = {
+  'Safety & Recovery': 'An toàn & Phục hồi',
+  'Founder Gate': 'Cần anh quyết',
+  'Promise & Deadline': 'Lời hứa & Hạn',
+  'Care & Support': 'Theo dõi Chăm sóc',
+  'Waiting & Deliberate Silence': 'Chủ động im lặng',
+  'Next Door Review': 'Xem xét Cánh cửa tiếp theo',
+};
 
 export interface TodayReviewProps {
   readonly initialScenario: ScenarioPreset;
+  readonly product?: ProductLensId;
   readonly initialOpenItemId?: TodayQueueId | null;
 }
 
-export default function TodayReview({ initialScenario, initialOpenItemId = null }: TodayReviewProps) {
+export default function TodayReview({ initialScenario, product = 'all', initialOpenItemId = null }: TodayReviewProps) {
   const [filters, setFilters] = useState<TodayFiltersState>({
-    scenario: initialScenario,
-    bucket: 'all',
-    owner: 'all',
-    blocked: 'all',
-    search: '',
+    scenario: initialScenario, bucket: 'all', owner: 'all', blocked: 'all', search: '',
   });
   const [openItemId, setOpenItemId] = useState<TodayQueueId | null>(initialOpenItemId);
-
-  // `initialScenario` is only used to seed local state on first mount. The
-  // Thiết lập phiên scenario switcher navigates to this same pathname with a
-  // new `?scenario=` (a same-page client-side transition, not a remount),
-  // so without this sync the SSR-derived summary tiles (owned by the page)
-  // would show the new scenario while the bucket list below kept rendering
-  // the previous one. Re-sync scenario only — other filters (bucket, owner,
-  // blocked, search) are left as the Founder set them, matching how
-  // changing scenario via the Scenario dropdown already behaves.
-  useEffect(() => {
-    setFilters((prev) => (prev.scenario === initialScenario ? prev : { ...prev, scenario: initialScenario }));
-  }, [initialScenario]);
-
+  const [collapsed, setCollapsed] = useState<Partial<Record<PriorityBucket, boolean>>>({});
   const { state: overlayState, dispatch: overlayDispatch } = useReviewState();
   const { state: prefs } = useReviewPreferences();
-  const [collapsed, setCollapsed] = useState<Partial<Record<PriorityBucket, boolean>>>({});
-  const overlayCount = Object.keys(overlayState).length;
-  const cardPad = prefs.density === 'compact' ? 'p-3' : 'p-4';
-  const bucketGap = prefs.density === 'compact' ? 'space-y-5' : 'space-y-8';
 
-  const scenarioItemIds = SCENARIO_PRESET_ITEMS[filters.scenario];
+  useEffect(() => {
+    setFilters((previous) => previous.scenario === initialScenario ? previous : { ...previous, scenario: initialScenario });
+  }, [initialScenario]);
 
-  const owners = useMemo(() => {
-    const set = new Set<string>();
-    for (const id of scenarioItemIds) set.add(TODAY_QUEUE_DETAILS[id].owner);
-    return [...set].sort();
-  }, [scenarioItemIds]);
+  const productIds = getTodayItemsForProduct(filters.scenario, product);
+  const actionIds = getActionFirstTodayItems(filters.scenario, product);
+  const owners = useMemo(
+    () => [...new Set(productIds.map((id) => TODAY_QUEUE_DETAILS[id].owner))].sort(),
+    [productIds]
+  );
 
   const filteredIds = useMemo(() => {
     const search = filters.search.trim().toLowerCase();
-    return scenarioItemIds.filter((id) => {
-      const manifestItem = TODAY_QUEUE_MANIFEST[id];
+    return productIds.filter((id) => {
+      const manifest = TODAY_QUEUE_MANIFEST[id];
       const detail = TODAY_QUEUE_DETAILS[id];
-      if (filters.bucket !== 'all' && manifestItem.priorityBucket !== filters.bucket) return false;
+      if (filters.bucket !== 'all' && manifest.priorityBucket !== filters.bucket) return false;
       if (filters.owner !== 'all' && detail.owner !== filters.owner) return false;
       const blocked = isTodayItemBlocked(id);
       if (filters.blocked === 'blocked' && !blocked) return false;
       if (filters.blocked === 'unblocked' && blocked) return false;
       if (search) {
-        const relationship = resolveRelationshipContext(manifestItem.relationshipId);
-        const haystack = `${manifestItem.relationshipId} ${relationship?.displayName ?? ''}`.toLowerCase();
+        const relationship = resolveRelationshipContext(manifest.relationshipId);
+        const journey = resolveJourneyContext(manifest.journeyId);
+        const haystack = `${id} ${manifest.relationshipId} ${relationship?.displayName ?? ''} ${journey?.productLine ?? ''}`.toLowerCase();
         if (!haystack.includes(search)) return false;
       }
       return true;
     });
-  }, [scenarioItemIds, filters]);
+  }, [filters, productIds]);
 
-  function onFiltersChange(next: Partial<TodayFiltersState>) {
-    setFilters((prev) => ({ ...prev, ...next }));
-  }
+  const openCare = Object.values(CARE_RECORDS).filter(
+    (care) => care.status === 'open' && productIds.some((id) => TODAY_QUEUE_MANIFEST[id].relationshipId === care.relationshipId)
+  );
+  const duePromises = Object.values(PROMISE_RECORDS).filter(
+    (promise) => ['overdue', 'due_today'].includes(promise.dueStatus) &&
+      productIds.some((id) => TODAY_QUEUE_MANIFEST[id].relationshipId === promise.relationshipId)
+  );
+  const founderDecisions = productIds.filter((id) => TODAY_QUEUE_DETAILS[id].founderDecisionRequired);
+  const blockedCount = productIds.filter((id) => isTodayItemBlocked(id)).length;
 
-  // `collapsed[bucket]` stores an explicit "is collapsed" override once the
-  // Founder has clicked a bucket; until then it follows the session
-  // preference default (Thiết lập phiên → "Mở sẵn các nhóm ưu tiên").
   function isBucketOpen(bucket: PriorityBucket): boolean {
     const override = collapsed[bucket];
-    return override === undefined ? prefs.bucketsExpandedByDefault : !override;
+    if (override !== undefined) return !override;
+    return prefs.bucketsExpandedByDefault || PRIORITY_BUCKETS.indexOf(bucket) < 3;
   }
 
   function toggleBucket(bucket: PriorityBucket) {
-    setCollapsed((prev) => ({ ...prev, [bucket]: isBucketOpen(bucket) }));
+    setCollapsed((previous) => ({ ...previous, [bucket]: isBucketOpen(bucket) }));
   }
 
   return (
     <div>
-      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-        <p className="font-sans text-[12px] font-medium text-e26-text-2" data-testid="overlay-count">
-          {overlayCount > 0
-            ? `${overlayCount} việc đã có hành động mô phỏng trong phiên này.`
-            : 'Chưa có hành động mô phỏng nào trong phiên này.'}
-        </p>
-        <button
-          type="button"
-          onClick={() => overlayDispatch({ type: 'RESET' })}
-          className="font-sans text-[13px] font-semibold underline underline-offset-4 text-e26-text-2 hover:text-e26-gold-deep"
-          data-testid="reset-simulation"
-        >
-          Reset mô phỏng
-        </button>
-      </div>
+      <section className={styles.sectionBlock} data-testid="action-first-today">
+        <div className={styles.sectionHeader}>
+          <div>
+            <p className={styles.eyebrow}>Mức 1</p>
+            <h2 className={styles.sectionTitle}>Việc anh cần xử lý</h2>
+            <p className={styles.sectionIntro}>3–5 việc quan trọng nhất, chọn trực tiếp từ hàng đợi hiện tại.</p>
+          </div>
+          <span className={styles.badge}>{actionIds.length} việc ưu tiên</span>
+        </div>
+        {actionIds.length === 0 ? (
+          <div className={styles.emptyState}>Không có việc phù hợp với Product Lens này trong scenario hiện tại.</div>
+        ) : (
+          <div className={styles.actionList}>
+            {actionIds.map((id) => {
+              const manifest = TODAY_QUEUE_MANIFEST[id];
+              const detail = TODAY_QUEUE_DETAILS[id];
+              const relationship = RELATIONSHIP_RECORDS[manifest.relationshipId];
+              const journey = JOURNEY_RECORDS[manifest.journeyId];
+              const blocked = isTodayItemBlocked(id);
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => setOpenItemId(id)}
+                  className={`${styles.actionCard} ${blocked ? styles.actionCardWarning : ''}`}
+                  data-testid={`action-first-${id}`}
+                >
+                  <span className={styles.actionIdentity}>
+                    <strong>{relationship.displayName}</strong>
+                    <span>{relationship.id} · {journey.productLine} · {id}</span>
+                  </span>
+                  <span className={styles.actionMain}>
+                    <strong>{detail.whatHappened}</strong>
+                    <p>{detail.whyNow} {blocked && detail.offerBlockedReason ? `Chặn: ${detail.offerBlockedReason}` : ''}</p>
+                  </span>
+                  <span className={styles.actionNext}>
+                    Bước hợp lệ tiếp theo
+                    <strong>{detail.nextBestCare}</strong>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </section>
 
-      <ReviewFilters filters={filters} owners={owners} onChange={onFiltersChange} />
-
-      <div className={bucketGap}>
-        {PRIORITY_BUCKETS.map((bucket) => {
-          const bucketIds = filteredIds.filter((id) => TODAY_QUEUE_MANIFEST[id].priorityBucket === bucket);
-          if (bucketIds.length === 0) return null;
-          const open = isBucketOpen(bucket);
-          const bucketBlockedCount = bucketIds.filter((id) => isTodayItemBlocked(id)).length;
-          return (
-            <section key={bucket} data-testid={`bucket-${bucket}`}>
-              <button
-                type="button"
-                onClick={() => toggleBucket(bucket)}
-                className="w-full flex items-center justify-between gap-2 text-left mb-3"
-                data-testid={`bucket-toggle-${bucket}`}
-                aria-expanded={open}
-              >
-                <span className="flex items-center gap-2">
-                  <h2 className="font-serif text-[19px] font-bold text-e26-black">{bucketLabel(bucket)}</h2>
-                  <span className="font-sans text-[12px] font-semibold text-e26-text-2">({bucketIds.length})</span>
-                  {bucketBlockedCount > 0 && <Badge variant="blocked">{bucketBlockedCount} bị chặn</Badge>}
-                </span>
-                <span className="font-sans text-[12px] font-semibold text-e26-text-2">{open ? '−' : '+'}</span>
-              </button>
-              {open && (
-                <div className={prefs.density === 'compact' ? 'space-y-2' : 'space-y-3'}>
-                  {bucketIds.map((id) => {
-                    const manifestItem = TODAY_QUEUE_MANIFEST[id];
-                    const detail = TODAY_QUEUE_DETAILS[id];
-                    const relationship = resolveRelationshipContext(manifestItem.relationshipId);
-                    const blocked = isTodayItemBlocked(id);
-                    return (
-                      <article
-                        key={id}
-                        className={`border-y border-r border-e26-border bg-e26-white ${cardPad} cursor-pointer hover:border-e26-gold-deep transition-colors ${
-                          blocked ? 'border-l-4 border-l-e26-black' : 'border-l border-l-e26-border'
-                        } ${detail.founderDecisionRequired ? 'ring-1 ring-inset ring-e26-gold-deep' : ''}`}
-                        onClick={() => setOpenItemId(id)}
-                        data-testid={`today-item-${id}`}
-                        data-relationship={manifestItem.relationshipId}
-                      >
-                        <div className="flex flex-wrap items-start justify-between gap-2">
-                          <span className="font-sans text-[15px] font-semibold text-e26-text">
-                            {relationship?.displayName} · {relationship?.id}
-                          </span>
-                          <div className="flex items-center gap-1.5">
-                            {detail.founderDecisionRequired && <Badge variant="founder">Founder</Badge>}
-                            {blocked && <Badge variant="blocked">Đang bị chặn</Badge>}
-                          </div>
-                        </div>
-                        <p className="font-sans text-[12px] font-medium tabular-nums text-e26-text-2 mt-1">
-                          {id} · Hành trình: {manifestItem.journeyId} · Owner: {detail.owner} · Due:{' '}
-                          {detail.riskOrDeadlineFact}
-                        </p>
-                        {prefs.showGuidanceText && (
-                          <p className="font-sans text-[14px] font-medium text-e26-text mt-2">{detail.whatHappened}</p>
-                        )}
-                        {!manifestItem.doorId && bucket === 'Next Door Review' && (
-                          <p className="font-sans text-[12px] font-medium text-e26-text-2 mt-1" data-testid={`no-door-${id}`}>
-                            Không có đề xuất Cánh cửa tiếp theo chính thức.
-                          </p>
-                        )}
-                      </article>
-                    );
-                  })}
-                </div>
-              )}
-            </section>
-          );
-        })}
-      </div>
-
-      {openItemId && (
-        <ReviewItemDrawer todayId={openItemId} scenario={filters.scenario} onClose={() => setOpenItemId(null)} />
+      {prefs.showSummaryMetrics && (
+        <section className={styles.sectionBlock} data-testid="risk-overview">
+          <div className={styles.sectionHeader}>
+            <div>
+              <p className={styles.eyebrow}>Mức 2</p>
+              <h2 className={styles.sectionTitle}>Hạn, rủi ro và sức chứa</h2>
+              <p className={styles.sectionIntro}>Chỉ hiển thị sự thật hiện có; không suy diễn capacity, doanh thu hay SLA.</p>
+            </div>
+          </div>
+          <div className={styles.riskGrid}>
+            <Metric label="Care / Recovery đang mở" value={openCare.length} note={openCare.map((c) => c.id).slice(0, 3).join(' · ') || 'Không có'} warn={openCare.length > 0} />
+            <Metric label="Lời hứa quá hạn / đến hạn" value={duePromises.length} note={duePromises.map((p) => p.id).slice(0, 3).join(' · ') || 'Không có'} warn={duePromises.length > 0} />
+            <Metric label="Founder decisions chờ" value={founderDecisions.length} note={founderDecisions.slice(0, 3).join(' · ') || 'Không có'} />
+            <Metric label="Việc đang bị chặn" value={blockedCount} note="Blocker được suy ra từ Care, Promise, Consent, Suppression và Door" warn={blockedCount > 0} />
+          </div>
+        </section>
       )}
+
+      <section className={styles.sectionBlock} data-testid="full-queue">
+        <div className={styles.sectionHeader}>
+          <div>
+            <p className={styles.eyebrow}>Mức 3</p>
+            <h2 className={styles.sectionTitle}>Toàn bộ hàng đợi</h2>
+            <p className={styles.sectionIntro}>Giữ đủ sáu nhóm chuẩn; nhóm thấp hơn thu gọn nhưng vẫn cho thấy số lượng, số bị chặn và việc đầu tiên.</p>
+          </div>
+          <span className={styles.badge}>{filteredIds.length}/{productIds.length} việc</span>
+        </div>
+        <div className={styles.toolbar}>
+          <span className={styles.recordMeta} data-testid="overlay-count">
+            {Object.keys(overlayState).length > 0 ? `${Object.keys(overlayState).length} việc có hành động mô phỏng.` : 'Chưa có hành động mô phỏng.'}
+          </span>
+          <button type="button" className={styles.button} onClick={() => overlayDispatch({ type: 'RESET' })} data-testid="reset-simulation">Đặt lại mô phỏng</button>
+        </div>
+        <ReviewFilters filters={filters} owners={owners} onChange={(next) => setFilters((previous) => ({ ...previous, ...next }))} />
+        <div>
+          {PRIORITY_BUCKETS.map((bucket) => {
+            const ids = filteredIds.filter((id) => TODAY_QUEUE_MANIFEST[id].priorityBucket === bucket);
+            if (ids.length === 0) return null;
+            const blocked = ids.filter((id) => isTodayItemBlocked(id)).length;
+            const open = isBucketOpen(bucket);
+            return (
+              <section
+                key={bucket}
+                data-testid={`bucket-${bucket}`}
+                data-item-ids={ids.join(',')}
+                data-no-door-ids={ids.filter((id) => !TODAY_QUEUE_MANIFEST[id].doorId).join(',')}
+              >
+                <button type="button" className={styles.queueHeader} onClick={() => toggleBucket(bucket)} aria-expanded={open} data-testid={`bucket-toggle-${bucket}`}>
+                  <span className={styles.queueHeaderTitle}>
+                    <h3>{BUCKET_LABEL[bucket]}</h3>
+                    <span className={styles.badge}>{ids.length}</span>
+                    {blocked > 0 && <span className={`${styles.badge} ${styles.badgeWarning}`}>{blocked} bị chặn</span>}
+                  </span>
+                  <span>{open ? 'Thu gọn −' : 'Mở +'} </span>
+                </button>
+                {!open && (
+                  <div className={styles.queuePreview}>
+                    <span>Đầu tiên: {ids[0]} · {TODAY_QUEUE_DETAILS[ids[0]].whatHappened}</span>
+                    <strong>{resolveJourneyContext(TODAY_QUEUE_MANIFEST[ids[0]].journeyId)?.productLine}</strong>
+                  </div>
+                )}
+                {open && (
+                  <div className={styles.queueCards}>
+                    {ids.map((id) => <QueueCard key={id} id={id} showGuidance={prefs.showGuidanceText} onOpen={() => setOpenItemId(id)} />)}
+                  </div>
+                )}
+              </section>
+            );
+          })}
+        </div>
+      </section>
+
+      {openItemId && <ReviewItemDrawer todayId={openItemId} scenario={filters.scenario} product={product} onClose={() => setOpenItemId(null)} />}
     </div>
+  );
+}
+
+function Metric({ label, value, note, warn = false }: { label: string; value: number; note: string; warn?: boolean }) {
+  return (
+    <div className={`${styles.metric} ${warn ? styles.metricWarn : ''}`}>
+      <div className={styles.metricLabel}>{label}</div>
+      <div className={styles.metricValue}>{value}</div>
+      <div className={styles.metricNote}>{note}</div>
+    </div>
+  );
+}
+
+function QueueCard({ id, showGuidance, onOpen }: { id: TodayQueueId; showGuidance: boolean; onOpen: () => void }) {
+  const manifest = TODAY_QUEUE_MANIFEST[id];
+  const detail = TODAY_QUEUE_DETAILS[id];
+  const relationship = RELATIONSHIP_RECORDS[manifest.relationshipId];
+  const journey = JOURNEY_RECORDS[manifest.journeyId];
+  const blocked = isTodayItemBlocked(id);
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      className={`${styles.recordCard} ${styles.recordCardButton} ${blocked ? styles.recordCardWarn : ''} ${detail.founderDecisionRequired ? styles.recordCardFounder : ''}`}
+      data-testid={`today-item-${id}`}
+      data-relationship={manifest.relationshipId}
+    >
+      <span className={styles.recordTop}>
+        <span>
+          <span className={styles.recordTitle}>{relationship.displayName} · {relationship.id}</span>
+          <span className={styles.recordMeta}>{id} · {journey.productLine} · {journey.id} · {detail.riskOrDeadlineFact}</span>
+        </span>
+        <span className={styles.badgeRow}>
+          <span className={styles.badge}>{journey.productLine}</span>
+          {detail.founderDecisionRequired && <span className={`${styles.badge} ${styles.badgeFounder}`}>Founder quyết</span>}
+          {blocked && <span className={`${styles.badge} ${styles.badgeWarning}`}>Đang bị chặn</span>}
+        </span>
+      </span>
+      {showGuidance && <span className={styles.recordFact}>{detail.whatHappened}</span>}
+      {!manifest.doorId && manifest.priorityBucket === 'Next Door Review' && (
+        <span className={styles.recordMeta} data-testid={`no-door-${id}`}>Không có đề xuất Cánh cửa tiếp theo chính thức.</span>
+      )}
+    </button>
   );
 }
 

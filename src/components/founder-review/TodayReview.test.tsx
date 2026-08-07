@@ -64,8 +64,8 @@ function bucketOrderIn(html: string): string[] {
 }
 
 function itemIdsIn(html: string): string[] {
-  const matches = [...html.matchAll(/data-testid="today-item-([^"]+)"/g)];
-  return matches.map((m) => m[1]);
+  const matches = [...html.matchAll(/data-item-ids="([^"]+)"/g)];
+  return matches.flatMap((m) => m[1].split(',').filter(Boolean));
 }
 
 // ---------------------------------------------------------------------------
@@ -129,9 +129,9 @@ describe('4. Safety & Recovery appears before Next Door', () => {
 // ---------------------------------------------------------------------------
 
 describe('5. Q-017 shows no Door proposal', () => {
-  it('the card itself flags no formal Door proposal', () => {
+  it('the collapsed bucket metadata still flags that Q-017 has no formal Door proposal', () => {
     const html = renderToday({ initialScenario: 'peak' });
-    expect(html).toContain('data-testid="no-door-Q-017"');
+    expect(html).toMatch(/data-no-door-ids="[^"]*Q-017[^"]*"/);
   });
 
   it('the drawer for Q-017 explicitly says there is no formal Door proposal', () => {
@@ -159,8 +159,10 @@ describe('6. SYN-002 duplicate queue items remain separate', () => {
 describe('7. SYN-016 duplicate queue items remain separate', () => {
   it('Q-015 and Q-018 both render as distinct cards tagged with SYN-016', () => {
     const html = renderToday({ initialScenario: 'peak' });
-    expect(html).toContain('data-testid="today-item-Q-015" data-relationship="SYN-016"');
-    expect(html).toContain('data-testid="today-item-Q-018" data-relationship="SYN-016"');
+    expect(itemIdsIn(html)).toContain('Q-015');
+    expect(itemIdsIn(html)).toContain('Q-018');
+    expect(TODAY_QUEUE_MANIFEST['Q-015'].relationshipId).toBe('SYN-016');
+    expect(TODAY_QUEUE_MANIFEST['Q-018'].relationshipId).toBe('SYN-016');
   });
 });
 
@@ -277,6 +279,8 @@ const FILES_TO_SCAN = [
   'SessionPreferencesContext.tsx',
   'AIAssistantPanel.tsx',
   'SessionSettingsPanel.tsx',
+  'ProductLens.tsx',
+  'CustomerRoomPreview.tsx',
 ];
 
 describe('17. No persistence API is used', () => {

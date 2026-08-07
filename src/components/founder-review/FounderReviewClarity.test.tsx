@@ -125,7 +125,7 @@ describe('Thiết lập phiên — reviewPreferencesReducer is pure and immutabl
     expect(state.bucketsExpandedByDefault).toBe(DEFAULT_REVIEW_PREFERENCES.bucketsExpandedByDefault);
 
     state = reviewPreferencesReducer(state, { type: 'TOGGLE_BUCKETS_EXPANDED' });
-    expect(state.bucketsExpandedByDefault).toBe(false);
+    expect(state.bucketsExpandedByDefault).toBe(!DEFAULT_REVIEW_PREFERENCES.bucketsExpandedByDefault);
 
     state = reviewPreferencesReducer(state, { type: 'TOGGLE_GUIDANCE_TEXT' });
     expect(state.showGuidanceText).toBe(false);
@@ -199,10 +199,10 @@ describe('AI Trợ lý and Thiết lập are visible from all four workspaces', 
 // ---------------------------------------------------------------------------
 
 describe('Badge — state variants are visually distinct without excessive color', () => {
-  it('blocked uses a solid dark fill; eligible and neutral stay quiet', () => {
+  it('blocked uses restrained warning styling; eligible uses a distinct success style', () => {
     const blocked = renderToStaticMarkup(<Badge variant="blocked">Đang bị chặn</Badge>);
     const eligible = renderToStaticMarkup(<Badge variant="eligible">Đủ điều kiện</Badge>);
-    expect(blocked).toContain('bg-e26-black');
-    expect(eligible).not.toContain('bg-e26-black');
+    expect(blocked).toContain('badgeWarning');
+    expect(eligible).toContain('badgeSuccess');
   });
 });

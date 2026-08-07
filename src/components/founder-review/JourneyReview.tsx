@@ -26,11 +26,14 @@ import {
   getDoorForJourney,
   getDoorBlockers,
   buildSafeSyntheticQuery,
+  journeyMatchesProductLens,
+  type ProductLensId,
   type ScenarioPreset,
 } from '@/lib/wp3-5/review-selectors';
 import type { JourneyId } from '@/lib/wp3-5/review-manifest';
 import type { JourneyRecord, JourneyStage } from '@/lib/wp3-5/review-universe';
 import { DetailSection as Section, Badge, IdTag } from './founder-review-ui';
+import styles from './founder-review.module.css';
 
 type StageFilter =
   | 'all'
@@ -100,10 +103,11 @@ function matchesStageFilter(journey: JourneyRecord, filter: StageFilter): boolea
 
 export interface JourneyReviewProps {
   readonly scenario: ScenarioPreset;
+  readonly product?: ProductLensId;
   readonly initialJourneyId?: JourneyId | null;
 }
 
-export default function JourneyReview({ scenario, initialJourneyId = null }: JourneyReviewProps) {
+export default function JourneyReview({ scenario, product = 'all', initialJourneyId = null }: JourneyReviewProps) {
   const [search, setSearch] = useState('');
   const [stageFilter, setStageFilter] = useState<StageFilter>('all');
   const [blockedOnly, setBlockedOnly] = useState(false);
@@ -114,6 +118,7 @@ export default function JourneyReview({ scenario, initialJourneyId = null }: Jou
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return journeys.filter((journey) => {
+      if (!journeyMatchesProductLens(journey, product)) return false;
       if (!matchesStageFilter(journey, stageFilter)) return false;
       if (blockedOnly && !journey.blocked) return false;
       if (q) {
@@ -124,28 +129,28 @@ export default function JourneyReview({ scenario, initialJourneyId = null }: Jou
       }
       return true;
     });
-  }, [journeys, search, stageFilter, blockedOnly]);
+  }, [journeys, product, search, stageFilter, blockedOnly]);
 
   const selected = selectedId ? resolveJourneyContext(selectedId) : undefined;
 
   return (
-    <div className="grid lg:grid-cols-[340px_1fr] gap-6">
-      <div>
-        <p className="font-sans text-[12px] text-e26-text-2 mb-2" data-testid="journey-count">
+    <div className={styles.workspaceGrid}>
+      <div className={styles.directory}>
+        <p className={styles.recordMeta} data-testid="journey-count">
           {filtered.length}/{journeys.length} hành trình
         </p>
 
-        <div className="flex flex-col gap-2 mb-4">
+        <div className={styles.filterStack}>
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Tìm theo JRN-ID, SYN-ID hoặc tên"
-            className="border border-e26-border bg-e26-white px-3 py-2 font-sans text-[13px] text-e26-text"
+            className={styles.input}
             data-testid="journey-search"
           />
           <select
-            className="border border-e26-border bg-e26-white px-2 py-2 font-sans text-[13px] text-e26-text"
+            className={styles.select}
             value={stageFilter}
             onChange={(e) => setStageFilter(e.target.value as StageFilter)}
             data-testid="journey-stage-filter"
@@ -168,7 +173,7 @@ export default function JourneyReview({ scenario, initialJourneyId = null }: Jou
           </label>
         </div>
 
-        <ul className="space-y-2" data-testid="journey-directory">
+        <ul className={styles.directoryList} data-testid="journey-directory">
           {filtered.map((journey) => {
             const relationship = resolveRelationshipContext(journey.relationshipId);
             return (
@@ -178,11 +183,7 @@ export default function JourneyReview({ scenario, initialJourneyId = null }: Jou
                   onClick={() => setSelectedId(journey.id)}
                   data-testid={`journey-card-${journey.id}`}
                   data-relationship={journey.relationshipId}
-                  className={`w-full text-left border px-3 py-2 font-sans text-[13px] transition-colors ${
-                    selectedId === journey.id
-                      ? 'border-e26-gold-deep bg-e26-cream'
-                      : 'border-e26-border bg-e26-white hover:bg-e26-cream'
-                  }`}
+                  className={`${styles.directoryButton} ${selectedId === journey.id ? styles.directorySelected : ''}`}
                 >
                   <span className="flex flex-wrap items-center justify-between gap-2">
                     <span className="font-sans text-[14px] font-semibold text-e26-text">
@@ -206,14 +207,14 @@ export default function JourneyReview({ scenario, initialJourneyId = null }: Jou
             Chọn một Hành trình trong danh sách bên trái để xem chi tiết.
           </p>
         )}
-        {selected && <JourneyDetail journey={selected} scenario={scenario} />}
+        {selected && <JourneyDetail journey={selected} scenario={scenario} product={product} />}
       </div>
     </div>
   );
 }
 
 
-function JourneyDetail({ journey, scenario }: { journey: JourneyRecord; scenario: ScenarioPreset }) {
+function JourneyDetail({ journey, scenario, product }: { journey: JourneyRecord; scenario: ScenarioPreset; product: ProductLensId }) {
   const relationship = resolveRelationshipContext(journey.relationshipId);
   const { care, promises } = getCareAndPromisesForJourney(journey.id);
   const door = getDoorForJourney(journey.id);
@@ -282,7 +283,7 @@ function JourneyDetail({ journey, scenario }: { journey: JourneyRecord; scenario
                     {c.id} · {c.type} · {c.status === 'open' ? 'Đang mở' : 'Đã đóng'}
                   </span>
                   <Link
-                    href={{ pathname: '/founder-review/cham-soc', query: buildSafeSyntheticQuery({ scenario, care: c.id }) }}
+                    href={{ pathname: '/founder-review/cham-soc', query: buildSafeSyntheticQuery({ scenario, product, care: c.id }) }}
                     className="font-sans text-[12px] underline underline-offset-4 text-e26-text-2 hover:text-e26-gold-deep"
                   >
                     Mở Chăm sóc →
@@ -360,7 +361,7 @@ function JourneyDetail({ journey, scenario }: { journey: JourneyRecord; scenario
           <Link
             href={{
               pathname: '/founder-review/quan-he',
-              query: buildSafeSyntheticQuery({ scenario, relationship: relationship.id }),
+              query: buildSafeSyntheticQuery({ scenario, product, relationship: relationship.id }),
             }}
             className="border border-e26-border px-4 py-2 font-sans text-[13px] text-e26-text hover:text-e26-gold-deep hover:border-e26-gold-deep transition-colors"
             data-testid={`journey-to-relationship-${journey.id}`}
@@ -369,7 +370,7 @@ function JourneyDetail({ journey, scenario }: { journey: JourneyRecord; scenario
           </Link>
         )}
         <Link
-          href={{ pathname: '/founder-review/wp3-5-a', query: buildSafeSyntheticQuery({ scenario }) }}
+          href={{ pathname: '/founder-review/wp3-5-a', query: buildSafeSyntheticQuery({ scenario, product }) }}
           className="border border-e26-border px-4 py-2 font-sans text-[13px] text-e26-text hover:text-e26-gold-deep hover:border-e26-gold-deep transition-colors"
         >
           ← Về Hôm nay

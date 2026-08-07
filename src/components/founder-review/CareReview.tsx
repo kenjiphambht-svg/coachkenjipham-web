@@ -26,11 +26,14 @@ import {
   getDoorForRelationship,
   getDoorBlockers,
   buildSafeSyntheticQuery,
+  journeyMatchesProductLens,
+  type ProductLensId,
   type ScenarioPreset,
 } from '@/lib/wp3-5/review-selectors';
 import { SUPPRESSION_RECORD_IDS, type CareId } from '@/lib/wp3-5/review-manifest';
 import { SUPPRESSION_STATE_RECORDS, type CareRecord, type CareCaseType } from '@/lib/wp3-5/review-universe';
 import { DetailSection as Section, Badge, IdTag } from './founder-review-ui';
+import styles from './founder-review.module.css';
 
 type StatusFilter = 'all' | 'open' | 'closed';
 type TypeFilter = 'all' | CareCaseType;
@@ -59,10 +62,11 @@ function suppressionForRelationship(relationshipId: string) {
 
 export interface CareReviewProps {
   readonly scenario: ScenarioPreset;
+  readonly product?: ProductLensId;
   readonly initialCareId?: CareId | null;
 }
 
-export default function CareReview({ scenario, initialCareId = null }: CareReviewProps) {
+export default function CareReview({ scenario, product = 'all', initialCareId = null }: CareReviewProps) {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [typeFilter, setTypeFilter] = useState<TypeFilter>('all');
@@ -74,6 +78,8 @@ export default function CareReview({ scenario, initialCareId = null }: CareRevie
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return allCases.filter((rec) => {
+      const journey = resolveJourneyContext(rec.journeyId);
+      if (!journey || !journeyMatchesProductLens(journey, product)) return false;
       if (statusFilter !== 'all' && rec.status !== statusFilter) return false;
       if (typeFilter !== 'all' && rec.type !== typeFilter) return false;
       if (offerFilter === 'blocking' && !rec.offerBlocked) return false;
@@ -86,7 +92,7 @@ export default function CareReview({ scenario, initialCareId = null }: CareRevie
       }
       return true;
     });
-  }, [allCases, search, statusFilter, typeFilter, offerFilter]);
+  }, [allCases, product, search, statusFilter, typeFilter, offerFilter]);
 
   const activeCases = filtered.filter((c) => c.status === 'open' && !isDeliberateSilence(c));
   const silenceCases = filtered.filter((c) => c.status === 'open' && isDeliberateSilence(c));
@@ -95,23 +101,23 @@ export default function CareReview({ scenario, initialCareId = null }: CareRevie
   const selected = selectedId ? resolveCareContext(selectedId) : undefined;
 
   return (
-    <div className="grid lg:grid-cols-[360px_1fr] gap-6">
-      <div>
-        <p className="font-sans text-[12px] text-e26-text-2 mb-2" data-testid="care-count">
+    <div className={styles.workspaceGrid}>
+      <div className={styles.directory}>
+        <p className={styles.recordMeta} data-testid="care-count">
           {filtered.length}/{allCases.length} case
         </p>
 
-        <div className="flex flex-col gap-2 mb-4">
+        <div className={styles.filterStack}>
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Tìm theo CARE-ID, SYN-ID, JRN-ID hoặc tên"
-            className="border border-e26-border bg-e26-white px-3 py-2 font-sans text-[13px] text-e26-text"
+            className={styles.input}
             data-testid="care-search"
           />
           <select
-            className="border border-e26-border bg-e26-white px-2 py-2 font-sans text-[13px] text-e26-text"
+            className={styles.select}
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
             aria-label="Lọc theo trạng thái"
@@ -121,7 +127,7 @@ export default function CareReview({ scenario, initialCareId = null }: CareRevie
             <option value="closed">Đã đóng</option>
           </select>
           <select
-            className="border border-e26-border bg-e26-white px-2 py-2 font-sans text-[13px] text-e26-text"
+            className={styles.select}
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value as TypeFilter)}
             aria-label="Lọc theo loại case"
@@ -133,7 +139,7 @@ export default function CareReview({ scenario, initialCareId = null }: CareRevie
             ))}
           </select>
           <select
-            className="border border-e26-border bg-e26-white px-2 py-2 font-sans text-[13px] text-e26-text"
+            className={styles.select}
             value={offerFilter}
             onChange={(e) => setOfferFilter(e.target.value as OfferFilter)}
             aria-label="Lọc theo ảnh hưởng tới Cánh cửa tiếp theo"
@@ -155,7 +161,7 @@ export default function CareReview({ scenario, initialCareId = null }: CareRevie
             Chọn một case bên trái để xem chi tiết.
           </p>
         )}
-        {selected && <CareDetail care={selected} scenario={scenario} />}
+        {selected && <CareDetail care={selected} scenario={scenario} product={product} />}
       </div>
     </div>
   );
@@ -180,7 +186,7 @@ function CareQueue({
       <h3 className="font-sans text-[11px] font-bold uppercase tracking-[0.14em] text-e26-text-2 mb-2">
         {title} ({cases.length})
       </h3>
-      <ul className="space-y-2">
+      <ul className={styles.directoryList}>
         {cases.map((rec) => {
           const relationship = resolveRelationshipContext(rec.relationshipId);
           return (
@@ -191,13 +197,7 @@ function CareQueue({
                 data-testid={`care-card-${rec.id}`}
                 data-relationship={rec.relationshipId}
                 data-journey={rec.journeyId}
-                className={`w-full text-left border px-3 py-2 font-sans text-[13px] transition-colors ${
-                  rec.offerBlocked ? 'border-l-4 border-l-e26-black' : 'border-l border-l-e26-border'
-                } ${
-                  selectedId === rec.id
-                    ? 'border-e26-gold-deep bg-e26-cream'
-                    : 'border-e26-border bg-e26-white hover:bg-e26-cream'
-                }`}
+                className={`${styles.directoryButton} ${rec.offerBlocked ? styles.recordCardWarn : ''} ${selectedId === rec.id ? styles.directorySelected : ''}`}
               >
                 <span className="flex flex-wrap items-center justify-between gap-2">
                   <span className="font-sans text-[14px] font-semibold text-e26-text">
@@ -219,7 +219,7 @@ function CareQueue({
 }
 
 
-function CareDetail({ care, scenario }: { care: CareRecord; scenario: ScenarioPreset }) {
+function CareDetail({ care, scenario, product }: { care: CareRecord; scenario: ScenarioPreset; product: ProductLensId }) {
   const relationship = resolveRelationshipContext(care.relationshipId);
   const journey = resolveJourneyContext(care.journeyId);
   const door = getDoorForRelationship(care.relationshipId);
@@ -307,7 +307,7 @@ function CareDetail({ care, scenario }: { care: CareRecord; scenario: ScenarioPr
           <Link
             href={{
               pathname: '/founder-review/quan-he',
-              query: buildSafeSyntheticQuery({ scenario, relationship: relationship.id }),
+              query: buildSafeSyntheticQuery({ scenario, product, relationship: relationship.id }),
             }}
             className="border border-e26-border px-4 py-2 font-sans text-[13px] text-e26-text hover:text-e26-gold-deep hover:border-e26-gold-deep transition-colors"
             data-testid={`care-to-relationship-${care.id}`}
@@ -319,7 +319,7 @@ function CareDetail({ care, scenario }: { care: CareRecord; scenario: ScenarioPr
           <Link
             href={{
               pathname: '/founder-review/hanh-trinh',
-              query: buildSafeSyntheticQuery({ scenario, journey: journey.id }),
+              query: buildSafeSyntheticQuery({ scenario, product, journey: journey.id }),
             }}
             className="border border-e26-border px-4 py-2 font-sans text-[13px] text-e26-text hover:text-e26-gold-deep hover:border-e26-gold-deep transition-colors"
             data-testid={`care-to-journey-${care.id}`}

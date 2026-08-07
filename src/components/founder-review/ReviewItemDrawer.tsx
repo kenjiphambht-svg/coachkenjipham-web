@@ -25,6 +25,7 @@ import {
   getDoorBlockers,
   buildSafeSyntheticQuery,
   type ScenarioPreset,
+  type ProductLensId,
 } from '@/lib/wp3-5/review-selectors';
 import { TODAY_QUEUE_MANIFEST, type TodayQueueId } from '@/lib/wp3-5/review-manifest';
 import { TODAY_QUEUE_DETAILS } from '@/lib/wp3-5/review-universe';
@@ -40,10 +41,11 @@ import styles from './founder-review.module.css';
 export interface ReviewItemDrawerProps {
   readonly todayId: TodayQueueId;
   readonly scenario: ScenarioPreset;
+  readonly product?: ProductLensId;
   readonly onClose: () => void;
 }
 
-export default function ReviewItemDrawer({ todayId, scenario, onClose }: ReviewItemDrawerProps) {
+export default function ReviewItemDrawer({ todayId, scenario, product = 'all', onClose }: ReviewItemDrawerProps) {
   const { state, dispatch } = useReviewState();
   const manifestItem = TODAY_QUEUE_MANIFEST[todayId];
   const detail = TODAY_QUEUE_DETAILS[todayId];
@@ -55,13 +57,13 @@ export default function ReviewItemDrawer({ todayId, scenario, onClose }: ReviewI
   const overlay = getOverlayForItem(state, todayId);
 
   const relationshipHref = relationship
-    ? { pathname: '/founder-review/quan-he', query: buildSafeSyntheticQuery({ scenario, relationship: relationship.id }) }
+    ? { pathname: '/founder-review/quan-he', query: buildSafeSyntheticQuery({ scenario, product, relationship: relationship.id }) }
     : undefined;
   const journeyHref = journey
-    ? { pathname: '/founder-review/hanh-trinh', query: buildSafeSyntheticQuery({ scenario, journey: journey.id }) }
+    ? { pathname: '/founder-review/hanh-trinh', query: buildSafeSyntheticQuery({ scenario, product, journey: journey.id }) }
     : undefined;
   const careHref = manifestItem.careId
-    ? { pathname: '/founder-review/cham-soc', query: buildSafeSyntheticQuery({ scenario, care: manifestItem.careId }) }
+    ? { pathname: '/founder-review/cham-soc', query: buildSafeSyntheticQuery({ scenario, product, care: manifestItem.careId }) }
     : undefined;
 
   function applyAction(action: SimulatedActionType) {

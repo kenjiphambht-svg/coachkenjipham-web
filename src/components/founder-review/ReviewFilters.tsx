@@ -10,6 +10,7 @@ import React, { type ChangeEvent } from 'react';
 
 import { PRIORITY_BUCKETS, SCENARIO_PRESETS, type ScenarioPreset } from '@/lib/wp3-5/review-selectors';
 import type { PriorityBucket } from '@/lib/wp3-5/review-manifest';
+import styles from './founder-review.module.css';
 
 export type BlockedFilter = 'all' | 'blocked' | 'unblocked';
 
@@ -27,16 +28,13 @@ export interface ReviewFiltersProps {
   readonly onChange: (next: Partial<TodayFiltersState>) => void;
 }
 
-const selectClass =
-  'border border-e26-border bg-e26-white px-2 py-2 font-sans text-[13px] text-e26-text';
-
 export default function ReviewFilters({ filters, owners, onChange }: ReviewFiltersProps) {
   return (
-    <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center mb-5" aria-label="Bộ lọc Hôm nay">
-      <label className="flex flex-col gap-1 font-sans text-[12px] font-semibold text-e26-text-2">
+    <div className={styles.filterBar} aria-label="Bộ lọc Hôm nay">
+      <label className={styles.filterLabel}>
         Scenario
         <select
-          className={selectClass}
+          className={styles.select}
           value={filters.scenario}
           onChange={(e: ChangeEvent<HTMLSelectElement>) => onChange({ scenario: e.target.value as ScenarioPreset })}
         >
@@ -48,10 +46,10 @@ export default function ReviewFilters({ filters, owners, onChange }: ReviewFilte
         </select>
       </label>
 
-      <label className="flex flex-col gap-1 font-sans text-[12px] font-semibold text-e26-text-2">
+      <label className={styles.filterLabel}>
         Bucket
         <select
-          className={selectClass}
+          className={styles.select}
           value={filters.bucket}
           onChange={(e: ChangeEvent<HTMLSelectElement>) =>
             onChange({ bucket: e.target.value as PriorityBucket | 'all' })
@@ -66,10 +64,10 @@ export default function ReviewFilters({ filters, owners, onChange }: ReviewFilte
         </select>
       </label>
 
-      <label className="flex flex-col gap-1 font-sans text-[12px] font-semibold text-e26-text-2">
+      <label className={styles.filterLabel}>
         Owner
         <select
-          className={selectClass}
+          className={styles.select}
           value={filters.owner}
           onChange={(e: ChangeEvent<HTMLSelectElement>) => onChange({ owner: e.target.value })}
         >
@@ -82,10 +80,10 @@ export default function ReviewFilters({ filters, owners, onChange }: ReviewFilte
         </select>
       </label>
 
-      <label className="flex flex-col gap-1 font-sans text-[12px] font-semibold text-e26-text-2">
+      <label className={styles.filterLabel}>
         Blocked
         <select
-          className={selectClass}
+          className={styles.select}
           value={filters.blocked}
           onChange={(e: ChangeEvent<HTMLSelectElement>) => onChange({ blocked: e.target.value as BlockedFilter })}
         >
@@ -95,11 +93,11 @@ export default function ReviewFilters({ filters, owners, onChange }: ReviewFilte
         </select>
       </label>
 
-      <label className="flex flex-col gap-1 font-sans text-[12px] font-semibold text-e26-text-2 flex-1 min-w-[180px]">
+      <label className={`${styles.filterLabel} ${styles.filterGrow}`}>
         Tìm Quan hệ (tên hoặc ID)
         <input
           type="text"
-          className={`${selectClass} w-full`}
+          className={styles.input}
           value={filters.search}
           onChange={(e: ChangeEvent<HTMLInputElement>) => onChange({ search: e.target.value })}
           placeholder="An hoặc SYN-001"
