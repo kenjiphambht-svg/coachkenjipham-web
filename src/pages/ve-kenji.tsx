@@ -199,16 +199,15 @@ function SectionLabel({ children }: { children: string }) {
 
 function PresenceEnvironmentalImageSlot() {
   return (
-    <figure aria-hidden="true" className="relative aspect-[4/3] overflow-hidden bg-[#D2CEC3]">
-      <Image
-        src="/images/ve-kenji/06-khoang-ngoi-cung.png"
-        alt=""
-        fill
-        sizes="(min-width: 768px) 58vw, calc(100vw - 48px)"
-        className="object-cover object-[57%_62%]"
-      />
-      <div className="absolute inset-0" style={{ background: "linear-gradient(104deg, rgba(222,216,202,0.48) 0%, rgba(231,227,216,0.12) 48%, rgba(231,227,216,0) 82%)" }} />
-      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 72% 88% at 18% 26%, rgba(255,255,255,0.24) 0%, rgba(255,255,255,0) 76%)" }} />
+    <figure className="relative aspect-[4/5] overflow-hidden bg-[#D2CEC3] md:aspect-video">
+      <picture className="absolute inset-0 block h-full w-full">
+        <source media="(max-width: 767px)" srcSet="/images/ve-kenji/08-hero-kenji-mobile.webp" />
+        <img
+          src="/images/ve-kenji/08-hero-kenji-desktop.webp"
+          alt="Kenji Phạm trong không gian làm việc"
+          className="block h-full w-full object-cover object-center"
+        />
+      </picture>
     </figure>
   );
 }
@@ -526,9 +525,8 @@ export default function VeKenjiPage() {
           <div aria-hidden="true" className="absolute inset-0" style={{ background: "linear-gradient(96deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0) 44%, rgba(26,26,26,0.045) 100%)" }} />
           <div className="ve-kenji-reveal relative max-w-[1180px] mx-auto">
             <div className="relative max-w-[620px] md:ml-[8%]">
-              <SectionLabel>CÁCH TÔI HIỆN DIỆN</SectionLabel>
               <EssenceAnchor as="h2" className="relative max-w-[590px]">
-                Tôi đọc để hiểu — <em>không để phán</em>.
+                Cách tôi hiện diện
               </EssenceAnchor>
             </div>
             <div className="relative mt-14 md:mt-20 md:grid md:grid-cols-[minmax(0,1.3fr)_minmax(340px,1fr)] md:items-center md:gap-x-12 lg:gap-x-16">
