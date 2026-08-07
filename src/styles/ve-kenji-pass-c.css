@@ -186,11 +186,6 @@ main.text-e26-text:has(.ve-kenji-signal-tier-b)
 }
 
 @media (max-width: 767px) {
-  main.text-e26-text:has(.ve-kenji-signal-tier-b)
-    > section.ve-kenji-hero-desktop {
-    display: none;
-  }
-
   main.text-e26-text:has(.ve-kenji-signal-tier-b) > section:nth-of-type(8),
   main.text-e26-text:has(.ve-kenji-signal-tier-b) > section:nth-of-type(9) {
     padding-block: 6rem 6.75rem;

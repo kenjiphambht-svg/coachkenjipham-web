@@ -242,31 +242,26 @@ export default function VeKenjiPage() {
       <HomeHeader />
 
       <main ref={pageRef} className="text-e26-text">
-        <section className="ve-kenji-hero-desktop relative isolate overflow-hidden px-6 py-28 md:py-44">
-          <picture className="absolute inset-0 z-0 block h-full w-full">
+        <section className="ve-kenji-hero relative isolate overflow-hidden">
+          <picture className="absolute left-0 top-0 z-0 block h-[82svh] min-h-[620px] w-full md:inset-0 md:h-full md:min-h-0">
             <source
               media="(max-width: 767px)"
-              srcSet="/images/ve-kenji/08-hero-kenji-mobile.webp"
+              srcSet="/images/ve-kenji/09-hero-empty-space-mobile.png"
             />
             <img
-              src="/images/ve-kenji/08-hero-kenji-desktop.webp"
+              src="/images/ve-kenji/09-hero-empty-space-desktop.png"
               alt=""
               aria-hidden="true"
-              className="absolute inset-0 block h-full w-full object-cover object-center"
+              className="absolute inset-0 block h-full w-full object-cover object-[54%_center] md:object-center"
             />
           </picture>
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 z-10 md:hidden"
-            style={{ background: "linear-gradient(180deg, rgba(239, 237, 228, 0.90) 0%, rgba(239, 237, 228, 0.70) 46%, rgba(239, 237, 228, 0.28) 78%, rgba(239, 237, 228, 0.05) 100%)" }}
-          />
           <div
             aria-hidden="true"
             className="absolute inset-0 z-10 hidden md:block"
             style={{ background: "linear-gradient(90deg, rgba(239, 237, 228, 0.72) 0%, rgba(239, 237, 228, 0.58) 32%, rgba(239, 237, 228, 0.24) 54%, rgba(239, 237, 228, 0.04) 73%, rgba(239, 237, 228, 0) 100%)" }}
           />
           <div aria-hidden="true" className="absolute inset-0 z-10" style={{ background: "radial-gradient(ellipse 52% 68% at 25% 40%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 76%)" }} />
-          <div className="relative z-20 w-full max-w-[1180px] mx-auto">
+          <div className="relative z-20 hidden w-full max-w-[1180px] mx-auto px-6 py-28 md:block md:py-44">
             <div className="ve-kenji-reveal max-w-[660px] md:ml-0">
               <SectionLabel>VÌ SAO TÔI Ở ĐÂY</SectionLabel>
               <EssenceDisplay as="h1" className="max-w-[700px]">
@@ -289,22 +284,8 @@ export default function VeKenjiPage() {
               </div>
             </div>
           </div>
-        </section>
-
-        <div className="ve-kenji-hero-mobile md:hidden">
+        <div className="ve-kenji-hero-mobile relative z-20 md:hidden">
           <div className="relative isolate h-[82svh] min-h-[620px] overflow-hidden px-6">
-            <picture className="absolute inset-0 z-0 block h-full w-full">
-              <source
-                media="(max-width: 767px)"
-                srcSet="/images/ve-kenji/08-hero-kenji-mobile.webp"
-              />
-              <img
-                src="/images/ve-kenji/08-hero-kenji-desktop.webp"
-                alt=""
-                aria-hidden="true"
-                className="absolute inset-0 block h-full w-full object-cover object-[42%_center]"
-              />
-            </picture>
             <div
               aria-hidden="true"
               className="absolute inset-0 z-10"
@@ -341,6 +322,7 @@ export default function VeKenjiPage() {
             </div>
           </div>
         </div>
+        </section>
 
         <section className={`relative isolate overflow-hidden px-6 ${RHYTHM.mo}`} style={{ background: sectionBg(BG.story, 18, "72% 38%", "126deg") }}>
           <div aria-hidden="true" className="absolute inset-0" style={{ background: "radial-gradient(ellipse 48% 72% at 76% 34%, rgba(255,255,255,0.19) 0%, rgba(255,255,255,0) 76%)" }} />
