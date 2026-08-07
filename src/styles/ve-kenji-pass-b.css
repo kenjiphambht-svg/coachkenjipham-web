@@ -123,14 +123,6 @@ main.text-e26-text:has(.ve-kenji-signal-tier-b)
   width: 100%;
 }
 
-@media (min-width: 768px) {
-  main.text-e26-text:has(.ve-kenji-signal-tier-b)
-    > section:nth-of-type(6)
-    figure {
-    aspect-ratio: 16 / 9;
-  }
-}
-
 main.text-e26-text:has(.ve-kenji-signal-tier-b)
   > section:nth-of-type(6)
   ol

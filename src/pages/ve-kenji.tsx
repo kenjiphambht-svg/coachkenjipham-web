@@ -199,15 +199,14 @@ function SectionLabel({ children }: { children: string }) {
 
 function PresenceEnvironmentalImageSlot() {
   return (
-    <figure className="relative aspect-[4/5] overflow-hidden bg-[#D2CEC3] md:aspect-video">
-      <picture className="absolute inset-0 block h-full w-full">
-        <source media="(max-width: 767px)" srcSet="/images/ve-kenji/08-hero-kenji-mobile.webp" />
-        <img
-          src="/images/ve-kenji/08-hero-kenji-desktop.webp"
-          alt="Kenji Phạm trong không gian làm việc"
-          className="block h-full w-full object-cover object-center"
-        />
-      </picture>
+    <figure className="relative aspect-[4/5] overflow-hidden bg-[#D2CEC3]">
+      {/* Direct source avoids a responsive wrapper: this scene has one approved 4:5 asset at every viewport. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/images/ve-kenji/08-hero-kenji-mobile.webp"
+        alt="Kenji Phạm trong không gian làm việc"
+        className="absolute inset-0 block h-full w-full object-cover object-center"
+      />
     </figure>
   );
 }
