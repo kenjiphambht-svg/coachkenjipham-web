@@ -309,7 +309,10 @@ export default function VeKenjiPage() {
             <div
               aria-hidden="true"
               className="absolute inset-0 z-10"
-              style={{ background: "linear-gradient(180deg, rgba(239, 237, 228, 0.88) 0%, rgba(239, 237, 228, 0.72) 52%, rgba(239, 237, 228, 0.30) 100%)" }}
+              style={{
+                background:
+                  "linear-gradient(90deg, rgba(239, 237, 228, 0.94) 0%, rgba(239, 237, 228, 0.90) 34%, rgba(239, 237, 228, 0.65) 56%, rgba(239, 237, 228, 0.27) 79%, rgba(239, 237, 228, 0.14) 100%), linear-gradient(180deg, rgba(239, 237, 228, 0.42) 0%, rgba(239, 237, 228, 0.20) 58%, rgba(239, 237, 228, 0.10) 100%)",
+              }}
             />
             <div className="relative z-20 mx-auto flex h-full max-w-[620px] flex-col justify-start pt-[14svh]">
               <SectionLabel>VÌ SAO TÔI Ở ĐÂY</SectionLabel>
