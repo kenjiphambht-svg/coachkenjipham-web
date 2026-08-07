@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import { useRef, useState } from "react";
 import { SEO } from "@/components/SEO";
 import HomeHeader from "@/components/homepage/HomeHeader";
@@ -18,6 +18,23 @@ import {
 import { VeKenjiSectionImage } from "@/components/ve-kenji/VeKenjiImagery";
 import { useVeKenjiSignalReveal } from "@/hooks/useVeKenjiSignalReveal";
 import { useVeKenjiSectionReveal } from "@/hooks/useVeKenjiSectionReveal";
+
+const { props: heroDesktopImageProps } = getImageProps({
+  alt: "",
+  height: 810,
+  priority: true,
+  sizes: "100vw",
+  src: "/images/ve-kenji/08-hero-kenji-desktop.webp",
+  width: 1440,
+});
+
+const { props: heroMobileImageProps } = getImageProps({
+  alt: "",
+  height: 525,
+  sizes: "100vw",
+  src: "/images/ve-kenji/08-hero-kenji-mobile.webp",
+  width: 420,
+});
 
 const personSchema = {
   "@context": "https://schema.org",
@@ -244,15 +261,18 @@ export default function VeKenjiPage() {
 
       <main ref={pageRef} className="text-e26-text">
         <section className="relative isolate overflow-hidden px-6 py-28 md:py-44">
-          <Image
-            src="/images/ve-kenji/06-khoang-ngoi-cung.png"
-            alt=""
-            aria-hidden="true"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-[56%_center] md:object-[58%_center]"
-          />
+          <picture className="absolute inset-0 z-0 block">
+            <source
+              media="(max-width: 767px)"
+              sizes={heroMobileImageProps.sizes}
+              srcSet={heroMobileImageProps.srcSet}
+            />
+            <img
+              {...heroDesktopImageProps}
+              alt=""
+              className="h-full w-full object-cover object-center"
+            />
+          </picture>
           <div
             aria-hidden="true"
             className="absolute inset-0 md:hidden"
