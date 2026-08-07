@@ -1,7 +1,7 @@
 /*
  * /ve-kenji — Structure & Composition Pass B
  * Scope: S05 Belief, S06 Values, S07 Presence, S08 Boundaries.
- * The approved copy and all image assets remain unchanged.
+ * Approved copy and image roles remain preserved.
  */
 
 /* Founder-approved emphasis: keep true italic, but remove the faded treatment. */
@@ -96,7 +96,7 @@ main.text-e26-text:has(.ve-kenji-signal-tier-b)
   margin-bottom: 1.125rem;
 }
 
-/* S07 — Presence: let each approved source keep its native editorial composition. */
+/* S07 — Presence: keep the approved portrait scene intact at its native 4:5 composition. */
 main.text-e26-text:has(.ve-kenji-signal-tier-b) > section:nth-of-type(6) {
   padding-block: clamp(7rem, 10vw, 9.5rem);
 }

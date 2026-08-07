@@ -24,15 +24,6 @@ main.text-e26-text:has(.ve-kenji-signal-tier-b)
   font-style: italic;
 }
 
-/* Founder correction: the Values headline already names the section; remove the redundant label. */
-main.text-e26-text:has(.ve-kenji-signal-tier-b)
-  > section:nth-of-type(5)
-  > div
-  > div:first-child
-  > p:first-child {
-  display: none;
-}
-
 /* S09 — FAQ: cleaner retrieval surface, less vertical drag. */
 main.text-e26-text:has(.ve-kenji-signal-tier-b) > section:nth-of-type(8) {
   padding-block: clamp(6.75rem, 9vw, 8.5rem);

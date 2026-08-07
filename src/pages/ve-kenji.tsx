@@ -293,9 +293,11 @@ export default function VeKenjiPage() {
               }}
             />
             <div className="relative z-20 mx-auto flex h-full max-w-[620px] flex-col justify-start pt-[9svh]">
-              <EssenceDisplay as="p" className="max-w-[620px] pt-8">
-                Vì sao tôi chọn ngồi lại với những điều thường bị đi qua quá nhanh?
-              </EssenceDisplay>
+              <p role="heading" aria-level={1}>
+                <EssenceDisplay as="span" className="block max-w-[620px] pt-8">
+                  Vì sao tôi chọn ngồi lại với những điều thường bị đi qua quá nhanh?
+                </EssenceDisplay>
+              </p>
               <EssenceBody as="p" className="mt-10 max-w-[185px] text-[16px] leading-[1.7]">
                 Phía sau một quyết định, một cơn giận hay sự mệt mỏi khó gọi tên, thường còn một điều chưa được nhìn thấy.
               </EssenceBody>
@@ -456,7 +458,6 @@ export default function VeKenjiPage() {
         <section className={`px-6 ${RHYTHM.mo}`} style={{ background: sectionBg(BG.values, 16, "42% 34%", "135deg") }}>
           <div className="ve-kenji-reveal max-w-[1180px] mx-auto">
             <div className="max-w-[1080px] md:ml-[12%]">
-              <SectionLabel>BA GIÁ TRỊ GỐC</SectionLabel>
               <EssenceDisplay as="h2" size="values" className="max-w-[1080px] text-e26-gold-deep text-[46px] leading-[1.02] md:text-[80px] md:leading-[0.98]">
                 <span className="whitespace-nowrap">Tự Do</span>{" — "}<span className="whitespace-nowrap">Trí Tuệ</span>{" — "}<span className="whitespace-nowrap">Kiến Tạo</span>
               </EssenceDisplay>
@@ -513,7 +514,6 @@ export default function VeKenjiPage() {
             </div>
             <div className="relative mt-14 md:mt-20 md:grid md:grid-cols-[minmax(0,1.3fr)_minmax(340px,1fr)] md:items-center md:gap-x-12 lg:gap-x-16">
               <div>
-                {/* Ảnh tạm giữ nhịp scene; thay trực tiếp bằng ảnh Kenji đã được Founder duyệt. */}
                 <PresenceEnvironmentalImageSlot />
               </div>
               <div className="mt-10 border-t border-e26-text/25 pt-7 md:mt-0 md:pt-9">
