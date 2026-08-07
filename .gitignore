@@ -27,6 +27,12 @@ yarn-error.log*
 
 # local env files
 .env*.local
+# Thêm 02/08/2026 (B0): .env*.local KHÔNG chặn một file tên đúng ".env".
+# Từ khi hệ có SUPABASE_SERVICE_ROLE_KEY (khoá bỏ qua mọi RLS), một file
+# .env lọt vào git là sự cố thật, không phải rủi ro lý thuyết.
+.env
+.env.*
+!.env.example
 
 # vercel
 .vercel
