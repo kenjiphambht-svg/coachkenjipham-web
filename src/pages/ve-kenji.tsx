@@ -23,7 +23,7 @@ const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Kenji Phạm",
-  jobTitle: "Huấn luyện viên Tâm lý Chiều sâu",
+  jobTitle: "Huấn luyện viên Tâm lý Chiều sâu, Essence Coach",
   description:
     "Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach. Người sáng lập Essence Coaching.",
   worksFor: {
@@ -221,14 +221,17 @@ export default function VeKenjiPage() {
   return (
     <>
       <SEO
-        title="Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu | Essence Coaching"
-        description="Câu chuyện, ba giá trị gốc, cách hiện diện và những ranh giới Kenji Phạm tự giữ trong công việc huấn luyện tâm lý chiều sâu tại Sài Gòn."
+        title="Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach"
+        description="Kenji Phạm là Huấn luyện viên Tâm lý Chiều sâu, Essence Coach và người sáng lập Essence Coaching tại Sài Gòn. Tìm hiểu hành trình, cách anh làm việc và những giới hạn nghề nghiệp anh tự giữ."
+        ogTitle="Kenji Phạm — Essence Coaching"
+        ogDescription="Hành trình, cách hiện diện và những giới hạn Kenji Phạm tự giữ trong công việc đồng hành cùng người lớn và ba mẹ."
         image="/essence-og-1200x630.png"
         url="https://coachkenjipham.com/ve-kenji"
         type="profile"
       />
       <Head>
         <meta name="robots" content="noindex, nofollow" />
+        <link rel="canonical" href="https://coachkenjipham.com/ve-kenji" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
         <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
         <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
