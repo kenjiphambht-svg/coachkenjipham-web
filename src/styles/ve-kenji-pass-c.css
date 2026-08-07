@@ -4,6 +4,13 @@
  * Approved copy, imagery, schema, CTA destinations and route behavior remain unchanged.
  */
 
+/* S01 — the dedicated responsive composition owns its height; do not inherit the old generic reading-bay padding. */
+main.text-e26-text:has(.ve-kenji-signal-tier-b) > section.ve-kenji-s01 {
+  display: block;
+  min-height: 0;
+  padding-block: 0;
+}
+
 /* Founder correction: same typography as the paragraph, only italic. */
 main.text-e26-text:has(.ve-kenji-signal-tier-b)
   > section:nth-of-type(3)

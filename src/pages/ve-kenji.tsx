@@ -242,8 +242,8 @@ export default function VeKenjiPage() {
       <HomeHeader />
 
       <main ref={pageRef} className="text-e26-text">
-        <section className="ve-kenji-hero relative isolate overflow-hidden">
-          <picture className="absolute left-0 top-0 z-0 block h-[82svh] min-h-[620px] w-full md:inset-0 md:h-full md:min-h-0">
+        <section className="ve-kenji-s01 relative isolate overflow-hidden">
+          <picture className="absolute left-0 top-0 z-0 block h-[88svh] min-h-[660px] w-full md:inset-0 md:h-full md:min-h-0">
             <source
               media="(max-width: 767px)"
               srcSet="/images/ve-kenji/09-hero-empty-space-mobile.png"
@@ -258,10 +258,10 @@ export default function VeKenjiPage() {
           <div
             aria-hidden="true"
             className="absolute inset-0 z-10 hidden md:block"
-            style={{ background: "linear-gradient(90deg, rgba(239, 237, 228, 0.72) 0%, rgba(239, 237, 228, 0.58) 32%, rgba(239, 237, 228, 0.24) 54%, rgba(239, 237, 228, 0.04) 73%, rgba(239, 237, 228, 0) 100%)" }}
+            style={{ background: "linear-gradient(90deg, rgba(239, 237, 228, 0.58) 0%, rgba(239, 237, 228, 0.46) 32%, rgba(239, 237, 228, 0.16) 54%, rgba(239, 237, 228, 0.02) 73%, rgba(239, 237, 228, 0) 100%)" }}
           />
-          <div aria-hidden="true" className="absolute inset-0 z-10" style={{ background: "radial-gradient(ellipse 52% 68% at 25% 40%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 76%)" }} />
-          <div className="relative z-20 hidden w-full max-w-[1180px] mx-auto px-6 py-28 md:block md:py-44">
+          <div aria-hidden="true" className="absolute inset-0 z-10" style={{ background: "radial-gradient(ellipse 52% 68% at 25% 36%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 76%)" }} />
+          <div className="relative z-20 hidden w-full max-w-[1180px] mx-auto px-6 py-28 md:block md:pt-20 md:pb-28">
             <div className="ve-kenji-reveal max-w-[660px] md:ml-0">
               <SectionLabel>VÌ SAO TÔI Ở ĐÂY</SectionLabel>
               <EssenceDisplay as="h1" className="max-w-[700px]">
@@ -285,13 +285,13 @@ export default function VeKenjiPage() {
             </div>
           </div>
         <div className="ve-kenji-hero-mobile relative z-20 md:hidden">
-          <div className="relative isolate h-[82svh] min-h-[620px] overflow-hidden px-6">
+          <div className="relative isolate h-[88svh] min-h-[660px] overflow-hidden px-6">
             <div
               aria-hidden="true"
               className="absolute inset-0 z-10"
               style={{
                 background:
-                  "linear-gradient(90deg, rgba(239, 237, 228, 0.94) 0%, rgba(239, 237, 228, 0.90) 34%, rgba(239, 237, 228, 0.65) 56%, rgba(239, 237, 228, 0.27) 79%, rgba(239, 237, 228, 0.14) 100%), linear-gradient(180deg, rgba(239, 237, 228, 0.42) 0%, rgba(239, 237, 228, 0.20) 58%, rgba(239, 237, 228, 0.10) 100%)",
+                  "linear-gradient(90deg, rgba(239, 237, 228, 0.84) 0%, rgba(239, 237, 228, 0.76) 34%, rgba(239, 237, 228, 0.46) 56%, rgba(239, 237, 228, 0.14) 79%, rgba(239, 237, 228, 0.03) 100%), linear-gradient(180deg, rgba(239, 237, 228, 0.18) 0%, rgba(239, 237, 228, 0.08) 58%, rgba(239, 237, 228, 0.03) 100%)",
               }}
             />
             <div className="relative z-20 mx-auto flex h-full max-w-[620px] flex-col justify-start pt-[9svh]">
@@ -504,7 +504,7 @@ export default function VeKenjiPage() {
         </section>
 
         <section className="relative isolate overflow-hidden px-6 py-20 md:py-40" style={{ background: sectionBg(BG.presence, 21, "28% 30%", "128deg") }}>
-          <div aria-hidden="true" className="absolute inset-0" style={{ background: "linear-gradient(96deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0) 44%, rgba(26,26,26,0.045) 100%)" }} />
+          <div aria-hidden="true" className="absolute inset-0" style={{ background: "radial-gradient(ellipse 62% 76% at 12% 18%, rgba(255,255,255,0.38) 0%, rgba(255,255,255,0) 72%), radial-gradient(ellipse 58% 72% at 92% 88%, rgba(128,112,84,0.11) 0%, rgba(128,112,84,0) 76%), linear-gradient(118deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0) 42%, rgba(26,26,26,0.055) 100%)" }} />
           <div className="ve-kenji-reveal relative max-w-[1180px] mx-auto">
             <div className="relative max-w-[620px] md:ml-[8%]">
               <EssenceAnchor as="h2" className="relative max-w-[590px]">
