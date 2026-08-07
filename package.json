@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "vitest run tests/knowledge-foundation.test.ts tests/knowledge-sql-contract.test.ts && next build",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
