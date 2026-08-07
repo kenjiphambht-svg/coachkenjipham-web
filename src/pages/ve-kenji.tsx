@@ -253,13 +253,13 @@ export default function VeKenjiPage() {
               src="/images/ve-kenji/08-hero-kenji-desktop.webp"
               alt=""
               aria-hidden="true"
-              className="absolute inset-0 block h-full w-full object-cover object-center"
+              className="absolute inset-0 block h-full w-full object-contain object-top md:object-cover md:object-center"
             />
           </picture>
           <div
             aria-hidden="true"
             className="absolute inset-0 z-10 md:hidden"
-            style={{ background: "linear-gradient(180deg, rgba(239, 237, 228, 0.78) 0%, rgba(239, 237, 228, 0.58) 46%, rgba(239, 237, 228, 0.22) 78%, rgba(239, 237, 228, 0.04) 100%)" }}
+            style={{ background: "linear-gradient(180deg, rgba(239, 237, 228, 0.90) 0%, rgba(239, 237, 228, 0.70) 46%, rgba(239, 237, 228, 0.28) 78%, rgba(239, 237, 228, 0.05) 100%)" }}
           />
           <div
             aria-hidden="true"
@@ -267,8 +267,8 @@ export default function VeKenjiPage() {
             style={{ background: "linear-gradient(90deg, rgba(239, 237, 228, 0.72) 0%, rgba(239, 237, 228, 0.58) 32%, rgba(239, 237, 228, 0.24) 54%, rgba(239, 237, 228, 0.04) 73%, rgba(239, 237, 228, 0) 100%)" }}
           />
           <div aria-hidden="true" className="absolute inset-0 z-10" style={{ background: "radial-gradient(ellipse 52% 68% at 25% 40%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 76%)" }} />
-          <div className="relative z-20 max-w-[1180px] mx-auto">
-            <div className="ve-kenji-reveal max-w-[660px] md:ml-[10%] lg:ml-[12%]">
+          <div className="relative z-20 w-full max-w-[1180px] mx-auto">
+            <div className="ve-kenji-reveal max-w-[660px] md:ml-0">
               <SectionLabel>VÌ SAO TÔI Ở ĐÂY</SectionLabel>
               <EssenceDisplay as="h1" className="max-w-[700px]">
                 Vì sao tôi chọn ngồi lại với những điều thường bị<br className="hidden md:block" /> đi qua quá nhanh?
@@ -286,7 +286,7 @@ export default function VeKenjiPage() {
                 <EssenceBody as="p">
                   Tôi chọn công việc này để ngồi cùng một người và nhìn vào điều đang vận hành bên dưới — không vội phán, không kéo họ đi nhanh hơn, cũng không quyết định thay họ.
                 </EssenceBody>
-                <EssenceAccent as="p" className="pt-3 md:pt-5">Lựa chọn này không bắt đầu từ một lý thuyết.</EssenceAccent>
+                <EssenceAccent as="p" className="pt-3 text-[30px] leading-[1.35] text-[#1A1A1A]/90 md:pt-5 md:text-[35px] md:leading-[1.28]">Lựa chọn này không bắt đầu từ một lý thuyết.</EssenceAccent>
               </div>
             </div>
           </div>
