@@ -1,11 +1,10 @@
 # ESSENCE CONFLICT REGISTER
 
-**Version:** v1.0
-**Authority:** L2 — Current Website Operating Truth
+**Version:** v1.1
+**Authority:** L1 — Current Governance & Operating Truth
 **Status:** Active
 **Owner:** Kenji Phạm
-**Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
-**Last verified:** 733b19900d3f8c471fb90cbd6f17bc4acf8b1332
+**Current authority source:** Drive Founder Decision Register + Authority Map v1.1
 **Review trigger:** immediately on a Founder Decision or discovered same-level conflict.
 
 ## Closed conflicts
@@ -21,7 +20,7 @@
 | C-07 | Public identity and entity | Official brand, organization and public entity: **Essence Coaching**.<br>Exact public positioning: **Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach.<br>Người sáng lập Essence Coaching.**<br>“System” is not a brand, organization or public-identity suffix. It remains valid only as a common technical noun in context, such as typography system, image system or operating system. |
 | C-08 | Public contact | contact@coachkenjipham.com is the public email. |
 | C-09 | Roadmap | M0–M6 supersedes the prior 13-phase roadmap. |
-| C-10 | FCP | FCP means Full Cycle Process. Older meanings are not canonical. |
+| C-10 | FCP alias collision | **FD-2026-014 supersedes the old single-meaning ruling.** `FCP` is an alias shared by two valid concepts: **Full Cycle Process** — operating / journey context; **Future Casting Protocol** — internal coaching protocol. Bare `FCP` without enough context = `AMBIGUOUS_ALIAS`; ask scope or present both. Alias collision does not determine concept identity or lifecycle. Future Casting Protocol remaining valid does **not** elevate M2/M4/7-stage specialist content to Current Method or public/scientific truth. |
 | C-11 | Public giao thức | Allowed selectively only with approved plain-language context. |
 | C-12 | Image authority | Kenji portraits: FLUX.1 + Kenji LoRA. Non-Kenji images: FLUX.2 Klein 9B. |
 | C-13 | Agent merge authority | Historical self-merge permissions are superseded. An agent may merge only when a current task-specific Founder instruction explicitly authorizes that exact PR. A historical brief, earlier merge, prior standing permission or successful QA never authorizes a later PR. Without exact current approval, keep the PR Draft and stop for review. |
@@ -42,11 +41,11 @@
 | O-06 | Runtime/entity gap — partially resolved | Kenji | Villa scope resolved by P1 (PR #112 at 733b199): / and /trang-chu-v2 JSON-LD entities now use Essence Coaching. Remaining inventory rows below still need their own approved metadata/public-copy tasks. |
 | O-07 | ✅ **CLOSED 02/08/2026** — C-14 honoured in production | Kenji (done) | Founder set the apex as Vercel Primary Domain and `www` as a 308 permanent redirect. Verified live: apex 200 with 0 redirects; `www` → 308 → apex; HTTP → HTTPS apex; no loop at any entry point; TLS valid on both hostnames. **Standing rule going forward:** host normalisation lives only in the Vercel dashboard — do **not** add host-based redirects to `vercel.json`, which would risk a redirect loop. Evidence: `docs/website/homepage/HOMEPAGE_FINAL_COMPLETION_RECORD.md` §4. |
 
-This register is an L2 operating container. Every Closed conflict ruling recorded above is L0. Open conflicts block assumptions, not safe documentation of the gap.
+This register is an L1 operating container. Every Closed conflict ruling recorded above is L0. Open conflicts block assumptions, not safe documentation of the gap.
 
 ## C-07 runtime impact inventory — implementation evidence only
 
-The baseline is `origin/main` at `fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae`. These rows record runtime occurrences that require a separate approved task; they do not authorize edits in this docs/rules-only patch.
+The baseline below is preserved as implementation evidence only. Dynamic claims must be re-checked against the current repository head/environment when used.
 
 | Route / surface | File(s) | Observed occurrence | Required later handling |
 |---|---|---|---|
@@ -61,4 +60,4 @@ The baseline is `origin/main` at `fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae`. The
 | `/ai-startup` | `src/components/ai-startup/Room1Hero.tsx` | Visible founder line uses the former organization suffix. | Replace with exact C-07 only inside the separately approved partner rewrite. |
 | `/ai-startup` | `src/pages/ai-startup.tsx`; `src/components/ai-startup/Room1Hero.tsx`; `src/components/ai-startup/Room3Technology.tsx`; `src/components/ai-startup/Room7ClosingAccess.tsx` | Public partner metadata/copy uses Personal Psychology Engine and AI-native language. | Review as partner-context historical positioning; do not promote it into consumer identity. Rewrite remains a separate C-04 task. |
 
-No matching former organization suffix was found under `public/**`, `next.config.mjs` or `vercel.json` at the baseline.
+No matching former organization suffix was found under `public/**`, `next.config.mjs` or `vercel.json` at the historical baseline.
