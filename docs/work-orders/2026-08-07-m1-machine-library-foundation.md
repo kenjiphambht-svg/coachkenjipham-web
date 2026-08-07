@@ -24,7 +24,7 @@ Current authority inputs:
 - Deterministic folder/safety ingest policy.
 - Synthetic fixtures only.
 - SQL and TypeScript contract tests.
-- Manual rollback for migration 0028.
+- Manual rollback for staging migration `20260807133314_ai_knowledge_library_foundation`.
 
 ## Access boundary
 
@@ -55,4 +55,5 @@ Current authority inputs:
 7. Bare FCP is ambiguous in synthetic tests; scoped FCP resolves correctly.
 8. No vector/provider infrastructure in M1.
 9. Relevant tests and build pass.
-10. Keep the PR Draft; merge/production require a separate exact instruction.
+10. Local migration filename and staging migration history use the same version id.
+11. Keep the PR Draft; merge/production require a separate exact instruction.
