@@ -243,7 +243,7 @@ export default function VeKenjiPage() {
       <HomeHeader />
 
       <main ref={pageRef} className="text-e26-text">
-        <section className="relative isolate overflow-hidden px-6 py-28 md:py-44">
+        <section className="ve-kenji-hero-desktop relative isolate overflow-hidden px-6 py-28 md:py-44">
           <picture className="absolute inset-0 z-0 block h-full w-full">
             <source
               media="(max-width: 767px)"
@@ -253,7 +253,7 @@ export default function VeKenjiPage() {
               src="/images/ve-kenji/08-hero-kenji-desktop.webp"
               alt=""
               aria-hidden="true"
-              className="absolute inset-0 block h-full w-full object-contain object-top md:object-cover md:object-center"
+              className="absolute inset-0 block h-full w-full object-cover object-center"
             />
           </picture>
           <div
@@ -291,6 +291,54 @@ export default function VeKenjiPage() {
             </div>
           </div>
         </section>
+
+        <div className="ve-kenji-hero-mobile md:hidden">
+          <div className="relative isolate h-[82svh] min-h-[620px] overflow-hidden px-6">
+            <picture className="absolute inset-0 z-0 block h-full w-full">
+              <source
+                media="(max-width: 767px)"
+                srcSet="/images/ve-kenji/08-hero-kenji-mobile.webp"
+              />
+              <img
+                src="/images/ve-kenji/08-hero-kenji-desktop.webp"
+                alt=""
+                aria-hidden="true"
+                className="absolute inset-0 block h-full w-full object-cover object-[42%_center]"
+              />
+            </picture>
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 z-10"
+              style={{ background: "linear-gradient(180deg, rgba(239, 237, 228, 0.88) 0%, rgba(239, 237, 228, 0.72) 52%, rgba(239, 237, 228, 0.30) 100%)" }}
+            />
+            <div className="relative z-20 mx-auto flex h-full max-w-[620px] flex-col justify-center pt-8">
+              <SectionLabel>VÌ SAO TÔI Ở ĐÂY</SectionLabel>
+              <EssenceDisplay as="p" className="max-w-[620px]">
+                Vì sao tôi chọn ngồi lại với những điều thường bị đi qua quá nhanh?
+              </EssenceDisplay>
+              <EssenceBody as="p" className="mt-8 max-w-[580px]">
+                Phía sau một quyết định, một cơn giận hay sự mệt mỏi khó gọi tên, thường còn một điều chưa được nhìn thấy.
+              </EssenceBody>
+            </div>
+          </div>
+
+          <div className="relative bg-[#EFEDE4] px-6 pb-20 pt-12">
+            <div className="mx-auto max-w-[620px] space-y-5">
+              <EssenceBody as="p">
+                Có người vẫn làm việc, vẫn chăm lo cho mọi người, vẫn nói mình ổn — nhưng bên trong đã phải gánh quá lâu.
+              </EssenceBody>
+              <EssenceBody as="p">
+                Có những phản ứng từng giúp mình trụ lại. Đến một lúc, chính chúng lại âm thầm quyết định cách mình sống, yêu thương và lựa chọn.
+              </EssenceBody>
+              <EssenceBody as="p">
+                Tôi chọn công việc này để ngồi cùng một người và nhìn vào điều đang vận hành bên dưới — không vội phán, không kéo họ đi nhanh hơn, cũng không quyết định thay họ.
+              </EssenceBody>
+              <EssenceAccent as="p" className="pt-7 text-[27px] font-medium leading-[1.35] text-[#1A1A1A]">
+                Lựa chọn này không bắt đầu từ một lý thuyết.
+              </EssenceAccent>
+            </div>
+          </div>
+        </div>
 
         <section className={`relative isolate overflow-hidden px-6 ${RHYTHM.mo}`} style={{ background: sectionBg(BG.story, 18, "72% 38%", "126deg") }}>
           <div aria-hidden="true" className="absolute inset-0" style={{ background: "radial-gradient(ellipse 48% 72% at 76% 34%, rgba(255,255,255,0.19) 0%, rgba(255,255,255,0) 76%)" }} />
