@@ -314,12 +314,12 @@ export default function VeKenjiPage() {
                   "linear-gradient(90deg, rgba(239, 237, 228, 0.94) 0%, rgba(239, 237, 228, 0.90) 34%, rgba(239, 237, 228, 0.65) 56%, rgba(239, 237, 228, 0.27) 79%, rgba(239, 237, 228, 0.14) 100%), linear-gradient(180deg, rgba(239, 237, 228, 0.42) 0%, rgba(239, 237, 228, 0.20) 58%, rgba(239, 237, 228, 0.10) 100%)",
               }}
             />
-            <div className="relative z-20 mx-auto flex h-full max-w-[620px] flex-col justify-start pt-[14svh]">
+            <div className="relative z-20 mx-auto flex h-full max-w-[620px] flex-col justify-start pt-[9svh]">
               <SectionLabel>VÌ SAO TÔI Ở ĐÂY</SectionLabel>
               <EssenceDisplay as="p" className="max-w-[620px]">
                 Vì sao tôi chọn ngồi lại với những điều thường bị đi qua quá nhanh?
               </EssenceDisplay>
-              <EssenceBody as="p" className="mt-8 max-w-[215px] text-[16px] leading-[1.65]">
+              <EssenceBody as="p" className="mt-10 max-w-[185px] text-[16px] leading-[1.7]">
                 Phía sau một quyết định, một cơn giận hay sự mệt mỏi khó gọi tên, thường còn một điều chưa được nhìn thấy.
               </EssenceBody>
             </div>
