@@ -263,8 +263,7 @@ export default function VeKenjiPage() {
           <div aria-hidden="true" className="absolute inset-0 z-10" style={{ background: "radial-gradient(ellipse 52% 68% at 25% 36%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 76%)" }} />
           <div className="relative z-20 hidden w-full max-w-[1180px] mx-auto px-6 py-28 md:block md:pt-20 md:pb-28">
             <div className="ve-kenji-reveal max-w-[660px] md:ml-0">
-              <SectionLabel>VÌ SAO TÔI Ở ĐÂY</SectionLabel>
-              <EssenceDisplay as="h1" className="max-w-[700px]">
+              <EssenceDisplay as="h1" className="max-w-[700px] pt-9">
                 Vì sao tôi chọn ngồi lại với những điều thường bị<br className="hidden md:block" /> đi qua quá nhanh?
               </EssenceDisplay>
               <div className="space-y-5 mt-8 md:mt-10">
@@ -295,8 +294,7 @@ export default function VeKenjiPage() {
               }}
             />
             <div className="relative z-20 mx-auto flex h-full max-w-[620px] flex-col justify-start pt-[9svh]">
-              <SectionLabel>VÌ SAO TÔI Ở ĐÂY</SectionLabel>
-              <EssenceDisplay as="p" className="max-w-[620px]">
+              <EssenceDisplay as="p" className="max-w-[620px] pt-8">
                 Vì sao tôi chọn ngồi lại với những điều thường bị đi qua quá nhanh?
               </EssenceDisplay>
               <EssenceBody as="p" className="mt-10 max-w-[185px] text-[16px] leading-[1.7]">
