@@ -12,7 +12,7 @@
 
 ## 1. Quyết định cốt lõi
 
-ESSENCE không tạo thêm nhiều mô hình hoặc thuật ngữ để trông phức tạp hơn. Các hạt nhân đã có được kết nối thành **một bản đồ định hướng duy nhất, dễ nhớ**:
+ESSENCE không tạo thêm nhiều mô hình hoặc thuật ngữ để trông phức tạp hơn. Các hạt nhân đã có được kết nối thành một **bản đồ định hướng bổ sung, dễ nhớ** — đứng CẠNH, KHÔNG THAY THẾ, khung phương pháp ba chuyển động đã có (**Chill với cảm xúc → Thách thức giới hạn → Hiện thực ước mơ**; xem mục 1.1):
 
 > **LẶNG → AN ĐỊNH → NHẬN RA NHỊP RIÊNG → NHÌN RA BẢN SẮC → CHỌN MỘT NHỊP SỐNG CÓ THỂ GIỮ → AN THỊNH**
 
@@ -21,6 +21,24 @@ Tên mô tả đơn giản:
 > **Một bản đồ để trở về đúng nhịp.**
 
 Đây là **bản đồ định hướng**, không phải quy trình tuyến tính, bài kiểm tra, hệ chấm điểm, chẩn đoán hoặc lời hứa kết quả. Một người có thể bắt đầu ở bất kỳ điểm nào, dừng lại, quay lại hoặc không đi tiếp.
+
+---
+
+## 1.1. Founder correction (07/08/2026) — quan hệ với khung phương pháp ba chuyển động
+
+Bản quyết định 06/08/2026 ở trên, khi viết "một bản đồ định hướng duy nhất", đọc được như thể bản đồ sáu bước **thay thế** khung phương pháp ba chuyển động đã có từ trước:
+
+> **Chill với cảm xúc → Thách thức giới hạn → Hiện thực ước mơ**
+
+Đây KHÔNG phải ý định của Founder. Founder correction chính thức, có hiệu lực ngay khi tài liệu này được đọc:
+
+- Khung ba chuyển động ở trên vẫn là **tài sản brand/method canonical** của ESSENCE — không bị xoá, hạ cấp hay thay thế bởi quyết định này hay bất kỳ tài liệu nào khác.
+- Bản đồ sáu bước (LẶNG → AN ĐỊNH → NHẬN RA NHỊP RIÊNG → NHÌN RA BẢN SẮC → CHỌN MỘT NHỊP SỐNG CÓ THỂ GIỮ → AN THỊNH) là một lớp **bổ sung** — bản đồ định hướng mô tả điều hành trình rộng hơn giúp một người nhận ra và sống thành hình, không phải quy trình làm việc thay thế khung phương pháp.
+- Cách hiểu canonical: **3 chuyển động = khung phương pháp ESSENCE**, mô tả cách công việc coaching vận hành. **Bản đồ 6 bước = bản đồ định hướng**, mô tả điều hành trình rộng hơn giúp một người nhận ra và sống đúng.
+- KHÔNG được tự suy ra một ánh xạ cứng 1-1 giữa hai lớp này nếu chưa có Founder duyệt riêng.
+- Trang `/phuong-phap` (Method Page) tương lai phải giải thích RÕ CẢ HAI lớp — không chỉ một, không đánh đồng hai lớp thành một.
+- Mọi cụm "một bản đồ định hướng duy nhất" / "một bản đồ canonical duy nhất" / "single canonical directional map" còn xuất hiện ở các mục khác trong tài liệu này (mục 10, mục 14) được hiểu lại theo đúng correction này: bản đồ 6 bước là bản đồ định hướng DUY NHẤT **Ở LỚP CỦA NÓ** (không có bản đồ định hướng nào khác cạnh tranh), KHÔNG phải "duy nhất toàn ESSENCE" theo nghĩa thay thế khung phương pháp 3 bước. Các mục đó đã được viết lại trực tiếp cho khớp; mục này là bản ghi minh bạch của việc sửa, không phải lớp diễn giải riêng.
+- Việc này KHÔNG triển khai trang Method Page mới — chỉ sửa đúng câu chữ quyết định để không còn đọc sai được.
 
 ---
 
@@ -158,7 +176,7 @@ Hai sản phẩm không tạo thành thang upsell bắt buộc. Mỗi sản ph�
 
 ### Trang Phương pháp
 
-- Là nơi giải thích đầy đủ bản đồ Lặng → An Định → Nhịp riêng → Bản sắc → Nhịp sống → An Thịnh.
+- Là nơi giải thích đầy đủ **CẢ HAI lớp** (mục 1.1): khung phương pháp ba chuyển động (Chill với cảm xúc → Thách thức giới hạn → Hiện thực ước mơ) VÀ bản đồ định hướng Lặng → An Định → Nhịp riêng → Bản sắc → Nhịp sống → An Thịnh — không đánh đồng hay ép ánh xạ 1-1 giữa hai lớp nếu chưa có Founder duyệt riêng.
 - Nêu rõ đây không phải quy trình tuyến tính, chẩn đoán hoặc lời hứa.
 
 ### Trang sản phẩm
@@ -237,7 +255,7 @@ Engineering phải bắt đầu từ journey, state, dữ liệu tối thiểu, 
 
 ### Thay đổi
 
-- Kết nối các khái niệm đã có thành một bản đồ canonical duy nhất.
+- Kết nối các khái niệm đã có thành một bản đồ định hướng bổ sung (không thay thế khung phương pháp ba chuyển động — xem mục 1.1, Founder correction 07/08/2026).
 - Bổ sung định nghĩa chuẩn cho Nhịp, Nhịp riêng, Nhịp sống, Lệch nhịp và Trở về đúng nhịp.
 - Bổ sung nguyên tắc “nhịp hành trình” vào frontend, backend và Care OS.
 - Cấm tự tạo thêm loại nhịp, scoring hoặc framework mới.
@@ -300,7 +318,9 @@ Documentation patch chỉ đạt khi:
 
 ## 14. Wording Founder Decision để ghi vào registry
 
-> **FOUNDER DECISION — ESSENCE dùng một bản đồ định hướng duy nhất để kết nối các hạt nhân đã có: Lặng → An Định → nhận ra Nhịp riêng → nhìn ra Bản sắc → chọn một Nhịp sống có thể giữ → An Thịnh. Đây là bản đồ để trở về đúng nhịp, không phải quy trình tuyến tính, chẩn đoán, hệ chấm điểm hoặc lời hứa kết quả. “Nhịp”, “Nhịp riêng”, “Nhịp sống”, “Lệch nhịp” và “Trở về đúng nhịp” được dùng theo nghĩa đời sống, không tạo loại người hoặc profile tâm lý. Bản sắc của bạn và Bản sắc của con là hai cánh cửa định hướng; Lặng và Hạt Mầm là hai sản phẩm độc lập theo nhu cầu, không tạo funnel bắt buộc. Frontend phải làm framework rõ nhưng không nhồi; backend và Care OS dùng nhịp hành trình để điều phối care, silence, recovery và next step bằng state, consent và Human Decision Gate, không tạo hidden score. AI không được suy ra bản sắc/nhịp thật, dán nhãn, tự quyết định fit hoặc dùng câu chuyện riêng và dữ liệu trẻ em để bán hàng.**
+> **FOUNDER DECISION — ESSENCE kết nối các hạt nhân đã có thành một bản đồ định hướng bổ sung: Lặng → An Định → nhận ra Nhịp riêng → nhìn ra Bản sắc → chọn một Nhịp sống có thể giữ → An Thịnh. Bản đồ này đứng CẠNH, KHÔNG THAY THẾ khung phương pháp ba chuyển động đã có (Chill với cảm xúc → Thách thức giới hạn → Hiện thực ước mơ) — đó vẫn là tài sản brand/method canonical, không bị hạ cấp. Không suy ra ánh xạ 1-1 cứng giữa hai lớp nếu chưa có Founder duyệt riêng; trang Phương pháp tương lai phải giải thích rõ cả hai lớp. Đây là bản đồ để trở về đúng nhịp, không phải quy trình tuyến tính, chẩn đoán, hệ chấm điểm hoặc lời hứa kết quả. “Nhịp”, “Nhịp riêng”, “Nhịp sống”, “Lệch nhịp” và “Trở về đúng nhịp” được dùng theo nghĩa đời sống, không tạo loại người hoặc profile tâm lý. Bản sắc của bạn và Bản sắc của con là hai cánh cửa định hướng; Lặng và Hạt Mầm là hai sản phẩm độc lập theo nhu cầu, không tạo funnel bắt buộc. Frontend phải làm framework rõ nhưng không nhồi; backend và Care OS dùng nhịp hành trình để điều phối care, silence, recovery và next step bằng state, consent và Human Decision Gate, không tạo hidden score. AI không được suy ra bản sắc/nhịp thật, dán nhãn, tự quyết định fit hoặc dùng câu chuyện riêng và dữ liệu trẻ em để bán hàng.**
+>
+> **(Founder correction 07/08/2026 — xem mục 1.1: bản wording gốc 06/08/2026 viết "một bản đồ định hướng duy nhất" không kèm câu về khung ba chuyển động, đọc được như thay thế. Đoạn trên là bản đã sửa, dùng để ghi vào registry thay cho bản gốc.)**
 
 ---
 

@@ -8,7 +8,7 @@
 - **Owner:** Kenji Phạm
 - **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
 - **Last verified:** 63649b29d1c152e5e5f7fc2cb31575c3cc0e3c29
-- **L0 Precedence:** Governed by L0 Founder Decision [FD-2026-08-06](docs/decisions/FD-2026-08-06_ESSENCE_LANGUAGE_METHOD_AND_JOURNEY_RHYTHM.md) for the single canonical directional map (`LẶNG → AN ĐỊNH → NHẬN RA NHỊP RIÊNG → NHÌN RA BẢN SẮC → CHỌN MỘT NHỊP SỐNG CÓ THỂ GIỮ → AN THỊNH`) and exact canonical definitions.
+- **L0 Precedence:** Governed by L0 Founder Decision [FD-2026-08-06](docs/decisions/FD-2026-08-06_ESSENCE_LANGUAGE_METHOD_AND_JOURNEY_RHYTHM.md) (corrected 07/08/2026, §1.1) for the additional orientation map (`LẶNG → AN ĐỊNH → NHẬN RA NHỊP RIÊNG → NHÌN RA BẢN SẮC → CHỌN MỘT NHỊP SỐNG CÓ THỂ GIỮ → AN THỊNH`) and exact canonical definitions. This map stands alongside, and does not replace, the three-movement ESSENCE method framework (Chill với cảm xúc → Thách thức giới hạn → Hiện thực ước mơ).
 - **Phạm vi:** Triết lý trải nghiệm, emotional architecture, nhịp điệu, vai trò hình ảnh, ánh sáng, chuyển động, khoảng lặng và sự hiện diện của Kenji trên toàn website Essence.
 - **Review trigger:** Khi thay đổi brand promise, Page Mode, visual system, image authority, typography authority, motion principle hoặc trải nghiệm cốt lõi.
 
