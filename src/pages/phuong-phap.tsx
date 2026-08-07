@@ -35,13 +35,16 @@ import {
 // tô vàng — brief v4 mục B3 dành điểm gold thứ 3 cho lớp ảnh sắp tới.
 //
 // CTA vàng cuối trang (Scene ⑨) trỏ /ve-kenji, KHÔNG trỏ section "Hai Cửa"
-// (TwoStates.tsx): đã đọc src/pages/index.tsx (route "/" sống hiện tại vẫn là
-// bản Coming Soon cũ) và src/pages/trang-chu-v2.tsx (comment đầu file ghi rõ
-// "Route TẠM ... NOINDEX — chưa công khai ... Khi duyệt xong, nội dung này sẽ
-// thay thế index.tsx thật") — /trang-chu-v2 CHƯA phải bản sống chính thức nên
+// (TwoStates.tsx): "Hai Cửa" (Về phía bạn / Về phía con, xem KHỐI 2 dưới)
+// hiện chỉ là 2 nhãn "(sắp mở)" — chưa có route thật để CTA trỏ tới — nên
 // theo đúng nhánh dự phòng brief mục 2 Scene ⑨, CTA trỏ /ve-kenji. Nhất quán
 // với /ve-kenji (đã trỏ /phuong-phap) và /dieu-essence-khong-hua (CTA cùng
 // dạng cũng trỏ /ve-kenji).
+// (SỬA 07/08/2026 — dọn residue: bỏ lý do cũ dựa trên route "/" từng là bản
+// Coming Soon và trích comment src/pages/trang-chu-v2.tsx — cả hai đều lỗi
+// thời. "/" giờ là Homepage Villa hoàn chỉnh duy nhất; /trang-chu-v2 đã
+// retire và xoá khỏi repo (Founder Decision 07/08/2026, L0 C-18). Lý do CTA
+// trỏ /ve-kenji vẫn đúng, chỉ viết lại theo sự thật hiện tại.)
 //
 // personSchema tái dùng NGUYÊN VĂN từ src/pages/ve-kenji.tsx (không viết lại
 // từ đầu, theo đúng brief mục 5) — page component không export nên copy y
@@ -75,7 +78,7 @@ const articleSchema = {
   description:
     "Phương pháp Essence: nhìn rõ vòng lặp và kiểu gánh, theo tiêu chuẩn ICF, tâm lý học chiều sâu và khoa học thần kinh — không đường tắt, không hứa nhanh.",
   author: personSchema,
-  publisher: { "@type": "Organization", name: "Essence Coaching System" },
+  publisher: { "@type": "Organization", name: "Essence Coaching" },
   url: "https://coachkenjipham.com/phuong-phap",
 };
 

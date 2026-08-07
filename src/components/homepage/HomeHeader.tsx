@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-// Header dùng chung cho toàn site (10 trang, không chỉ /trang-chu-v2) — theo
+// Header dùng chung cho toàn site (nhiều trang, không chỉ trang chủ) — theo
 // BRIEF-CLAUDE-CODE-trang-chu-CHOT.md, quyết định B: menu sổ dạng tấm phủ
 // toàn màn hình (không còn 6 link nằm ngang trên thanh header).
+// (SỬA 07/08/2026: bỏ số đếm cụ thể "10 trang" — route /trang-chu-v2 đã
+// retire, số trang dùng chung header có thể đổi theo thời gian nên không
+// khoá cứng một con số dễ lỗi thời.)
 // 6 mục đều là link trang thật, không còn anchor cuộn (#essence, #hat-mam,
 // #ghi-chep đã bỏ khỏi menu theo BAN-CHOT).
 const PRODUCT_LINKS = [

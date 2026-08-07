@@ -16,9 +16,16 @@ import HomeFooter from "@/components/homepage/HomeFooter";
 import { useHomeReveal } from "@/components/homepage/useHomeReveal";
 
 // Canonical Villa composition — Essence 2026. This is the single
-// implementation source rendered by both the canonical route `/` and the
-// contained migration-evidence route `/trang-chu-v2`. Both remain NOINDEX
+// implementation source rendered by the canonical route `/`. Remains NOINDEX
 // until the separately approved M6 Search Indexing Launch.
+//
+// SỬA 07/08/2026 (Founder Decision — Homepage Route B, L0 C-18): route phụ
+// `/trang-chu-v2` đã bị RETIRE và xoá khỏi repo (src/pages/trang-chu-v2.tsx).
+// `/` là Homepage duy nhất, không còn tồn tại. Component này đơn giản hoá
+// theo — bỏ hẳn dual-route `pageUrl` contract (từng nhận 1 trong 2 URL để
+// tự-canonical theo route đang render), thay bằng hằng số CANONICAL_URL cố
+// định. KHÔNG đổi copy/bố cục/ảnh/typography/schema/noindex — đúng phạm vi
+// "chỉ dọn residue kỹ thuật đã chứng minh" của brief cleanup.
 //
 // SỬA 20/07/2026 — nội dung chữ toàn trang đồng bộ theo Google Doc "HOMEPAGE
 // V9-FINAL — NGUỒN SỰ THẬT CHO CHỮ" (brief V9-FINAL). Thêm 2 khối MỚI:
@@ -44,11 +51,12 @@ import { useHomeReveal } from "@/components/homepage/useHomeReveal";
 // Essence) → ĐEN (An Định → An Thịnh) → kem → đen (footer). Vẫn ĐÚNG 2 khối
 // tối giữa trang. Ảnh hero chờm ranh giới kem→đen (kỹ thuật đắt).
 // Motion: reveal riêng của homepage (.e26-reveal, 250ms/12px) — useHomeReveal.
-interface VillaPageProps {
-  pageUrl: "https://coachkenjipham.com/" | "https://coachkenjipham.com/trang-chu-v2";
-}
+// Canonical URL cố định — trước 07/08/2026 đây là 1 trong 2 giá trị của prop
+// `pageUrl` (route nào render component thì tự truyền URL của chính nó).
+// Giờ chỉ còn đúng 1 route sống nên không cần prop nữa.
+const CANONICAL_URL = "https://coachkenjipham.com/";
 
-export default function VillaPage({ pageUrl }: VillaPageProps) {
+export default function VillaPage() {
   useHomeReveal();
 
   return (
@@ -59,7 +67,7 @@ export default function VillaPage({ pageUrl }: VillaPageProps) {
         description="Essence Coaching là hành trình do Kenji Phạm kiến tạo, giúp bạn nhận ra bản sắc, sống đúng nhịp của mình và để An Thịnh trở thành kết quả tự nhiên."
         ogDescription="Nhìn rõ điều đang vận hành bên trong, nhận ra bản sắc và sống đúng nhịp của mình — để An Thịnh không còn là điều phải mãi theo đuổi."
         image="https://coachkenjipham.com/essence-og-1200x630.png"
-        url={pageUrl}
+        url={CANONICAL_URL}
       />
 
       <Head>
@@ -67,18 +75,18 @@ export default function VillaPage({ pageUrl }: VillaPageProps) {
         {/* CANONICAL — Founder Decision 02/08/2026: domain canonical chính thức
             là apex `https://coachkenjipham.com` (KHÔNG www). Mọi absolute URL ở
             đây (canonical, og:url, JSON-LD url) đã dùng đúng apex.
-            SELF-CANONICAL theo `pageUrl`, không hardcode "/": `/trang-chu-v2`
-            vẫn đang chờ Kenji quyết disposition (L0 C-01) — trỏ canonical của
-            nó về "/" sẽ là một quyết định hợp nhất mà C-01 chưa cho phép suy ra.
-            Cả 2 route đều noindex nên thẻ này hiện KHÔNG có tác dụng indexing;
-            nó tồn tại để khi M6 kích hoạt index thì không phải sửa bù SEO.
+            SỬA 07/08/2026 (L0 C-18): `/trang-chu-v2` đã RETIRE và xoá khỏi repo
+            — không còn "quyết định hợp nhất" nào phải chờ nữa, nên bỏ luôn
+            SELF-CANONICAL theo prop, dùng thẳng CANONICAL_URL cố định.
+            Vẫn noindex nên thẻ này hiện KHÔNG có tác dụng indexing; nó tồn
+            tại để khi M6 kích hoạt index thì không phải sửa bù SEO.
             HẠ TẦNG (đã xong 02/08/2026, verify live): apex là Primary Domain
             trên Vercel, www trả 308 vĩnh viễn về apex, HTTP→HTTPS đúng, không
             vòng lặp. Chuẩn hoá host CHỈ nằm ở Vercel dashboard — KHÔNG thêm
             redirect theo host vào vercel.json (chồng 2 lớp = rủi ro vòng lặp).
             Bằng chứng: docs/website/homepage/HOMEPAGE_FINAL_COMPLETION_RECORD.md
             mục 4. */}
-        <link rel="canonical" href={pageUrl} />
+        <link rel="canonical" href={CANONICAL_URL} />
         {/* Favicon bộ 2026 — chỉ gắn riêng trang này (không sửa _document.tsx/SEO.tsx
             dùng chung, vì /kidbook và /ai-startup cũng gọi component đó). */}
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
@@ -108,7 +116,7 @@ export default function VillaPage({ pageUrl }: VillaPageProps) {
                 addressLocality: "Sài Gòn",
                 addressCountry: "VN",
               },
-              url: pageUrl,
+              url: CANONICAL_URL,
             }),
           }}
         />
@@ -128,7 +136,7 @@ export default function VillaPage({ pageUrl }: VillaPageProps) {
                 addressLocality: "Sài Gòn",
                 addressCountry: "VN",
               },
-              url: pageUrl,
+              url: CANONICAL_URL,
             }),
           }}
         />
