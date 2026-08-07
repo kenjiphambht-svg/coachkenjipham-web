@@ -150,19 +150,24 @@ main.text-e26-text:has(.ve-kenji-signal-tier-b)
   margin-top: 0.25rem;
 }
 
-/* Final Image Pass — Founder-approved responsive Hero. */
+/*
+ * Final Image Pass correction.
+ * Keep the existing Next/Image element as the rendered layer and replace
+ * its source responsively. This avoids the blank Hero caused by hiding the
+ * image element and relying on a section background.
+ */
 main.text-e26-text:has(.ve-kenji-signal-tier-b)
   > section:first-of-type {
-  background-image: url("/images/ve-kenji/08-hero-kenji-desktop.webp");
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  background-image: none;
 }
 
 main.text-e26-text:has(.ve-kenji-signal-tier-b)
   > section:first-of-type
   > img[aria-hidden="true"] {
-  opacity: 0;
+  opacity: 1;
+  content: url("/images/ve-kenji/08-hero-kenji-desktop.webp");
+  object-fit: cover;
+  object-position: center center;
 }
 
 @media (min-width: 768px) {
@@ -202,9 +207,10 @@ main.text-e26-text:has(.ve-kenji-signal-tier-b)
 
 @media (max-width: 767px) {
   main.text-e26-text:has(.ve-kenji-signal-tier-b)
-    > section:first-of-type {
-    background-image: url("/images/ve-kenji/08-hero-kenji-mobile.webp");
-    background-position: center center;
+    > section:first-of-type
+    > img[aria-hidden="true"] {
+    content: url("/images/ve-kenji/08-hero-kenji-mobile.webp");
+    object-position: center center;
   }
 
   main.text-e26-text:has(.ve-kenji-signal-tier-b) > section:nth-of-type(8),
