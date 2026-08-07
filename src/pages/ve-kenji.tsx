@@ -528,6 +528,9 @@ export default function VeKenjiPage() {
               <EssenceAnchor as="h2" className="relative max-w-[590px]">
                 Cách tôi hiện diện
               </EssenceAnchor>
+              <EssenceAccent as="p" className="mt-4 text-[#1A1A1A]/82 md:mt-5">
+                Tôi đọc để hiểu — không để phán.
+              </EssenceAccent>
             </div>
             <div className="relative mt-14 md:mt-20 md:grid md:grid-cols-[minmax(0,1.3fr)_minmax(340px,1fr)] md:items-center md:gap-x-12 lg:gap-x-16">
               <div>
