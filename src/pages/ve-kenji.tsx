@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import Image, { getImageProps } from "next/image";
+import Image from "next/image";
 import { useRef, useState } from "react";
 import { SEO } from "@/components/SEO";
 import HomeHeader from "@/components/homepage/HomeHeader";
@@ -18,23 +18,6 @@ import {
 import { VeKenjiSectionImage } from "@/components/ve-kenji/VeKenjiImagery";
 import { useVeKenjiSignalReveal } from "@/hooks/useVeKenjiSignalReveal";
 import { useVeKenjiSectionReveal } from "@/hooks/useVeKenjiSectionReveal";
-
-const { props: heroDesktopImageProps } = getImageProps({
-  alt: "",
-  height: 810,
-  priority: true,
-  sizes: "100vw",
-  src: "/images/ve-kenji/08-hero-kenji-desktop.webp",
-  width: 1440,
-});
-
-const { props: heroMobileImageProps } = getImageProps({
-  alt: "",
-  height: 525,
-  sizes: "100vw",
-  src: "/images/ve-kenji/08-hero-kenji-mobile.webp",
-  width: 420,
-});
 
 const personSchema = {
   "@context": "https://schema.org",
@@ -261,30 +244,30 @@ export default function VeKenjiPage() {
 
       <main ref={pageRef} className="text-e26-text">
         <section className="relative isolate overflow-hidden px-6 py-28 md:py-44">
-          <picture className="absolute inset-0 z-0 block">
+          <picture className="absolute inset-0 z-0 block h-full w-full">
             <source
               media="(max-width: 767px)"
-              sizes={heroMobileImageProps.sizes}
-              srcSet={heroMobileImageProps.srcSet}
+              srcSet="/images/ve-kenji/08-hero-kenji-mobile.webp"
             />
             <img
-              {...heroDesktopImageProps}
+              src="/images/ve-kenji/08-hero-kenji-desktop.webp"
               alt=""
-              className="h-full w-full object-cover object-center"
+              aria-hidden="true"
+              className="absolute inset-0 block h-full w-full object-cover object-center"
             />
           </picture>
           <div
             aria-hidden="true"
-            className="absolute inset-0 md:hidden"
-            style={{ background: "linear-gradient(180deg, rgba(239, 237, 228, 0.93) 0%, rgba(239, 237, 228, 0.78) 46%, rgba(239, 237, 228, 0.35) 78%, rgba(239, 237, 228, 0.06) 100%)" }}
+            className="absolute inset-0 z-10 md:hidden"
+            style={{ background: "linear-gradient(180deg, rgba(239, 237, 228, 0.78) 0%, rgba(239, 237, 228, 0.58) 46%, rgba(239, 237, 228, 0.22) 78%, rgba(239, 237, 228, 0.04) 100%)" }}
           />
           <div
             aria-hidden="true"
-            className="absolute inset-0 hidden md:block"
-            style={{ background: "linear-gradient(90deg, rgba(239, 237, 228, 0.88) 0%, rgba(239, 237, 228, 0.74) 32%, rgba(239, 237, 228, 0.36) 54%, rgba(239, 237, 228, 0.08) 73%, rgba(239, 237, 228, 0) 100%)" }}
+            className="absolute inset-0 z-10 hidden md:block"
+            style={{ background: "linear-gradient(90deg, rgba(239, 237, 228, 0.72) 0%, rgba(239, 237, 228, 0.58) 32%, rgba(239, 237, 228, 0.24) 54%, rgba(239, 237, 228, 0.04) 73%, rgba(239, 237, 228, 0) 100%)" }}
           />
-          <div aria-hidden="true" className="absolute inset-0" style={{ background: "radial-gradient(ellipse 52% 68% at 25% 40%, rgba(255,255,255,0.24) 0%, rgba(255,255,255,0) 76%)" }} />
-          <div className="relative z-10 max-w-[1180px] mx-auto">
+          <div aria-hidden="true" className="absolute inset-0 z-10" style={{ background: "radial-gradient(ellipse 52% 68% at 25% 40%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 76%)" }} />
+          <div className="relative z-20 max-w-[1180px] mx-auto">
             <div className="ve-kenji-reveal max-w-[660px] md:ml-[10%] lg:ml-[12%]">
               <SectionLabel>VÌ SAO TÔI Ở ĐÂY</SectionLabel>
               <EssenceDisplay as="h1" className="max-w-[700px]">
