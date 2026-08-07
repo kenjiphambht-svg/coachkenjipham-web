@@ -23,7 +23,7 @@ already taken on PR #137's branch**
 `feat/wp3-launch-core-backend` — C-17 is "Product activation versus
 indexing", C-18 is "ESSENCE Language, Method & Journey Rhythm", the very
 decision this method-framework ruling would have duplicated). Resolution:
-- The Homepage-route-retirement ruling is **renumbered C-17 → C-19**
+- The Homepage-route-retirement ruling is **renumbered C-18 → C-19**
   (first number free across `origin/main`, PR #120 and PR #137 at audit
   time) and kept — it has no other home.
 - The method/brand-framework-preservation ruling is **removed from this
@@ -76,7 +76,7 @@ decision this method-framework ruling would have duplicated). Resolution:
 | O-03 | Runtime gap | Kenji | Implement Hạt Mầm new form/payment/confirmation/delivery in a separate task. |
 | O-04 | Runtime gap | Kenji | Replace public Gmail references only in a scoped runtime task. |
 | O-05 | External dependency pending | Kenji | Approve any further external documentation intake after G0. |
-| O-06 | Runtime/entity gap — partially resolved | Kenji | Villa scope resolved by P1 (PR #112 at 733b199): / and /trang-chu-v2 JSON-LD entities now use Essence Coaching. Remaining inventory rows below still need their own approved metadata/public-copy tasks. |
+| O-06 | Runtime/entity gap — partially resolved | Kenji | **Current truth (07/08/2026, C-19):** `/` is the only Villa/Homepage route; its JSON-LD entities use Essence Coaching. `/trang-chu-v2` is retired and removed — it is not a second live route to track here. *(Historical note, no longer current: P1, PR #112 at 733b199, had originally resolved Villa entity scope across both `/` and `/trang-chu-v2` when both were live; that dual-route state ended at retirement.)* Remaining inventory rows below still need their own approved metadata/public-copy tasks. |
 | O-07 | ✅ **CLOSED 02/08/2026** — C-14 honoured in production | Kenji (done) | Founder set the apex as Vercel Primary Domain and `www` as a 308 permanent redirect. Verified live: apex 200 with 0 redirects; `www` → 308 → apex; HTTP → HTTPS apex; no loop at any entry point; TLS valid on both hostnames. **Standing rule going forward:** host normalisation lives only in the Vercel dashboard — do **not** add host-based redirects to `vercel.json`, which would risk a redirect loop. Evidence: `docs/website/homepage/HOMEPAGE_FINAL_COMPLETION_RECORD.md` §4. |
 
 This register is an L2 operating container. Every Closed conflict ruling recorded above is L0. Open conflicts block assumptions, not safe documentation of the gap.

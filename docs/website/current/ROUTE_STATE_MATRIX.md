@@ -47,12 +47,18 @@ Kenji Phạm owns every Founder Decision and approval gate. “Scoped task” in
 | /an-pham/[random-slug] | No dynamic page source; planned evidence: docs/website/master-plan/06_PRODUCT_DELIVERY_PRIVATE_PUBLICATION_SYSTEM.md | Planned/Missing private delivery | Private only; architecture not approved by G1 | Must be noindex and excluded from sitemap | None | Requires child/privacy, delivery and access-control task. |
 | /admin/* | No page source; historical evidence: docs/website/master-plan/02_PUBLIC_SITEMAP_AND_ROUTE_POLICY.md | Planned/Missing internal route family | Historical internal candidate; no current approval | Must not be public/indexed | None | Requires explicit authority and security scope. |
 
-## Audit completeness
+## Audit completeness — current (07/08/2026, post–L0 C-19)
 
-- 21 concrete source page routes were found under src/pages, plus the technical /404 page; _app and _document are framework wrappers, not URL rows.
-- The matrix has 28 rows: 22 source-served routes (including /404), /old-path and its unresolved /new-path target, and four governance- or historical-evidence-named planned/internal candidates.
+Re-counted directly against the repository at this doc's current revision, not carried forward from the P1 baseline:
+
+- **20** concrete source page routes exist under `src/pages`, plus the technical `/404` page — **21 source-served routes** in total (`_app` and `_document` are framework wrappers, not URL rows). This is one fewer live source file than the P1-era count below, because `src/pages/trang-chu-v2.tsx` is deleted.
+- **The matrix below still has 28 rows — unchanged.** This is not a leftover P1 number: `/trang-chu-v2`'s row was **kept, not deleted**, and now documents the retirement itself (`RETIRED / REMOVED`, no source file, no implementation) rather than a live route. That is deliberate and matches how this same matrix already treats routes with no live source file — `/old-path`, `/new-path`, and the four governance-/historical-evidence-named planned/internal candidates. Composition today: 20 live non-404 source-served routes + `/404` + `/trang-chu-v2` (retired-route record) + `/old-path` + its unresolved `/new-path` target + 4 planned/historical rows = 28.
 - No dynamic route file, API route, robots file, sitemap file, Next.js rewrite, or sitemap implementation was found.
 - vercel.json contains one redirect only: /old-path → /new-path.
 - Shared links in HomeHeader, HomeFooter, Lang90Cinematic and landing components were included in the audit.
-- **P1 re-baseline (733b199):** / and /trang-chu-v2 now render the single shared src/components/homepage/VillaPage.tsx; HomeHeader logo/menu home links resolve to /; both routes emit noindex. No other row changed at P1.
-- **07/08/2026 update (L0 C-19):** `/trang-chu-v2` retired and its source file deleted. Route count drops by one (20 concrete source page routes, not 21; the matrix now has 27 rows, not 28) — the counts and prose above are left as the P1-baseline historical record and not renumbered in place, per this doc's own point-in-time baseline convention.
+
+### Historical baseline (P1, 733b199) — no longer current, kept for record only
+
+- 21 concrete source page routes were found under src/pages, plus the technical /404 page (22 source-served routes total) — at that time this **included** `/trang-chu-v2` as a live, rendering route.
+- The matrix had 28 rows under the same composition logic as today, but with `/trang-chu-v2` counted as a live source-served row rather than a retired-route record.
+- **P1 re-baseline (733b199):** / and /trang-chu-v2 rendered the single shared src/components/homepage/VillaPage.tsx; HomeHeader logo/menu home links resolved to /; both routes emitted noindex. No other row changed at P1.
