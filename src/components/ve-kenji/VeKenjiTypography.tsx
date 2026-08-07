@@ -1,10 +1,9 @@
 import type { ElementType, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-// Hệ 5 vai typography riêng cho /ve-kenji — nguồn: brief "VỀ KENJI VÒNG 1"
-// mục 4 (docs/brand/essence-typography-composition-system-v1.md CHƯA có
-// trong repo tại thời điểm viết — xem phiếu báo cáo PR). File dùng RIÊNG cho
-// route này, không đụng file dùng chung (HomeHeader/HomeFooter/globals.css).
+// Hệ 5 vai typography riêng cho /ve-kenji — nguồn:
+// docs/brand/essence-typography-composition-system-v1.md. File dùng RIÊNG
+// cho route này, không đụng file dùng chung (HomeHeader/HomeFooter/globals.css).
 // Nhấn nội bộ Anchor/Accent dùng true italic (font-style: italic) — Cormorant
 // Garamond ital,wght@1,400/1,500 đã nạp sẵn ở globals.css, không phải nghiêng
 // giả (transform/skew). text-wrap: balance cho khối ngắn (chống mồ côi chữ),
@@ -159,8 +158,25 @@ export function EssenceUtility({ children, className, as: As = "p" }: Common & {
   return (
     <As
       className={cn(
-        "font-sans font-semibold uppercase text-[#1A1A1A]/68",
+        "font-sans font-medium uppercase text-[#1A1A1A]/72",
         "text-[11px] leading-[1.4] tracking-[0.22em] md:text-[12px]",
+        className
+      )}
+    >
+      {children}
+    </As>
+  );
+}
+
+// Editorial numeral voice — the exact canonical Homepage treatment used in
+// NotesTeaser's secondary sequence markers. It stays separate from Utility:
+// sequence numbers are Cormorant roman, not default sans UI metadata.
+export function EssenceEditorialNumeral({ children, className, as: As = "span" }: Common & { as?: ElementType }) {
+  return (
+    <As
+      className={cn(
+        "font-serif font-normal leading-none tracking-[0.02em] text-e26-text",
+        "text-[30px] md:text-[36px]",
         className
       )}
     >
