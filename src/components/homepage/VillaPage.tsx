@@ -19,13 +19,17 @@ import { useHomeReveal } from "@/components/homepage/useHomeReveal";
 // implementation source rendered by the canonical route `/`. Remains NOINDEX
 // until the separately approved M6 Search Indexing Launch.
 //
-// SỬA 07/08/2026 (Founder Decision — Homepage Route B, L0 C-18): route phụ
+// SỬA 07/08/2026 (Founder Decision — Homepage Route B, L0 C-19): route phụ
 // `/trang-chu-v2` đã bị RETIRE và xoá khỏi repo (src/pages/trang-chu-v2.tsx).
-// `/` là Homepage duy nhất, không còn tồn tại. Component này đơn giản hoá
-// theo — bỏ hẳn dual-route `pageUrl` contract (từng nhận 1 trong 2 URL để
-// tự-canonical theo route đang render), thay bằng hằng số CANONICAL_URL cố
-// định. KHÔNG đổi copy/bố cục/ảnh/typography/schema/noindex — đúng phạm vi
-// "chỉ dọn residue kỹ thuật đã chứng minh" của brief cleanup.
+// `/` là Homepage duy nhất. `/trang-chu-v2` không còn tồn tại. Component này
+// đơn giản hoá theo — bỏ hẳn dual-route `pageUrl` contract (từng nhận 1
+// trong 2 URL để tự-canonical theo route đang render), thay bằng hằng số
+// CANONICAL_URL cố định. KHÔNG đổi copy/bố cục/ảnh/typography/schema/
+// noindex — đúng phạm vi "chỉ dọn residue kỹ thuật đã chứng minh" của brief
+// cleanup.
+// (SỬA 07/08/2026, lần 2 — Founder review PR #148: câu trên từng viết dính
+// liền "`/` là Homepage duy nhất, không còn tồn tại." — đọc mơ hồ như thể
+// "/" không còn tồn tại. Tách lại thành 2 câu rõ nghĩa. Không đổi runtime.)
 //
 // SỬA 20/07/2026 — nội dung chữ toàn trang đồng bộ theo Google Doc "HOMEPAGE
 // V9-FINAL — NGUỒN SỰ THẬT CHO CHỮ" (brief V9-FINAL). Thêm 2 khối MỚI:
@@ -75,7 +79,7 @@ export default function VillaPage() {
         {/* CANONICAL — Founder Decision 02/08/2026: domain canonical chính thức
             là apex `https://coachkenjipham.com` (KHÔNG www). Mọi absolute URL ở
             đây (canonical, og:url, JSON-LD url) đã dùng đúng apex.
-            SỬA 07/08/2026 (L0 C-18): `/trang-chu-v2` đã RETIRE và xoá khỏi repo
+            SỬA 07/08/2026 (L0 C-19): `/trang-chu-v2` đã RETIRE và xoá khỏi repo
             — không còn "quyết định hợp nhất" nào phải chờ nữa, nên bỏ luôn
             SELF-CANONICAL theo prop, dùng thẳng CANONICAL_URL cố định.
             Vẫn noindex nên thẻ này hiện KHÔNG có tác dụng indexing; nó tồn

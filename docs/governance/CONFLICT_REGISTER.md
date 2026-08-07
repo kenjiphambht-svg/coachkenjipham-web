@@ -8,15 +8,48 @@
 **Last verified:** 733b19900d3f8c471fb90cbd6f17bc4acf8b1332
 **Review trigger:** immediately on a Founder Decision or discovered same-level conflict.
 
-**07/08/2026 update:** added C-17 (method/brand framework preservation) and
-C-18 (Homepage route retirement) per Founder Decisions 07/08/2026. See the
-paired cleanup PR for the runtime changes these rulings authorize.
+**07/08/2026 update:** added C-19 (Homepage route retirement). See the
+paired cleanup PR (#148) for the runtime changes this ruling authorizes.
+
+**07/08/2026 correction (Founder review, second pass):** this doc's first
+07/08/2026 pass had assigned **C-17** to a method/brand framework
+preservation ruling and **C-18** to Homepage route retirement — both
+picked without checking sibling branches first. A cross-branch audit at
+correction time found: **C-17 is already taken on PR #120's branch**
+(`docs/fd-2026-08-02-legacy-retirement-governance` — legacy `/kidbook`
+route retirement, a different decision), and **both C-17 and C-18 are
+already taken on PR #137's branch**
+(`docs/fd-2026-08-06-essence-language-method-rhythm`, stacked on
+`feat/wp3-launch-core-backend` — C-17 is "Product activation versus
+indexing", C-18 is "ESSENCE Language, Method & Journey Rhythm", the very
+decision this method-framework ruling would have duplicated). Resolution:
+- The Homepage-route-retirement ruling is **renumbered C-17 → C-19**
+  (first number free across `origin/main`, PR #120 and PR #137 at audit
+  time) and kept — it has no other home.
+- The method/brand-framework-preservation ruling is **removed from this
+  register entirely**, not renumbered. PR #137's own C-18 already governs
+  this exact topic; duplicating it under a different number here would
+  create two competing ruling texts for one decision. PR #137's C-18 text
+  and its source `docs/decisions/FD-2026-08-06_ESSENCE_LANGUAGE_METHOD_
+  AND_JOURNEY_RHYTHM.md` were corrected in the same Founder review pass
+  (see that PR) so neither implies the six-movement orientation map
+  replaces the three-movement ESSENCE method framework
+  (Chill với cảm xúc → Thách thức giới hạn → Hiện thực ước mơ). That
+  correction is PR #137's to carry once merged; this register does not
+  pre-empt it with a second, differently-numbered ruling.
+- **Residual risk, unresolved by this correction:** PR #120 and PR #137
+  are two more independent branches, both still open, each capable of
+  reaching further numbers before either merges. Whichever of
+  {PR #120, PR #137, PR #148} merges first fixes the register's real
+  state; whichever merges after must re-audit and renumber again if a
+  fresh collision has appeared. This is a merge-order coordination problem
+  only Kenji can close, not something a single PR can fix pre-emptively.
 
 ## Closed conflicts
 
 | ID | Conflict | Founder ruling |
 |---|---|---|
-| C-01 | Homepage route versus temporary homepage routes | Canonical public Villa route is /. ~~/trang-chu-v2 is implementation/migration candidate; no redirect in G0.~~ **Superseded by C-18 (07/08/2026):** /trang-chu-v2 is retired and removed, not merely contained. |
+| C-01 | Homepage route versus temporary homepage routes | Canonical public Villa route is /. ~~/trang-chu-v2 is implementation/migration candidate; no redirect in G0.~~ **Superseded by C-19 (07/08/2026):** /trang-chu-v2 is retired and removed, not merely contained. |
 | C-02 | Villa indexing | / stays noindex until M6 Search Indexing Launch. Live does not mean indexed. |
 | C-03 | Legacy child/payment flow | /kidbook, /thanh-toan-goi-1 and /thanh-toan-goi-2 are excluded from new journey, CTA, migration and payment flows. |
 | C-04 | /ai-startup role | noindex; independent partner asset; outside consumer journey; rewrite pending. |
@@ -32,8 +65,7 @@ paired cleanup PR for the runtime changes these rulings authorize.
 | C-14 | Canonical domain (02/08/2026) | The official canonical domain is **`https://coachkenjipham.com`** (apex, no `www`). `www.coachkenjipham.com` must redirect **permanently** to it. All canonical, Open Graph, JSON-LD and other absolute URLs use the apex form. Recording this ruling does not authorize indexing, sitemap, robots or Search Console action — C-02 still governs those. |
 | C-15 | Homepage copy and background supersessions (02/08/2026, final) | For `/` these Founder Decisions supersede the corresponding rows of the Editorial Completion Package: Hero reads "Vẫn trả lời những tin nhắn."; Kenji closing line reads "Tôi giữ những khoảng lặng để bạn nhìn rõ điều đang diễn ra và nghe được chính mình."; S08 CTA reads "Mời bạn đọc đầy đủ →"; S04 and S08 keep their current approved background images, so package §8.4/§8.5 and DoD #12/#13 no longer apply. **Signal Moment reads exactly "Không phải mọi chương đều đẹp." — without "vì".** (An interim instruction on 02/08 had asked to insert "vì"; the Founder's final ruling is the sentence without it, and the interim change was reverted before merge. Production was always correct.) Do not re-open any of these as defects. |
 | C-16 | Typography scope (02/08/2026) | Each page may have its **own typographic rhythm and hierarchy**; pages are not required to share one hierarchy or one font-pairing pattern. The whole site keeps the **two approved base fonts** — Cormorant Garamond (serif) and Inter (sans). **No new font may be added.** No global font redesign is to be performed as a side effect of a page-scoped task. Font *loading* performance is a system observation, not a page blocker (see the Homepage completion record §6). |
-| C-17 | Method/brand framework preservation (07/08/2026) | The three-movement ESSENCE method framework — **Chill với cảm xúc → Thách thức giới hạn → Hiện thực ước mơ** — is a canonical brand and method asset and must not be deleted, deprecated or downgraded. Any six-movement orientation/journey map (e.g. LẶNG → AN ĐỊNH → NHẬN RA NHỊP RIÊNG → NHÌN RA BẢN SẮC → CHỌN MỘT NHỊP SỐNG CÓ THỂ GIỮ → AN THỊNH), wherever it is documented, is an **additional** layer describing what the broader journey helps a person recognize and embody — it does **not** replace or supersede the three-movement framework. No rigid one-to-one mapping between the two layers may be invented without a separate Founder approval. Any future `/phuong-phap` Page Contract must explain both layers; this ruling does not itself redesign or rewrite the Method page body. |
-| C-18 | Homepage route retirement (07/08/2026) | `/` is the only canonical Homepage. `/trang-chu-v2` is **RETIRED and removed** (`src/pages/trang-chu-v2.tsx` deleted; `VillaPage.tsx` no longer takes a dual-route `pageUrl` contract, only self-renders at `/`). This supersedes the C-01 clause that held `/trang-chu-v2` as an "implementation/migration candidate" with a pending post-cutover disposition — that disposition is now resolved as retirement. C-01's ruling that **`/` is the canonical public Villa route** is unchanged. C-02 (noindex until M6) and C-07 (entity naming) are unaffected. Historical evidence of `/trang-chu-v2` remains in git history and in dated audit records; it is not restated as active-current documentation. |
+| C-19 | Homepage route retirement (07/08/2026) | `/` is the only canonical Homepage. `/trang-chu-v2` is **RETIRED and removed** (`src/pages/trang-chu-v2.tsx` deleted; `VillaPage.tsx` no longer takes a dual-route `pageUrl` contract, only self-renders at `/`). This supersedes the C-01 clause that held `/trang-chu-v2` as an "implementation/migration candidate" with a pending post-cutover disposition — that disposition is now resolved as retirement. C-01's ruling that **`/` is the canonical public Villa route** is unchanged. C-02 (noindex until M6) and C-07 (entity naming) are unaffected. Historical evidence of `/trang-chu-v2` remains in git history and in dated audit records; it is not restated as active-current documentation. |
 
 ## Open conflicts and follow-up gaps
 
@@ -55,12 +87,12 @@ The baseline is `origin/main` at `fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae`. The
 
 | Route / surface | File(s) | Observed occurrence | Required later handling |
 |---|---|---|---|
-| ~~`/trang-chu-v2`~~ | ~~`src/pages/trang-chu-v2.tsx`~~ | ~~Person `worksFor` and Organization JSON-LD use the former organization suffix.~~ | **Row obsolete — C-18 (07/08/2026):** route retired and file deleted; nothing left to reconcile. (Was resolved by PR #112 at 733b199 before retirement: both / and /trang-chu-v2 rendered shared `VillaPage.tsx` whose entities used **Essence Coaching**.) |
+| ~~`/trang-chu-v2`~~ | ~~`src/pages/trang-chu-v2.tsx`~~ | ~~Person `worksFor` and Organization JSON-LD use the former organization suffix.~~ | **Row obsolete — C-19 (07/08/2026):** route retired and file deleted; nothing left to reconcile. (Was resolved by PR #112 at 733b199 before retirement: both / and /trang-chu-v2 rendered shared `VillaPage.tsx` whose entities used **Essence Coaching**.) |
 | `/ban-sac-cua-ban` | `src/pages/ban-sac-cua-ban.tsx` | Article publisher JSON-LD uses the former organization suffix. | Align schema only after route-level metadata review. |
 | `/ban-sac-cua-con` | `src/pages/ban-sac-cua-con.tsx` | Article publisher JSON-LD uses the former organization suffix. | Align schema in a child-safe, route-scoped metadata task. |
 | `/ban-la-duy-nhat` | `src/pages/ban-la-duy-nhat.tsx` | Product/offer-candidate brand entity uses the former organization suffix. | Align only with the held-offer contract and metadata task. |
 | `/dau-an-cua-ban` | `src/pages/dau-an-cua-ban.tsx` | Product/offer-candidate brand entity uses the former organization suffix. | Align only with the held-offer contract and metadata task. |
-| ~~`/phuong-phap`~~ | ~~`src/pages/phuong-phap.tsx`~~ | ~~Article publisher JSON-LD uses the former organization suffix.~~ | **Resolved (07/08/2026, cleanup PR):** Article publisher JSON-LD now uses **Essence Coaching**. Method-body/Page Contract rewrite is separate and still future (see C-17). |
+| ~~`/phuong-phap`~~ | ~~`src/pages/phuong-phap.tsx`~~ | ~~Article publisher JSON-LD uses the former organization suffix.~~ | **Resolved (07/08/2026, cleanup PR):** Article publisher JSON-LD now uses **Essence Coaching**. Method-body/Page Contract rewrite is separate and still future — governed by PR #137's C-18 (ESSENCE Language, Method & Journey Rhythm, corrected 07/08/2026), not by this register. |
 | `/dieu-essence-khong-hua` | `src/pages/dieu-essence-khong-hua.tsx` | Article publisher JSON-LD uses the former organization suffix. | Align with the future trust-suite metadata/copy scope. |
 | `/chinh-sach-rieng-tu` | `src/pages/chinh-sach-rieng-tu.tsx` | Article publisher JSON-LD uses the former organization suffix. | Align only with the approved privacy/metadata scope. |
 | `/ai-startup` | `src/components/ai-startup/Room1Hero.tsx` | Visible founder line uses the former organization suffix. | Replace with exact C-07 only inside the separately approved partner rewrite. |

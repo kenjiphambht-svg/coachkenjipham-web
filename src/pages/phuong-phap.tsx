@@ -35,16 +35,24 @@ import {
 // tô vàng — brief v4 mục B3 dành điểm gold thứ 3 cho lớp ảnh sắp tới.
 //
 // CTA vàng cuối trang (Scene ⑨) trỏ /ve-kenji, KHÔNG trỏ section "Hai Cửa"
-// (TwoStates.tsx): "Hai Cửa" (Về phía bạn / Về phía con, xem KHỐI 2 dưới)
-// hiện chỉ là 2 nhãn "(sắp mở)" — chưa có route thật để CTA trỏ tới — nên
-// theo đúng nhánh dự phòng brief mục 2 Scene ⑨, CTA trỏ /ve-kenji. Nhất quán
-// với /ve-kenji (đã trỏ /phuong-phap) và /dieu-essence-khong-hua (CTA cùng
-// dạng cũng trỏ /ve-kenji).
+// (TwoStates.tsx trên Homepage — dẫn /ban-sac-cua-ban và /ban-sac-cua-con,
+// CẢ HAI ROUTE ĐÃ SỐNG THẬT, Homepage đã link tới cả hai): lý do KHÔNG phải
+// kỹ thuật (không phải vì thiếu route) mà là PHẠM VI — việc dựng lại hành
+// trình/CTA hiển thị của chính trang /phuong-phap thuộc về Page Contract mới
+// (do Founder duyệt riêng), không thuộc phạm vi cleanup này. Cho tới khi đó,
+// CTA legacy vẫn giữ nguyên trỏ /ve-kenji. Nhất quán với /ve-kenji (đã trỏ
+// /phuong-phap) và /dieu-essence-khong-hua (CTA cùng dạng cũng trỏ /ve-kenji).
+// (KHỐI 2 bên dưới — "Về phía bạn/con (sắp mở)" — là 2 nhãn placeholder CỦA
+// RIÊNG TRANG NÀY, cố ý chưa link ở lần dựng Scene ⑨ trước; không liên quan
+// tới việc /ban-sac-cua-ban và /ban-sac-cua-con có tồn tại hay không.)
 // (SỬA 07/08/2026 — dọn residue: bỏ lý do cũ dựa trên route "/" từng là bản
 // Coming Soon và trích comment src/pages/trang-chu-v2.tsx — cả hai đều lỗi
 // thời. "/" giờ là Homepage Villa hoàn chỉnh duy nhất; /trang-chu-v2 đã
-// retire và xoá khỏi repo (Founder Decision 07/08/2026, L0 C-18). Lý do CTA
-// trỏ /ve-kenji vẫn đúng, chỉ viết lại theo sự thật hiện tại.)
+// retire và xoá khỏi repo (Founder Decision 07/08/2026, L0 C-19).)
+// (SỬA 07/08/2026, lần 2 — Founder review PR #148: bản sửa lần đầu ở trên
+// từng viết sai thành "Hai Cửa... chưa có route thật" — ĐỌC SAI, /ban-sac-
+// cua-ban và /ban-sac-cua-con đã sống thật và Homepage đã link. Viết lại
+// đúng lý do: phạm vi/quy trình, không phải thiếu route.)
 //
 // personSchema tái dùng NGUYÊN VĂN từ src/pages/ve-kenji.tsx (không viết lại
 // từ đầu, theo đúng brief mục 5) — page component không export nên copy y
