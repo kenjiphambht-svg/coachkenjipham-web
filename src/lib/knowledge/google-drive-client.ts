@@ -1,6 +1,8 @@
 import { GOOGLE_DOC_MIME } from './drive-sync';
 
 const DRIVE_API = 'https://www.googleapis.com/drive/v3';
+const DOCS_API = 'https://docs.googleapis.com/v1';
+export const GOOGLE_SHORTCUT_MIME = 'application/vnd.google-apps.shortcut';
 
 export type DriveApiFile = {
   id: string;
@@ -13,6 +15,10 @@ export type DriveApiFile = {
   version?: string;
   md5Checksum?: string;
   trashed?: boolean;
+  shortcutDetails?: {
+    targetId?: string;
+    targetMimeType?: string;
+  };
 };
 
 export type DriveApiChange = {
@@ -29,6 +35,27 @@ export type DrivePage<T> = {
 
 export type DriveAccessTokenProvider = () => Promise<string>;
 export type DriveFetch = typeof fetch;
+
+function containsSuggestionMarker(value: unknown): boolean {
+  if (Array.isArray(value)) return value.some(containsSuggestionMarker);
+  if (!value || typeof value !== 'object') return false;
+  for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
+    if (
+      key === 'suggestedInsertionIds' ||
+      key === 'suggestedDeletionIds' ||
+      key === 'suggestedTextStyleChanges' ||
+      key === 'suggestedParagraphStyleChanges' ||
+      key === 'suggestedNamedStylesChanges' ||
+      key === 'suggestedTableCellStyleChanges'
+    ) {
+      if (Array.isArray(child) ? child.length > 0 : child && Object.keys(child as object).length > 0) {
+        return true;
+      }
+    }
+    if (containsSuggestionMarker(child)) return true;
+  }
+  return false;
+}
 
 export class GoogleDriveReadClient {
   constructor(
@@ -61,6 +88,7 @@ export class GoogleDriveReadClient {
       'version',
       'md5Checksum',
       'trashed',
+      'shortcutDetails(targetId,targetMimeType)',
     ].join(',');
     const url = `${DRIVE_API}/files/${encodeURIComponent(fileId)}?supportsAllDrives=true&fields=${encodeURIComponent(fields)}`;
     return (await this.request(url)).json() as Promise<DriveApiFile>;
@@ -74,14 +102,13 @@ export class GoogleDriveReadClient {
       includeItemsFromAllDrives: 'true',
       pageSize: '1000',
       fields:
-        'nextPageToken,files(id,name,mimeType,parents,webViewLink,createdTime,modifiedTime,version,md5Checksum,trashed)',
+        'nextPageToken,files(id,name,mimeType,parents,webViewLink,createdTime,modifiedTime,version,md5Checksum,trashed,shortcutDetails(targetId,targetMimeType))',
     });
     if (pageToken) params.set('pageToken', pageToken);
-    const body = (await this.request(`${DRIVE_API}/files?${params.toString()}`)).json() as Promise<{
+    const result = (await (await this.request(`${DRIVE_API}/files?${params.toString()}`)).json()) as {
       files?: DriveApiFile[];
       nextPageToken?: string;
-    }>;
-    const result = await body;
+    };
     return { items: result.files ?? [], nextPageToken: result.nextPageToken };
   }
 
@@ -101,7 +128,7 @@ export class GoogleDriveReadClient {
       includeItemsFromAllDrives: 'true',
       pageSize: '1000',
       fields:
-        'nextPageToken,newStartPageToken,changes(fileId,removed,file(id,name,mimeType,parents,webViewLink,createdTime,modifiedTime,version,md5Checksum,trashed))',
+        'nextPageToken,newStartPageToken,changes(fileId,removed,file(id,name,mimeType,parents,webViewLink,createdTime,modifiedTime,version,md5Checksum,trashed,shortcutDetails(targetId,targetMimeType)))',
     });
     const data = (await (await this.request(`${DRIVE_API}/changes?${params.toString()}`)).json()) as {
       changes?: DriveApiChange[];
@@ -113,6 +140,23 @@ export class GoogleDriveReadClient {
       nextPageToken: data.nextPageToken,
       newStartPageToken: data.newStartPageToken,
     };
+  }
+
+  async hasUnresolvedSuggestions(documentId: string): Promise<boolean> {
+    const params = new URLSearchParams({
+      suggestionsViewMode: 'PREVIEW_WITHOUT_SUGGESTIONS',
+    });
+    const document = await (
+      await this.request(`${DOCS_API}/documents/${encodeURIComponent(documentId)}?${params.toString()}`)
+    ).json();
+    return containsSuggestionMarker(document);
+  }
+
+  async resolveShortcut(file: DriveApiFile): Promise<DriveApiFile> {
+    if (file.mimeType !== GOOGLE_SHORTCUT_MIME) return file;
+    const targetId = file.shortcutDetails?.targetId;
+    if (!targetId) throw new Error('GOOGLE_DRIVE_SHORTCUT_TARGET_MISSING');
+    return this.getFile(targetId);
   }
 
   async readText(file: DriveApiFile): Promise<string> {
