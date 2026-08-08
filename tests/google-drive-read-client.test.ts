@@ -81,6 +81,14 @@ describe('GoogleDriveReadClient', () => {
     await expect(client.hasUnresolvedSuggestions('doc-clean')).resolves.toBe(false);
   });
 
+  it('reports Docs API failures separately without exposing provider response bodies', async () => {
+    const client = new GoogleDriveReadClient(
+      async () => 'token',
+      (async () => jsonResponse({ error: { message: 'sensitive-provider-detail' } }, 403)) as typeof fetch
+    );
+    await expect(client.hasUnresolvedSuggestions('doc-denied')).rejects.toThrow('GOOGLE_DOCS_READ_FAILED_403');
+  });
+
   it('resolves Drive shortcuts to the target file before content decisions', async () => {
     let requested = '';
     const client = new GoogleDriveReadClient(
