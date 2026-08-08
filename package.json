@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "vitest run tests/knowledge-foundation.test.ts tests/knowledge-sql-contract.test.ts tests/knowledge-m2-sync-retrieval.test.ts tests/knowledge-m2-sql-contract.test.ts tests/google-drive-read-client.test.ts tests/knowledge-m2-sync-engine.test.ts tests/knowledge-m2-authority-retrieval.test.ts && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
