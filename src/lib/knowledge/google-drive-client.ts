@@ -36,6 +36,13 @@ export type DrivePage<T> = {
 export type DriveAccessTokenProvider = () => Promise<string>;
 export type DriveFetch = typeof fetch;
 
+type GoogleApiErrorBody = {
+  error?: {
+    status?: string;
+    errors?: Array<{ reason?: string }>;
+  };
+};
+
 function containsSuggestionMarker(value: unknown): boolean {
   if (Array.isArray(value)) return value.some(containsSuggestionMarker);
   if (!value || typeof value !== 'object') return false;
@@ -57,6 +64,23 @@ function containsSuggestionMarker(value: unknown): boolean {
   return false;
 }
 
+function safeErrorToken(value: unknown): string | undefined {
+  if (typeof value !== 'string') return undefined;
+  const normalized = value.trim().toUpperCase().replace(/[^A-Z0-9_]+/g, '_');
+  return normalized && normalized.length <= 80 ? normalized : undefined;
+}
+
+async function safeGoogleFailureSuffix(response: Response): Promise<string> {
+  try {
+    const body = (await response.clone().json()) as GoogleApiErrorBody;
+    const status = safeErrorToken(body.error?.status);
+    const reason = safeErrorToken(body.error?.errors?.[0]?.reason);
+    return [status, reason].filter(Boolean).join('_');
+  } catch {
+    return '';
+  }
+}
+
 export class GoogleDriveReadClient {
   constructor(
     private readonly accessToken: DriveAccessTokenProvider,
@@ -74,7 +98,8 @@ export class GoogleDriveReadClient {
       cache: 'no-store',
     });
     if (!response.ok) {
-      throw new Error(`${failurePrefix}_${response.status}`);
+      const suffix = await safeGoogleFailureSuffix(response);
+      throw new Error(`${failurePrefix}_${response.status}${suffix ? `_${suffix}` : ''}`);
     }
     return response;
   }
