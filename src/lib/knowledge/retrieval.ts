@@ -66,7 +66,9 @@ export function retrieveKnowledge(
     if (!candidate.runtimeEnabled) continue;
     if (!scopeMatches(candidate.authorityScope, options?.scope)) continue;
 
-    const currentEligible = LIFECYCLE_CURRENT_ELIGIBLE.has(candidate.lifecycle);
+    const currentEligible =
+      LIFECYCLE_CURRENT_ELIGIBLE.has(candidate.lifecycle) &&
+      (candidate.usageMode === 'current_truth' || candidate.usageMode === 'governance');
     const workspaceEligible =
       options?.includeWorkspace === true &&
       candidate.usageMode === 'workspace' &&
