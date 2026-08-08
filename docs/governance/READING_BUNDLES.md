@@ -17,13 +17,14 @@ Machine rules and project skills are execution adapters, not a parallel authorit
 ## Universal
 
 1. docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md
-2. docs/governance/DOCUMENT_REGISTRY.md
-3. docs/governance/CONFLICT_REGISTER.md
-4. docs/governance/READING_BUNDLES.md
-5. docs/governance/ARCHIVE_POLICY.md
-6. AGENTS.md
-7. PLAYBOOK.md
-8. BACKLOG.md
+2. docs/decisions/FD-2026-08-08_PHUONG_PHAP_PUBLIC_METHOD_HIERARCHY.md
+3. docs/governance/DOCUMENT_REGISTRY.md
+4. docs/governance/CONFLICT_REGISTER.md
+5. docs/governance/READING_BUNDLES.md
+6. docs/governance/ARCHIVE_POLICY.md
+7. AGENTS.md
+8. PLAYBOOK.md
+9. BACKLOG.md
 
 ## Current website truth
 

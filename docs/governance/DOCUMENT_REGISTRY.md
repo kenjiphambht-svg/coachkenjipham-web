@@ -12,7 +12,7 @@
 **Last verified:** 733b19900d3f8c471fb90cbd6f17bc4acf8b1332
 **Review trigger:** Founder Decision, status/replacement change, or 90 days.
 
-This registry records authority-bearing, default-reading, imported-canonical, machine-instruction, historical-evidence, external-dependency and planned current-truth sources. It contains **69 entries**.
+This registry records authority-bearing, default-reading, imported-canonical, machine-instruction, historical-evidence, external-dependency and planned current-truth sources. It contains **70 entries**.
 
 ## Verification metadata convention
 
@@ -28,6 +28,7 @@ This registry records authority-bearing, default-reading, imported-canonical, ma
 | Path | Title / purpose | Authority / status / owner | Decision scope / non-decision scope | Still valid / outdated | Replacement | Next review / notes |
 |---|---|---|---|---|---|---|
 | docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md | hierarchy and protocol | L0 / Active / Kenji | Founder-approved constitution / no product ruling | hierarchy / — | — | Founder Decision only |
+| docs/decisions/FD-2026-08-08_PHUONG_PHAP_PUBLIC_METHOD_HIERARCHY.md | L0 Founder Decision — `/phuong-phap` public Method hierarchy | L0 / Active / Kenji | three-movement public hierarchy, six-point internal boundary and v1.3 copy authority for `/phuong-phap` / no other route, offer, backend, indexing, Production deploy or merge | Current: public Method = Chill → Thách thức → Hiện thực; six-point map remains internal / every earlier or concurrent requirement to public the six-point map on this route | — | Founder Decision only |
 | docs/governance/DOCUMENT_REGISTRY.md | registry | L2 / Active / Kenji | status/provenance / no content ruling | model / — | — | trigger + 90d |
 | docs/governance/CONFLICT_REGISTER.md | L2 operating container | L2 / Active / Kenji | conflict record / no runtime fix | closed rulings are L0 / — | — | immediate |
 | docs/governance/READING_BUNDLES.md | required reading | L2 / Active / Kenji | reading order / no implementation | bundles / — | — | trigger + 90d |
