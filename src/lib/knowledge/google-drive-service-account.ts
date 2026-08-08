@@ -1,5 +1,6 @@
 const TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const DRIVE_READONLY_SCOPE = 'https://www.googleapis.com/auth/drive.readonly';
+const DOCS_READONLY_SCOPE = 'https://www.googleapis.com/auth/documents.readonly';
 const ENV_NAME = 'ESSENCE_GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON';
 const EXPECTED_PROJECT_ID = 'essence-knowledge-sync-staging';
 const EXPECTED_SERVICE_ACCOUNT =
@@ -72,7 +73,7 @@ async function createAssertion(credential: ServiceAccountCredential): Promise<st
   const payload = base64Url(
     JSON.stringify({
       iss: credential.client_email,
-      scope: DRIVE_READONLY_SCOPE,
+      scope: `${DRIVE_READONLY_SCOPE} ${DOCS_READONLY_SCOPE}`,
       aud: TOKEN_URL,
       iat: now,
       exp: now + 3600,
