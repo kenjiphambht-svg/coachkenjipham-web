@@ -25,6 +25,7 @@ export type RetrievalHit = RetrievalCandidate & {
 };
 
 const LIFECYCLE_CURRENT_ELIGIBLE = new Set<KnowledgeLifecycle>(['current', 'approved']);
+const LIFECYCLE_SUPPORTING_ELIGIBLE = new Set<KnowledgeLifecycle>(['current', 'approved', 'reference']);
 
 function normalize(value: string): string {
   return value
@@ -66,9 +67,17 @@ export function retrieveKnowledge(
     if (!scopeMatches(candidate.authorityScope, options?.scope)) continue;
 
     const currentEligible = LIFECYCLE_CURRENT_ELIGIBLE.has(candidate.lifecycle);
-    const workspaceEligible = options?.includeWorkspace && candidate.usageMode === 'workspace';
-    const historicalEligible = options?.includeHistorical && candidate.usageMode === 'historical';
-    const supportingEligible = candidate.usageMode === 'supporting';
+    const workspaceEligible =
+      options?.includeWorkspace === true &&
+      candidate.usageMode === 'workspace' &&
+      ['draft', 'proposal', 'current', 'approved'].includes(candidate.lifecycle);
+    const historicalEligible =
+      options?.includeHistorical === true &&
+      candidate.usageMode === 'historical' &&
+      ['snapshot', 'superseded', 'historical', 'reference'].includes(candidate.lifecycle);
+    const supportingEligible =
+      candidate.usageMode === 'supporting' &&
+      LIFECYCLE_SUPPORTING_ELIGIBLE.has(candidate.lifecycle);
     if (!(currentEligible || workspaceEligible || historicalEligible || supportingEligible)) continue;
 
     const sourceCode = candidate.sourceCode ? normalize(candidate.sourceCode) : '';
