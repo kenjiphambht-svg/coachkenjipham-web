@@ -160,6 +160,9 @@ export async function GET(request: NextRequest) {
         ? error.message
         : 'M2B_RUNTIME_PROBE_FAILED';
 
+    // Safe diagnostic only: never log fixture IDs, tokens, Drive content or credentials.
+    console.warn(`[M2B_RUNTIME_PROBE] phase=${phase} errorCode=${code}`);
+
     return NextResponse.json(
       {
         status: 'FAIL',
