@@ -3,11 +3,11 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const sql = readFileSync(
-  resolve(process.cwd(), 'supabase/migrations/20260808110000_ai_knowledge_sync_retrieval_foundation.sql'),
+  resolve(process.cwd(), 'supabase/migrations/20260808042208_ai_knowledge_sync_retrieval_foundation.sql'),
   'utf8'
 );
 const rollback = readFileSync(
-  resolve(process.cwd(), 'supabase/rollbacks/20260808110000_ai_knowledge_sync_retrieval_foundation_down.sql'),
+  resolve(process.cwd(), 'supabase/rollbacks/20260808042208_ai_knowledge_sync_retrieval_foundation_down.sql'),
   'utf8'
 );
 
@@ -44,5 +44,6 @@ describe('ESSENCE AI Knowledge Backend M2 SQL contract', () => {
     expect(rollback).toMatch(/drop column if exists search_document/i);
     expect(rollback).toMatch(/drop column if exists is_removed/i);
     expect(rollback).toMatch(/drop function if exists knowledge\.set_search_document/i);
+    expect(rollback).not.toMatch(/drop schema if exists knowledge cascade/i);
   });
 });
