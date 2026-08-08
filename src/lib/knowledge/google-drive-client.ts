@@ -63,7 +63,10 @@ export class GoogleDriveReadClient {
     private readonly fetcher: DriveFetch = fetch
   ) {}
 
-  private async request(url: string): Promise<Response> {
+  private async request(
+    url: string,
+    failurePrefix: 'GOOGLE_DRIVE_READ_FAILED' | 'GOOGLE_DOCS_READ_FAILED' = 'GOOGLE_DRIVE_READ_FAILED'
+  ): Promise<Response> {
     const token = await this.accessToken();
     const response = await this.fetcher(url, {
       method: 'GET',
@@ -71,7 +74,7 @@ export class GoogleDriveReadClient {
       cache: 'no-store',
     });
     if (!response.ok) {
-      throw new Error(`GOOGLE_DRIVE_READ_FAILED_${response.status}`);
+      throw new Error(`${failurePrefix}_${response.status}`);
     }
     return response;
   }
@@ -147,7 +150,10 @@ export class GoogleDriveReadClient {
       suggestionsViewMode: 'SUGGESTIONS_INLINE',
     });
     const document = await (
-      await this.request(`${DOCS_API}/documents/${encodeURIComponent(documentId)}?${params.toString()}`)
+      await this.request(
+        `${DOCS_API}/documents/${encodeURIComponent(documentId)}?${params.toString()}`,
+        'GOOGLE_DOCS_READ_FAILED'
+      )
     ).json();
     return containsSuggestionMarker(document);
   }
