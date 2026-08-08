@@ -7,9 +7,12 @@ Base: `feat/m1-machine-library-foundation` at `9393f35360c14477b95b6c6d3fcb650c1
 
 ## Founder approval
 
-Founder instruction: **“Duyệt M1, bắt đầu M2.”**
+Founder instructions:
 
-This opens M2 only. It does not authorize M1/M2 merge to production, public activation, real customer/child-sensitive data, AI write actions or Command Layer.
+- **“Duyệt M1, bắt đầu M2.”**
+- **“anh đồng ý em làm tiếp đi… cứ làm những vòng lớn rồi báo anh.”**
+
+This opens M2 staging work only. It does not authorize M1/M2 merge to production, public activation, real customer/child-sensitive data, AI write actions or Command Layer.
 
 ## Goal
 
@@ -22,7 +25,7 @@ Root / permission boundary
         ↓
 Ingest + safety policy
         ↓
-Initial crawl / delta change feed
+Controlled allowlist / initial crawl / delta feed
         ↓
 Version + hash evidence
         ↓
@@ -31,19 +34,17 @@ Structure-aware knowledge units
 Exact identifier + lexical retrieval
 ```
 
-## Current Drive root verified 2026-08-08
+## Current governed zones
 
-Canonical root: `1bBKDZR-HTAr1bSgnex-DfvLUspMcfawY`
+- `00_BẮT ĐẦU Ở ĐÂY` → metadata/selective.
+- `01_ĐIỀU ĐANG ĐÚNG` → current content.
+- `02_CÔNG VIỆC ĐANG LÀM` → workspace content.
+- `03_TRI THỨC ĐÃ CHƯNG CẤT` → supporting content.
+- `04_NGUỒN VÀ LỊCH SỬ` → conditional / metadata by default.
+- `90_QUẢN TRỊ THƯ VIỆN` → selective / conditional.
+- `99_KHO RIÊNG TƯ` → HARD DENY and never traversed by the M2 initial crawler.
 
-- `00_BẮT ĐẦU Ở ĐÂY` → `19W24RzG0ZUQy2kUrwiaUqLOJwR8PjgYJ` → metadata/selective.
-- `01_ĐIỀU ĐANG ĐÚNG` → `1yoB3Cx2h8ysVaFmk5WnpogIAHl0qnCbC` → current content.
-- `02_CÔNG VIỆC ĐANG LÀM` → `19_XFMNtqRd4k_KQhj9x01tTaKxi_YPHq` → workspace content.
-- `03_TRI THỨC ĐÃ CHƯNG CẤT` → `1cJZ2LA9wvQPOc7ik4whiZgiWpI6kVHZ5` → supporting content.
-- `04_NGUỒN VÀ LỊCH SỬ` → `1wBXJcUZeSDBfKx4d_kNPTe3gLBvnqviS` → conditional / metadata by default.
-- `90_QUẢN TRỊ THƯ VIỆN` → `1mKF2nDA3kQOcnROy45Tpah_5bDvdEeCm` → selective / conditional.
-- `99_KHO RIÊNG TƯ` → `1IlxV2oS1oVUVfL1NJ_Gx8AjMokCIwaZG` → HARD DENY.
-
-## M2A — included now
+## M2A — foundation complete
 
 - Exact Drive root-ID policy map.
 - Fail-closed Drive sync planner.
@@ -54,41 +55,82 @@ Canonical root: `1bBKDZR-HTAr1bSgnex-DfvLUspMcfawY`
 - Exact source-code + deterministic lexical retrieval foundation.
 - Postgres `simple` + `unaccent` FTS vector and GIN index on `knowledge_units`.
 - Drive removal/access-loss fields and fail-closed DB constraint.
-- Synthetic tests only.
+- Shortcut target resolution before policy evaluation.
+- Google Docs unresolved-suggestion inspection before canonical ingest.
+- Synthetic contract tests and manual rollback.
 
-## M2A — explicit exclusions
+## M2B — controlled pilot now completed to the credential boundary
 
+### Real non-sensitive staging probe
+
+A five-source allowlist of current governance documents was manually read through the connected Drive tooling and persisted into `essence-staging` as explicitly marked **partial manual probe evidence**.
+
+Result:
+
+- 5 Machine Library sources.
+- 5 current version-evidence rows.
+- 5 selected knowledge units.
+- 0 private-zone / child-sensitive rows.
+
+The staged rows explicitly state that this was a manual connected-tool probe, not an automated Drive runtime identity.
+
+### Retrieval evidence
+
+- Lexical `FCP` lookup surfaced the current Founder Decision Register at L0 and the resolved Conflict Register entry at L1.
+- Lexical `thẩm quyền` lookup surfaced the current Authority Map.
+- Exact source-code lookup returned the Founder Decision Register as L0 / current / current-truth.
+
+This proves the exact + lexical substrate surfaces the intended current authority evidence. It does not yet claim end-to-end AI answering; authority-aware context construction remains a later layer.
+
+### Controlled file allowlist
+
+The initial and delta sync engines now accept an explicit file allowlist for staging pilots:
+
+- non-allowlisted files are ignored before content read;
+- allowlisted files proceed through normal policy/safety checks;
+- shortcut targets are resolved to canonical target identity before the allowlist decision;
+- out-of-batch delta removals are ignored;
+- allowlisted removals still purge;
+- the hard-deny private root is still never traversed.
+
+### Manual Library Assistant coordination
+
+A short manual-test request was placed in the Library Review Inbox asking the Library Assistant to select/check non-sensitive canonical sources and report PASS / FAIL / CONFLICT / UNKNOWN for shortcut, unresolved suggestions, deletion/move/access loss, duplicate/derived copy and ambiguous alias cases. It explicitly forbids private-vault, customer, child, payment and session-note data.
+
+## Test/build evidence
+
+Latest M2B targeted Vercel test gate:
+
+- 6 test files passed.
+- **57 / 57 tests passed**.
+- Controlled initial-crawl allowlist behavior passed.
+- Controlled delta-removal allowlist behavior passed.
+- Existing M1/M2 safety, FCP, Drive, normalization, SQL and lexical tests remained green.
+- Next.js type/build compiled successfully.
+- The temporary test-gated build command was restored to the repository-standard `next build` afterward.
+
+## Explicit exclusions remain
+
+- No dedicated runtime Drive OAuth/sync identity is configured yet.
+- Physical inability of that future identity to read `99_KHO RIÊNG TƯ` is therefore **not yet proven**.
+- No unattended automated Drive crawl from the website backend.
 - No AI model/provider.
 - No embeddings/vector/HNSW/IVFFlat/reranker.
 - No browser Machine Library reader.
-- No autonomous AI database write.
-- No real customer data or child-sensitive data.
-- No crawl of `99_KHO RIÊNG TƯ`.
-- No production deploy or merge.
-- No persistent real Drive content until a dedicated least-privilege sync identity is configured and verified against the deny boundary.
+- No Founder-AI runtime reader yet.
+- No real customer or child-sensitive data.
+- No AI database write action / Command Layer.
+- No merge or production activation.
 
-## M2B — next gate inside M2
+## Remaining M2B hard gate
 
-After M2A tests and staging migration pass:
+Before unattended automated sync can be enabled:
 
-1. Configure a dedicated Drive sync identity with access only to allowed library zones; ideally no physical access to `99_KHO RIÊNG TƯ`.
-2. Run a controlled initial crawl on a small allowlisted set of non-sensitive canonical sources.
-3. Verify source/version/unit rows and citations.
-4. Save a Drive start page token only after the initial crawl reaches a consistent point.
-5. Exercise delta changes, deletion/move-to-deny and periodic reconciliation.
-6. Build 30–50 Founder-reviewed Gold Questions before adding semantic vector retrieval.
+1. Create/configure a dedicated least-privilege Drive sync identity outside the current code-only tool boundary.
+2. Grant that identity only the approved library zones and verify it has no physical access to `99_KHO RIÊNG TƯ`.
+3. Provide the credential to staging as a server-only secret; never commit or store it in Machine Library rows/logs.
+4. Re-run the controlled allowlisted crawl with that identity.
+5. Exercise a real delta update and a real removal/move-to-deny case.
+6. Reconcile against the manual probe and Library Assistant manual-test results.
 
-M2B requires a separate explicit staging credential/configuration step. It still does not authorize customer/child data or production activation.
-
-## Acceptance for M2A
-
-1. `99_private`, removed, trashed and outside-root files fail closed.
-2. 01/02/03 retain distinct usage modes; 04/90 do not silently become current runtime truth.
-3. Unresolved suggestions and sensitive signals quarantine before content ingestion.
-4. Derived copies do not become duplicate content sources.
-5. Text normalization is deterministic and evidence text remains separate from retrieval text.
-6. Exact IDs outrank lexical matches.
-7. Workspace/historical content is opt-in, not default current retrieval.
-8. Postgres FTS uses `simple` + `unaccent`; no vector infrastructure.
-9. No Drive or Supabase credential appears in code, schema, logs or fixtures.
-10. Tests, staging migration and standard build pass before M2B credential/configuration gate.
+Until then the system remains Draft PR / staging only.
