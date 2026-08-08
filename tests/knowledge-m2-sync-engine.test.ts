@@ -49,6 +49,46 @@ describe('M2 sync engine', () => {
     });
   });
 
+  it('reads content only for explicitly allowlisted files during a controlled crawl', async () => {
+    const currentRoot = '1yoB3Cx2h8ysVaFmk5WnpogIAHl0qnCbC';
+    const allowed: DriveApiFile = {
+      id: 'allowed-current-doc',
+      name: 'Allowed.md',
+      mimeType: 'text/markdown',
+      parents: [currentRoot],
+    };
+    const outsideBatch: DriveApiFile = {
+      id: 'other-current-doc',
+      name: 'Other.md',
+      mimeType: 'text/markdown',
+      parents: [currentRoot],
+    };
+    const client = {
+      listChildren: vi.fn(async (folderId: string) => ({
+        items: folderId === currentRoot ? [allowed, outsideBatch] : [],
+      })),
+      getStartPageToken: vi.fn(async () => 'start-controlled'),
+      readText: vi.fn(async (file: DriveApiFile) => `# ${file.name}\n\nAllowed truth.`),
+      hasUnresolvedSuggestions: vi.fn(async () => false),
+    } as unknown as GoogleDriveReadClient;
+    const repository = makeRepository();
+
+    const result = await runInitialDriveCrawl({
+      client,
+      repository,
+      connectorKey: 'm2b_controlled',
+      allowedFileIds: ['allowed-current-doc'],
+    });
+
+    expect(result.ingested).toBe(1);
+    expect(result.ignoredByAllowlist).toBe(1);
+    expect(client.readText).toHaveBeenCalledTimes(1);
+    expect(repository.ingestContent).toHaveBeenCalledTimes(1);
+    expect(repository.ingestContent).toHaveBeenCalledWith(
+      expect.objectContaining({ canonicalFileId: 'allowed-current-doc' })
+    );
+  });
+
   it('purges a removed Drive change and advances the checkpoint only after the page is processed', async () => {
     const client = {
       listChanges: vi.fn(async () => ({
@@ -68,6 +108,31 @@ describe('M2 sync engine', () => {
       changePageToken: 'stable-3',
       kind: 'delta',
     }));
+  });
+
+  it('ignores out-of-batch delta removals when a controlled allowlist is active', async () => {
+    const client = {
+      listChanges: vi.fn(async () => ({
+        items: [
+          { fileId: 'allowed-file', removed: true },
+          { fileId: 'outside-batch', removed: true },
+        ],
+        newStartPageToken: 'stable-controlled',
+      })),
+    } as unknown as GoogleDriveReadClient;
+    const repository = makeRepository();
+
+    const result = await runDriveDeltaSync({
+      client,
+      repository,
+      startPageToken: 'stable-2',
+      allowedFileIds: new Set(['allowed-file']),
+    });
+
+    expect(result.summary.purged).toBe(1);
+    expect(result.summary.ignoredByAllowlist).toBe(1);
+    expect(repository.purgeByDriveFileId).toHaveBeenCalledTimes(1);
+    expect(repository.purgeByDriveFileId).toHaveBeenCalledWith('allowed-file', 'REMOVED_OR_PERMISSION_LOST');
   });
 
   it('fails closed when a delta page does not return a new stable start token', async () => {
