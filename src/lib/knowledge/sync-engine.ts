@@ -1,5 +1,5 @@
 import { GOOGLE_DOC_MIME, GOOGLE_FOLDER_MIME, planDriveSync, type DriveFileSnapshot } from './drive-sync';
-import { ESSENCE_DRIVE_ROOTS, getDriveRootPolicy } from './drive-root-map';
+import { ESSENCE_DRIVE_ROOT_ID, ESSENCE_DRIVE_ROOTS, getDriveRootPolicy } from './drive-root-map';
 import { GOOGLE_SHORTCUT_MIME, type DriveApiFile, type DriveApiChange, GoogleDriveReadClient } from './google-drive-client';
 import { normalizeKnowledgeText, type NormalizedKnowledgeUnit } from './normalize';
 
@@ -200,7 +200,7 @@ export async function runInitialDriveCrawl(input: {
   const changePageToken = await input.client.getStartPageToken();
   await input.repository.saveCheckpoint({
     connectorKey: input.connectorKey ?? 'google_drive_essence_library',
-    rootFolderId: ESSENCE_DRIVE_ROOTS[0].folderId,
+    rootFolderId: ESSENCE_DRIVE_ROOT_ID,
     changePageToken,
     healthState: 'healthy',
     kind: 'full_reconcile',
@@ -247,7 +247,7 @@ export async function runDriveDeltaSync(input: {
   if (!newStartPageToken) throw new Error('GOOGLE_DRIVE_NEW_START_TOKEN_MISSING');
   await input.repository.saveCheckpoint({
     connectorKey: input.connectorKey ?? 'google_drive_essence_library',
-    rootFolderId: ESSENCE_DRIVE_ROOTS[0].folderId,
+    rootFolderId: ESSENCE_DRIVE_ROOT_ID,
     changePageToken: newStartPageToken,
     healthState: 'healthy',
     kind: 'delta',
