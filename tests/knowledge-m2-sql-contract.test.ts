@@ -26,13 +26,13 @@ describe('ESSENCE AI Knowledge Backend M2 SQL contract', () => {
     expect(sql).toMatch(/knowledge_removed_time/i);
   });
 
-  it('adds simple + unaccent lexical search, not vector infrastructure', () => {
+  it('adds simple + unaccent lexical search, not pgvector infrastructure', () => {
     expect(sql).toMatch(/create extension if not exists unaccent/i);
     expect(sql).toMatch(/search_document tsvector/i);
     expect(sql).toMatch(/to_tsvector\(\s*'simple'/i);
     expect(sql).toMatch(/extensions\.unaccent/i);
     expect(sql).toMatch(/using gin \(search_document\)/i);
-    expect(sql).not.toMatch(/vector\s*\(/i);
+    expect(sql).not.toMatch(/\bvector\s*\(/i);
     expect(sql).not.toMatch(/hnsw|ivfflat/i);
   });
 
