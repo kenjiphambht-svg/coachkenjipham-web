@@ -48,7 +48,7 @@ function containsSuggestionMarker(value: unknown): boolean {
       key === 'suggestedNamedStylesChanges' ||
       key === 'suggestedTableCellStyleChanges'
     ) {
-      if (Array.isArray(child) ? child.length > 0 : child && Object.keys(child as object).length > 0) {
+      if (Array.isArray(child) ? child.length > 0 : Boolean(child && Object.keys(child as object).length > 0)) {
         return true;
       }
     }
@@ -144,7 +144,7 @@ export class GoogleDriveReadClient {
 
   async hasUnresolvedSuggestions(documentId: string): Promise<boolean> {
     const params = new URLSearchParams({
-      suggestionsViewMode: 'PREVIEW_WITHOUT_SUGGESTIONS',
+      suggestionsViewMode: 'SUGGESTIONS_INLINE',
     });
     const document = await (
       await this.request(`${DOCS_API}/documents/${encodeURIComponent(documentId)}?${params.toString()}`)
