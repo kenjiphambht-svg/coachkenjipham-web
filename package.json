@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "vitest run tests/knowledge-foundation.test.ts tests/knowledge-sql-contract.test.ts tests/knowledge-m2-sync-retrieval.test.ts tests/knowledge-m2-sql-contract.test.ts tests/google-drive-read-client.test.ts tests/knowledge-m2-sync-engine.test.ts && next build",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
@@ -55,6 +55,7 @@
     "react-hook-form": "^7.54.2",
     "react-resizable-panels": "^2.1.7",
     "tailwind-merge": "^2.6.0",
+    "tailwindcss": "^3.4.1",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.2",
     "zod": "^4.4.3"
