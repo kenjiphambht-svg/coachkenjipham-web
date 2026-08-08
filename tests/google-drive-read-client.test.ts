@@ -47,6 +47,60 @@ describe('GoogleDriveReadClient', () => {
     expect(result.newStartPageToken).toBe('next-stable-token');
   });
 
+  it('inspects Google Docs in inline-suggestions mode before canonical ingestion', async () => {
+    let requested = '';
+    const client = new GoogleDriveReadClient(
+      async () => 'token',
+      (async (input) => {
+        requested = String(input);
+        return jsonResponse({
+          documentId: 'doc-1',
+          body: {
+            content: [
+              {
+                paragraph: {
+                  elements: [{ textRun: { content: 'proposed', suggestedInsertionIds: ['suggestion-1'] } }],
+                },
+              },
+            ],
+          },
+        });
+      }) as typeof fetch
+    );
+
+    await expect(client.hasUnresolvedSuggestions('doc-1')).resolves.toBe(true);
+    expect(requested).toContain('docs.googleapis.com/v1/documents/doc-1');
+    expect(requested).toContain('suggestionsViewMode=SUGGESTIONS_INLINE');
+  });
+
+  it('returns false when a Google Doc contains no suggestion markers', async () => {
+    const client = new GoogleDriveReadClient(
+      async () => 'token',
+      (async () => jsonResponse({ body: { content: [{ paragraph: { elements: [] } }] } })) as typeof fetch
+    );
+    await expect(client.hasUnresolvedSuggestions('doc-clean')).resolves.toBe(false);
+  });
+
+  it('resolves Drive shortcuts to the target file before content decisions', async () => {
+    let requested = '';
+    const client = new GoogleDriveReadClient(
+      async () => 'token',
+      (async (input) => {
+        requested = String(input);
+        return jsonResponse({ id: 'target-1', name: 'Target', mimeType: 'text/plain', parents: ['root-1'] });
+      }) as typeof fetch
+    );
+
+    const target = await client.resolveShortcut({
+      id: 'shortcut-1',
+      name: 'Shortcut',
+      mimeType: 'application/vnd.google-apps.shortcut',
+      shortcutDetails: { targetId: 'target-1', targetMimeType: 'text/plain' },
+    });
+    expect(target.id).toBe('target-1');
+    expect(requested).toContain('/files/target-1');
+  });
+
   it('exports Google Docs as plain text', async () => {
     let requested = '';
     const client = new GoogleDriveReadClient(
