@@ -27,6 +27,8 @@ export interface KnowledgeSyncRepository {
   }): Promise<void>;
 }
 
+export type SyncFileAllowlist = readonly string[] | ReadonlySet<string>;
+
 export type SyncRunSummary = {
   discovered: number;
   ingested: number;
@@ -34,10 +36,24 @@ export type SyncRunSummary = {
   quarantined: number;
   purged: number;
   ignoredFolders: number;
+  ignoredByAllowlist: number;
 };
 
 function emptySummary(): SyncRunSummary {
-  return { discovered: 0, ingested: 0, metadataOnly: 0, quarantined: 0, purged: 0, ignoredFolders: 0 };
+  return {
+    discovered: 0,
+    ingested: 0,
+    metadataOnly: 0,
+    quarantined: 0,
+    purged: 0,
+    ignoredFolders: 0,
+    ignoredByAllowlist: 0,
+  };
+}
+
+function normalizeAllowlist(input?: SyncFileAllowlist): ReadonlySet<string> | undefined {
+  if (!input) return undefined;
+  return new Set(Array.isArray(input) ? input : [...input]);
 }
 
 function joinPath(parentPath: string, name: string): string {
@@ -50,7 +66,8 @@ async function resolveAncestorIds(client: GoogleDriveReadClient, file: DriveApiF
   const visited = new Set<string>();
 
   while (queue.length > 0) {
-    const parentId = queue.shift()!;
+    const parentId = queue.shift();
+    if (!parentId) break;
     if (visited.has(parentId)) continue;
     visited.add(parentId);
     ancestors.push(parentId);
@@ -122,8 +139,14 @@ async function applyPreparedFile(
   client: GoogleDriveReadClient,
   repository: KnowledgeSyncRepository,
   prepared: Awaited<ReturnType<typeof prepareFile>>,
-  summary: SyncRunSummary
+  summary: SyncRunSummary,
+  allowedFileIds?: ReadonlySet<string>
 ): Promise<void> {
+  if (allowedFileIds && !allowedFileIds.has(prepared.canonicalFileId)) {
+    summary.ignoredByAllowlist += 1;
+    return;
+  }
+
   summary.discovered += 1;
   const decision = planDriveSync(prepared.snapshot);
   const mutation: SyncSourceMutation = {
@@ -164,8 +187,10 @@ export async function runInitialDriveCrawl(input: {
   client: GoogleDriveReadClient;
   repository: KnowledgeSyncRepository;
   connectorKey?: string;
+  allowedFileIds?: SyncFileAllowlist;
 }): Promise<SyncRunSummary> {
   const summary = emptySummary();
+  const allowedFileIds = normalizeAllowlist(input.allowedFileIds);
 
   for (const root of ESSENCE_DRIVE_ROOTS) {
     if (root.crawl === 'deny') continue;
@@ -174,7 +199,8 @@ export async function runInitialDriveCrawl(input: {
     ];
 
     while (queue.length > 0) {
-      const current = queue.shift()!;
+      const current = queue.shift();
+      if (!current) break;
       let pageToken: string | undefined;
       do {
         const page = await input.client.listChildren(current.folderId, pageToken);
@@ -189,8 +215,14 @@ export async function runInitialDriveCrawl(input: {
             summary.ignoredFolders += 1;
             continue;
           }
+
+          if (allowedFileIds && file.mimeType !== GOOGLE_SHORTCUT_MIME && !allowedFileIds.has(file.id)) {
+            summary.ignoredByAllowlist += 1;
+            continue;
+          }
+
           const prepared = await prepareFile(input.client, file, current.ancestors, path);
-          await applyPreparedFile(input.client, input.repository, prepared, summary);
+          await applyPreparedFile(input.client, input.repository, prepared, summary, allowedFileIds);
         }
         pageToken = page.nextPageToken;
       } while (pageToken);
@@ -212,17 +244,27 @@ async function processChange(
   client: GoogleDriveReadClient,
   repository: KnowledgeSyncRepository,
   change: DriveApiChange,
-  summary: SyncRunSummary
+  summary: SyncRunSummary,
+  allowedFileIds?: ReadonlySet<string>
 ): Promise<void> {
   if (change.removed || !change.file) {
+    if (allowedFileIds && !allowedFileIds.has(change.fileId)) {
+      summary.ignoredByAllowlist += 1;
+      return;
+    }
     await repository.purgeByDriveFileId(change.fileId, 'REMOVED_OR_PERMISSION_LOST');
     summary.purged += 1;
     return;
   }
 
+  if (allowedFileIds && change.file.mimeType !== GOOGLE_SHORTCUT_MIME && !allowedFileIds.has(change.file.id)) {
+    summary.ignoredByAllowlist += 1;
+    return;
+  }
+
   const ancestors = await resolveAncestorIds(client, change.file);
   const prepared = await prepareFile(client, change.file, ancestors, change.file.name);
-  await applyPreparedFile(client, repository, prepared, summary);
+  await applyPreparedFile(client, repository, prepared, summary, allowedFileIds);
 }
 
 export async function runDriveDeltaSync(input: {
@@ -230,19 +272,21 @@ export async function runDriveDeltaSync(input: {
   repository: KnowledgeSyncRepository;
   startPageToken: string;
   connectorKey?: string;
+  allowedFileIds?: SyncFileAllowlist;
 }): Promise<{ summary: SyncRunSummary; newStartPageToken: string }> {
   const summary = emptySummary();
+  const allowedFileIds = normalizeAllowlist(input.allowedFileIds);
   let pageToken: string | undefined = input.startPageToken;
   let newStartPageToken: string | undefined;
 
-  do {
-    const page = await input.client.listChanges(pageToken!);
+  while (pageToken) {
+    const page = await input.client.listChanges(pageToken);
     for (const change of page.items) {
-      await processChange(input.client, input.repository, change, summary);
+      await processChange(input.client, input.repository, change, summary, allowedFileIds);
     }
     if (page.newStartPageToken) newStartPageToken = page.newStartPageToken;
     pageToken = page.nextPageToken;
-  } while (pageToken);
+  }
 
   if (!newStartPageToken) throw new Error('GOOGLE_DRIVE_NEW_START_TOKEN_MISSING');
   await input.repository.saveCheckpoint({
