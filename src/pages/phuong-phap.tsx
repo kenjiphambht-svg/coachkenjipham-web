@@ -156,6 +156,10 @@ export default function PhuongPhapPage() {
               <EssenceDisplay as="h1">
                 Có những chuyện mình biết rất rõ — mà vẫn cứ lặp lại.
               </EssenceDisplay>
+              <div
+                aria-hidden="true"
+                className={`${styles.mobileAtmosphereBand} ${styles.mobileHeroAtmosphere}`}
+              />
 
               <div className="mt-12 space-y-6 md:mt-16">
                 <EssenceBody as="p">
@@ -310,6 +314,10 @@ export default function PhuongPhapPage() {
                 <EssenceAnchor as="h2" className="max-w-[480px]">
                   Chill với cảm xúc
                 </EssenceAnchor>
+                <div
+                  aria-hidden="true"
+                  className={`${styles.mobileAtmosphereBand} ${styles.mobileChillAtmosphere}`}
+                />
               </div>
 
               <div
@@ -465,6 +473,10 @@ export default function PhuongPhapPage() {
                   03
                 </EssenceUtility>
                 <EssenceAnchor as="h2">Hiện thực ước mơ</EssenceAnchor>
+                <div
+                  aria-hidden="true"
+                  className={`${styles.mobileAtmosphereBand} ${styles.mobileRealityAtmosphere}`}
+                />
                 <EssenceLeadIn as="p" className="mt-12 md:mt-16">
                   Câu trả lời chỉ thật sự có ý nghĩa khi nó bắt đầu hiện ra trong cách mình sống.
                 </EssenceLeadIn>

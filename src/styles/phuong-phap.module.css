@@ -31,8 +31,8 @@
 
 .heroSurface::before {
   top: 10%;
-  right: max(-10vw, -10rem);
-  width: min(46vw, 42rem);
+  right: max(1.5rem, calc((100vw - 1180px) / 2 - 2rem));
+  width: min(45vw, 40rem);
   height: min(68vw, 48rem);
   opacity: 0.76;
   border-left: 1px solid var(--essence-border-light-2026);
@@ -82,9 +82,9 @@
 .chillAtmosphere::before {
   top: 8%;
   bottom: 7%;
-  left: max(-8vw, -7rem);
-  width: min(46vw, 39rem);
-  opacity: 0.58;
+  left: max(-4vw, -3rem);
+  width: min(51vw, 44rem);
+  opacity: 0.62;
   border-right: 1px solid var(--essence-border-light-2026);
   background-image:
     linear-gradient(
@@ -127,9 +127,9 @@
 .realityAtmosphere::before {
   top: 7%;
   bottom: 6%;
-  left: max(-8vw, -7rem);
-  width: min(48vw, 42rem);
-  opacity: 0.58;
+  left: max(-4vw, -3rem);
+  width: min(51vw, 44rem);
+  opacity: 0.62;
   background-image:
     linear-gradient(
       90deg,
@@ -210,37 +210,80 @@
   background: color-mix(in srgb, var(--essence-text-primary-2026) 12%, transparent);
 }
 
+.mobileAtmosphereBand {
+  display: none;
+}
+
 @media (max-width: 767px) {
   .heroSurface::before {
-    top: auto;
-    right: -34%;
-    bottom: -14rem;
-    width: 120%;
-    height: 29rem;
-    opacity: 0.48;
+    display: none;
   }
 
   .heroSurface::after {
-    top: 54%;
-    left: 0;
-    background: linear-gradient(180deg, transparent 0%, var(--essence-ivory-2026) 76%);
+    display: none;
   }
 
   .chillAtmosphere::before,
   .realityAtmosphere::before {
-    top: auto;
-    right: -24%;
-    bottom: -9rem;
-    left: auto;
-    width: 125%;
-    height: 25rem;
-    opacity: 0.4;
-    border: 0;
+    display: none;
   }
 
   .chillAtmosphere::after,
   .realityAtmosphere::after {
     display: none;
+  }
+
+  .mobileAtmosphereBand {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .mobileHeroAtmosphere {
+    height: 9rem;
+    margin-top: 2rem;
+    background-image:
+      linear-gradient(
+        90deg,
+        var(--essence-ivory-2026) 0%,
+        color-mix(in srgb, var(--essence-ivory-2026) 30%, transparent) 22%,
+        transparent 78%,
+        var(--essence-cream-2026) 100%
+      ),
+      var(--phuong-phap-hero-field-image);
+    background-position: center, right 54%;
+  }
+
+  .mobileChillAtmosphere {
+    height: 7rem;
+    margin-top: 2rem;
+    background-image:
+      linear-gradient(
+        90deg,
+        var(--essence-cream-2026) 0%,
+        color-mix(in srgb, var(--essence-cream-2026) 24%, transparent) 24%,
+        transparent 76%,
+        var(--essence-cream-2026) 100%
+      ),
+      var(--phuong-phap-chill-field-image);
+    background-position: center, right 58%;
+  }
+
+  .mobileRealityAtmosphere {
+    height: 9rem;
+    margin-top: 2rem;
+    background-image:
+      linear-gradient(
+        90deg,
+        var(--essence-cream-2026) 0%,
+        color-mix(in srgb, var(--essence-cream-2026) 20%, transparent) 22%,
+        transparent 78%,
+        var(--essence-ivory-2026) 100%
+      ),
+      var(--phuong-phap-reality-field-image);
+    background-position: center, right 48%;
   }
 }
 
