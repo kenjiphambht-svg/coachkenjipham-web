@@ -12,7 +12,7 @@
 **Last verified:** 733b19900d3f8c471fb90cbd6f17bc4acf8b1332
 **Review trigger:** Founder Decision, status/replacement change, or 90 days.
 
-This registry records authority-bearing, default-reading, imported-canonical, machine-instruction, historical-evidence, external-dependency and planned current-truth sources. It contains **69 entries**.
+This registry records authority-bearing, default-reading, imported-canonical, machine-instruction, historical-evidence, external-dependency and planned current-truth sources. It contains **70 entries**.
 
 ## Verification metadata convention
 
@@ -27,6 +27,7 @@ This registry records authority-bearing, default-reading, imported-canonical, ma
 
 | Path | Title / purpose | Authority / status / owner | Decision scope / non-decision scope | Still valid / outdated | Replacement | Next review / notes |
 |---|---|---|---|---|---|---|
+| docs/governance/FD_2026_014_016_017_ALIGNMENT.md | repository alignment to current Drive Founder Decisions | L2 / Active alignment record / Kenji | implementation guidance for FD-2026-014/016/017 / no parallel Founder authority | FCP disambiguation, protected on-demand read boundary, 12 Projects, semantic Drive sync / — | canonical Founder Decision Register on ESSENCE Drive | every affected Founder Decision |
 | docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md | hierarchy and protocol | L0 / Active / Kenji | Founder-approved constitution / no product ruling | hierarchy / — | — | Founder Decision only |
 | docs/governance/DOCUMENT_REGISTRY.md | registry | L2 / Active / Kenji | status/provenance / no content ruling | model / — | — | trigger + 90d |
 | docs/governance/CONFLICT_REGISTER.md | L2 operating container | L2 / Active / Kenji | conflict record / no runtime fix | closed rulings are L0 / — | — | immediate |

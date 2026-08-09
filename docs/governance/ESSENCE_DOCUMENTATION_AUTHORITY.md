@@ -26,6 +26,8 @@ This Founder-approved Governance Constitution governs how Essence documentation 
 
 The Founder-approved hierarchy and conflict precedence are L0. Higher level wins. A newer date does not win merely because it is newer.
 
+The canonical Founder Decision Register on ESSENCE Drive is the Founder-authority source. Repository governance/alignment records may preserve implementation guidance and evidence, but they do not create a parallel Founder authority. When repository wording conflicts with a current Drive Founder Decision, the Drive ruling wins and the repository must be reconciled. Dynamic implementation state is different: branch, PR, head SHA, deployment, and runtime claims must always be read live from their owning repository or service rather than inferred from a Drive snapshot.
+
 ## Constitution protection
 
 No L1–L5 document may change this constitution, its hierarchy, conflict precedence or Founder Decision Protocol. Governance operating records may be L2, but any change to this constitution requires a new Founder Decision from Kenji.
@@ -78,6 +80,8 @@ Active documents record owner, decision scope, non-decision scope, last_verified
 ## External documentation boundary
 
 External files need Kenji approval, provenance, authority, status and a registry row. Local availability or a newer timestamp does not establish authority. G0 imports only the two canonical sources expressly approved by Kenji.
+
+The canonical ESSENCE Drive Founder Decision Register is not an ordinary external reference under this intake rule: it is the current L0 Founder-authority source. Drive receives semantic milestone updates, not a mirror of routine commits or head-SHA churn; the repository remains the live implementation ledger.
 
 ## Required reading
 
