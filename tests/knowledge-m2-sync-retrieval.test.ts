@@ -38,7 +38,7 @@ describe('M2 Drive root policy', () => {
     expect(ESSENCE_DRIVE_ROOTS).toHaveLength(7);
   });
 
-  it('hard denies the 99 private root', () => {
+  it('keeps 99 private out of background Machine Library sync', () => {
     expect(getDriveRootPolicy(PRIVATE_ID)?.crawl).toBe('deny');
   });
 
