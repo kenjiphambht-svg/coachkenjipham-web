@@ -63,6 +63,23 @@ export function EssenceBody({ children, className, as: As = "p" }: Common & { as
   );
 }
 
+export function EssenceLeadIn({
+  children,
+  className,
+  as: As = "p",
+}: Common & { as?: ElementType }) {
+  return (
+    <As
+      className={cn(
+        "max-w-[680px] font-sans text-[17px] font-semibold leading-[1.7] tracking-[-0.005em] text-e26-text [text-wrap:pretty] md:text-[19px] md:leading-[1.72]",
+        className
+      )}
+    >
+      {children}
+    </As>
+  );
+}
+
 export function EssenceAccent({ children, className, as: As = "p" }: Common & { as?: ElementType }) {
   return (
     <As

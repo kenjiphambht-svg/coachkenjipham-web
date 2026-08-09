@@ -15,6 +15,10 @@ paired cleanup PR (#148) for the runtime changes this ruling authorizes.
 Method hierarchy. C-20 preserves the six-point map internally while
 overriding any requirement to publish it as a second framework on this route.
 
+**09/08/2026 copy-source update:** Founder-supplied public copy v1.6 FINAL
+supersedes v1.3 for `/phuong-phap`. This changes no hierarchy ruling in C-20;
+the only public Method remains Chill → Thách thức → Hiện thực.
+
 **07/08/2026 correction (Founder review, second pass):** this doc's first
 07/08/2026 pass had assigned **C-17** to a method/brand framework
 preservation ruling and **C-18** to Homepage route retirement — both

@@ -2,6 +2,56 @@
   background: var(--essence-ivory-2026);
 }
 
+.heroSurface {
+  background:
+    radial-gradient(circle at 78% 24%, var(--essence-white-2026) 0, transparent 34%),
+    linear-gradient(155deg, var(--essence-ivory-2026) 0%, var(--essence-cream-2026) 100%);
+}
+
+.openingFlow {
+  background:
+    radial-gradient(circle at 18% 42%, var(--essence-white-2026) 0, transparent 28%),
+    linear-gradient(180deg, var(--essence-cream-2026) 0%, var(--essence-ivory-2026) 54%, var(--essence-cream-2026) 100%);
+}
+
+.movementFlow {
+  background:
+    radial-gradient(circle at 85% 30%, var(--essence-ivory-2026) 0, transparent 26%),
+    radial-gradient(circle at 12% 72%, var(--essence-white-2026) 0, transparent 24%),
+    var(--essence-cream-2026);
+}
+
+.movementScene {
+  position: relative;
+}
+
+.movementScene + .movementScene::before {
+  position: absolute;
+  top: 0;
+  right: max(1.5rem, calc((100vw - 1120px) / 2));
+  left: max(1.5rem, calc((100vw - 1120px) / 2));
+  height: 1px;
+  content: "";
+  background: var(--essence-border-light-2026);
+}
+
+.signalSurface {
+  background:
+    radial-gradient(circle at 50% 50%, var(--essence-white-2026) 0, var(--essence-ivory-2026) 48%, var(--essence-cream-2026) 100%);
+}
+
+.boundarySurface {
+  background:
+    radial-gradient(circle at 18% 24%, var(--essence-cream-2026) 0, transparent 34%),
+    linear-gradient(145deg, var(--essence-cream-deep-2026), var(--essence-cream-2026));
+}
+
+.closingFlow {
+  background:
+    radial-gradient(circle at 76% 28%, var(--essence-white-2026) 0, transparent 25%),
+    linear-gradient(180deg, var(--essence-ivory-2026) 0%, var(--essence-cream-2026) 100%);
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(12px);

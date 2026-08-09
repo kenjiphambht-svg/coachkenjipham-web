@@ -8,6 +8,10 @@
 **Phạm vi:** Public hierarchy, copy authority and implementation boundary for `/phuong-phap`
 **Non-decision scope:** Other routes, internal product architecture, offer state, payment, backend, robots, sitemap, indexing, Production deploy or merge.
 
+**09/08/2026 Founder update:** `PHUONG_PHAP_Public_Editorial_Copy_v1.6_FINAL.md`
+supersedes v1.3 as the locked public-copy source for this route. The public
+Method hierarchy and every other ruling in this decision remain unchanged.
+
 ## 1. Current ruling
 
 ESSENCE retains this six-point map as its **internal orientation architecture**:
@@ -42,8 +46,8 @@ No AI, engineer or later implementation pass may restore a public six-point sect
 
 ## 3. Copy and implementation authority
 
-- Public copy source of truth: Google Doc `/phuong-phap — Public Editorial Copy v1.3`, document ID `1stcPSwjyFgFoHTMVN4oKMUwko_1oExcMdWQXK9pKMcg`.
-- Copy is locked for the rhythm-prototype implementation pass. Layout must adapt to copy; copy must not be shortened, paraphrased or rewritten to fit layout.
+- Public copy source of truth: task-provided `PHUONG_PHAP_Public_Editorial_Copy_v1.6_FINAL.md`, approved and supplied directly by the Founder on 09/08/2026. It supersedes the earlier Google Doc v1.3 copy source.
+- Copy is locked for the final copy + rhythm update. Layout must adapt to copy; copy must not be shortened, paraphrased, rewritten or supplemented to fit layout.
 - The page remains `noindex, nofollow`; this decision does not authorize robots, sitemap, canonical-policy or Search Console changes.
 - The page is a method/trust node with contextual editorial links, not a hard-conversion landing page.
 - Final image production remains outside this pass. Only image-ready neutral geometry is authorized.
@@ -59,6 +63,8 @@ The implementation must preserve one Signal Moment and must not create a competi
 ## 5. Source and provenance
 
 - Founder implementation brief: `ESSENCE WEBSITE — /phuong-phap RHYTHM PROTOTYPE IMPLEMENTATION PASS`, supplied directly on 08/08/2026.
-- Approved public copy: Google Doc `/phuong-phap — Public Editorial Copy v1.3`, read directly before implementation.
+- Founder update brief: `ESSENCE WEBSITE — /phuong-phap FINAL COPY + RHYTHM UPDATE`, supplied directly on 09/08/2026.
+- Approved public copy: `PHUONG_PHAP_Public_Editorial_Copy_v1.6_FINAL.md`, supplied directly on 09/08/2026; supersedes Google Doc v1.3 for public body copy.
+- Narrative/rhythm implementation guidance: task-provided `ESSENCE_PAGE_NARRATIVE_COMPRESSION_SKILL_v1.0.md`; subordinate to the locked v1.6 copy and not authority to rewrite it.
 
 **— HẾT QUYẾT ĐỊNH —**
