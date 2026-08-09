@@ -1,8 +1,8 @@
 # M2 — Drive Sync & Retrieval Foundation
 
-Date: 2026-08-08  
-Status: Founder-approved implementation — Draft PR / staging only — governance patch 2026-08-09  
-Branch: `feat/m2-drive-sync-retrieval-foundation`  
+Date: 2026-08-08
+Status: Founder-approved implementation — Draft PR / staging only — governance patch 2026-08-09
+Replacement branch: `agent/m2-drive-sync-mainline`
 Base: `feat/m1-machine-library-foundation` at the stack baseline; current base/head must be queried live before review.
 
 ## Founder approval

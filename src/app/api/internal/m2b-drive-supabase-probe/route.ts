@@ -7,7 +7,7 @@ import { runDriveDeltaSync, runInitialDriveCrawl } from '@/lib/knowledge/sync-en
 
 export const dynamic = 'force-dynamic';
 
-const EXPECTED_BRANCH = 'feat/m2-drive-sync-retrieval-foundation';
+const EXPECTED_BRANCH = 'agent/m2-drive-sync-mainline';
 const CONNECTOR_KEY = 'm2b_supabase_fixture_probe';
 
 function isAllowedRuntime(): boolean {

@@ -9,7 +9,7 @@ import { getEssenceDriveAccessToken } from '@/lib/knowledge/google-drive-service
 
 export const dynamic = 'force-dynamic';
 
-const EXPECTED_BRANCH = 'feat/m2-drive-sync-retrieval-foundation';
+const EXPECTED_BRANCH = 'agent/m2-drive-sync-mainline';
 const READABLE_TEXT_MIMES = new Set([
   GOOGLE_DOC_MIME,
   'text/plain',

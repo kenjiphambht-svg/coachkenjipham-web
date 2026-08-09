@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import type { KnowledgeSyncRpcClient } from './supabase-sync-repository';
 
-const URL_ENV = 'NEXT_PUBLIC_SUPABASE_URL';
+const URL_ENV = 'SUPABASE_URL';
 const SERVICE_ROLE_ENV = 'SUPABASE_SERVICE_ROLE_KEY';
 
 export function createKnowledgeSyncRpcClient(): KnowledgeSyncRpcClient {

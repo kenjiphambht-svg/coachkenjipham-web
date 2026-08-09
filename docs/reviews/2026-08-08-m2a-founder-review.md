@@ -1,8 +1,9 @@
 # M2A — Founder Review Evidence
 
-Date: 2026-08-08  
-Status: READY FOR FOUNDER REVIEW — M2B not opened  
-Branch: `feat/m2-drive-sync-retrieval-foundation`  
+Date: 2026-08-08
+Status: READY FOR FOUNDER REVIEW — M2B not opened
+Historical review branch: `feat/m2-drive-sync-retrieval-foundation`
+Clean replacement branch: `agent/m2-drive-sync-mainline`
 Base: `feat/m1-machine-library-foundation` at `9393f35360c14477b95b6c6d3fcb650c155e35d5`
 
 ## What M2A proves

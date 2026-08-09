@@ -1,6 +1,6 @@
 # M2B — Controlled Staging Probe Evidence
 
-Date: 2026-08-08  
+Date: 2026-08-08
 Status: STAGING EVIDENCE — not production approval
 
 ## Purpose
