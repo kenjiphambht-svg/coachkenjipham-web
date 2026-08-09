@@ -10,33 +10,46 @@ const DERIVED_METADATA_KINDS = new Set([
   'navigation',
 ]);
 
+/**
+ * This policy governs persistent/background Machine Library ingest.
+ *
+ * FD-2026-016 distinction:
+ * - protected/private/child-sensitive sources are NOT copied into the default
+ *   Machine Library or surfaced through default runtime retrieval;
+ * - this is not a statement that Founder/authorized AI may never read them;
+ * - a separate purpose/access-gated on-demand source reader may use the
+ *   canonical source when the task is authorized and auditable.
+ */
 export function resolveKnowledgeIngestPolicy(
   input: KnowledgePolicyInput
 ): KnowledgePolicyDecision {
   if (input.sensitivity === 'child_sensitive') {
     return {
       ingestMode: 'deny',
-      usageMode: 'never',
+      usageMode: 'protected_on_demand',
       runtimeEnabled: false,
-      reasonCode: 'CHILD_SENSITIVE_HARD_DENY',
+      onDemandReadAllowed: true,
+      reasonCode: 'PROTECTED_CHILD_NO_BACKGROUND_INGEST',
     };
   }
 
   if (input.sensitivity === 'private') {
     return {
       ingestMode: 'deny',
-      usageMode: 'never',
+      usageMode: 'protected_on_demand',
       runtimeEnabled: false,
-      reasonCode: 'PRIVATE_HARD_DENY',
+      onDemandReadAllowed: true,
+      reasonCode: 'PROTECTED_PRIVATE_NO_BACKGROUND_INGEST',
     };
   }
 
   if (input.rootZone === '99_private') {
     return {
       ingestMode: 'deny',
-      usageMode: 'never',
+      usageMode: 'protected_on_demand',
       runtimeEnabled: false,
-      reasonCode: 'PRIVATE_ZONE_HARD_DENY',
+      onDemandReadAllowed: true,
+      reasonCode: 'PROTECTED_ZONE_NO_BACKGROUND_INGEST',
     };
   }
 
