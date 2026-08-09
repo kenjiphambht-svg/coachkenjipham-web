@@ -85,7 +85,7 @@ export function resolveRootZoneFromAncestors(
 export function assertAllowedDriveRoot(folderId: string): DriveRootPolicy {
   const root = getDriveRootPolicy(folderId);
   if (!root || root.crawl === 'deny') {
-    throw new Error('DRIVE_ROOT_NOT_ALLOWED_FOR_BACKGROUND_SYNC');
+    throw new Error('DRIVE_ROOT_NOT_ALLOWED');
   }
   return root;
 }
