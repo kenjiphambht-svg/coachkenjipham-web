@@ -8,6 +8,19 @@ create schema if not exists knowledge;
 revoke all on schema knowledge from public, anon, authenticated;
 grant usage on schema knowledge to service_role;
 
+create or replace function knowledge.set_updated_at()
+returns trigger
+language plpgsql
+set search_path = pg_catalog, knowledge
+as $$
+begin
+  new.updated_at = now();
+  return new;
+end;
+$$;
+
+revoke all on function knowledge.set_updated_at() from public, anon, authenticated;
+
 create table knowledge.knowledge_sources (
   id uuid primary key default gen_random_uuid(),
   drive_file_id text not null unique check (char_length(drive_file_id) between 8 and 256),
@@ -155,11 +168,11 @@ comment on table knowledge.knowledge_sync_state is
 
 create trigger knowledge_sources_set_updated_at
   before update on knowledge.knowledge_sources
-  for each row execute function public.set_updated_at();
+  for each row execute function knowledge.set_updated_at();
 
 create trigger knowledge_sync_state_set_updated_at
   before update on knowledge.knowledge_sync_state
-  for each row execute function public.set_updated_at();
+  for each row execute function knowledge.set_updated_at();
 
 alter table knowledge.knowledge_sources enable row level security;
 alter table knowledge.knowledge_sources force row level security;

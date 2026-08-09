@@ -73,6 +73,12 @@ describe('ESSENCE AI Knowledge Backend M1 SQL contract', () => {
     expect(sql).not.toMatch(/api_key|access_token|refresh_token|client_secret|private_key/i);
   });
 
+  it('owns its updated-at trigger helper without depending on an earlier backend migration', () => {
+    expect(sql).toMatch(/create or replace function knowledge\.set_updated_at\(\)/i);
+    expect(sql).toMatch(/execute function knowledge\.set_updated_at\(\)/i);
+    expect(sql).not.toMatch(/execute function public\.set_updated_at\(\)/i);
+  });
+
   it('provides an explicit manual rollback for the isolated M1 schema', () => {
     expect(rollback).toMatch(/drop schema if exists knowledge cascade/i);
   });

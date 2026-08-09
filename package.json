@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "vitest run",
+    "test:m1": "vitest run tests/knowledge-foundation.test.ts tests/knowledge-sql-contract.test.ts"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.2",
@@ -62,6 +64,7 @@
     "eslint-config-next": "^15.2.8",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.10"
   }
 }
