@@ -9,7 +9,13 @@
   overflow: hidden;
   background:
     radial-gradient(circle at 78% 24%, var(--essence-white-2026) 0, transparent 34%),
-    linear-gradient(155deg, var(--essence-ivory-2026) 0%, var(--essence-cream-2026) 100%);
+    linear-gradient(
+      180deg,
+      var(--essence-ivory-2026) 0%,
+      var(--essence-ivory-2026) 58%,
+      var(--essence-cream-2026) calc(100% - 8rem),
+      var(--essence-cream-2026) 100%
+    );
 }
 
 .atmosphereContent {
@@ -18,53 +24,71 @@
 }
 
 .heroSurface::before,
-.heroSurface::after,
 .chillAtmosphere::before,
-.chillAtmosphere::after,
-.realityAtmosphere::before,
-.realityAtmosphere::after {
+.realityAtmosphere::before {
   position: absolute;
   z-index: 0;
   content: "";
   pointer-events: none;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
 }
 
 .heroSurface::before {
-  top: 10%;
-  right: max(1.5rem, calc((100vw - 1180px) / 2 - 2rem));
-  width: min(45vw, 40rem);
-  height: min(68vw, 48rem);
-  opacity: 0.76;
-  border-left: 1px solid var(--essence-border-light-2026);
-  background-image:
-    linear-gradient(90deg, var(--essence-ivory-2026) 0%, transparent 38%),
-    var(--phuong-phap-hero-field-image),
-    radial-gradient(ellipse 88% 68% at 74% 22%, var(--essence-white-2026) 0%, transparent 66%),
-    linear-gradient(148deg, var(--essence-cream-deep-2026) 0%, transparent 58%);
-  background-position: center, right center, center, center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.heroSurface::after {
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 38%;
-  background: linear-gradient(90deg, var(--essence-ivory-2026) 0%, transparent 52%);
+  top: -9rem;
+  right: max(-12vw, -11rem);
+  width: min(78vw, 96rem);
+  height: min(88vw, 72rem);
+  opacity: 0.7;
+  background-image: var(--phuong-phap-hero-field-image);
+  background-position: center center;
+  -webkit-mask-image: radial-gradient(
+    ellipse 52% 46% at 72% 42%,
+    #000 0%,
+    #000 30%,
+    rgba(0, 0, 0, 0.82) 44%,
+    rgba(0, 0, 0, 0.34) 62%,
+    transparent 78%
+  );
+  mask-image: radial-gradient(
+    ellipse 52% 46% at 72% 42%,
+    #000 0%,
+    #000 30%,
+    rgba(0, 0, 0, 0.82) 44%,
+    rgba(0, 0, 0, 0.34) 62%,
+    transparent 78%
+  );
 }
 
 .openingFlow {
   background:
     radial-gradient(circle at 18% 42%, var(--essence-white-2026) 0, transparent 28%),
-    linear-gradient(180deg, var(--essence-cream-2026) 0%, var(--essence-ivory-2026) 54%, var(--essence-cream-2026) 100%);
+    linear-gradient(
+      180deg,
+      var(--essence-cream-2026) 0,
+      var(--essence-cream-2026) 8rem,
+      var(--essence-ivory-2026) 18rem,
+      var(--essence-ivory-2026) calc(100% - 18rem),
+      var(--essence-cream-2026) calc(100% - 8rem),
+      var(--essence-cream-2026) 100%
+    );
 }
 
 .movementFlow {
   background:
     radial-gradient(circle at 85% 30%, var(--essence-ivory-2026) 0, transparent 26%),
     radial-gradient(circle at 12% 72%, var(--essence-white-2026) 0, transparent 24%),
-    var(--essence-cream-2026);
+    linear-gradient(
+      180deg,
+      var(--essence-cream-2026) 0,
+      var(--essence-cream-2026) 8rem,
+      color-mix(in srgb, var(--essence-cream-2026) 74%, var(--essence-ivory-2026)) 18rem,
+      color-mix(in srgb, var(--essence-cream-2026) 74%, var(--essence-ivory-2026)) calc(100% - 18rem),
+      var(--essence-cream-2026) calc(100% - 8rem),
+      var(--essence-cream-2026) 100%
+    );
 }
 
 .movementScene {
@@ -80,34 +104,29 @@
 }
 
 .chillAtmosphere::before {
-  top: 8%;
-  bottom: 7%;
-  left: max(-4vw, -3rem);
-  width: min(51vw, 44rem);
-  opacity: 0.62;
-  border-right: 1px solid var(--essence-border-light-2026);
-  background-image:
-    linear-gradient(
-      90deg,
-      var(--essence-cream-2026) 0%,
-      var(--essence-cream-2026) 54%,
-      color-mix(in srgb, var(--essence-cream-2026) 78%, transparent) 74%,
-      transparent 100%
-    ),
-    var(--phuong-phap-chill-field-image),
-    radial-gradient(ellipse 84% 52% at 76% 14%, var(--essence-white-2026) 0%, transparent 70%),
-    linear-gradient(168deg, transparent 0%, color-mix(in srgb, var(--essence-text-primary-2026) 6%, transparent) 100%);
-  background-position: center, left center, center, center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.chillAtmosphere::after {
-  top: 22%;
-  bottom: 20%;
-  left: min(31vw, 26rem);
-  width: 1px;
-  background: color-mix(in srgb, var(--essence-text-primary-2026) 9%, transparent);
+  top: -8rem;
+  left: max(-20vw, -18rem);
+  width: min(88vw, 76rem);
+  height: min(90vw, 72rem);
+  opacity: 0.54;
+  background-image: var(--phuong-phap-chill-field-image);
+  background-position: center center;
+  -webkit-mask-image: radial-gradient(
+    ellipse 48% 46% at 52% 42%,
+    #000 0%,
+    #000 26%,
+    rgba(0, 0, 0, 0.78) 42%,
+    rgba(0, 0, 0, 0.3) 60%,
+    transparent 78%
+  );
+  mask-image: radial-gradient(
+    ellipse 48% 46% at 52% 42%,
+    #000 0%,
+    #000 26%,
+    rgba(0, 0, 0, 0.78) 42%,
+    rgba(0, 0, 0, 0.3) 60%,
+    transparent 78%
+  );
 }
 
 .movementScene + .movementScene:not(.realityAtmosphere)::before {
@@ -125,50 +144,70 @@
 }
 
 .realityAtmosphere::before {
-  top: 7%;
-  bottom: 6%;
-  left: max(-4vw, -3rem);
-  width: min(51vw, 44rem);
-  opacity: 0.62;
-  background-image:
-    linear-gradient(
-      90deg,
-      var(--essence-cream-2026) 0%,
-      var(--essence-cream-2026) 58%,
-      color-mix(in srgb, var(--essence-cream-2026) 78%, transparent) 78%,
-      transparent 100%
-    ),
-    var(--phuong-phap-reality-field-image),
-    radial-gradient(ellipse 90% 72% at 68% 22%, var(--essence-white-2026) 0%, transparent 70%),
-    linear-gradient(135deg, var(--essence-cream-deep-2026) 0%, transparent 64%);
-  background-position: center, left center, center, center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.realityAtmosphere::after {
-  top: 17%;
-  bottom: 13%;
-  left: min(35vw, 31rem);
-  width: 1px;
-  background: var(--essence-border-light-2026);
+  top: -7rem;
+  left: max(-16vw, -14rem);
+  width: min(92vw, 80rem);
+  height: min(94vw, 76rem);
+  opacity: 0.6;
+  background-image: var(--phuong-phap-reality-field-image);
+  background-position: center center;
+  -webkit-mask-image: radial-gradient(
+    ellipse 50% 47% at 50% 42%,
+    #000 0%,
+    #000 30%,
+    rgba(0, 0, 0, 0.82) 46%,
+    rgba(0, 0, 0, 0.32) 64%,
+    transparent 80%
+  );
+  mask-image: radial-gradient(
+    ellipse 50% 47% at 50% 42%,
+    #000 0%,
+    #000 30%,
+    rgba(0, 0, 0, 0.82) 46%,
+    rgba(0, 0, 0, 0.32) 64%,
+    transparent 80%
+  );
 }
 
 .signalSurface {
   background:
-    radial-gradient(circle at 50% 50%, var(--essence-white-2026) 0, var(--essence-ivory-2026) 48%, var(--essence-cream-2026) 100%);
+    radial-gradient(circle at 50% 50%, var(--essence-white-2026) 0, transparent 54%),
+    linear-gradient(
+      180deg,
+      var(--essence-cream-2026) 0,
+      var(--essence-cream-2026) 8rem,
+      var(--essence-ivory-2026) 18rem,
+      var(--essence-ivory-2026) calc(100% - 18rem),
+      var(--essence-cream-2026) calc(100% - 8rem),
+      var(--essence-cream-2026) 100%
+    );
 }
 
 .boundarySurface {
   background:
     radial-gradient(circle at 18% 24%, var(--essence-cream-2026) 0, transparent 34%),
-    linear-gradient(145deg, var(--essence-cream-deep-2026), var(--essence-cream-2026));
+    linear-gradient(
+      180deg,
+      var(--essence-cream-2026) 0,
+      var(--essence-cream-2026) 8rem,
+      var(--essence-cream-deep-2026) 18rem,
+      var(--essence-cream-deep-2026) calc(100% - 18rem),
+      var(--essence-cream-2026) calc(100% - 8rem),
+      var(--essence-cream-2026) 100%
+    );
 }
 
 .closingFlow {
   background:
     radial-gradient(circle at 76% 28%, var(--essence-white-2026) 0, transparent 25%),
-    linear-gradient(180deg, var(--essence-ivory-2026) 0%, var(--essence-cream-2026) 100%);
+    linear-gradient(
+      180deg,
+      var(--essence-cream-2026) 0,
+      var(--essence-cream-2026) 8rem,
+      var(--essence-ivory-2026) 18rem,
+      var(--essence-ivory-2026) 60%,
+      var(--essence-cream-2026) 100%
+    );
 }
 
 .reveal {
@@ -210,80 +249,81 @@
   background: color-mix(in srgb, var(--essence-text-primary-2026) 12%, transparent);
 }
 
-.mobileAtmosphereBand {
-  display: none;
-}
-
 @media (max-width: 767px) {
   .heroSurface::before {
-    display: none;
+    top: 4rem;
+    right: auto;
+    left: -8rem;
+    width: calc(100% + 16rem);
+    height: 34rem;
+    opacity: 0.48;
+    background-position: 74% center;
+    -webkit-mask-image: radial-gradient(
+      ellipse 48% 44% at 68% 40%,
+      #000 0%,
+      #000 24%,
+      rgba(0, 0, 0, 0.72) 42%,
+      rgba(0, 0, 0, 0.26) 60%,
+      transparent 78%
+    );
+    mask-image: radial-gradient(
+      ellipse 48% 44% at 68% 40%,
+      #000 0%,
+      #000 24%,
+      rgba(0, 0, 0, 0.72) 42%,
+      rgba(0, 0, 0, 0.26) 60%,
+      transparent 78%
+    );
   }
 
-  .heroSurface::after {
-    display: none;
+  .chillAtmosphere::before {
+    top: 1rem;
+    left: -8rem;
+    width: calc(100% + 16rem);
+    height: 32rem;
+    opacity: 0.44;
+    background-position: 66% center;
+    -webkit-mask-image: radial-gradient(
+      ellipse 48% 43% at 56% 38%,
+      #000 0%,
+      #000 22%,
+      rgba(0, 0, 0, 0.68) 40%,
+      rgba(0, 0, 0, 0.24) 58%,
+      transparent 76%
+    );
+    mask-image: radial-gradient(
+      ellipse 48% 43% at 56% 38%,
+      #000 0%,
+      #000 22%,
+      rgba(0, 0, 0, 0.68) 40%,
+      rgba(0, 0, 0, 0.24) 58%,
+      transparent 76%
+    );
   }
 
-  .chillAtmosphere::before,
   .realityAtmosphere::before {
-    display: none;
-  }
-
-  .chillAtmosphere::after,
-  .realityAtmosphere::after {
-    display: none;
-  }
-
-  .mobileAtmosphereBand {
-    display: block;
-    width: 100%;
-    overflow: hidden;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
-
-  .mobileHeroAtmosphere {
-    height: 9rem;
-    margin-top: 2rem;
-    background-image:
-      linear-gradient(
-        90deg,
-        var(--essence-ivory-2026) 0%,
-        color-mix(in srgb, var(--essence-ivory-2026) 30%, transparent) 22%,
-        transparent 78%,
-        var(--essence-cream-2026) 100%
-      ),
-      var(--phuong-phap-hero-field-image);
-    background-position: center, right 54%;
-  }
-
-  .mobileChillAtmosphere {
-    height: 7rem;
-    margin-top: 2rem;
-    background-image:
-      linear-gradient(
-        90deg,
-        var(--essence-cream-2026) 0%,
-        color-mix(in srgb, var(--essence-cream-2026) 24%, transparent) 24%,
-        transparent 76%,
-        var(--essence-cream-2026) 100%
-      ),
-      var(--phuong-phap-chill-field-image);
-    background-position: center, right 58%;
-  }
-
-  .mobileRealityAtmosphere {
-    height: 9rem;
-    margin-top: 2rem;
-    background-image:
-      linear-gradient(
-        90deg,
-        var(--essence-cream-2026) 0%,
-        color-mix(in srgb, var(--essence-cream-2026) 20%, transparent) 22%,
-        transparent 78%,
-        var(--essence-ivory-2026) 100%
-      ),
-      var(--phuong-phap-reality-field-image);
-    background-position: center, right 48%;
+    top: 0;
+    left: -9rem;
+    width: calc(100% + 18rem);
+    height: 36rem;
+    opacity: 0.5;
+    background-position: 58% center;
+    -webkit-mask-image: radial-gradient(
+      ellipse 50% 44% at 58% 38%,
+      #000 0%,
+      #000 28%,
+      rgba(0, 0, 0, 0.72) 44%,
+      rgba(0, 0, 0, 0.26) 62%,
+      transparent 78%
+    );
+    mask-image: radial-gradient(
+      ellipse 50% 44% at 58% 38%,
+      #000 0%,
+      #000 28%,
+      rgba(0, 0, 0, 0.72) 44%,
+      rgba(0, 0, 0, 0.26) 62%,
+      transparent 78%
+    );
   }
 }
 
