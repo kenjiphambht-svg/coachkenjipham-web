@@ -6,9 +6,20 @@ export type DriveRootPolicy = {
   folderId: string;
   title: string;
   rootZone: Exclude<KnowledgeRootZone, 'external'>;
+  /** Policy for unattended/background Machine Library synchronization only. */
   crawl: 'metadata_only' | 'content' | 'conditional' | 'deny';
 };
 
+/**
+ * M2 governs unattended/background Machine Library sync, not every possible
+ * authorized source read.
+ *
+ * FD-2026-016: `crawl: 'deny'` for 99 means the background sync identity does
+ * not traverse or persist that zone. It does NOT mean Founder/authorized AI
+ * can never read 99. A separate purpose/access-gated, auditable on-demand
+ * source-reader capability belongs to a later milestone and must not reuse
+ * this background-crawl contract implicitly.
+ */
 export const ESSENCE_DRIVE_ROOTS: readonly DriveRootPolicy[] = [
   {
     folderId: '19W24RzG0ZUQy2kUrwiaUqLOJwR8PjgYJ',
@@ -70,10 +81,11 @@ export function resolveRootZoneFromAncestors(
   return null;
 }
 
+/** Assert that a root may participate in M2 background sync. */
 export function assertAllowedDriveRoot(folderId: string): DriveRootPolicy {
   const root = getDriveRootPolicy(folderId);
   if (!root || root.crawl === 'deny') {
-    throw new Error('DRIVE_ROOT_NOT_ALLOWED');
+    throw new Error('DRIVE_ROOT_NOT_ALLOWED_FOR_BACKGROUND_SYNC');
   }
   return root;
 }
