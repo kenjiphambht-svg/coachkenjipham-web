@@ -53,6 +53,7 @@ export type KnowledgeUsageMode =
   | 'supporting'
   | 'historical'
   | 'governance'
+  | 'protected_on_demand'
   | 'never';
 
 export type KnowledgeIngestMode =
@@ -71,13 +72,18 @@ export type KnowledgePolicyInput = {
 };
 
 export type KnowledgePolicyDecision = {
+  /** Persistent/background Machine Library ingest policy. */
   ingestMode: KnowledgeIngestMode;
+  /** Permitted knowledge-use class. `protected_on_demand` is not background retrieval. */
   usageMode: KnowledgeUsageMode;
+  /** Whether the persisted Machine Library may surface this source in default runtime retrieval. */
   runtimeEnabled: boolean;
+  /** Whether a separate purpose/access-gated source reader may use the canonical source on demand. */
+  onDemandReadAllowed?: boolean;
   reasonCode:
-    | 'PRIVATE_HARD_DENY'
-    | 'CHILD_SENSITIVE_HARD_DENY'
-    | 'PRIVATE_ZONE_HARD_DENY'
+    | 'PROTECTED_PRIVATE_NO_BACKGROUND_INGEST'
+    | 'PROTECTED_CHILD_NO_BACKGROUND_INGEST'
+    | 'PROTECTED_ZONE_NO_BACKGROUND_INGEST'
     | 'UNRESOLVED_SUGGESTIONS_QUARANTINE'
     | 'SENSITIVE_SIGNAL_QUARANTINE'
     | 'DERIVED_COPY_METADATA_ONLY'
