@@ -42,8 +42,12 @@ Machine rules and project skills are execution adapters, not a parallel authorit
 
 - Exact repo paths: docs/brand/ESSENCE_EXPERIENCE_BIBLE_2026.md; docs/brand/essence-typography-composition-system-v1.md; docs/brand/ESSENCE_VISUAL_ARCHITECTURE.md; docs/website/current/PAGE_PORTFOLIO_AND_TRANSFORMATION_BLUEPRINT.md.
 - Task-provided document: approved page copy.
-- For `/phuong-phap` tasks only, additionally read: docs/decisions/FD-2026-08-08_PHUONG_PHAP_PUBLIC_METHOD_HIERARCHY.md.
 - Planned/Missing: Page Contract. Do not infer it; the task must supply it before execution.
+
+## Route-specific — `/phuong-phap`
+
+- For any `/phuong-phap` editorial-writing or frontend-design task, additionally read: docs/decisions/FD-2026-08-08_PHUONG_PHAP_PUBLIC_METHOD_HIERARCHY.md.
+- This route-specific decision does not belong in Universal and must not be loaded for unrelated backend, admin, payment, Machine Library or other-route tasks.
 
 ## Image production — Kenji portrait
 
