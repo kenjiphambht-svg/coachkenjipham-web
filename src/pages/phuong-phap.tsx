@@ -139,9 +139,9 @@ export default function PhuongPhapPage() {
 
       <main className={`${styles.page} overflow-x-clip text-e26-text`}>
         <section className={`${styles.heroSurface} px-6 pb-28 pt-16 md:px-8 md:pb-40 md:pt-24 lg:px-12 lg:pb-48 lg:pt-28`}>
-          <div className="mx-auto grid max-w-[1180px] items-start gap-20 lg:grid-cols-12 lg:gap-14">
+          <div className={`${styles.atmosphereContent} mx-auto max-w-[1180px]`}>
             <div
-              className={`${styles.reveal} lg:col-span-7 lg:pt-12`}
+              className={`${styles.reveal} max-w-[720px] lg:pt-12`}
               data-phuong-phap-reveal
             >
               <EssenceUtility as="p" className="mb-8 md:mb-10">
@@ -190,13 +190,6 @@ export default function PhuongPhapPage() {
                   Một cách sống cũ đang âm thầm lựa chọn thay mình.
                 </EssenceAnchor>
               </div>
-            </div>
-
-            <div
-              className={`${styles.reveal} mx-auto w-full max-w-[430px] lg:col-span-5 lg:mx-0 lg:max-w-none lg:pt-20`}
-              data-phuong-phap-reveal
-            >
-              <PhuongPhapImageSlot ratio="portrait" />
             </div>
           </div>
         </section>
@@ -299,8 +292,8 @@ export default function PhuongPhapPage() {
         </div>
 
         <div className={styles.movementFlow}>
-          <section className={`${styles.movementScene} px-6 py-28 md:px-8 md:py-40 lg:py-48`}>
-            <div className="mx-auto grid max-w-[1120px] items-start gap-16 lg:grid-cols-12 lg:gap-20">
+          <section className={`${styles.movementScene} ${styles.chillAtmosphere} px-6 py-28 md:px-8 md:py-40 lg:py-48`}>
+            <div className={`${styles.atmosphereContent} mx-auto grid max-w-[1120px] items-start gap-16 lg:grid-cols-12 lg:gap-20`}>
               <div
                 className={`${styles.reveal} lg:col-span-5`}
                 data-phuong-phap-reveal
@@ -311,10 +304,6 @@ export default function PhuongPhapPage() {
                 <EssenceAnchor as="h2" className="max-w-[480px]">
                   Chill với cảm xúc
                 </EssenceAnchor>
-                <PhuongPhapImageSlot
-                  ratio="editorial"
-                  className="mx-auto mt-16 max-w-[390px] md:mt-24 lg:mx-0"
-                />
               </div>
 
               <div
@@ -460,17 +449,10 @@ export default function PhuongPhapPage() {
             </div>
           </section>
 
-          <section className={`${styles.movementScene} px-6 py-28 md:px-8 md:py-40 lg:py-48`}>
-            <div className="mx-auto grid max-w-[1120px] items-start gap-20 lg:grid-cols-12 lg:gap-20">
+          <section className={`${styles.movementScene} ${styles.realityAtmosphere} px-6 py-28 md:px-8 md:py-40 lg:py-48`}>
+            <div className={`${styles.atmosphereContent} mx-auto grid max-w-[1120px] items-start gap-20 lg:grid-cols-12 lg:gap-20`}>
               <div
-                className={`${styles.reveal} order-2 lg:order-1 lg:col-span-5 lg:pt-44`}
-                data-phuong-phap-reveal
-              >
-                <PhuongPhapImageSlot ratio="portrait" className="mx-auto max-w-[430px] lg:mx-0" />
-              </div>
-
-              <div
-                className={`${styles.reveal} order-1 lg:order-2 lg:col-span-7`}
+                className={`${styles.reveal} lg:col-start-6 lg:col-span-7`}
                 data-phuong-phap-reveal
               >
                 <EssenceUtility variant="numeral" as="p" className="mb-8">

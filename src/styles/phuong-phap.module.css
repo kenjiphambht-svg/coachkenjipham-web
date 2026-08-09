@@ -3,9 +3,55 @@
 }
 
 .heroSurface {
+  --phuong-phap-hero-field-image: none;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   background:
     radial-gradient(circle at 78% 24%, var(--essence-white-2026) 0, transparent 34%),
     linear-gradient(155deg, var(--essence-ivory-2026) 0%, var(--essence-cream-2026) 100%);
+}
+
+.atmosphereContent {
+  position: relative;
+  z-index: 1;
+}
+
+.heroSurface::before,
+.heroSurface::after,
+.chillAtmosphere::before,
+.chillAtmosphere::after,
+.realityAtmosphere::before,
+.realityAtmosphere::after {
+  position: absolute;
+  z-index: 0;
+  content: "";
+  pointer-events: none;
+}
+
+.heroSurface::before {
+  top: 10%;
+  right: max(-10vw, -10rem);
+  width: min(46vw, 42rem);
+  height: min(68vw, 48rem);
+  opacity: 0.76;
+  border-left: 1px solid var(--essence-border-light-2026);
+  background-image:
+    linear-gradient(90deg, var(--essence-ivory-2026) 0%, transparent 38%),
+    var(--phuong-phap-hero-field-image),
+    radial-gradient(ellipse 88% 68% at 74% 22%, var(--essence-white-2026) 0%, transparent 66%),
+    linear-gradient(148deg, var(--essence-cream-deep-2026) 0%, transparent 58%);
+  background-position: center, right center, center, center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.heroSurface::after {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 38%;
+  background: linear-gradient(90deg, var(--essence-ivory-2026) 0%, transparent 52%);
 }
 
 .openingFlow {
@@ -25,13 +71,74 @@
   position: relative;
 }
 
-.movementScene + .movementScene::before {
+.chillAtmosphere,
+.realityAtmosphere {
+  --phuong-phap-chill-field-image: none;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.chillAtmosphere::before {
+  top: 8%;
+  bottom: 7%;
+  left: max(-8vw, -7rem);
+  width: min(46vw, 39rem);
+  opacity: 0.64;
+  border-right: 1px solid var(--essence-border-light-2026);
+  background-image:
+    linear-gradient(90deg, var(--essence-cream-deep-2026) 0%, transparent 72%),
+    var(--phuong-phap-chill-field-image),
+    radial-gradient(ellipse 84% 52% at 76% 14%, var(--essence-white-2026) 0%, transparent 70%),
+    linear-gradient(168deg, transparent 0%, color-mix(in srgb, var(--essence-text-primary-2026) 6%, transparent) 100%);
+  background-position: center, left center, center, center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.chillAtmosphere::after {
+  top: 22%;
+  bottom: 20%;
+  left: min(31vw, 26rem);
+  width: 1px;
+  background: color-mix(in srgb, var(--essence-text-primary-2026) 9%, transparent);
+}
+
+.movementScene + .movementScene:not(.realityAtmosphere)::before {
   position: absolute;
   top: 0;
   right: max(1.5rem, calc((100vw - 1120px) / 2));
   left: max(1.5rem, calc((100vw - 1120px) / 2));
   height: 1px;
   content: "";
+  background: var(--essence-border-light-2026);
+}
+
+.realityAtmosphere {
+  --phuong-phap-reality-field-image: none;
+}
+
+.realityAtmosphere::before {
+  top: 7%;
+  bottom: 6%;
+  left: max(-8vw, -7rem);
+  width: min(55vw, 48rem);
+  opacity: 0.68;
+  background-image:
+    linear-gradient(90deg, var(--essence-cream-2026) 0%, transparent 74%),
+    var(--phuong-phap-reality-field-image),
+    radial-gradient(ellipse 90% 72% at 68% 22%, var(--essence-white-2026) 0%, transparent 70%),
+    linear-gradient(135deg, var(--essence-cream-deep-2026) 0%, transparent 64%);
+  background-position: center, left center, center, center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.realityAtmosphere::after {
+  top: 17%;
+  bottom: 13%;
+  left: min(35vw, 31rem);
+  width: 1px;
   background: var(--essence-border-light-2026);
 }
 
@@ -89,6 +196,40 @@
   inset: auto 10% 12% 10%;
   height: 1px;
   background: color-mix(in srgb, var(--essence-text-primary-2026) 12%, transparent);
+}
+
+@media (max-width: 767px) {
+  .heroSurface::before {
+    top: auto;
+    right: -34%;
+    bottom: -14rem;
+    width: 120%;
+    height: 29rem;
+    opacity: 0.48;
+  }
+
+  .heroSurface::after {
+    top: 54%;
+    left: 0;
+    background: linear-gradient(180deg, transparent 0%, var(--essence-ivory-2026) 76%);
+  }
+
+  .chillAtmosphere::before,
+  .realityAtmosphere::before {
+    top: auto;
+    right: -24%;
+    bottom: -9rem;
+    left: auto;
+    width: 125%;
+    height: 25rem;
+    opacity: 0.4;
+    border: 0;
+  }
+
+  .chillAtmosphere::after,
+  .realityAtmosphere::after {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
