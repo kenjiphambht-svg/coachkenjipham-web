@@ -71,7 +71,7 @@ export function EssenceLeadIn({
   return (
     <As
       className={cn(
-        "max-w-[680px] font-sans text-[17px] font-semibold leading-[1.7] tracking-[-0.005em] text-e26-text [text-wrap:pretty] md:text-[19px] md:leading-[1.72]",
+        "max-w-[680px] font-sans text-[17px] font-medium leading-[1.7] tracking-[-0.005em] text-e26-text [text-wrap:pretty] md:text-[19px] md:leading-[1.72]",
         className
       )}
     >
