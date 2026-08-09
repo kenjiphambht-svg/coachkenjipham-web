@@ -1,18 +1,18 @@
 # M2 — Drive Sync & Retrieval Foundation
 
 Date: 2026-08-08  
-Status: Founder-approved implementation — Draft PR / staging only  
+Status: Founder-approved implementation — Draft PR / staging only — governance patch 2026-08-09  
 Branch: `feat/m2-drive-sync-retrieval-foundation`  
-Base: `feat/m1-machine-library-foundation` at `9393f35360c14477b95b6c6d3fcb650c155e35d5`
+Base: `feat/m1-machine-library-foundation` at the stack baseline; current base/head must be queried live before review.
 
 ## Founder approval
 
-Founder instructions:
+Founder instructions opened M2 staging work only. They do not authorize M1/M2 merge to production, public activation, AI write actions or Command Layer.
 
-- **“Duyệt M1, bắt đầu M2.”**
-- **“anh đồng ý em làm tiếp đi… cứ làm những vòng lớn rồi báo anh.”**
-
-This opens M2 staging work only. It does not authorize M1/M2 merge to production, public activation, real customer/child-sensitive data, AI write actions or Command Layer.
+Current authority corrections also include:
+- FD-2026-014: bare `FCP` is ambiguous between Full Cycle Process and Future Casting Protocol.
+- FD-2026-016: protected/private/child-sensitive is a purpose/access/handling boundary, not a `never read` rule.
+- FD-2026-017: 12 Projects; Project != System.
 
 ## Goal
 
@@ -21,9 +21,9 @@ Prove a deterministic path from the canonical ESSENCE Google Drive library to th
 ```text
 Google Drive Canonical
         ↓
-Root / permission boundary
+Background-sync root / permission boundary
         ↓
-Ingest + safety policy
+Persistent ingest + safety policy
         ↓
 Controlled allowlist / initial crawl / delta feed
         ↓
@@ -34,7 +34,7 @@ Structure-aware knowledge units
 Exact identifier + lexical retrieval
 ```
 
-## Current governed zones
+## Current governed zones for BACKGROUND MACHINE LIBRARY SYNC
 
 - `00_BẮT ĐẦU Ở ĐÂY` → metadata/selective.
 - `01_ĐIỀU ĐANG ĐÚNG` → current content.
@@ -42,11 +42,13 @@ Exact identifier + lexical retrieval
 - `03_TRI THỨC ĐÃ CHƯNG CẤT` → supporting content.
 - `04_NGUỒN VÀ LỊCH SỬ` → conditional / metadata by default.
 - `90_QUẢN TRỊ THƯ VIỆN` → selective / conditional.
-- `99_KHO RIÊNG TƯ` → HARD DENY and never traversed by the M2 initial crawler.
+- `99_KHO RIÊNG TƯ` → **NO BACKGROUND TRAVERSAL / NO PERSISTENT INGEST in M2**.
+
+The final line is a background-sync boundary, not an AI-blind rule. FD-2026-016 allows a separate purpose/access-gated, auditable on-demand canonical-source reader in a later milestone. M2 does not implement that reader.
 
 ## M2A — foundation complete
 
-- Exact Drive root-ID policy map.
+- Exact Drive root-ID policy map for background sync.
 - Fail-closed Drive sync planner.
 - Token-injected read-only Google Drive REST client; no credentials stored in repo or Machine Library.
 - Start-page-token and `changes.list` support with removed items included.
@@ -59,78 +61,49 @@ Exact identifier + lexical retrieval
 - Google Docs unresolved-suggestion inspection before canonical ingest.
 - Synthetic contract tests and manual rollback.
 
-## M2B — controlled pilot now completed to the credential boundary
+## M2B — controlled pilot evidence
 
-### Real non-sensitive staging probe
+A five-source non-sensitive allowlist of current governance documents was used for a controlled staging probe. This test scope intentionally excludes private/customer/child/payment/session-note data; that exclusion is a pilot constraint, not a global ESSENCE data-access rule.
 
-A five-source allowlist of current governance documents was manually read through the connected Drive tooling and persisted into `essence-staging` as explicitly marked **partial manual probe evidence**.
-
-Result:
-
-- 5 Machine Library sources.
-- 5 current version-evidence rows.
-- 5 selected knowledge units.
-- 0 private-zone / child-sensitive rows.
-
-The staged rows explicitly state that this was a manual connected-tool probe, not an automated Drive runtime identity.
-
-### Retrieval evidence
-
-- Lexical `FCP` lookup surfaced the current Founder Decision Register at L0 and the resolved Conflict Register entry at L1.
-- Lexical `thẩm quyền` lookup surfaced the current Authority Map.
-- Exact source-code lookup returned the Founder Decision Register as L0 / current / current-truth.
-
-This proves the exact + lexical substrate surfaces the intended current authority evidence. It does not yet claim end-to-end AI answering; authority-aware context construction remains a later layer.
-
-### Controlled file allowlist
-
-The initial and delta sync engines now accept an explicit file allowlist for staging pilots:
-
+The initial and delta sync engines accept an explicit file allowlist for staging pilots:
 - non-allowlisted files are ignored before content read;
-- allowlisted files proceed through normal policy/safety checks;
-- shortcut targets are resolved to canonical target identity before the allowlist decision;
+- allowlisted files proceed through normal persistent-ingest/safety checks;
+- shortcut targets resolve to canonical target identity before allowlist decision;
 - out-of-batch delta removals are ignored;
 - allowlisted removals still purge;
-- the hard-deny private root is still never traversed.
+- 99 is not traversed by the background sync identity.
 
-### Manual Library Assistant coordination
+## Security model after FD-2026-016
 
-A short manual-test request was placed in the Library Review Inbox asking the Library Assistant to select/check non-sensitive canonical sources and report PASS / FAIL / CONFLICT / UNKNOWN for shortcut, unresolved suggestions, deletion/move/access loss, duplicate/derived copy and ambiguous alias cases. It explicitly forbids private-vault, customer, child, payment and session-note data.
+Use separate capability boundaries rather than one universal credential:
 
-## Test/build evidence
-
-Latest M2B targeted Vercel test gate:
-
-- 6 test files passed.
-- **57 / 57 tests passed**.
-- Controlled initial-crawl allowlist behavior passed.
-- Controlled delta-removal allowlist behavior passed.
-- Existing M1/M2 safety, FCP, Drive, normalization, SQL and lexical tests remained green.
-- Next.js type/build compiled successfully.
-- The temporary test-gated build command was restored to the repository-standard `next build` afterward.
+1. **Background sync identity** — least privilege; no 99 traversal; only approved Machine Library zones; persistent ingest path.
+2. **Protected on-demand source reader (future milestone)** — purpose/access-gated and auditable; may read canonical protected sources when the task is authorized; does not imply persistence in Machine Library.
+3. **Action/command capabilities** — separate again; read permission never grants send/edit/delete/payment/entitlement/publication/high-risk permission.
 
 ## Explicit exclusions remain
 
-- No dedicated runtime Drive OAuth/sync identity is configured yet.
-- Physical inability of that future identity to read `99_KHO RIÊNG TƯ` is therefore **not yet proven**.
+- No dedicated unattended background Drive sync identity is configured yet.
+- No protected on-demand source-reader implementation yet.
 - No unattended automated Drive crawl from the website backend.
 - No AI model/provider.
 - No embeddings/vector/HNSW/IVFFlat/reranker.
 - No browser Machine Library reader.
 - No Founder-AI runtime reader yet.
-- No real customer or child-sensitive data.
+- No real customer or child-sensitive data is persisted in this M2 pilot.
 - No AI database write action / Command Layer.
 - No merge or production activation.
 
 ## Remaining M2B hard gate
 
-Before unattended automated sync can be enabled:
+Before unattended BACKGROUND sync can be enabled:
 
-1. Create/configure a dedicated least-privilege Drive sync identity outside the current code-only tool boundary.
-2. Grant that identity only the approved library zones and verify it has no physical access to `99_KHO RIÊNG TƯ`.
-3. Provide the credential to staging as a server-only secret; never commit or store it in Machine Library rows/logs.
+1. Create/configure a dedicated least-privilege background Drive sync identity.
+2. Grant only approved Machine Library zones and verify that this **background-sync identity** has no physical access to `99_KHO RIÊNG TƯ`.
+3. Provide its credential to staging as a server-only secret; never commit or store it in Machine Library rows/logs.
 4. Re-run the controlled allowlisted crawl with that identity.
 5. Exercise a real delta update and a real removal/move-to-deny case.
-6. Reconcile against the manual probe and Library Assistant manual-test results.
+6. Reconcile against manual probe and Library Assistant QA.
+7. Design the separate protected on-demand reader contract before any real protected-source runtime use.
 
 Until then the system remains Draft PR / staging only.
