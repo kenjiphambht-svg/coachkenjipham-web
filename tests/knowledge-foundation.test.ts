@@ -51,9 +51,22 @@ describe('ESSENCE Machine Library M1 policy', () => {
     expect(result.runtimeEnabled).toBe(false);
   });
 
-  it('hard denies the private vault and child-sensitive material', () => {
-    expect(resolveKnowledgeIngestPolicy(SYNTHETIC_POLICY_CASES.privateVault).ingestMode).toBe('deny');
-    expect(resolveKnowledgeIngestPolicy(SYNTHETIC_POLICY_CASES.childSensitive).ingestMode).toBe('deny');
+  it('keeps private and child-sensitive sources out of background ingest while preserving authorized on-demand use', () => {
+    const privateVault = resolveKnowledgeIngestPolicy(SYNTHETIC_POLICY_CASES.privateVault);
+    const childSensitive = resolveKnowledgeIngestPolicy(SYNTHETIC_POLICY_CASES.childSensitive);
+
+    expect(privateVault).toMatchObject({
+      ingestMode: 'deny',
+      usageMode: 'protected_on_demand',
+      runtimeEnabled: false,
+      onDemandReadAllowed: true,
+    });
+    expect(childSensitive).toMatchObject({
+      ingestMode: 'deny',
+      usageMode: 'protected_on_demand',
+      runtimeEnabled: false,
+      onDemandReadAllowed: true,
+    });
   });
 });
 
