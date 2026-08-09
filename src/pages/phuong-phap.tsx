@@ -95,18 +95,24 @@ const doors = [
     title: "Người đứng sau ESSENCE",
     copy: "Điều gì đã hình thành cách tôi nhìn, điều tôi tin trong công việc này — và vì sao tôi chọn đứng bên cạnh thay vì quyết định thay bạn.",
     href: "/ve-kenji",
+    image: "/images/phuong-phap/04-door-kenji.png",
+    imageAlt: "Kenji Phạm tại Essence Coaching",
     label: "Gặp Kenji →",
   },
   {
     title: "Câu chuyện của chính bạn",
     copy: "Bạn có thể đã nhận ra vài vòng lặp, nhưng vẫn chưa rõ điều gì đang thật sự dẫn nhịp đời sống của mình.",
     href: "/ban-sac-cua-ban",
+    image: "/images/phuong-phap/05-door-ban.png",
+    imageAlt: "Không gian yên tĩnh bên khung cửa",
     label: "Tôi muốn nhìn về phía chính mình →",
   },
   {
     title: "Câu chuyện của con",
     copy: "Một đứa trẻ không cần thêm một chiếc nhãn để được hiểu nhanh hơn.\n\nĐôi khi, điều cần thiết hơn là nhìn đủ gần để nhận ra điều đang thật sự diễn ra khi con lớn lên.",
     href: "/ban-sac-cua-con",
+    image: "/images/phuong-phap/06-door-con.png",
+    imageAlt: "Góc không gian dành cho trẻ",
     label: "Tôi đang muốn hiểu con rõ hơn →",
   },
 ];
@@ -636,7 +642,7 @@ export default function PhuongPhapPage() {
                     data-phuong-phap-reveal
                     key={door.href}
                   >
-                    <PhuongPhapImageSlot ratio="portrait" />
+                    <PhuongPhapImageSlot alt={door.imageAlt} ratio="portrait" src={door.image} />
                     <EssenceAnchor as="h3" level="h3" className="mt-8">
                       {door.title}
                     </EssenceAnchor>

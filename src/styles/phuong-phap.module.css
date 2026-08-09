@@ -3,7 +3,7 @@
 }
 
 .heroSurface {
-  --phuong-phap-hero-field-image: none;
+  --phuong-phap-hero-field-image: url("/images/phuong-phap/01-hero-atmosphere.png");
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -73,7 +73,7 @@
 
 .chillAtmosphere,
 .realityAtmosphere {
-  --phuong-phap-chill-field-image: none;
+  --phuong-phap-chill-field-image: url("/images/phuong-phap/02-chill-atmosphere.png");
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -84,10 +84,16 @@
   bottom: 7%;
   left: max(-8vw, -7rem);
   width: min(46vw, 39rem);
-  opacity: 0.64;
+  opacity: 0.58;
   border-right: 1px solid var(--essence-border-light-2026);
   background-image:
-    linear-gradient(90deg, var(--essence-cream-deep-2026) 0%, transparent 72%),
+    linear-gradient(
+      90deg,
+      var(--essence-cream-2026) 0%,
+      var(--essence-cream-2026) 54%,
+      color-mix(in srgb, var(--essence-cream-2026) 78%, transparent) 74%,
+      transparent 100%
+    ),
     var(--phuong-phap-chill-field-image),
     radial-gradient(ellipse 84% 52% at 76% 14%, var(--essence-white-2026) 0%, transparent 70%),
     linear-gradient(168deg, transparent 0%, color-mix(in srgb, var(--essence-text-primary-2026) 6%, transparent) 100%);
@@ -115,17 +121,23 @@
 }
 
 .realityAtmosphere {
-  --phuong-phap-reality-field-image: none;
+  --phuong-phap-reality-field-image: url("/images/phuong-phap/03-hien-thuc-atmosphere.png");
 }
 
 .realityAtmosphere::before {
   top: 7%;
   bottom: 6%;
   left: max(-8vw, -7rem);
-  width: min(55vw, 48rem);
-  opacity: 0.68;
+  width: min(48vw, 42rem);
+  opacity: 0.58;
   background-image:
-    linear-gradient(90deg, var(--essence-cream-2026) 0%, transparent 74%),
+    linear-gradient(
+      90deg,
+      var(--essence-cream-2026) 0%,
+      var(--essence-cream-2026) 58%,
+      color-mix(in srgb, var(--essence-cream-2026) 78%, transparent) 78%,
+      transparent 100%
+    ),
     var(--phuong-phap-reality-field-image),
     radial-gradient(ellipse 90% 72% at 68% 22%, var(--essence-white-2026) 0%, transparent 70%),
     linear-gradient(135deg, var(--essence-cream-deep-2026) 0%, transparent 64%);
