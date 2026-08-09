@@ -4,7 +4,7 @@
 > **Owner:** Kenji Phạm
 > **Purpose:** Default safeguards for agents.
 > **Decision scope:** Task safety, scope and workflow. **Non-decision scope:** Founder Decisions, public positioning, route/indexing, product flow and image authority.
-> **Precedence:** Read [Documentation Authority](docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md), [Conflict Register](docs/governance/CONFLICT_REGISTER.md) and [Reading Bundles](docs/governance/READING_BUNDLES.md) first. L0 wins over every older statement below.
+> **Precedence:** Read [Founder Decision alignment](docs/governance/FD_2026_014_016_017_ALIGNMENT.md), [Documentation Authority](docs/governance/ESSENCE_DOCUMENTATION_AUTHORITY.md), [Conflict Register](docs/governance/CONFLICT_REGISTER.md) and [Reading Bundles](docs/governance/READING_BUNDLES.md) first. Current Founder Decisions in the canonical ESSENCE Drive register win over lower-authority repository documents. L0 wins over every older statement below.
 > **Still valid:** Scoped work, verification and protected-area rules. **Outdated/superseded:** Historical organization suffixes and old public AI-native/astrology positioning are not canonical public copy.
 > **Baseline evidence commit:** ead2eb75ae1da28f1cec8a2b9ac6f5cf52f419fc
 > **Last verified:** fe0739d6d88ba8c9b9a1a6bc9b467bc0f22f5dae
@@ -23,6 +23,12 @@ This is the shared instruction file for Codex, Claude Code, and future AI coding
 - Always inspect existing structure before editing.
 - Always list changed files at the end.
 - Always run available verification commands when possible.
+- Treat the repository as the live implementation ledger. Sync Drive only for semantic milestones (Founder authority/contract, architecture or security/data model, public behavior, release lifecycle, material blockers, or agent governance), not for routine commits, refactors, formatting, comments, head-SHA changes, or Preview rebuilds inside the same approved state.
+- Current organization model: **12 Projects**. A Project is a specialist work domain; a repository, tool, service, or other implementation system is not a new Project. Every system still needs explicit technical and operational ownership.
+- Keep three data-control layers distinct:
+  1. **Background Machine Library ingest:** private/restricted/child-sensitive sources remain excluded from default crawl and persistence unless a current approved contract changes that boundary.
+  2. **Authorized protected on-demand read:** Founder/authorized AI may read, synthesize, and analyze protected real data only for an appropriate task, purpose, and access context, with purpose/access gates and auditability.
+  3. **Action permission:** knowledge or read access never grants permission to send, edit, delete, pay, change entitlement, publish, or perform another high-risk action.
 - Merge policy — **L0 C-13:** an agent may merge only when a current task-specific Founder instruction explicitly authorizes that exact PR. Historical briefs, prior standing permissions, earlier merges and QA success cannot authorize a later PR. Otherwise keep the PR Draft and stop for review.
 - NGOẠI LỆ bắt buộc chờ duyệt trước (không đổi, không có ngoại lệ khác):
   (a) PR đụng payment pages; (b) PR đụng dữ liệu trẻ em; (c) PR đổi cấu

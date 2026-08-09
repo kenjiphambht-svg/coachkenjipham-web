@@ -58,7 +58,7 @@ decision this method-framework ruling would have duplicated). Resolution:
 | C-07 | Public identity and entity | Official brand, organization and public entity: **Essence Coaching**.<br>Exact public positioning: **Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach.<br>Người sáng lập Essence Coaching.**<br>“System” is not a brand, organization or public-identity suffix. It remains valid only as a common technical noun in context, such as typography system, image system or operating system. |
 | C-08 | Public contact | contact@coachkenjipham.com is the public email. |
 | C-09 | Roadmap | M0–M6 supersedes the prior 13-phase roadmap. |
-| C-10 | FCP | FCP means Full Cycle Process. Older meanings are not canonical. |
+| C-10 | FCP alias | `FCP` is a shared, ambiguous alias. **Full Cycle Process** is valid in operating/journey scope; **Future Casting Protocol** is valid in internal coaching-protocol scope. Bare `FCP` without enough context is `AMBIGUOUS_ALIAS` and must be disambiguated before use. A specialist-method source does not thereby become public or scientific authority. |
 | C-11 | Public giao thức | Allowed selectively only with approved plain-language context. |
 | C-12 | Image authority | Kenji portraits: FLUX.1 + Kenji LoRA. Non-Kenji images: FLUX.2 Klein 9B. |
 | C-13 | Agent merge authority | Historical self-merge permissions are superseded. An agent may merge only when a current task-specific Founder instruction explicitly authorizes that exact PR. A historical brief, earlier merge, prior standing permission or successful QA never authorizes a later PR. Without exact current approval, keep the PR Draft and stop for review. |
