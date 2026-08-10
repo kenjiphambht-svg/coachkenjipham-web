@@ -371,7 +371,7 @@ export default function PhuongPhapPage() {
           </section>
 
           <section className={`${styles.movementScene} ${styles.challengeAtmosphere} px-6 py-28 md:px-8 md:py-40 lg:py-[10rem]`}>
-            <div className="mx-auto max-w-[1120px]">
+            <div className={`${styles.atmosphereContent} mx-auto max-w-[1120px]`}>
               <div
                 className={`${styles.reveal} grid gap-8 md:grid-cols-12`}
                 data-phuong-phap-reveal
