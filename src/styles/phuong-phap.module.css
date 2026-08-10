@@ -510,7 +510,7 @@
   .signalMoment::before {
     top: clamp(2.5rem, 10.5vw, 3rem);
     width: calc(100% + 1.25rem);
-    height: clamp(8.25rem, 35vw, 9rem);
+    height: clamp(9rem, 42vw, 10.25rem);
   }
 
   .signalHeadline {
