@@ -536,14 +536,10 @@ export default function PhuongPhapPage() {
                   <EssenceBody as="p">hay một đời sống đủ đầy theo cách riêng của mình.</EssenceBody>
                 </div>
 
-                <div className="mt-16 space-y-5 border-t border-e26-border pt-12 md:mt-24 md:pt-16">
+                <div className="mt-14 border-t border-e26-border pt-12 md:mt-20 md:pt-16">
                   <EssenceBody as="p">
                     ESSENCE gọi hướng sống này là <strong className="font-semibold text-e26-text">An Thịnh</strong>.
                   </EssenceBody>
-                  <EssenceBody as="p">Không có một thước đo chung cho chữ “Thịnh”.</EssenceBody>
-                  <EssenceLeadIn as="p" className="pt-4">
-                    Đời sống bạn đang kiến tạo sẽ có hình hài thế nào vẫn do chính bạn lựa chọn.
-                  </EssenceLeadIn>
                 </div>
               </div>
             </div>
@@ -615,7 +611,7 @@ export default function PhuongPhapPage() {
         </section>
 
         <div className={styles.closingFlow}>
-          <section className="px-6 py-28 md:px-8 md:py-40 lg:py-[11rem]">
+          <section className={`${styles.doorsScene} px-6 pb-20 pt-28 md:px-8 md:pb-28 md:pt-40 lg:pb-[7rem] lg:pt-[11rem]`}>
             <div className="mx-auto max-w-[1120px]">
               <div
                 className={`${styles.reveal} max-w-[820px]`}
@@ -632,37 +628,45 @@ export default function PhuongPhapPage() {
 
               <nav
                 aria-label="Các hướng đọc tiếp"
-                className="mt-20 grid gap-16 md:mt-28 md:grid-cols-2 lg:grid-cols-3 lg:gap-10"
+                className={`${styles.doorsConstellation} mt-20 md:mt-28`}
               >
-                {doors.map((door, index) => (
-                  <article
-                    className={`${styles.reveal} flex flex-col ${
-                      index === 1 ? "md:translate-y-12 lg:translate-y-16" : ""
-                    } ${index === 2 ? "md:col-span-2 md:max-w-[calc(50%_-_2rem)] lg:col-span-1 lg:max-w-none" : ""}`}
-                    data-phuong-phap-reveal
-                    key={door.href}
-                  >
-                    <PhuongPhapImageSlot alt={door.imageAlt} ratio="portrait" src={door.image} />
-                    <EssenceAnchor as="h3" level="h3" className="mt-8">
-                      {door.title}
-                    </EssenceAnchor>
-                    <div className="mt-6 flex-1 space-y-5">
-                      {door.copy.split("\n\n").map((paragraph) => (
-                        <EssenceBody as="p" className="max-w-none" key={paragraph}>
-                          {paragraph}
-                        </EssenceBody>
-                      ))}
-                    </div>
-                    <Link href={door.href} className={`${textLink} mt-9 self-start`}>
-                      {door.label}
-                    </Link>
-                  </article>
-                ))}
+                {doors.map((door, index) => {
+                  const variant = index === 0 ? "doorKenji" : index === 1 ? "doorSelf" : "doorChild";
+                  const doorClass =
+                    index === 0
+                      ? styles.doorKenjiArticle
+                      : index === 1
+                        ? styles.doorSelfArticle
+                        : styles.doorChildArticle;
+
+                  return (
+                    <article
+                      className={`${styles.reveal} ${styles.doorArticle} ${doorClass}`}
+                      data-phuong-phap-reveal
+                      key={door.href}
+                    >
+                      <PhuongPhapImageSlot alt={door.imageAlt} ratio="portrait" src={door.image} variant={variant} />
+                      <EssenceAnchor as="h3" level="h3" className={`${styles.doorTitle} mt-8`}>
+                        {door.title}
+                      </EssenceAnchor>
+                      <div className={`${styles.doorCopy} mt-6 space-y-5`}>
+                        {door.copy.split("\n\n").map((paragraph) => (
+                          <EssenceBody as="p" className="max-w-none" key={paragraph}>
+                            {paragraph}
+                          </EssenceBody>
+                        ))}
+                      </div>
+                      <Link href={door.href} className={`${textLink} mt-9 self-start`}>
+                        {door.label}
+                      </Link>
+                    </article>
+                  );
+                })}
               </nav>
             </div>
           </section>
 
-          <section className="px-6 pb-36 pt-28 md:px-8 md:pb-52 md:pt-44 lg:pb-[14rem] lg:pt-[12rem]">
+          <section className="px-6 pb-36 pt-24 md:px-8 md:pb-52 md:pt-32 lg:pb-[14rem] lg:pt-[8rem]">
             <div
               className={`${styles.reveal} mx-auto max-w-[820px]`}
               data-phuong-phap-reveal

@@ -307,9 +307,108 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  border: 1px solid var(--essence-border-light-2026);
   background:
     linear-gradient(145deg, var(--essence-cream-deep-2026), var(--essence-cream-2026) 56%, var(--essence-ivory-2026));
+}
+
+.doorsConstellation {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(1.5rem, 3.5vw, 4rem);
+  row-gap: 4rem;
+  align-items: start;
+}
+
+.doorArticle {
+  min-width: 0;
+}
+
+.doorKenjiArticle {
+  grid-column: 1 / span 4;
+  max-width: 21rem;
+}
+
+.doorSelfArticle {
+  grid-column: 5 / span 4;
+  margin-top: clamp(4rem, 6vw, 6rem);
+}
+
+.doorChildArticle {
+  grid-column: 9 / span 4;
+  max-width: 20rem;
+  margin-top: clamp(1.5rem, 2.5vw, 3rem);
+  justify-self: end;
+}
+
+.doorSelfArticle .doorCopy {
+  max-width: 88%;
+}
+
+.doorKenji,
+.doorSelf,
+.doorChild {
+  --door-mask-repeat: no-repeat;
+  -webkit-mask-repeat: var(--door-mask-repeat);
+  mask-repeat: var(--door-mask-repeat);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+
+.doorKenji {
+  -webkit-mask-image:
+    radial-gradient(ellipse 52% 58% at 38% 45%, #000 0%, #000 57%, rgba(0, 0, 0, 0.68) 72%, transparent 100%),
+    radial-gradient(ellipse 52% 55% at 68% 58%, #000 0%, #000 55%, rgba(0, 0, 0, 0.58) 73%, transparent 100%);
+  mask-image:
+    radial-gradient(ellipse 52% 58% at 38% 45%, #000 0%, #000 57%, rgba(0, 0, 0, 0.68) 72%, transparent 100%),
+    radial-gradient(ellipse 52% 55% at 68% 58%, #000 0%, #000 55%, rgba(0, 0, 0, 0.58) 73%, transparent 100%);
+  -webkit-mask-composite: source-over;
+  mask-composite: add;
+}
+
+.doorSelf {
+  -webkit-mask-image:
+    radial-gradient(ellipse 60% 55% at 40% 44%, #000 0%, #000 56%, rgba(0, 0, 0, 0.66) 73%, transparent 100%),
+    radial-gradient(ellipse 42% 62% at 76% 60%, #000 0%, #000 52%, rgba(0, 0, 0, 0.55) 72%, transparent 100%);
+  mask-image:
+    radial-gradient(ellipse 60% 55% at 40% 44%, #000 0%, #000 56%, rgba(0, 0, 0, 0.66) 73%, transparent 100%),
+    radial-gradient(ellipse 42% 62% at 76% 60%, #000 0%, #000 52%, rgba(0, 0, 0, 0.55) 72%, transparent 100%);
+  -webkit-mask-composite: source-over;
+  mask-composite: add;
+}
+
+.doorChild {
+  -webkit-mask-image:
+    radial-gradient(ellipse 52% 56% at 37% 57%, #000 0%, #000 56%, rgba(0, 0, 0, 0.66) 73%, transparent 100%),
+    radial-gradient(ellipse 44% 54% at 65% 41%, #000 0%, #000 53%, rgba(0, 0, 0, 0.54) 72%, transparent 100%);
+  mask-image:
+    radial-gradient(ellipse 52% 56% at 37% 57%, #000 0%, #000 56%, rgba(0, 0, 0, 0.66) 73%, transparent 100%),
+    radial-gradient(ellipse 44% 54% at 65% 41%, #000 0%, #000 53%, rgba(0, 0, 0, 0.54) 72%, transparent 100%);
+  -webkit-mask-composite: source-over;
+  mask-composite: add;
+}
+
+.doorKenjiImage {
+  object-position: 50% 29%;
+}
+
+.doorSelfImage {
+  object-position: 50% 58%;
+}
+
+.doorChildImage {
+  object-position: 54% 56%;
+}
+
+.doorSelf.imageSlot {
+  aspect-ratio: 5 / 4;
+}
+
+.doorKenji.imageSlot {
+  aspect-ratio: 5 / 6;
+}
+
+.doorChild.imageSlot {
+  aspect-ratio: 4 / 5;
 }
 
 .imageSlotLight {
@@ -326,6 +425,50 @@
 }
 
 @media (max-width: 767px) {
+  .doorsConstellation {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 4.5rem;
+  }
+
+  .doorKenjiArticle,
+  .doorSelfArticle,
+  .doorChildArticle {
+    grid-column: 1;
+    max-width: none;
+    margin-top: 0;
+  }
+
+  .doorKenjiArticle {
+    width: 80%;
+  }
+
+  .doorSelfArticle {
+    width: 88%;
+    margin-left: auto;
+  }
+
+  .doorChildArticle {
+    width: 82%;
+    justify-self: start;
+  }
+
+  .doorSelfArticle .doorCopy {
+    max-width: none;
+  }
+
+  .doorKenji.imageSlot {
+    aspect-ratio: 5 / 6;
+  }
+
+  .doorSelf.imageSlot {
+    aspect-ratio: 6 / 5;
+  }
+
+  .doorChild.imageSlot {
+    aspect-ratio: 5 / 6;
+  }
+
   .signalMoment::before {
     top: clamp(2.8rem, 12vw, 3.8rem);
     width: calc(100% + 2rem);
@@ -410,6 +553,48 @@
       rgba(0, 0, 0, 0.26) 62%,
       transparent 78%
     );
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .doorsConstellation {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(3rem, 9vw, 6rem);
+    row-gap: 5.5rem;
+  }
+
+  .doorKenjiArticle,
+  .doorSelfArticle,
+  .doorChildArticle {
+    grid-column: auto;
+    max-width: none;
+  }
+
+  .doorSelfArticle {
+    margin-top: 4.5rem;
+  }
+
+  .doorChildArticle {
+    grid-column: 1 / span 2;
+    width: 70%;
+    margin-top: 0;
+    justify-self: start;
+  }
+
+  .doorSelfArticle .doorCopy {
+    max-width: none;
+  }
+
+  .doorKenji.imageSlot {
+    aspect-ratio: 5 / 6;
+  }
+
+  .doorSelf.imageSlot {
+    aspect-ratio: 5 / 4;
+  }
+
+  .doorChild.imageSlot {
+    aspect-ratio: 5 / 6;
   }
 }
 

@@ -7,24 +7,32 @@ type Props = {
   className?: string;
   ratio?: "portrait" | "editorial";
   src?: string;
+  variant?: "doorKenji" | "doorSelf" | "doorChild";
 };
 
-export function PhuongPhapImageSlot({ alt = "", className, ratio = "portrait", src }: Props) {
+export function PhuongPhapImageSlot({
+  alt = "",
+  className,
+  ratio = "portrait",
+  src,
+  variant,
+}: Props) {
   return (
     <div
       aria-hidden={src ? undefined : true}
       className={cn(
         styles.imageSlot,
         ratio === "portrait" ? "aspect-[4/5]" : "aspect-[3/4]",
+        variant && styles[variant],
         className
       )}
     >
       {src ? (
         <Image
           alt={alt}
-          className="object-cover"
+          className={cn("object-cover", variant && styles[`${variant}Image`])}
           fill
-          sizes="(min-width: 1024px) 33vw, 100vw"
+          sizes="(min-width: 1024px) 34vw, (min-width: 768px) 46vw, 90vw"
           src={src}
         />
       ) : (
