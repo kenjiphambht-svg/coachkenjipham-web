@@ -34,6 +34,7 @@ export function PhuongPhapImageSlot({
           fill
           sizes="(min-width: 1024px) 34vw, (min-width: 768px) 46vw, 90vw"
           src={src}
+          unoptimized
         />
       ) : (
         <>
