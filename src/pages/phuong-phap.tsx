@@ -538,7 +538,7 @@ export default function PhuongPhapPage() {
 
                 <div className="mt-14 border-t border-e26-border pt-12 md:mt-20 md:pt-16">
                   <EssenceBody as="p">
-                    ESSENCE gọi đó là <strong className="font-semibold text-e26-text">An Thịnh</strong>.
+                    ESSENCE gọi đó là <strong className={`${styles.anThinhTerm} font-semibold`}>An Thịnh</strong>.
                   </EssenceBody>
                 </div>
               </div>

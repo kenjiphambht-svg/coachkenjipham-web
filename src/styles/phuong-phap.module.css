@@ -101,6 +101,10 @@
   color: var(--essence-gold-deep-2026);
 }
 
+.anThinhTerm {
+  color: var(--essence-gold-deep-2026);
+}
+
 .chillAtmosphere,
 .challengeAtmosphere,
 .realityAtmosphere {
@@ -268,28 +272,37 @@
 
 .signalMoment::before {
   position: absolute;
-  top: clamp(3.3rem, 4.2vw, 3.75rem);
+  top: clamp(4.25rem, 5vw, 4.75rem);
   left: 50%;
   z-index: 0;
-  width: min(84%, 52rem);
-  height: clamp(15rem, 18vw, 16rem);
+  width: min(118vw, 92rem);
+  height: clamp(12.5rem, 17vw, 15rem);
   content: "";
   pointer-events: none;
-  transform: translate(-50%, -50%) rotate(-1deg);
+  transform: translate(-50%, -50%);
   background:
-    linear-gradient(
-      98deg,
-      color-mix(in srgb, var(--essence-ivory-2026) 96%, var(--essence-white-2026)) 0,
-      var(--essence-white-2026) 43%,
-      color-mix(in srgb, var(--essence-ivory-2026) 98%, var(--essence-white-2026)) 100%
+    radial-gradient(
+      ellipse 36% 62% at 24% 51%,
+      color-mix(in srgb, var(--essence-ivory-2026) 76%, transparent) 0,
+      color-mix(in srgb, var(--essence-ivory-2026) 52%, transparent) 38%,
+      color-mix(in srgb, var(--essence-ivory-2026) 14%, transparent) 72%,
+      transparent 100%
+    ),
+    radial-gradient(
+      ellipse 44% 72% at 51% 47%,
+      color-mix(in srgb, var(--essence-white-2026) 96%, transparent) 0,
+      color-mix(in srgb, var(--essence-white-2026) 84%, transparent) 32%,
+      color-mix(in srgb, var(--essence-ivory-2026) 42%, transparent) 64%,
+      transparent 100%
+    ),
+    radial-gradient(
+      ellipse 38% 57% at 79% 53%,
+      color-mix(in srgb, var(--essence-ivory-2026) 68%, transparent) 0,
+      color-mix(in srgb, var(--essence-ivory-2026) 40%, transparent) 42%,
+      color-mix(in srgb, var(--essence-ivory-2026) 10%, transparent) 75%,
+      transparent 100%
     );
-  filter: blur(0.35px);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 220' preserveAspectRatio='none'%3E%3Cpath fill='black' d='M0 76 C45 54 90 54 138 50 C204 44 253 61 310 50 C375 38 431 42 490 45 C558 48 610 33 673 42 C741 52 793 40 858 50 C914 58 965 54 1000 82 L992 154 C931 170 870 160 816 170 C756 179 701 159 643 174 C576 190 520 173 461 181 C389 189 329 171 267 183 C191 197 120 171 64 171 C27 162 10 150 0 136 Z'/%3E%3C/svg%3E");
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%;
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 220' preserveAspectRatio='none'%3E%3Cpath fill='black' d='M0 76 C45 54 90 54 138 50 C204 44 253 61 310 50 C375 38 431 42 490 45 C558 48 610 33 673 42 C741 52 793 40 858 50 C914 58 965 54 1000 82 L992 154 C931 170 870 160 816 170 C756 179 701 159 643 174 C576 190 520 173 461 181 C389 189 329 171 267 183 C191 197 120 171 64 171 C27 162 10 150 0 136 Z'/%3E%3C/svg%3E");
-  mask-repeat: no-repeat;
-  mask-size: 100% 100%;
+  filter: blur(28px);
 }
 
 .signalHeadline {
@@ -508,9 +521,32 @@
   }
 
   .signalMoment::before {
-    top: clamp(2.5rem, 10.5vw, 3rem);
-    width: calc(100% + 1.25rem);
-    height: clamp(9rem, 42vw, 10.25rem);
+    top: clamp(2.75rem, 12vw, 3.2rem);
+    width: calc(100% + 10rem);
+    height: clamp(10.5rem, 46vw, 11.5rem);
+    background:
+      radial-gradient(
+        ellipse 42% 62% at 25% 52%,
+        color-mix(in srgb, var(--essence-ivory-2026) 72%, transparent) 0,
+        color-mix(in srgb, var(--essence-ivory-2026) 46%, transparent) 40%,
+        color-mix(in srgb, var(--essence-ivory-2026) 12%, transparent) 74%,
+        transparent 100%
+      ),
+      radial-gradient(
+        ellipse 52% 74% at 52% 48%,
+        color-mix(in srgb, var(--essence-white-2026) 96%, transparent) 0,
+        color-mix(in srgb, var(--essence-white-2026) 82%, transparent) 32%,
+        color-mix(in srgb, var(--essence-ivory-2026) 38%, transparent) 66%,
+        transparent 100%
+      ),
+      radial-gradient(
+        ellipse 42% 58% at 80% 53%,
+        color-mix(in srgb, var(--essence-ivory-2026) 64%, transparent) 0,
+        color-mix(in srgb, var(--essence-ivory-2026) 36%, transparent) 42%,
+        color-mix(in srgb, var(--essence-ivory-2026) 9%, transparent) 76%,
+        transparent 100%
+      );
+    filter: blur(22px);
   }
 
   .signalHeadline {
