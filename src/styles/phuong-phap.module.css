@@ -95,12 +95,44 @@
   position: relative;
 }
 
+.movementNumeral {
+  color: var(--essence-gold-deep-2026);
+}
+
 .chillAtmosphere,
 .realityAtmosphere {
   --phuong-phap-chill-field-image: url("/images/phuong-phap/02-chill-atmosphere.png");
   position: relative;
   isolation: isolate;
   overflow: hidden;
+}
+
+.chillAtmosphere {
+  background:
+    radial-gradient(ellipse at 22% 36%, color-mix(in srgb, var(--essence-white-2026) 44%, transparent) 0, transparent 34%),
+    linear-gradient(
+      180deg,
+      var(--essence-cream-2026) 0,
+      var(--essence-cream-2026) 8rem,
+      color-mix(in srgb, var(--essence-cream-deep-2026) 64%, var(--essence-cream-2026)) 18rem,
+      color-mix(in srgb, var(--essence-cream-deep-2026) 64%, var(--essence-cream-2026)) calc(100% - 18rem),
+      var(--essence-cream-2026) calc(100% - 8rem),
+      var(--essence-cream-2026) 100%
+    );
+}
+
+.challengeAtmosphere {
+  background:
+    radial-gradient(ellipse at 84% 42%, color-mix(in srgb, var(--essence-ivory-2026) 30%, transparent) 0, transparent 32%),
+    linear-gradient(
+      180deg,
+      var(--essence-cream-2026) 0,
+      var(--essence-cream-2026) 8rem,
+      color-mix(in srgb, var(--essence-cream-deep-2026) 86%, var(--essence-cream-2026)) 18rem,
+      color-mix(in srgb, var(--essence-cream-deep-2026) 86%, var(--essence-cream-2026)) calc(100% - 18rem),
+      var(--essence-cream-2026) calc(100% - 8rem),
+      var(--essence-cream-2026) 100%
+    );
 }
 
 .chillAtmosphere::before {
@@ -129,18 +161,19 @@
   );
 }
 
-.movementScene + .movementScene:not(.realityAtmosphere)::before {
-  position: absolute;
-  top: 0;
-  right: max(1.5rem, calc((100vw - 1120px) / 2));
-  left: max(1.5rem, calc((100vw - 1120px) / 2));
-  height: 1px;
-  content: "";
-  background: var(--essence-border-light-2026);
-}
-
 .realityAtmosphere {
   --phuong-phap-reality-field-image: url("/images/phuong-phap/03-hien-thuc-atmosphere.png");
+  background:
+    radial-gradient(ellipse at 70% 36%, color-mix(in srgb, var(--essence-white-2026) 68%, transparent) 0, transparent 34%),
+    linear-gradient(
+      180deg,
+      var(--essence-cream-2026) 0,
+      var(--essence-cream-2026) 8rem,
+      color-mix(in srgb, var(--essence-ivory-2026) 82%, var(--essence-cream-2026)) 18rem,
+      color-mix(in srgb, var(--essence-ivory-2026) 82%, var(--essence-cream-2026)) calc(100% - 18rem),
+      var(--essence-cream-2026) calc(100% - 8rem),
+      var(--essence-cream-2026) 100%
+    );
 }
 
 .realityAtmosphere::before {
@@ -171,16 +204,59 @@
 
 .signalSurface {
   background:
-    radial-gradient(circle at 50% 50%, var(--essence-white-2026) 0, transparent 54%),
+    radial-gradient(ellipse at 50% 50%, color-mix(in srgb, var(--essence-white-2026) 46%, transparent) 0, transparent 34%),
     linear-gradient(
       180deg,
       var(--essence-cream-2026) 0,
       var(--essence-cream-2026) 8rem,
-      var(--essence-ivory-2026) 18rem,
-      var(--essence-ivory-2026) calc(100% - 18rem),
+      color-mix(in srgb, var(--essence-cream-deep-2026) 88%, var(--essence-cream-2026)) 18rem,
+      color-mix(in srgb, var(--essence-cream-deep-2026) 88%, var(--essence-cream-2026)) calc(100% - 18rem),
       var(--essence-cream-2026) calc(100% - 8rem),
       var(--essence-cream-2026) 100%
     );
+}
+
+.signalMoment {
+  position: relative;
+  isolation: isolate;
+}
+
+.signalMoment > * {
+  position: relative;
+  z-index: 1;
+}
+
+.signalMoment::before {
+  position: absolute;
+  top: clamp(4.25rem, 5.5vw, 5.5rem);
+  left: 50%;
+  z-index: 0;
+  width: min(80%, 44rem);
+  height: clamp(7rem, 9vw, 9rem);
+  content: "";
+  pointer-events: none;
+  opacity: 0.94;
+  transform: translate(-50%, -50%) rotate(-1.5deg);
+  background:
+    radial-gradient(ellipse 22% 74% at 10% 43%, color-mix(in srgb, var(--essence-ivory-2026) 80%, transparent) 0, transparent 92%),
+    radial-gradient(ellipse 26% 82% at 87% 54%, color-mix(in srgb, var(--essence-ivory-2026) 78%, transparent) 0, transparent 92%),
+    radial-gradient(ellipse 44% 74% at 50% 49%, color-mix(in srgb, var(--essence-white-2026) 88%, transparent) 0, transparent 78%),
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--essence-gold-deep-2026) 10%, transparent) 11%,
+      color-mix(in srgb, var(--essence-ivory-2026) 88%, transparent) 25%,
+      color-mix(in srgb, var(--essence-white-2026) 94%, transparent) 48%,
+      color-mix(in srgb, var(--essence-ivory-2026) 88%, transparent) 71%,
+      color-mix(in srgb, var(--essence-gold-deep-2026) 10%, transparent) 89%,
+      transparent 100%
+    );
+  -webkit-mask-image: radial-gradient(ellipse 66% 73% at 50% 50%, #000 0%, #000 54%, rgba(0, 0, 0, 0.72) 70%, transparent 100%);
+  mask-image: radial-gradient(ellipse 66% 73% at 50% 50%, #000 0%, #000 54%, rgba(0, 0, 0, 0.72) 70%, transparent 100%);
+}
+
+.signalHeadline {
+  max-width: 7.1em;
 }
 
 .boundarySurface {
@@ -250,6 +326,16 @@
 }
 
 @media (max-width: 767px) {
+  .signalMoment::before {
+    top: clamp(2.8rem, 12vw, 3.8rem);
+    width: calc(100% + 2rem);
+    height: clamp(5rem, 25vw, 6.5rem);
+  }
+
+  .signalHeadline {
+    max-width: 7.2em;
+  }
+
   .heroSurface::before {
     top: 4rem;
     right: auto;

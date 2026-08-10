@@ -298,13 +298,13 @@ export default function PhuongPhapPage() {
         </div>
 
         <div className={styles.movementFlow}>
-          <section className={`${styles.movementScene} ${styles.chillAtmosphere} px-6 py-28 md:px-8 md:py-40 lg:py-48`}>
+          <section className={`${styles.movementScene} ${styles.chillAtmosphere} px-6 py-28 md:px-8 md:py-40 lg:py-[10rem]`}>
             <div className={`${styles.atmosphereContent} mx-auto grid max-w-[1120px] items-start gap-16 lg:grid-cols-12 lg:gap-20`}>
               <div
                 className={`${styles.reveal} lg:col-span-5`}
                 data-phuong-phap-reveal
               >
-                <EssenceUtility variant="numeral" as="p" className="mb-8">
+                <EssenceUtility variant="numeral" as="p" className={`${styles.movementNumeral} mb-8`}>
                   01
                 </EssenceUtility>
                 <EssenceAnchor as="h2" className="max-w-[480px]">
@@ -370,13 +370,13 @@ export default function PhuongPhapPage() {
             </div>
           </section>
 
-          <section className={`${styles.movementScene} px-6 py-28 md:px-8 md:py-40 lg:py-48`}>
+          <section className={`${styles.movementScene} ${styles.challengeAtmosphere} px-6 py-28 md:px-8 md:py-40 lg:py-[10rem]`}>
             <div className="mx-auto max-w-[1120px]">
               <div
                 className={`${styles.reveal} grid gap-8 md:grid-cols-12`}
                 data-phuong-phap-reveal
               >
-                <EssenceUtility variant="numeral" as="p" className="md:col-span-3">
+                <EssenceUtility variant="numeral" as="p" className={`${styles.movementNumeral} md:col-span-3`}>
                   02
                 </EssenceUtility>
                 <div className="md:col-span-9">
@@ -455,13 +455,13 @@ export default function PhuongPhapPage() {
             </div>
           </section>
 
-          <section className={`${styles.movementScene} ${styles.realityAtmosphere} px-6 py-28 md:px-8 md:py-40 lg:py-48`}>
+          <section className={`${styles.movementScene} ${styles.realityAtmosphere} px-6 py-28 md:px-8 md:py-40 lg:py-[10rem]`}>
             <div className={`${styles.atmosphereContent} mx-auto grid max-w-[1120px] items-start gap-20 lg:grid-cols-12 lg:gap-20`}>
               <div
                 className={`${styles.reveal} lg:col-start-6 lg:col-span-7`}
                 data-phuong-phap-reveal
               >
-                <EssenceUtility variant="numeral" as="p" className="mb-8">
+                <EssenceUtility variant="numeral" as="p" className={`${styles.movementNumeral} mb-8`}>
                   03
                 </EssenceUtility>
                 <EssenceAnchor as="h2">Hiện thực ước mơ</EssenceAnchor>
@@ -552,12 +552,12 @@ export default function PhuongPhapPage() {
 
         <section className={`${styles.signalSurface} flex px-6 py-32 md:min-h-[70vh] md:items-center md:px-8 md:py-40 lg:py-48`}>
           <div
-            className={`${styles.reveal} ${styles.signalReveal} mx-auto max-w-[980px] text-center`}
+            className={`${styles.reveal} ${styles.signalReveal} ${styles.signalMoment} mx-auto max-w-[980px] text-center`}
             data-phuong-phap-reveal
           >
             <EssenceAnchor
               as="h2"
-              className="mx-auto max-w-[880px] text-[44px] leading-[1.04] md:text-[72px] md:leading-[1]"
+              className={`${styles.signalHeadline} mx-auto text-[44px] leading-[1.04] md:text-[72px] md:leading-[1]`}
             >
               Nhìn rõ là khởi đầu.
             </EssenceAnchor>
@@ -615,7 +615,7 @@ export default function PhuongPhapPage() {
         </section>
 
         <div className={styles.closingFlow}>
-          <section className="px-6 py-28 md:px-8 md:py-40 lg:py-48">
+          <section className="px-6 py-28 md:px-8 md:py-40 lg:py-[11rem]">
             <div className="mx-auto max-w-[1120px]">
               <div
                 className={`${styles.reveal} max-w-[820px]`}
@@ -662,7 +662,7 @@ export default function PhuongPhapPage() {
             </div>
           </section>
 
-          <section className="px-6 pb-36 pt-28 md:px-8 md:pb-52 md:pt-44 lg:pb-60 lg:pt-52">
+          <section className="px-6 pb-36 pt-28 md:px-8 md:pb-52 md:pt-44 lg:pb-[14rem] lg:pt-[12rem]">
             <div
               className={`${styles.reveal} mx-auto max-w-[820px]`}
               data-phuong-phap-reveal
