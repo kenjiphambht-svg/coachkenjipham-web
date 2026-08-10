@@ -44,6 +44,11 @@ Machine rules and project skills are execution adapters, not a parallel authorit
 - Task-provided document: approved page copy.
 - Planned/Missing: Page Contract. Do not infer it; the task must supply it before execution.
 
+## Route-specific — `/phuong-phap`
+
+- For any `/phuong-phap` editorial-writing or frontend-design task, additionally read: docs/decisions/FD-2026-08-08_PHUONG_PHAP_PUBLIC_METHOD_HIERARCHY.md.
+- This route-specific decision does not belong in Universal and must not be loaded for unrelated backend, admin, payment, Machine Library or other-route tasks.
+
 ## Image production — Kenji portrait
 
 - Exact repo paths: docs/brand/image-system/00_READ_ME_FIRST_IMAGE_SYSTEM.md; docs/brand/image-system/03_FLUX_PROMPT_BANK_KENJI_AND_ESSENCE.md; docs/brand/image-system/02_KENJI_AI_PORTRAIT_STYLE_GUIDE.md; docs/brand/image-system/04_IMAGE_QA_CHECKLIST.md.

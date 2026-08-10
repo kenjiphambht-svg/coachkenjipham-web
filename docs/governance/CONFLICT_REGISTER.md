@@ -11,6 +11,14 @@
 **07/08/2026 update:** added C-19 (Homepage route retirement). See the
 paired cleanup PR (#148) for the runtime changes this ruling authorizes.
 
+**08/08/2026 update:** added C-20 for the current `/phuong-phap` public
+Method hierarchy. C-20 preserves the six-point map internally while
+overriding any requirement to publish it as a second framework on this route.
+
+**09/08/2026 copy-source update:** Founder-supplied public copy v1.6 FINAL
+supersedes v1.3 for `/phuong-phap`. This changes no hierarchy ruling in C-20;
+the only public Method remains Chill → Thách thức → Hiện thực.
+
 **07/08/2026 correction (Founder review, second pass):** this doc's first
 07/08/2026 pass had assigned **C-17** to a method/brand framework
 preservation ruling and **C-18** to Homepage route retirement — both
@@ -66,6 +74,7 @@ decision this method-framework ruling would have duplicated). Resolution:
 | C-15 | Homepage copy and background supersessions (02/08/2026, final) | For `/` these Founder Decisions supersede the corresponding rows of the Editorial Completion Package: Hero reads "Vẫn trả lời những tin nhắn."; Kenji closing line reads "Tôi giữ những khoảng lặng để bạn nhìn rõ điều đang diễn ra và nghe được chính mình."; S08 CTA reads "Mời bạn đọc đầy đủ →"; S04 and S08 keep their current approved background images, so package §8.4/§8.5 and DoD #12/#13 no longer apply. **Signal Moment reads exactly "Không phải mọi chương đều đẹp." — without "vì".** (An interim instruction on 02/08 had asked to insert "vì"; the Founder's final ruling is the sentence without it, and the interim change was reverted before merge. Production was always correct.) Do not re-open any of these as defects. |
 | C-16 | Typography scope (02/08/2026) | Each page may have its **own typographic rhythm and hierarchy**; pages are not required to share one hierarchy or one font-pairing pattern. The whole site keeps the **two approved base fonts** — Cormorant Garamond (serif) and Inter (sans). **No new font may be added.** No global font redesign is to be performed as a side effect of a page-scoped task. Font *loading* performance is a system observation, not a page blocker (see the Homepage completion record §6). |
 | C-19 | Homepage route retirement (07/08/2026) | `/` is the only canonical Homepage. `/trang-chu-v2` is **RETIRED and removed** (`src/pages/trang-chu-v2.tsx` deleted; `VillaPage.tsx` no longer takes a dual-route `pageUrl` contract, only self-renders at `/`). This supersedes the C-01 clause that held `/trang-chu-v2` as an "implementation/migration candidate" with a pending post-cutover disposition — that disposition is now resolved as retirement. C-01's ruling that **`/` is the canonical public Villa route** is unchanged. C-02 (noindex until M6) and C-07 (entity naming) are unaffected. Historical evidence of `/trang-chu-v2` remains in git history and in dated audit records; it is not restated as active-current documentation. |
+| C-20 | `/phuong-phap` public Method hierarchy (08/08/2026) | The six-point map **LẶNG → AN ĐỊNH → NHẬN RA NHỊP RIÊNG → NHÌN RA BẢN SẮC → CHỌN MỘT NHỊP SỐNG CÓ THỂ GIỮ → AN THỊNH** remains ESSENCE internal orientation architecture. `/phuong-phap` must not public it as a second framework, diagram, six-step UI, progress, card, level or map. The route's only public Method hierarchy is **01 Chill với cảm xúc → 02 Thách thức giới hạn → 03 Hiện thực ước mơ**; six-point meanings are integrated into those movements. `An Thịnh` may appear only as natural prose supplied by approved copy, not a sub-framework. No AI/engineer may restore a public six-point section without a newer Founder Decision. This ruling overrides every earlier or concurrent public-six-point requirement for this route; it does not remove the internal architecture. Source: `docs/decisions/FD-2026-08-08_PHUONG_PHAP_PUBLIC_METHOD_HIERARCHY.md`. |
 
 ## Open conflicts and follow-up gaps
 
