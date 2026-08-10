@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import { cn } from "@/lib/utils";
 import styles from "@/styles/phuong-phap.module.css";
 
@@ -6,7 +6,7 @@ type Props = {
   alt?: string;
   className?: string;
   ratio?: "portrait" | "editorial";
-  src?: string;
+  src?: string | StaticImageData;
   variant?: "doorKenji" | "doorSelf" | "doorChild";
 };
 
@@ -32,9 +32,11 @@ export function PhuongPhapImageSlot({
           alt={alt}
           className={cn("object-cover", variant && styles[`${variant}Image`])}
           fill
+          placeholder={typeof src === "string" ? "empty" : "blur"}
+          priority={variant === "doorKenji"}
+          quality={90}
           sizes="(min-width: 1024px) 34vw, (min-width: 768px) 46vw, 90vw"
           src={src}
-          unoptimized
         />
       ) : (
         <>
