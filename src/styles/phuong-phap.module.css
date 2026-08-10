@@ -38,28 +38,29 @@
 }
 
 .heroSurface::before {
-  top: -12rem;
-  right: max(-18vw, -16rem);
-  width: min(102vw, 100rem);
-  height: min(108vw, 86rem);
-  opacity: 0.62;
+  top: -14rem;
+  right: max(-7vw, -6rem);
+  width: min(114vw, 108rem);
+  height: min(120vw, 94rem);
+  opacity: 0.58;
   background-image: var(--phuong-phap-hero-field-image);
-  background-position: 54% 44%;
+  background-position: 100% 45%;
+  background-size: 112% auto;
   -webkit-mask-image: radial-gradient(
-    ellipse 58% 52% at 68% 41%,
+    ellipse 66% 58% at 78% 42%,
     #000 0%,
-    #000 31%,
-    rgba(0, 0, 0, 0.8) 48%,
-    rgba(0, 0, 0, 0.32) 69%,
-    transparent 86%
+    #000 32%,
+    rgba(0, 0, 0, 0.8) 51%,
+    rgba(0, 0, 0, 0.34) 73%,
+    transparent 90%
   );
   mask-image: radial-gradient(
-    ellipse 58% 52% at 68% 41%,
+    ellipse 66% 58% at 78% 42%,
     #000 0%,
-    #000 31%,
-    rgba(0, 0, 0, 0.8) 48%,
-    rgba(0, 0, 0, 0.32) 69%,
-    transparent 86%
+    #000 32%,
+    rgba(0, 0, 0, 0.8) 51%,
+    rgba(0, 0, 0, 0.34) 73%,
+    transparent 90%
   );
 }
 
@@ -233,14 +234,22 @@
 
 .signalSurface {
   background:
-    radial-gradient(ellipse at 50% 48%, color-mix(in srgb, var(--essence-white-2026) 14%, transparent) 0, transparent 42%),
+    radial-gradient(ellipse at 50% 48%, color-mix(in srgb, var(--essence-white-2026) 6%, transparent) 0, transparent 42%),
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--essence-black-2026) 12%, var(--essence-ivory-2026)) 0,
-      color-mix(in srgb, var(--essence-black-2026) 17%, var(--essence-ivory-2026)) 38%,
-      color-mix(in srgb, var(--essence-black-2026) 18%, var(--essence-ivory-2026)) 62%,
-      color-mix(in srgb, var(--essence-black-2026) 12%, var(--essence-ivory-2026)) 100%
+      color-mix(in srgb, var(--essence-black-2026) 82%, var(--essence-ivory-2026)) 0,
+      color-mix(in srgb, var(--essence-black-2026) 76%, var(--essence-ivory-2026)) 38%,
+      color-mix(in srgb, var(--essence-black-2026) 74%, var(--essence-ivory-2026)) 62%,
+      color-mix(in srgb, var(--essence-black-2026) 82%, var(--essence-ivory-2026)) 100%
     );
+}
+
+.signalMoment h2 {
+  color: var(--essence-text-primary-2026);
+}
+
+.signalMoment p {
+  color: var(--essence-text-primary-dark-2026);
 }
 
 .signalMoment {
@@ -259,7 +268,7 @@
   left: 50%;
   z-index: 0;
   width: min(80%, 44rem);
-  height: clamp(7rem, 9vw, 9rem);
+  height: clamp(9rem, 11vw, 11rem);
   content: "";
   pointer-events: none;
   opacity: 0.94;
@@ -500,7 +509,7 @@
   .signalMoment::before {
     top: clamp(2.8rem, 12vw, 3.8rem);
     width: calc(100% + 2rem);
-    height: clamp(5rem, 25vw, 6.5rem);
+    height: clamp(6.5rem, 29vw, 7.5rem);
   }
 
   .signalHeadline {
@@ -508,28 +517,29 @@
   }
 
   .heroSurface::before {
-    top: 1rem;
+    top: -1rem;
     right: auto;
-    left: -10rem;
-    width: calc(100% + 20rem);
-    height: 44rem;
-    opacity: 0.54;
-    background-position: 70% 44%;
+    left: -14rem;
+    width: calc(100% + 24rem);
+    height: 50rem;
+    opacity: 0.5;
+    background-position: 100% 44%;
+    background-size: 128% auto;
     -webkit-mask-image: radial-gradient(
-      ellipse 58% 52% at 63% 40%,
+      ellipse 66% 58% at 74% 41%,
       #000 0%,
-      #000 28%,
-      rgba(0, 0, 0, 0.74) 46%,
-      rgba(0, 0, 0, 0.28) 67%,
-      transparent 86%
+      #000 30%,
+      rgba(0, 0, 0, 0.76) 49%,
+      rgba(0, 0, 0, 0.3) 71%,
+      transparent 90%
     );
     mask-image: radial-gradient(
-      ellipse 58% 52% at 63% 40%,
+      ellipse 66% 58% at 74% 41%,
       #000 0%,
-      #000 28%,
-      rgba(0, 0, 0, 0.74) 46%,
-      rgba(0, 0, 0, 0.28) 67%,
-      transparent 86%
+      #000 30%,
+      rgba(0, 0, 0, 0.76) 49%,
+      rgba(0, 0, 0, 0.3) 71%,
+      transparent 90%
     );
   }
 
