@@ -144,7 +144,7 @@ export default function PhuongPhapPage() {
       <HomeHeader />
 
       <main className={`${styles.page} overflow-x-clip text-e26-text`}>
-        <section className={`${styles.heroSurface} px-6 pb-28 pt-16 md:px-8 md:pb-40 md:pt-24 lg:px-12 lg:pb-48 lg:pt-28`}>
+        <section className={`${styles.heroSurface} px-6 pb-24 pt-14 md:px-8 md:pb-32 md:pt-20 lg:px-12 lg:pb-40 lg:pt-24`}>
           <div className={`${styles.atmosphereContent} mx-auto max-w-[1180px]`}>
             <div
               className={`${styles.reveal} max-w-[720px] lg:pt-12`}
@@ -201,7 +201,7 @@ export default function PhuongPhapPage() {
         </section>
 
         <div className={styles.openingFlow}>
-          <section className="px-6 py-28 md:px-8 md:py-40 lg:py-44">
+          <section className="px-6 py-24 md:px-8 md:py-32 lg:py-36">
             <div
               className={`${styles.reveal} mx-auto max-w-[700px]`}
               data-phuong-phap-reveal
@@ -249,7 +249,7 @@ export default function PhuongPhapPage() {
             </div>
           </section>
 
-          <section className="px-6 pb-32 pt-20 md:px-8 md:pb-44 md:pt-28 lg:pb-48">
+          <section className="px-6 pb-24 pt-16 md:px-8 md:pb-36 md:pt-24 lg:pb-40">
             <div className="mx-auto max-w-[1120px]">
               <div
                 className={`${styles.reveal} max-w-[720px]`}
@@ -298,7 +298,7 @@ export default function PhuongPhapPage() {
         </div>
 
         <div className={styles.movementFlow}>
-          <section className={`${styles.movementScene} ${styles.chillAtmosphere} px-6 py-28 md:px-8 md:py-40 lg:py-[10rem]`}>
+          <section className={`${styles.movementScene} ${styles.chillAtmosphere} px-6 py-24 md:px-8 md:py-36`}>
             <div className={`${styles.atmosphereContent} mx-auto grid max-w-[1120px] items-start gap-16 lg:grid-cols-12 lg:gap-20`}>
               <div
                 className={`${styles.reveal} lg:col-span-5`}
@@ -370,7 +370,7 @@ export default function PhuongPhapPage() {
             </div>
           </section>
 
-          <section className={`${styles.movementScene} ${styles.challengeAtmosphere} px-6 py-28 md:px-8 md:py-40 lg:py-[10rem]`}>
+          <section className={`${styles.movementScene} ${styles.challengeAtmosphere} px-6 py-24 md:px-8 md:py-36`}>
             <div className={`${styles.atmosphereContent} mx-auto max-w-[1120px]`}>
               <div
                 className={`${styles.reveal} grid gap-8 md:grid-cols-12`}
@@ -455,7 +455,7 @@ export default function PhuongPhapPage() {
             </div>
           </section>
 
-          <section className={`${styles.movementScene} ${styles.realityAtmosphere} px-6 py-28 md:px-8 md:py-40 lg:py-[10rem]`}>
+          <section className={`${styles.movementScene} ${styles.realityAtmosphere} px-6 py-24 md:px-8 md:py-36`}>
             <div className={`${styles.atmosphereContent} mx-auto grid max-w-[1120px] items-start gap-20 lg:grid-cols-12 lg:gap-20`}>
               <div
                 className={`${styles.reveal} lg:col-start-6 lg:col-span-7`}
@@ -546,7 +546,7 @@ export default function PhuongPhapPage() {
           </section>
         </div>
 
-        <section className={`${styles.signalSurface} flex px-6 py-32 md:min-h-[70vh] md:items-center md:px-8 md:py-40 lg:py-48`}>
+        <section className={`${styles.signalSurface} flex px-6 py-28 md:min-h-[64vh] md:items-center md:px-8 md:py-36 lg:py-40`}>
           <div
             className={`${styles.reveal} ${styles.signalReveal} ${styles.signalMoment} mx-auto max-w-[980px] text-center`}
             data-phuong-phap-reveal
@@ -563,7 +563,7 @@ export default function PhuongPhapPage() {
           </div>
         </section>
 
-        <section className={`${styles.boundarySurface} px-6 py-28 md:px-8 md:py-40 lg:py-44`}>
+        <section className={`${styles.boundarySurface} px-6 py-24 md:px-8 md:py-36`}>
           <div
             className={`${styles.reveal} mx-auto grid max-w-[1020px] gap-14 md:grid-cols-12 md:gap-16`}
             data-phuong-phap-reveal
@@ -611,7 +611,7 @@ export default function PhuongPhapPage() {
         </section>
 
         <div className={styles.closingFlow}>
-          <section className={`${styles.doorsScene} px-6 pb-20 pt-28 md:px-8 md:pb-28 md:pt-40 lg:pb-[7rem] lg:pt-[11rem]`}>
+          <section className={`${styles.doorsScene} px-6 pb-16 pt-24 md:px-8 md:pb-24 md:pt-36`}>
             <div className="mx-auto max-w-[1120px]">
               <div
                 className={`${styles.reveal} max-w-[820px]`}
@@ -666,7 +666,7 @@ export default function PhuongPhapPage() {
             </div>
           </section>
 
-          <section className="px-6 pb-36 pt-24 md:px-8 md:pb-52 md:pt-32 lg:pb-[14rem] lg:pt-[8rem]">
+          <section className="px-6 pb-32 pt-20 md:px-8 md:pb-44 md:pt-28 lg:pb-[11rem]">
             <div
               className={`${styles.reveal} mx-auto max-w-[820px]`}
               data-phuong-phap-reveal
