@@ -3,11 +3,11 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const sql = readFileSync(
-  resolve(process.cwd(), 'supabase/migrations/20260812120000_launch_core_identity_foundation.sql'),
+  resolve(process.cwd(), 'supabase/migrations/20260812044335_launch_core_identity_foundation.sql'),
   'utf8'
 );
 const rollback = readFileSync(
-  resolve(process.cwd(), 'supabase/rollbacks/20260812120000_launch_core_identity_foundation_down.sql'),
+  resolve(process.cwd(), 'supabase/rollbacks/20260812044335_launch_core_identity_foundation_down.sql'),
   'utf8'
 );
 

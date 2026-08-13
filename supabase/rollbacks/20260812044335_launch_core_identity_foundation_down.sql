@@ -1,4 +1,4 @@
--- Manual rollback for 20260812120000 · WO-LAUNCH-CORE-01 Identity + Relationship Foundation.
+-- Manual rollback for 20260812044335 · WO-LAUNCH-CORE-01 Identity + Relationship Foundation.
 -- Safe only while no later migration depends on the identity schema.
 -- Drops the entire schema and every table/function/trigger created by the
 -- forward migration. Does not touch any other schema (public, knowledge, auth).

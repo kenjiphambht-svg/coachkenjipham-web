@@ -1,4 +1,4 @@
--- 20260812120000 · WO-LAUNCH-CORE-01: Identity + Relationship Foundation
+-- 20260812044335 · WO-LAUNCH-CORE-01: Identity + Relationship Foundation
 -- Minimum operational-core substrate: a canonical Person is not the same thing as an
 -- auth account, a customer, or a child/subject. This migration only answers who a
 -- person is, which auth account maps to them, what customer relationship (if any)
