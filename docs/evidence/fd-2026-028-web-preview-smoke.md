@@ -11,3 +11,5 @@ Expected routing:
 - Founder/Backend Review Project: do not build this `web/*` branch.
 
 This branch must not be used to alter the approved `main + web/*` / `backend/*` routing split.
+
+Retrigger evidence: second push on the same canonical `web/*` branch; no runtime behavior changed.
