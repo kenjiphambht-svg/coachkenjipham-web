@@ -1,9 +1,10 @@
 -- 20260814112920 · WO-LAUNCH-CORE-04 P07 BUILDER PROTOCOL v2.1: Global
 -- State + Operation Closure. Closes P07's three named findings (A, B, C)
--- from independent review of PR #158 at head 58f0bc2. Additive-only over
--- 20260814093326_launch_core_production_fifth_evaluation_hardening. Does
--- not edit any previously applied migration file; does not modify the
--- already-accepted commerce/identity/entitlement/knowledge schemas.
+-- from independent review of PR #158 at head 58f0bc2. Canonical history
+-- corrected before Production under FD-2026-027: this file supersedes the
+-- staging-only first execution that physically dropped Artifact evidence.
+-- It remains scoped to production and does not modify the already-accepted
+-- commerce/identity/entitlement/knowledge schemas.
 --
 -- Full Phase A-E discipline (effective-state reconstruction directly
 -- against live staging pg_catalog, Canonical Invariant Graph, State
@@ -81,32 +82,28 @@
 -- across an Artifact's history — that is exactly what per-version
 -- ArtifactVersion rows exist to represent).
 --
--- FIX (structural, not a patch): production.artifacts.product_version_id
--- is removed entirely, per section 13's own instruction — "If Product
--- Version may legitimately vary between Artifact Versions, the stable
--- Artifact representation must not make that impossible." A single
--- frozen Version value on a row whose Version may legitimately vary
--- across its own history is a contradiction in terms; it does not belong
--- on the stable identity row at all. The true, per-occurrence Version of
--- an Artifact's output already lives correctly on each immutable
--- production.artifact_versions row (via its originating Job, whose own
--- Version coherence is fully and separately governed by
--- validate_job_scope() — unaffected by this change), and the "current"
--- Version is already correctly exposed via the pre-existing
--- production.artifact_current_version view (confirmed by reading its
--- live definition: derived entirely from artifact_versions, never
--- referenced artifacts.product_version_id).
+-- FIX (recovery-safe structural separation): product_version_id remains
+-- physically present as nullable, immutable creation-time evidence with
+-- its original referential constraints, but is retired from Artifact
+-- identity and runtime lineage decisions. Keeping the value is essential:
+-- an applied migration must not destroy historical evidence merely because
+-- a newer model no longer consumes it. The true Product Version of each
+-- produced occurrence lives on its immutable ArtifactVersion via the
+-- originating Job; current output remains derived from artifact_versions.
+-- A new engine or Product Version can therefore append a new version to the
+-- same Artifact without rewriting or interpreting the legacy field.
 --
 -- Consequence: validate_artifact_scope()'s Journey-Version checks
 -- (ARTIFACT_JOURNEY_VERSION_MISMATCH / ARTIFACT_JOURNEY_VERSION_NOT_
--- YET_PINNED, added in round 4) become vacuous — nothing is left on the
--- Artifact side to compare a Journey's pin against — and are removed;
+-- YET_PINNED, added in round 4) are removed because the retained field is
+-- evidence only, not a current lineage assertion;
 -- Journey belongs-to checks (ARTIFACT_JOURNEY_NOT_FOUND / _SCOPE_
 -- MISMATCH) are untouched, Journey remains fully protected as identity.
 -- validate_artifact_version_scope()'s Job-vs-Artifact Version comparison
 -- (ARTIFACT_VERSION_JOB_VERSION_MISMATCH) is removed for the same
--- reason; Person/Product/Journey coherence and the successful-Attempt
--- requirement are untouched.
+-- reason. Person/Product/Journey coherence, the Product-Version foreign
+-- keys on the retained evidence, and the successful-Attempt requirement
+-- are untouched.
 --
 -- artifacts_unique_canonical_scope_idx is untouched (it never referenced
 -- product_version_id — round 2 already excluded it from identity).
@@ -141,23 +138,20 @@
 -- reference cannot silently produce two rows, not what review workflow
 -- states are allowed (that remains P11 territory, untouched here).
 --
--- review_correlation_reference is made NOT NULL: a review event with no
--- caller-supplied occurrence identity has no technical basis on which
--- to ever detect a replay, so a controlled write path that must be
--- replay-safe is required to supply one. This is a technical
--- idempotency-token requirement, the same shape already used for
--- jobs.idempotency_key and job_attempts.idempotency_key elsewhere in
--- this schema — not an invented QA/business rule. (Table confirmed
--- empty on staging before this change — safe to tighten.)
+-- New review events require a caller-supplied occurrence identity. Legacy
+-- rows, however, were legally allowed to have a NULL reference or duplicate
+-- non-NULL references. Tightening the original column or adding an ordinary
+-- UNIQUE constraint would either reject a valid non-empty upgrade or rewrite
+-- immutable evidence. Neither is acceptable.
 --
--- FIX: review_correlation_reference set NOT NULL; new UNIQUE
--- (artifact_version_id, review_source, review_correlation_reference). A
--- replayed identical event now hits a plain unique-violation, exactly
--- the same replay-safety shape already established for Job/Attempt
--- idempotency keys and for output registration
--- (artifact_versions_unique_artifact_attempt) — no new mechanism
--- introduced, the existing pattern extended to the one write path that
--- was missing it.
+-- FIX (legacy-preserving): add a derived review_replay_guarded marker. Every
+-- pre-existing row receives FALSE and remains byte-for-byte unchanged in its
+-- original evidence columns. The default then changes to TRUE and a BEFORE
+-- INSERT trigger forces TRUE, requires a correlation reference, and rejects
+-- a key already present in either legacy or guarded history. A partial unique
+-- index over guarded rows closes the concurrent-insert race. This preserves
+-- every previously legal row while making all new events replay-safe. The
+-- pattern is technical idempotency, not a QA/business workflow rule.
 
 -- ---------------- Finding A ----------------
 
@@ -231,9 +225,11 @@ comment on function production.reject_job_rewrite() is
 
 -- ---------------- Finding B ----------------
 
-alter table production.artifacts drop constraint if exists artifacts_version_belongs_to_product;
-alter table production.artifacts drop constraint if exists artifacts_product_version_id_fkey;
-alter table production.artifacts drop column if exists product_version_id;
+comment on column production.artifacts.product_version_id is
+  'Deprecated, immutable creation-time Product Version evidence retained for recovery safety. It is not part of Artifact canonical identity, does not define the Product Version of later Artifact Versions, and must not be used as an access, QA, publication, or delivery signal.';
+
+comment on table production.artifacts is
+  'Stable logical produced thing for a Person/Product, optionally anchored to a Journey. product_version_id is retained only as immutable legacy creation-time evidence; it is not canonical identity or current output lineage. All produced history lives on artifact_versions. Existing does not imply QA approval, publication, entitlement, access, or delivery.';
 
 create or replace function production.validate_artifact_scope()
 returns trigger
@@ -260,7 +256,7 @@ end;
 $$;
 
 comment on function production.validate_artifact_scope() is
-  'Journey belongs-to check only (Finding B): Artifact no longer carries its own Version claim at all, so there is nothing left to compare against a Journey''s pin. Journey remains the Artifact''s sole identity anchor when present, fully protected.';
+  'Journey belongs-to check only (Finding B): the retained Artifact product_version_id is deprecated creation-time evidence, not current lineage, so it is not compared with a Journey''s current pin. Journey remains the Artifact''s sole identity anchor when present, fully protected.';
 
 create or replace function production.validate_artifact_version_scope()
 returns trigger
@@ -299,11 +295,11 @@ begin
     raise exception 'ARTIFACT_VERSION_JOB_JOURNEY_MISMATCH';
   end if;
 
-  -- Finding B: no Job-vs-Artifact Version comparison anymore — Version
-  -- is no longer carried on the Artifact row at all, so it can never be
-  -- stale relative to a legitimately-varying future ArtifactVersion. The
-  -- true Version of THIS occurrence is whatever the cited Job asserts,
-  -- already fully governed by validate_job_scope() independently.
+  -- Finding B: no Job-vs-Artifact legacy Version comparison. The retained
+  -- Artifact field is creation-time evidence only and cannot block a
+  -- legitimately-varying future ArtifactVersion. The true Version of THIS
+  -- occurrence is whatever the cited Job asserts, already fully governed
+  -- by validate_job_scope() independently.
 
   select status into v_attempt_status from production.job_attempts where id = NEW.job_attempt_id;
   if v_attempt_status is null then
@@ -318,22 +314,58 @@ end;
 $$;
 
 comment on function production.validate_artifact_version_scope() is
-  'Person/Product/Journey coherence between Job and Artifact, plus a genuinely successful origin Attempt. No Version comparison (Finding B) — Version now lives only on each immutable ArtifactVersion via its Job, never frozen on the stable Artifact row, so it can legitimately vary across an Artifact''s own history without contradiction.';
+  'Person/Product/Journey coherence between Job and Artifact, plus a genuinely successful origin Attempt. No comparison against the deprecated Artifact creation-time Product Version evidence (Finding B): each produced occurrence derives its Version from its immutable originating Job, so Product Version may legitimately evolve across one Artifact history.';
 
 -- ---------------- Finding C ----------------
 
 alter table production.artifact_reviews
-  alter column review_correlation_reference set not null;
+  add column if not exists review_replay_guarded boolean not null default false;
 
 alter table production.artifact_reviews
-  drop constraint if exists artifact_reviews_review_correlation_reference_check;
-alter table production.artifact_reviews
-  add constraint artifact_reviews_review_correlation_reference_check
-  check (char_length(review_correlation_reference) between 1 and 300);
+  alter column review_replay_guarded set default true;
 
-alter table production.artifact_reviews
-  add constraint artifact_reviews_unique_event
-  unique (artifact_version_id, review_source, review_correlation_reference);
+comment on column production.artifact_reviews.review_replay_guarded is
+  'Derived compatibility marker. FALSE identifies evidence that predates FD-2026-027 replay enforcement; TRUE is forced for every new review event. It is not QA state, approval, publication, access, or delivery truth.';
+
+create or replace function production.validate_artifact_review_replay()
+returns trigger
+language plpgsql
+set search_path = pg_catalog, production
+as $$
+begin
+  if NEW.review_correlation_reference is null then
+    raise exception 'REVIEW_CORRELATION_REFERENCE_REQUIRED';
+  end if;
+
+  NEW.review_replay_guarded := true;
+
+  if exists (
+    select 1
+    from production.artifact_reviews existing
+    where existing.artifact_version_id = NEW.artifact_version_id
+      and existing.review_source = NEW.review_source
+      and existing.review_correlation_reference = NEW.review_correlation_reference
+  ) then
+    raise exception 'REVIEW_EVENT_REPLAY';
+  end if;
+
+  return NEW;
+end;
+$$;
+
+revoke all on function production.validate_artifact_review_replay() from public, anon, authenticated;
+
+create trigger production_artifact_reviews_validate_replay
+  before insert on production.artifact_reviews
+  for each row execute function production.validate_artifact_review_replay();
+
+create unique index production_artifact_reviews_unique_guarded_event_idx
+  on production.artifact_reviews (
+    artifact_version_id,
+    review_source,
+    review_correlation_reference
+  )
+  where review_replay_guarded;
 
 comment on table production.artifact_reviews is
-  'Immutable production history: one QA/review evidence event for an Artifact Version. Insert-only. review_correlation_reference is a caller-supplied, mandatory occurrence identity (Finding C) — replaying the same (artifact_version_id, review_source, review_correlation_reference) triple hits a unique-violation rather than silently creating a second canonical event; a genuinely new review must carry its own distinct reference. Does not itself imply APPROVED/PUBLISHED/ACCESSIBLE — those remain separate, later invariants.';
+  'Immutable production history: one QA/review evidence row for an Artifact Version. Insert-only. Legacy rows remain exact even when their historical correlation was NULL or duplicated. Every new row must provide a caller-supplied occurrence identity and is replay-guarded on (artifact_version_id, review_source, review_correlation_reference); a genuinely new review must carry a distinct reference. Does not itself imply APPROVED/PUBLISHED/ACCESSIBLE — those remain separate, later invariants.';

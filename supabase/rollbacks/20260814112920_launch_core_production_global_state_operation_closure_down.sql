@@ -1,40 +1,36 @@
--- Scoped rollback for 20260817010000_launch_core_production_global_state_operation_closure.
+-- Scoped rollback for 20260814112920_launch_core_production_global_state_operation_closure.
 -- Restores reject_job_rewrite(), validate_artifact_scope(),
 -- validate_artifact_version_scope() to their exact pre-migration bodies;
--- restores production.artifacts.product_version_id (nullable, with its
--- two FK constraints); restores production.artifact_reviews.
--- review_correlation_reference to nullable with the original CHECK, and
--- drops the new unique-event constraint. Touches no other object, no
--- other schema.
+-- preserves production.artifacts.product_version_id and its values/FKs;
+-- makes the derived forward-event replay guard inert. Its compatibility
+-- marker column remains with default FALSE so rollback-window rows are
+-- preserved without physical drop/re-add drift. Original Review evidence
+-- columns remain byte-for-byte unchanged. Touches no other schema.
 
 -- ---------------- Finding C rollback ----------------
 
-alter table production.artifact_reviews
-  drop constraint if exists artifact_reviews_unique_event;
+drop trigger if exists production_artifact_reviews_validate_replay
+  on production.artifact_reviews;
+
+drop function if exists production.validate_artifact_review_replay();
 
 alter table production.artifact_reviews
-  drop constraint if exists artifact_reviews_review_correlation_reference_check;
-alter table production.artifact_reviews
-  add constraint artifact_reviews_review_correlation_reference_check
-  check (
-    (review_correlation_reference is null)
-    or (char_length(review_correlation_reference) >= 1 and char_length(review_correlation_reference) <= 300)
-  );
+  alter column review_replay_guarded set default false;
 
-alter table production.artifact_reviews
-  alter column review_correlation_reference drop not null;
+drop index if exists production.production_artifact_reviews_unique_guarded_event_idx;
+
+comment on column production.artifact_reviews.review_replay_guarded is
+  'Inert compatibility marker retained by scoped rollback. FALSE is the default while replay enforcement is reverted; canonical reapplication reactivates the marker without dropping or reordering schema.';
+
+comment on table production.artifact_reviews is
+  'Insert-only, immutable event log of review/QA evidence for a specific Artifact Version. Each row is a factual review event — WHAT Artifact Version, WHAT technical review_state, WHEN, WHAT source. review_source is required so a review can never exist as unexplained history. This substrate is technical only: it does not decide, and by itself does not imply, delivery or customer access. Provider execution success recorded on job_attempts is a completely separate fact from any row here.';
 
 -- ---------------- Finding B rollback ----------------
 
-alter table production.artifacts add column if not exists product_version_id uuid;
+comment on column production.artifacts.product_version_id is null;
 
-alter table production.artifacts
-  add constraint artifacts_product_version_id_fkey
-  foreign key (product_version_id) references commerce.product_versions(id) on delete restrict;
-
-alter table production.artifacts
-  add constraint artifacts_version_belongs_to_product
-  foreign key (product_version_id, product_id) references commerce.product_versions(id, product_id);
+comment on table production.artifacts is
+  'Stable logical produced thing for a Person/Product (optionally scoped to a Product Version and/or Journey). Fully immutable after creation — all real production history lives on artifact_versions, never on this row. Existing does not by itself imply QA approval, publication, or customer access.';
 
 create or replace function production.validate_artifact_scope()
 returns trigger

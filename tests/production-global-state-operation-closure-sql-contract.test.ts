@@ -10,6 +10,24 @@ const rollback = readFileSync(
   resolve(process.cwd(), 'supabase/rollbacks/20260814112920_launch_core_production_global_state_operation_closure_down.sql'),
   'utf8'
 );
+const proofComponentPaths = [
+  'wo04_non_empty_fixture.sql',
+  'wo04_product_version_evolution.sql',
+  'wo04_final_state_assertions.sql',
+  'wo04_runtime_regression.sql',
+] as const;
+const proofComponents = proofComponentPaths.map((name) => ({
+  name,
+  sql: readFileSync(resolve(process.cwd(), 'supabase/tests', name), 'utf8'),
+}));
+const stagingProofRunner = readFileSync(
+  resolve(process.cwd(), 'supabase/tests/wo04_staging_transaction.sql'),
+  'utf8'
+);
+const localRecoverySeed = readFileSync(
+  resolve(process.cwd(), 'supabase/tests/wo04_local_recovery_seed.sql'),
+  'utf8'
+);
 
 const stripComments = (text: string) =>
   text
@@ -21,7 +39,7 @@ const stripComments = (text: string) =>
 const code = stripComments(sql);
 const rollbackCode = stripComments(rollback);
 
-describe('WO-LAUNCH-CORE-04 global state + operation closure — additive only', () => {
+describe('WO-LAUNCH-CORE-04 global state + operation closure — FD-2026-027 canonical rebaseline', () => {
   it('does not touch identity, entitlement, or knowledge, and does not create/drop a schema', () => {
     expect(code).not.toMatch(/create schema|drop schema/i);
     expect(code).not.toMatch(/identity\.\w|entitlement\.\w|knowledge\.\w/i);
@@ -55,11 +73,12 @@ describe('Finding A — Job cannot terminate (failed/cancelled) while an Attempt
   });
 });
 
-describe('Finding B — Artifact no longer carries a stale Version claim', () => {
-  it('drops artifacts.product_version_id and its FK constraints', () => {
-    expect(sql).toMatch(/drop constraint if exists artifacts_version_belongs_to_product/i);
-    expect(sql).toMatch(/drop constraint if exists artifacts_product_version_id_fkey/i);
-    expect(sql).toMatch(/drop column if exists product_version_id/i);
+describe('Finding B — Artifact retains legacy evidence without freezing future Version lineage', () => {
+  it('never drops artifacts.product_version_id or its FK constraints', () => {
+    expect(code).not.toMatch(/drop column(?: if exists)? product_version_id/i);
+    expect(code).not.toMatch(/drop constraint(?: if exists)? artifacts_version_belongs_to_product/i);
+    expect(code).not.toMatch(/drop constraint(?: if exists)? artifacts_product_version_id_fkey/i);
+    expect(sql).toMatch(/comment on column production\.artifacts\.product_version_id is\s*'Deprecated, immutable creation-time Product Version evidence retained for recovery safety/i);
   });
 
   it('validate_artifact_scope no longer declares or checks any Version', () => {
@@ -83,27 +102,37 @@ describe('Finding B — Artifact no longer carries a stale Version claim', () =>
 });
 
 describe('Finding C — Review event replay identity', () => {
-  it('makes review_correlation_reference mandatory', () => {
-    expect(sql).toMatch(/alter column review_correlation_reference set not null/i);
+  it('preserves every legacy correlation value instead of tightening the original evidence column', () => {
+    expect(code).not.toMatch(/alter column review_correlation_reference set not null/i);
+    expect(code).not.toMatch(/update production\.artifact_reviews/i);
+    expect(sql).toMatch(/add column if not exists review_replay_guarded boolean not null default false/i);
+    expect(sql).toMatch(/alter column review_replay_guarded set default true/i);
   });
 
-  it('adds a unique-event constraint scoped to (artifact_version_id, review_source, review_correlation_reference)', () => {
-    expect(sql).toMatch(
-      /add constraint artifact_reviews_unique_event\s*unique \(artifact_version_id, review_source, review_correlation_reference\)/i
-    );
+  it('requires correlation and forces the guard for every new event', () => {
+    const fn = code.split('create or replace function production.validate_artifact_review_replay')[1].split('revoke all on function production.validate_artifact_review_replay')[0];
+    expect(fn).toMatch(/NEW\.review_correlation_reference is null/i);
+    expect(fn).toMatch(/REVIEW_CORRELATION_REFERENCE_REQUIRED/i);
+    expect(fn).toMatch(/NEW\.review_replay_guarded := true/i);
+    expect(fn).toMatch(/REVIEW_EVENT_REPLAY/i);
   });
 
-  it('does not key identity on review_state (a genuine new event may share state with a prior one)', () => {
-    const constraintLine = sql.split('add constraint artifact_reviews_unique_event')[1].split(';')[0];
-    expect(constraintLine).not.toMatch(/review_state/i);
+  it('adds a partial atomic backstop for concurrent new-event replay', () => {
+    const index = code.split('create unique index production_artifact_reviews_unique_guarded_event_idx')[1].split(';')[0];
+    expect(index).toMatch(/artifact_version_id/i);
+    expect(index).toMatch(/review_source/i);
+    expect(index).toMatch(/review_correlation_reference/i);
+    expect(index).toMatch(/where review_replay_guarded/i);
+    expect(index).not.toMatch(/review_state/i);
   });
 });
 
 describe('scoped rollback', () => {
-  it('restores product_version_id (nullable) with both original FK constraints', () => {
-    expect(rollback).toMatch(/add column if not exists product_version_id uuid/i);
-    expect(rollback).toMatch(/add constraint artifacts_product_version_id_fkey/i);
-    expect(rollback).toMatch(/add constraint artifacts_version_belongs_to_product/i);
+  it('preserves product_version_id data and its existing FK constraints instead of recreating an empty column', () => {
+    expect(rollbackCode).not.toMatch(/add column(?: if not exists)? product_version_id/i);
+    expect(rollbackCode).not.toMatch(/drop column(?: if exists)? product_version_id/i);
+    expect(rollbackCode).not.toMatch(/(?:add|drop) constraint(?: if exists)? artifacts_(?:product_version_id_fkey|version_belongs_to_product)/i);
+    expect(rollback).toMatch(/preserves production\.artifacts\.product_version_id and its values\/FKs/i);
   });
 
   it('restores the pre-migration validate_artifact_scope and validate_artifact_version_scope bodies', () => {
@@ -121,13 +150,42 @@ describe('scoped rollback', () => {
     expect(fn).toMatch(/raise exception 'JOB_SUCCEEDED_REQUIRES_SUCCESSFUL_ATTEMPT'/i);
   });
 
-  it('drops the unique-event constraint and restores nullable review_correlation_reference with the original CHECK', () => {
-    expect(rollback).toMatch(/drop constraint if exists artifact_reviews_unique_event/i);
-    expect(rollback).toMatch(/alter column review_correlation_reference drop not null/i);
-    expect(rollback).toMatch(/review_correlation_reference is null/i);
+  it('makes only the derived replay guard inert and leaves original Review evidence untouched', () => {
+    expect(rollback).toMatch(/drop trigger if exists production_artifact_reviews_validate_replay/i);
+    expect(rollback).toMatch(/drop function if exists production\.validate_artifact_review_replay/i);
+    expect(rollback).toMatch(/drop index if exists production\.production_artifact_reviews_unique_guarded_event_idx/i);
+    expect(rollback).toMatch(/alter column review_replay_guarded set default false/i);
+    expect(rollbackCode).not.toMatch(/drop column(?: if exists)? review_replay_guarded/i);
+    expect(rollbackCode).not.toMatch(/alter column review_correlation_reference/i);
   });
 
   it('touches neither identity, commerce structure, entitlement, nor knowledge', () => {
     expect(rollbackCode).not.toMatch(/identity\.\w|entitlement\.\w|knowledge\.\w|create table|drop schema|commerce\.\w+\s*(add|drop|alter)/i);
+  });
+});
+
+describe('reproducible transaction ownership', () => {
+  it.each(proofComponents)('$name is transaction-neutral', ({ sql: component }) => {
+    const componentCode = component
+      .split('\n')
+      .filter((line) => !line.trim().startsWith('--'))
+      .join('\n');
+    expect(componentCode).not.toMatch(/^\s*(?:begin|commit|rollback)\s*;/im);
+  });
+
+  it('the staging runner alone owns one BEGIN/ROLLBACK and includes every final-state component', () => {
+    expect(stagingProofRunner.match(/^\s*begin\s*;/gim)).toHaveLength(1);
+    expect(stagingProofRunner.match(/^\s*rollback\s*;/gim)).toHaveLength(1);
+    expect(stagingProofRunner).not.toMatch(/^\s*commit\s*;/im);
+    for (const name of proofComponentPaths) {
+      expect(stagingProofRunner).toContain(`\\ir ${name}`);
+    }
+  });
+
+  it('the only commit runner is explicitly local and includes the legacy-state fixture', () => {
+    expect(localRecoverySeed).toMatch(/Disposable-local-only seed owner/i);
+    expect(localRecoverySeed.match(/^\s*commit\s*;/gim)).toHaveLength(1);
+    expect(localRecoverySeed).toContain('\\ir wo04_legacy_review_fixture.sql');
+    expect(stagingProofRunner).not.toContain('wo04_legacy_review_fixture.sql');
   });
 });
