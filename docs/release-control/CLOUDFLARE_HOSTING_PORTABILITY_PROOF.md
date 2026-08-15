@@ -47,6 +47,11 @@ Use staging/synthetic-safe values only. Never commit or paste secret values in G
 - `SUPABASE_URL` -> staging/non-production endpoint only
 - `SUPABASE_SERVICE_ROLE_KEY` -> staging/non-production secret only
 
+`CLOUDFLARE_PORTABILITY_PROOF` is a non-secret Worker variable committed in
+`wrangler.jsonc` so the isolated probe route exists at runtime. Without the two
+staging Supabase bindings, the probe deliberately returns `503` with presence
+booleans set to `false`; it never prints credential values.
+
 Do not configure `ESSENCE_GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON` for this proof unless a later Founder gate explicitly permits provider testing.
 
 ## Acceptance ledger
@@ -103,9 +108,11 @@ Two compatibility defects were present in the proof toolchain:
 
 The proof keeps React 18 and application behavior unchanged. It pins OpenNext
 1.20.2 and Wrangler 4.123.0 in the lockfile, then applies the one-line upstream
-fix during `npm ci`: the generated missing-module Error receives
-`code: "MODULE_NOT_FOUND"`. The patch script is version- and source-guarded,
-idempotent, and fails visibly if the pinned adapter changes shape.
+fix only at the start of the Cloudflare build path (`npm run cf:build`): the
+generated missing-module Error receives `code: "MODULE_NOT_FOUND"`. A normal
+or Vercel `npm ci` leaves OpenNext untouched. The patch script is version- and
+source-guarded, idempotent, and fails visibly if the pinned adapter changes
+shape.
 
 React 19 was not adopted: the repository's current `react-day-picker@8.10.1`
 peer contract excludes React 19, so that route would require an unrelated
@@ -115,6 +122,7 @@ frontend dependency migration.
 
 ```text
 npm ci
+# Normal install leaves OpenNext's optional-dependency source unchanged.
 CLOUDFLARE_PORTABILITY_PROOF=1 npm run cf:build
 CLOUDFLARE_PORTABILITY_PROOF=1 npm run cf:preview
 curl http://127.0.0.1:8787/
@@ -124,3 +132,36 @@ Result after the correction: `/` returned `200 OK`; the canonical homepage
 title, `noindex`, canonical URL and `X-Content-Type-Options: nosniff` rendered;
 the homepage CSS, JavaScript and PNG asset each returned `200`. No service
 secret or Production service was required for this public-route proof.
+
+## Phase C builder proof — 15/08/2026
+
+### Cloudflare-only shim scope
+
+A fresh `npm ci` left OpenNext's optional-dependency source unchanged, and a
+normal `npm run build` passed in that unpatched state. `npm run cf:build` then
+applied the exact guarded OpenNext 1.20.2 patch before building the Worker.
+This keeps normal and Vercel installs free from Cloudflare adapter mutation.
+
+### Local Worker and safe negative probe
+
+The built Worker served `/` and representative CSS, JavaScript, WebP, JPG and
+PNG assets with `200`. The public, non-secret
+`CLOUDFLARE_PORTABILITY_PROOF=1` Worker variable exposes the isolated probe;
+without staging Supabase bindings it returned `503` with both binding-presence
+booleans `false` and `supabaseReadOnlyRpc: false`. No credential value was
+requested or emitted.
+
+### Dry-run size evidence
+
+`wrangler deploy --dry-run` did not upload or deploy anything. Wrangler 4.123.0
+reported:
+
+- Worker upload: 4,886.75 KiB uncompressed;
+- Worker gzip: 1,001.08 KiB;
+- static assets read by Wrangler: 177 files;
+- local static asset directory: 78.16 MiB.
+
+The gzip result is below the current Workers Free 3 MB Worker-size limit and
+177 assets are below the 20,000-file limit. Wrangler did not report startup
+time in this dry run. CPU consumption is also **UNKNOWN** until actual runtime
+metrics exist; neither value is inferred from bundle size.
