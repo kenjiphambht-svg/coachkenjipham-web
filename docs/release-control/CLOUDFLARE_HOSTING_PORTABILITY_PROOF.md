@@ -27,7 +27,7 @@ Worker target name: essence-web-portability-proof
 ## Cloudflare build settings required
 
 Build command:
-`CLOUDFLARE_PORTABILITY_PROOF=1 npx --yes @opennextjs/cloudflare@1.20.2 build`
+`CLOUDFLARE_PORTABILITY_PROOF=1 npm run cf:build`
 
 Production deploy command:
 `npx --yes @opennextjs/cloudflare@1.20.2 upload`
@@ -69,3 +69,58 @@ Vercel-specific `vercel.json` currently carries `X-Content-Type-Options: nosniff
 ## Images
 
 The proof deliberately does not enable the separately metered Cloudflare Images product. With `CLOUDFLARE_PORTABILITY_PROOF=1`, Next image optimization is disabled and local originals are served so functional/assets parity can be tested without a paid image dependency. A Founder cutover decision must separately choose whether to keep originals or enable an image optimization path.
+
+## Runtime 500 diagnosis — 15/08/2026
+
+### Reproduction before the fix
+
+The commit Preview and a clean local OpenNext/Wrangler Preview both returned
+`500 Internal Server Error` for `/`. The local Worker log exposed the actual
+startup exceptions hidden by the plain HTTP response:
+
+```text
+TypeError: Cannot read properties of undefined (reading 'contexts')
+Error: Missing optional dependency "react-dom/server.edge"
+```
+
+The application homepage, environment bindings and Supabase probe were not in
+the failing stack. Normal `next build` completed successfully.
+
+### Root cause and bounded correction
+
+Two compatibility defects were present in the proof toolchain:
+
+1. The lockfile resolved Next.js `15.5.20`, outside
+   `@opennextjs/cloudflare@1.20.2`'s supported peer range, which starts at
+   `15.5.21`. Next is now pinned to the smallest supported patch, `15.5.21`.
+2. OpenNext 1.20.2 has an acknowledged React 18 Pages Router bug
+   ([upstream #1325](https://github.com/opennextjs/opennextjs-cloudflare/issues/1325)).
+   Its optional-dependency stub throws a plain Error when
+   `react-dom/server.edge` is absent. Next expects that absence under React 18
+   and falls back to `react-dom/server.browser`, but only when the error has a
+   standard module-resolution code. The incomplete Pages runtime then emits
+   the secondary `contexts` errors.
+
+The proof keeps React 18 and application behavior unchanged. It pins OpenNext
+1.20.2 and Wrangler 4.123.0 in the lockfile, then applies the one-line upstream
+fix during `npm ci`: the generated missing-module Error receives
+`code: "MODULE_NOT_FOUND"`. The patch script is version- and source-guarded,
+idempotent, and fails visibly if the pinned adapter changes shape.
+
+React 19 was not adopted: the repository's current `react-day-picker@8.10.1`
+peer contract excludes React 19, so that route would require an unrelated
+frontend dependency migration.
+
+### Reproducible local result
+
+```text
+npm ci
+CLOUDFLARE_PORTABILITY_PROOF=1 npm run cf:build
+CLOUDFLARE_PORTABILITY_PROOF=1 npm run cf:preview
+curl http://127.0.0.1:8787/
+```
+
+Result after the correction: `/` returned `200 OK`; the canonical homepage
+title, `noindex`, canonical URL and `X-Content-Type-Options: nosniff` rendered;
+the homepage CSS, JavaScript and PNG asset each returned `200`. No service
+secret or Production service was required for this public-route proof.
