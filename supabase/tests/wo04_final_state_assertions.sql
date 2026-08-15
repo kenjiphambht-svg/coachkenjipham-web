@@ -22,6 +22,17 @@ begin
     raise exception 'WO04_FINAL_LEGACY_PRODUCT_VERSION_MISMATCH';
   end if;
 
+  if (select input_fingerprint from production.jobs
+      where id = '00000000-0000-4000-8000-000000000407') is not null then
+    raise exception 'WO04_FINAL_LEGACY_JOB_FINGERPRINT_FABRICATED';
+  end if;
+
+  if (select input_fingerprint from production.jobs
+      where id = '00000000-0000-4000-8000-000000000412')
+     is distinct from repeat('4', 64) then
+    raise exception 'WO04_FINAL_NEW_JOB_FINGERPRINT_MISMATCH';
+  end if;
+
   select count(distinct j.product_version_id) into v_distinct_job_versions
   from production.artifact_versions av
   join production.jobs j on j.id = av.job_id
