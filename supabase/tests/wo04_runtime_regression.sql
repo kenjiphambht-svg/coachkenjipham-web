@@ -19,14 +19,16 @@ $$;
 
 -- A running Attempt prevents an incompatible terminal Job claim.
 insert into production.jobs (
-  id, person_id, product_id, product_version_id, idempotency_key
+  id, person_id, product_id, product_version_id, idempotency_key,
+  input_fingerprint
 )
 values (
   '00000000-0000-4000-8000-000000000416',
   '00000000-0000-4000-8000-000000000401',
   '00000000-0000-4000-8000-000000000402',
   '00000000-0000-4000-8000-000000000404',
-  'wo04-synthetic-running-guard'
+  'wo04-synthetic-running-guard',
+  repeat('6', 64)
 );
 
 insert into production.job_attempts (
@@ -64,14 +66,16 @@ where id = '00000000-0000-4000-8000-000000000416';
 
 -- A Job cannot claim success without compatible successful Attempt evidence.
 insert into production.jobs (
-  id, person_id, product_id, product_version_id, idempotency_key
+  id, person_id, product_id, product_version_id, idempotency_key,
+  input_fingerprint
 )
 values (
   '00000000-0000-4000-8000-000000000418',
   '00000000-0000-4000-8000-000000000401',
   '00000000-0000-4000-8000-000000000402',
   '00000000-0000-4000-8000-000000000404',
-  'wo04-synthetic-success-guard'
+  'wo04-synthetic-success-guard',
+  repeat('8', 64)
 );
 
 update production.jobs

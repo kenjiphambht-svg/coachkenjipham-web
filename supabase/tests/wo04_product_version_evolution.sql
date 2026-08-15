@@ -8,14 +8,16 @@
 set role service_role;
 
 insert into production.jobs (
-  id, person_id, product_id, product_version_id, idempotency_key
+  id, person_id, product_id, product_version_id, idempotency_key,
+  input_fingerprint
 )
 values (
   '00000000-0000-4000-8000-000000000412',
   '00000000-0000-4000-8000-000000000401',
   '00000000-0000-4000-8000-000000000402',
   '00000000-0000-4000-8000-000000000404',
-  'wo04-synthetic-job-v2'
+  'wo04-synthetic-job-v2',
+  repeat('4', 64)
 );
 
 insert into production.job_attempts (
