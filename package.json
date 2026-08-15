@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
-    "test:m1": "vitest run tests/knowledge-foundation.test.ts tests/knowledge-sql-contract.test.ts"
+    "test:m1": "vitest run tests/knowledge-foundation.test.ts tests/knowledge-sql-contract.test.ts",
+    "cf:build": "npx --yes @opennextjs/cloudflare@1.20.2 build",
+    "cf:preview": "npm run cf:build && npx --yes @opennextjs/cloudflare@1.20.2 preview",
+    "cf:upload": "npm run cf:build && npx --yes @opennextjs/cloudflare@1.20.2 upload"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.2",
