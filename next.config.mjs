@@ -27,6 +27,8 @@ function getTurboRules() {
   };
 }
 
+const cloudflarePortabilityProof = process.env.CLOUDFLARE_PORTABILITY_PROOF === "1";
+
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
@@ -34,14 +36,35 @@ const nextConfig = {
       rules: getTurboRules(),
     },
   },
-  // Đã kiểm toàn repo (grep mọi <Image src=...>): 100% ảnh dùng path local
-  // trong /public, không route nào load ảnh remote qua Image Optimizer.
-  // Bỏ hẳn remotePatterns thay vì whitelist domain nào — vá advisory HIGH
-  // "DoS via Image Optimizer remotePatterns" (GHSA-9g9p-9gw9-jx7f) tận gốc
-  // thay vì chỉ nâng version. Nếu sau này cần ảnh remote thật, thêm domain
-  // cụ thể vào đây — không dùng lại hostname "**".
-  images: {},
+  // Current production images are local-only. During the isolated Cloudflare proof,
+  // serve originals instead of enabling the separately billed Cloudflare Images
+  // product. A future cutover may choose Cloudflare Images after cost/perf review.
+  images: {
+    unoptimized: cloudflarePortabilityProof,
+  },
   allowedDevOrigins: ["*.daytona.work", "*.softgen.dev"],
+  async redirects() {
+    return [
+      {
+        source: "/old-path",
+        destination: "/new-path",
+        permanent: true,
+      },
+    ];
+  },
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
