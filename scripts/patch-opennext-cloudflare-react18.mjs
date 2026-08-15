@@ -6,6 +6,19 @@ import { dirname, join } from "node:path";
 // otherwise replaces React 18's intentionally missing server.edge export with
 // an untyped Error, preventing Next.js from falling back to server.browser.
 // The version and source guards below make an upstream change fail visibly.
+// Cloudflare Workers Builds injects WORKERS_CI=1. Normal/Vercel installs run
+// this postinstall entry point without that marker and must not mutate the
+// adapter. Local Cloudflare builds opt in with the explicit CLI flag.
+const explicitCloudflareBuild = process.argv.includes("--cloudflare-build");
+const workersCiBuild = process.env.WORKERS_CI === "1";
+
+if (!explicitCloudflareBuild && !workersCiBuild) {
+  console.log(
+    "Skipping OpenNext #1325 patch outside the Cloudflare build path."
+  );
+  process.exit(0);
+}
+
 const require = createRequire(import.meta.url);
 let adapterEntryPath;
 try {

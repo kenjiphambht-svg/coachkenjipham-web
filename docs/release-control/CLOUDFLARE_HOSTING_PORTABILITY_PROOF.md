@@ -108,11 +108,12 @@ Two compatibility defects were present in the proof toolchain:
 
 The proof keeps React 18 and application behavior unchanged. It pins OpenNext
 1.20.2 and Wrangler 4.123.0 in the lockfile, then applies the one-line upstream
-fix only at the start of the Cloudflare build path (`npm run cf:build`): the
-generated missing-module Error receives `code: "MODULE_NOT_FOUND"`. A normal
-or Vercel `npm ci` leaves OpenNext untouched. The patch script is version- and
-source-guarded, idempotent, and fails visibly if the pinned adapter changes
-shape.
+fix only in the Cloudflare build path: Cloudflare Workers Builds supplies its
+documented `WORKERS_CI=1` marker during install, while local `npm run cf:build`
+uses an explicit script flag. The generated missing-module Error receives
+`code: "MODULE_NOT_FOUND"`. A normal or Vercel `npm ci` runs the inert guard and
+leaves OpenNext untouched. The patch script is version- and source-guarded,
+idempotent, and fails visibly if the pinned adapter changes shape.
 
 React 19 was not adopted: the repository's current `react-day-picker@8.10.1`
 peer contract excludes React 19, so that route would require an unrelated
@@ -137,10 +138,22 @@ secret or Production service was required for this public-route proof.
 
 ### Cloudflare-only shim scope
 
-A fresh `npm ci` left OpenNext's optional-dependency source unchanged, and a
-normal `npm run build` passed in that unpatched state. `npm run cf:build` then
-applied the exact guarded OpenNext 1.20.2 patch before building the Worker.
-This keeps normal and Vercel installs free from Cloudflare adapter mutation.
+A fresh normal `npm ci` left OpenNext's optional-dependency source unchanged,
+and a normal `npm run build` passed in that unpatched state. Workers Builds is
+identified only by Cloudflare's documented `WORKERS_CI=1` marker; local
+`npm run cf:build` uses an explicit opt-in flag. Both Cloudflare paths apply the
+exact guarded OpenNext 1.20.2 patch before building the Worker. This keeps
+normal and Vercel installs free from Cloudflare adapter mutation even when the
+Workers Build command invokes the adapter directly.
+
+The first integration attempt scoped the patch only to the `cf:build` npm
+script. Cloudflare Build `2d2bc63d-a53d-4ea9-9f2d-183eb5ef5f0c` uploaded
+Version `07b8ee4c-855e-4c21-8957-aa9bebd3dc73`: the new runtime variable was
+present (the probe returned the expected `503`), but Pages Router requests
+still returned `500`. This isolated the remaining failure to the configured
+Workers Build path bypassing the npm wrapper. Cloudflare's documented
+`WORKERS_CI=1` system marker closes that path without enabling mutation in
+normal CI or Vercel.
 
 ### Local Worker and safe negative probe
 
