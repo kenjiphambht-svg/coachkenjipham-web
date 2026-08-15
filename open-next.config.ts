@@ -1,16 +1,12 @@
 // Cloudflare portability proof only.
-// This file mirrors the validated Cloudflare config contract used by
-// @opennextjs/cloudflare 1.20.2 while keeping the proof dependency-free.
-// The production application and business logic are unchanged.
-
-const noOpAssetResolver = {
-  name: "cloudflare-portability-proof-assets",
-  async maybeGetAssetResult() {
-    // Static assets bypass the Worker because wrangler.jsonc does not set
-    // assets.run_worker_first. Keep middleware asset resolution inert.
-    return undefined;
-  },
-};
+// Keep this config dependency-free while Cloudflare Builds invokes the pinned
+// @opennextjs/cloudflare 1.20.2 CLI through npx. The values below mirror the
+// adapter's defineCloudflareConfig() defaults for this proof without changing
+// application/business logic.
+//
+// Static assets are bound through wrangler.jsonc and, because run_worker_first
+// is not enabled, Cloudflare serves them before the Worker. Use OpenNext's
+// built-in dummy asset resolver instead of a custom lazy resolver.
 
 export default {
   default: {
@@ -42,6 +38,6 @@ export default {
       tagCache: "dummy",
       queue: "dummy",
     },
-    assetResolver: () => noOpAssetResolver,
+    assetResolver: "dummy",
   },
 };
