@@ -2,8 +2,18 @@
   "framework": "nextjs",
   "redirects": [
     {
-      "source": "/old-path",
-      "destination": "/new-path",
+      "source": "/kidbook",
+      "destination": "/an-pham-ban-sac-hat-mam",
+      "permanent": true
+    },
+    {
+      "source": "/thanh-toan-goi-1",
+      "destination": "/an-pham-ban-sac-hat-mam",
+      "permanent": true
+    },
+    {
+      "source": "/thanh-toan-goi-2",
+      "destination": "/an-pham-ban-sac-hat-mam",
       "permanent": true
     }
   ],
