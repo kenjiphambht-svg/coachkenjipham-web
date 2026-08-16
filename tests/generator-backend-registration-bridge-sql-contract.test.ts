@@ -9,6 +9,7 @@ const runtime = read('supabase/tests/generator_backend_registration_bridge.sql')
 const staging = read('supabase/tests/generator_backend_registration_bridge_staging_transaction.sql');
 const recovery = read('supabase/tests/generator_backend_registration_bridge_recovery.sql');
 const regressions = read('supabase/tests/generator_backend_registration_bridge_regressions.sql');
+const concurrency = read('supabase/tests/generator_backend_registration_bridge_p11_concurrency.sql');
 
 describe('WO-P07-GEN-BACKEND-INTEGRATION-01 bounded schema', () => {
   it('G1 stores exactly bounded immutable representation evidence, never raw content', () => {
@@ -41,6 +42,12 @@ describe('WO-P07-GEN-BACKEND-INTEGRATION-01 bounded schema', () => {
     expect(migration).toMatch(/P11_PRODUCT_ACCEPTANCE/);
     expect(migration).toMatch(/P11_(JOB|ATTEMPT|VERSION|DIGEST|BUILD)_BINDING_MISMATCH/);
     expect(migration).toMatch(/NEW\.review_state <> 'pending' and NEW\.provenance_status <> 'VERIFIED'/i);
+    expect(migration).toMatch(/create unique index production_artifact_reviews_unique_guarded_p11_correlation_idx[\s\S]*where review_contract_guarded[\s\S]*review_source = 'P11_PRODUCT_ACCEPTANCE'/i);
+    expect(migration).toMatch(/if NEW\.review_source = 'P11_PRODUCT_ACCEPTANCE'[\s\S]*where existing\.review_source = NEW\.review_source[\s\S]*existing\.review_correlation_reference = NEW\.review_correlation_reference/i);
+  });
+
+  it('keeps generic review correlation scope unchanged', () => {
+    expect(migration).toMatch(/elsif exists \([\s\S]*existing\.artifact_version_id = NEW\.artifact_version_id[\s\S]*existing\.review_source = NEW\.review_source[\s\S]*existing\.review_correlation_reference = NEW\.review_correlation_reference/i);
   });
 
   it('keeps technical success separate from P11 and every downstream authority', () => {
@@ -87,6 +94,9 @@ describe('one atomic idempotent adapter', () => {
     expect(rpc).toMatch(/W3_REGISTRATION_NOT_FOUND_NO_WRITE/);
     expect(rpc).toMatch(/W4_EXISTING_REGISTRATION_REPLAYED/);
     expect(rpc).not.toMatch(/update production\.artifact_(versions|version_representations|reviews)/i);
+    expect(rpc).toMatch(/pg_advisory_xact_lock[\s\S]*p11-review:/i);
+    expect(rpc).toMatch(/where review_source = 'P11_PRODUCT_ACCEPTANCE'\s+and review_correlation_reference = v_review->>'review_correlation_id'/i);
+    expect(rpc).toMatch(/v_existing_review\.artifact_version_id is distinct from v_artifact_version_id/i);
   });
 });
 
@@ -106,6 +116,9 @@ describe('security, acceptance, staging, and recovery evidence', () => {
     expect(regressions).toContain('AT-GBI-20: PASS');
     expect(regressions).toMatch(/wo04_runtime_regression\.sql/);
     expect(regressions).toMatch(/b5_job_fingerprint_retry_admission\.sql/);
+    expect(runtime).toContain('GBI_P11_CROSS_VERSION_CORRELATION: PASS');
+    expect(runtime).toContain('GBI_GENERIC_CROSS_VERSION_CORRELATION: PASS');
+    expect(concurrency).toContain('GBI_P11_CONCURRENCY: PASS');
   });
 
   it('keeps staging candidate and synthetic rows inside one rollback boundary', () => {
@@ -118,5 +131,12 @@ describe('security, acceptance, staging, and recovery evidence', () => {
     expect(rollback).toMatch(/review_contract_guarded/);
     expect(rollback).not.toMatch(/delete from|truncate/i);
     expect(recovery).toMatch(/GBI_NON_EMPTY_RECOVERY: PASS/);
+  });
+
+  it('proves database-enforced P11 concurrency safety', () => {
+    expect(concurrency).toMatch(/dblink_send_query/i);
+    expect(concurrency).toMatch(/GBI_P11_CONCURRENCY_SESSION_A/);
+    expect(concurrency).toMatch(/when unique_violation/i);
+    expect(concurrency).toMatch(/production_artifact_reviews_unique_guarded_p11_correlation_idx/i);
   });
 });

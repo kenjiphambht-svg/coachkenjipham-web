@@ -323,6 +323,77 @@ begin
   end if;
 end $$;
 
+-- P07 narrow-repair regression: a P11 correlation is one immutable event
+-- identity across P11 history, even when Version N+1 has otherwise-correct
+-- new Job/Attempt/version/material binding.
+do $$
+declare
+  v_primary uuid;
+  v_revision uuid;
+  v_primary_before bigint;
+  v_total_before bigint;
+  v_bundle jsonb;
+begin
+  select (result->>'artifact_version_id')::uuid into v_primary from gbi_primary_result;
+  select (result->>'artifact_version_id')::uuid into v_revision from gbi_revision_result;
+  select count(*) into v_primary_before
+  from production.artifact_reviews
+  where artifact_version_id = v_primary and review_source = 'P11_PRODUCT_ACCEPTANCE';
+  select count(*) into v_total_before
+  from production.artifact_reviews
+  where review_source = 'P11_PRODUCT_ACCEPTANCE';
+
+  v_bundle := pg_temp.gbi_bundle(
+    '00000000-0000-4000-8000-00000000c040',
+    '00000000-0000-4000-8000-00000000c041',
+    'gbi-registration-revision',
+    'REGISTER',
+    'APPROVED',
+    'gbi-review-approved'
+  );
+  perform pg_temp.expect_gbi_error(v_bundle, 'P11_REVIEW_CORRELATION_CONFLICT');
+
+  if (select count(*) from production.artifact_reviews
+      where review_source = 'P11_PRODUCT_ACCEPTANCE') <> v_total_before
+     or (select count(*) from production.artifact_reviews
+         where artifact_version_id = v_primary
+           and review_source = 'P11_PRODUCT_ACCEPTANCE') <> v_primary_before
+     or exists (
+       select 1 from production.artifact_reviews
+       where artifact_version_id = v_revision
+         and review_source = 'P11_PRODUCT_ACCEPTANCE'
+     ) then
+    raise exception 'GBI_P11_CROSS_VERSION_CORRELATION_FAILED';
+  end if;
+end $$;
+
+select 'GBI_P11_CROSS_VERSION_CORRELATION: PASS' as p11_cross_version_correlation;
+
+-- Generic Launch Core semantics remain version-scoped: the same non-P11
+-- correlation may identify separate generic review events on two Versions.
+insert into production.artifact_reviews (
+  artifact_version_id, review_state, review_source, review_correlation_reference
+)
+select (result->>'artifact_version_id')::uuid, 'pending',
+       'GENERIC_SYNTHETIC_QA', 'gbi-generic-cross-version'
+from gbi_primary_result;
+insert into production.artifact_reviews (
+  artifact_version_id, review_state, review_source, review_correlation_reference
+)
+select (result->>'artifact_version_id')::uuid, 'pending',
+       'GENERIC_SYNTHETIC_QA', 'gbi-generic-cross-version'
+from gbi_revision_result;
+
+do $$ begin
+  if (select count(*) from production.artifact_reviews
+      where review_source = 'GENERIC_SYNTHETIC_QA'
+        and review_correlation_reference = 'gbi-generic-cross-version') <> 2 then
+    raise exception 'GBI_GENERIC_CROSS_VERSION_CORRELATION_FAILED';
+  end if;
+end $$;
+
+select 'GBI_GENERIC_CROSS_VERSION_CORRELATION: PASS' as generic_cross_version_correlation;
+
 -- AT-GBI-14: Retry keeps one Job/material, distinct Attempt history, one success.
 insert into production.jobs (id, person_id, product_id, product_version_id, idempotency_key, input_fingerprint)
 values ('00000000-0000-4000-8000-00000000c050', '00000000-0000-4000-8000-00000000c001',

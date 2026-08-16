@@ -58,6 +58,8 @@ $$;
 
 revoke all on function production.validate_artifact_review_replay() from public, anon, authenticated;
 
+drop index production.production_artifact_reviews_unique_guarded_p11_correlation_idx;
+
 alter table production.artifact_reviews
   drop constraint artifact_reviews_p11_contract_complete,
   drop constraint artifact_reviews_check_evidence_bounded,

@@ -182,6 +182,19 @@ alter table production.artifact_reviews
 comment on column production.artifact_reviews.review_contract_guarded is
   'Legacy-safe compatibility marker. FALSE identifies rows predating this bridge; TRUE is forced for every new row. New P11_PRODUCT_ACCEPTANCE rows must carry complete B6 binding evidence.';
 
+-- Accepted B6 correlation identity is global across guarded P11 history, not
+-- scoped to one Artifact Version. Legacy rows remain excluded because the
+-- compatibility marker was FALSE before its default changed above. The
+-- existing generic (Artifact Version, source, correlation) index remains
+-- unchanged for every non-P11 source.
+create unique index production_artifact_reviews_unique_guarded_p11_correlation_idx
+  on production.artifact_reviews (review_correlation_reference)
+  where review_contract_guarded
+    and review_source = 'P11_PRODUCT_ACCEPTANCE';
+
+comment on index production.production_artifact_reviews_unique_guarded_p11_correlation_idx is
+  'Database concurrency backstop for accepted B6 replay identity: one guarded P11_PRODUCT_ACCEPTANCE correlation identifies one immutable review event across P11 review history. Generic non-P11 correlation scope remains unchanged.';
+
 -- Extend the existing replay trigger: generic review behavior remains intact;
 -- new P11 rows additionally prove exact Artifact Version/Job/Attempt/material.
 create or replace function production.validate_artifact_review_replay()
@@ -245,7 +258,16 @@ begin
     end if;
   end if;
 
-  if exists (
+  if NEW.review_source = 'P11_PRODUCT_ACCEPTANCE' then
+    if exists (
+      select 1
+      from production.artifact_reviews existing
+      where existing.review_source = NEW.review_source
+        and existing.review_correlation_reference = NEW.review_correlation_reference
+    ) then
+      raise exception 'REVIEW_EVENT_REPLAY';
+    end if;
+  elsif exists (
     select 1
     from production.artifact_reviews existing
     where existing.artifact_version_id = NEW.artifact_version_id
@@ -706,14 +728,21 @@ begin
     select coalesce(array_agg(item order by ordinal), '{}'::text[]) into v_check_evidence
     from jsonb_array_elements_text(v_review->'check_evidence') with ordinality evidence(item, ordinal);
 
+    -- Serialize P11 correlation identity independently from registration
+    -- correlation. Different legitimate Artifact Versions can therefore not
+    -- race the global P11 history check before the partial unique index.
+    perform pg_advisory_xact_lock(hashtextextended(
+      'p11-review:' || (v_review->>'review_correlation_id'), 0
+    ));
+
     select * into v_existing_review
     from production.artifact_reviews
-    where artifact_version_id = v_artifact_version_id
-      and review_source = 'P11_PRODUCT_ACCEPTANCE'
+    where review_source = 'P11_PRODUCT_ACCEPTANCE'
       and review_correlation_reference = v_review->>'review_correlation_id';
 
     if found then
       if v_existing_review.acceptance_contract_version <> '0.1'
+         or v_existing_review.artifact_version_id is distinct from v_artifact_version_id
          or v_existing_review.production_job_id is distinct from v_job.id
          or v_existing_review.job_attempt_id is distinct from v_attempt.id
          or v_existing_review.produced_version_identity is distinct from v_expected_produced_identity
