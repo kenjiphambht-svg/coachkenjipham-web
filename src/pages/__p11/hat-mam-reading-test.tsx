@@ -15,7 +15,7 @@ export default function HatMamReadingTestPage() {
     ? hatMamScenarios[router.query.scenario]
     : null;
 
-  const renderDenied = (testerReason?: string) => (
+  const renderDenied = () => (
     <section className={styles.deniedWrap} aria-live="polite">
       <div className={styles.deniedIcon}><LockKeyhole size={26} /></div>
       <div className={styles.eyebrow}>PHÒNG ĐỌC RIÊNG TƯ</div>
@@ -23,10 +23,9 @@ export default function HatMamReadingTestPage() {
       <p>Quyền truy cập có thể đã thay đổi hoặc nội dung này không thuộc tài khoản đang sử dụng. Nội dung riêng tư chưa được tải.</p>
       <div className={styles.deniedBoundary}>
         <ShieldCheck size={17} />
-        <span>Customer view không hiển thị owner, version, artifact metadata hay internal reason code.</span>
+        <span>Không hiển thị thông tin về chủ sở hữu, phiên bản, nội dung hay lý do nội bộ.</span>
       </div>
       <Link href="/__p11/hat-mam-founder-test" className={styles.secondaryAction}>Quay lại màn hình test</Link>
-      {testerReason ? <div className={styles.testerOnly}>{testerReason}</div> : null}
     </section>
   );
 
@@ -51,10 +50,8 @@ export default function HatMamReadingTestPage() {
             <h1>Đang kiểm tra quyền truy cập…</h1>
             <p>Nội dung riêng tư chỉ được hiển thị sau khi trạng thái truy cập đã được xác định.</p>
           </section>
-        ) : !scenario ? (
+        ) : !scenario || !scenario.readingAllowed ? (
           renderDenied()
-        ) : !scenario.readingAllowed ? (
-          renderDenied(`TEST HARNESS · ${scenario.at} · internal reason: ${scenario.reasonCode}`)
         ) : (
           <div className={styles.readingLayout}>
             <article className={styles.readingArticle}>
