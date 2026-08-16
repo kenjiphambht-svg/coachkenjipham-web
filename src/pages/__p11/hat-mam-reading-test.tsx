@@ -11,9 +11,24 @@ function isScenarioKey(value: string | string[] | undefined): value is HatMamSce
 
 export default function HatMamReadingTestPage() {
   const router = useRouter();
-  const scenarioKey: HatMamScenarioKey = isScenarioKey(router.query.scenario) ? router.query.scenario : 'approved';
-  const scenario = hatMamScenarios[scenarioKey];
-  const isAllowed = scenario.readingAllowed;
+  const scenario = router.isReady && isScenarioKey(router.query.scenario)
+    ? hatMamScenarios[router.query.scenario]
+    : null;
+
+  const renderDenied = (testerReason?: string) => (
+    <section className={styles.deniedWrap} aria-live="polite">
+      <div className={styles.deniedIcon}><LockKeyhole size={26} /></div>
+      <div className={styles.eyebrow}>PHÒNG ĐỌC RIÊNG TƯ</div>
+      <h1>Không thể mở nội dung này với quyền hiện tại.</h1>
+      <p>Quyền truy cập có thể đã thay đổi hoặc nội dung này không thuộc tài khoản đang sử dụng. Nội dung riêng tư chưa được tải.</p>
+      <div className={styles.deniedBoundary}>
+        <ShieldCheck size={17} />
+        <span>Customer view không hiển thị owner, version, artifact metadata hay internal reason code.</span>
+      </div>
+      <Link href="/__p11/hat-mam-founder-test" className={styles.secondaryAction}>Quay lại màn hình test</Link>
+      {testerReason ? <div className={styles.testerOnly}>{testerReason}</div> : null}
+    </section>
+  );
 
   return (
     <>
@@ -29,19 +44,17 @@ export default function HatMamReadingTestPage() {
           <div className={styles.syntheticBadge}><FlaskConical size={14} /> SYNTHETIC PREVIEW</div>
         </header>
 
-        {!isAllowed ? (
-          <section className={styles.deniedWrap} aria-live="polite">
-            <div className={styles.deniedIcon}><LockKeyhole size={26} /></div>
+        {!router.isReady ? (
+          <section className={styles.deniedWrap} aria-live="polite" aria-busy="true">
+            <div className={styles.deniedIcon}><ShieldCheck size={26} /></div>
             <div className={styles.eyebrow}>PHÒNG ĐỌC RIÊNG TƯ</div>
-            <h1>Không thể mở nội dung này với quyền hiện tại.</h1>
-            <p>Quyền truy cập có thể đã thay đổi hoặc nội dung này không thuộc tài khoản đang sử dụng. Nội dung riêng tư chưa được tải.</p>
-            <div className={styles.deniedBoundary}>
-              <ShieldCheck size={17} />
-              <span>Customer view không hiển thị owner, version, artifact metadata hay internal reason code.</span>
-            </div>
-            <Link href="/__p11/hat-mam-founder-test" className={styles.secondaryAction}>Quay lại màn hình test</Link>
-            <div className={styles.testerOnly}>TEST HARNESS · {scenario.at} · internal reason: {scenario.reasonCode}</div>
+            <h1>Đang kiểm tra quyền truy cập…</h1>
+            <p>Nội dung riêng tư chỉ được hiển thị sau khi trạng thái truy cập đã được xác định.</p>
           </section>
+        ) : !scenario ? (
+          renderDenied()
+        ) : !scenario.readingAllowed ? (
+          renderDenied(`TEST HARNESS · ${scenario.at} · internal reason: ${scenario.reasonCode}`)
         ) : (
           <div className={styles.readingLayout}>
             <article className={styles.readingArticle}>
