@@ -1,0 +1,98 @@
+.largeText {
+  font-size: 22px;
+}
+
+.largeText :where(div, p, span, button, a, code, small, strong, li) {
+  font-size: clamp(20px, 1.45vw, 24px) !important;
+  line-height: 1.55;
+}
+
+.largeText h1 {
+  font-size: clamp(64px, 7vw, 94px) !important;
+  line-height: 1.02 !important;
+}
+
+.largeText h2 {
+  font-size: clamp(44px, 4.8vw, 64px) !important;
+  line-height: 1.08 !important;
+}
+
+.largeText blockquote {
+  font-size: clamp(34px, 4vw, 48px) !important;
+  line-height: 1.45 !important;
+}
+
+.largeText code {
+  font-size: clamp(18px, 1.3vw, 22px) !important;
+}
+
+.usageGuide {
+  max-width: 1440px;
+  margin: 0 auto 26px;
+  padding: 24px 28px;
+  border: 1px solid rgba(138, 109, 31, 0.28);
+  background: rgba(224, 192, 104, 0.08);
+}
+
+.guideTitle {
+  margin-bottom: 14px;
+  color: #6f581c;
+  font-weight: 700;
+}
+
+.usageGuide ol {
+  margin: 0;
+  padding-left: 30px;
+  display: grid;
+  gap: 10px;
+}
+
+.usageGuide p {
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(138, 109, 31, 0.18);
+}
+
+.readingHelp {
+  margin: 0 0 28px;
+  padding: 18px 20px;
+  border-left: 3px solid var(--essence-gold-2026, #e0c068);
+  background: rgba(224, 192, 104, 0.08);
+}
+
+@media (max-width: 980px) {
+  .largeText :where(div, p, span, button, a, code, small, strong, li) {
+    font-size: 20px !important;
+  }
+
+  .largeText h1 {
+    font-size: clamp(56px, 9vw, 78px) !important;
+  }
+
+  .largeText h2 {
+    font-size: clamp(38px, 6.5vw, 54px) !important;
+  }
+}
+
+@media (max-width: 680px) {
+  .largeText :where(div, p, span, button, a, code, small, strong, li) {
+    font-size: 19px !important;
+    line-height: 1.5;
+  }
+
+  .largeText h1 {
+    font-size: 52px !important;
+  }
+
+  .largeText h2 {
+    font-size: 38px !important;
+  }
+
+  .largeText blockquote {
+    font-size: 30px !important;
+  }
+
+  .usageGuide {
+    padding: 20px 18px;
+  }
+}
