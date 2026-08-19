@@ -148,6 +148,7 @@ export default function AdvisoryPage() {
                 <p>Doanh nghiệp có thể đã có khá nhiều hoạt động AI:</p>
                 <ul>{primaryStateItems.map((item) => <li key={item}>{item}</li>)}</ul>
                 <p>Nếu đang ở đây, câu hỏi có lẽ không còn là: “Chúng ta cần thêm công cụ nào?”</p>
+                <p>Mà là:</p>
                 <p className={styles.stateQuestion}>“Điều gì trong cách doanh nghiệp đang vận hành khiến những gì đã có vẫn chưa tạo ra giá trị tương xứng?”</p>
               </article>
               <article className={styles.secondaryState}>
@@ -159,6 +160,7 @@ export default function AdvisoryPage() {
                 </div>
               </article>
             </div>
+            <p className={styles.convergenceLead}>Dù bắt đầu ở trạng thái nào, nguyên tắc vẫn giống nhau:</p>
             <p className={styles.signatureLine}>Một vấn đề kinh doanh thật trước. AI sau.</p>
           </div>
         </section>
@@ -176,7 +178,7 @@ export default function AdvisoryPage() {
             <div className={styles.portraitRow}>
               <div className={styles.portraitWrap}>
                 <img
-                  src="https://drive.google.com/uc?export=view&id=1ykn9ZfEP-AqnPekPBhst8DmWlWdSi6_W"
+                  src="/images/advisory/advisory-kenji-portrait-selected-v01.webp"
                   alt="Kenji tại bàn làm việc trong không gian tối giản, với laptop và sổ ghi chép."
                   width={1448}
                   height={1086}
@@ -260,7 +262,7 @@ export default function AdvisoryPage() {
                 </div>
               </div>
               <img
-                src="https://drive.google.com/uc?export=view&id=1Xw1ExUAA-JkHW0o8ssrv7lkGCEitHwQO"
+                src="/images/advisory/advisory-essence-operating-loop-selected-v01.webp"
                 alt="Sơ đồ vòng lặp vận hành ESSENCE: Nguồn thật → Quyền hạn → AI hỗ trợ → Người kiểm lại → Quyết định → Bằng chứng → Điều chỉnh cách làm."
                 width={1254}
                 height={1254}
