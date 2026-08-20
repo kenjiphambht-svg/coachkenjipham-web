@@ -14,8 +14,8 @@ const operatingQuestions = [
 ];
 
 const routeBItems = [
-  "nhiều use case nhưng chưa rõ cái nào đáng mở rộng;",
-  "AI được thêm vào workflow cũ;",
+  "nhiều cách dùng AI nhưng chưa rõ cái nào đáng mở rộng;",
+  "AI được đặt vào cách làm việc cũ;",
   "mỗi đội ngũ thử theo một cách khác nhau;",
   "trách nhiệm và cách kiểm soát đầu ra chưa rõ.",
 ];
@@ -24,7 +24,7 @@ const fitItems = [
   "phía sau câu chuyện AI là một vấn đề kinh doanh đủ quan trọng;",
   "có người thực sự có quyền quyết định và chịu trách nhiệm;",
   "tổ chức sẵn sàng xem lại cách công việc đang vận hành;",
-  "AI đã hoặc sắp ảnh hưởng đáng kể đến workflow hoặc quyết định.",
+  "AI đã hoặc sắp ảnh hưởng đáng kể đến cách làm việc hoặc quyết định.",
 ];
 
 function AdvisoryHeader() {
@@ -87,14 +87,14 @@ export default function AdvisoryPage() {
             <div className={styles.heroStatement}>
               <h1 className={styles.displayVoice}>CÓ NHIỀU CÔNG CỤ AI HƠN, DOANH NGHIỆP TẠO RA NHIỀU GIÁ TRỊ HƠN?</h1>
               <div className={`${styles.readingVoice} ${styles.heroArgument}`}>
-                <p>AI có thể đã xuất hiện ở nhiều nơi trong doanh nghiệp. Một số pilot đã chạy. Một vài đội ngũ dùng khá sâu.</p>
+                <p>AI có thể đã xuất hiện ở nhiều nơi trong doanh nghiệp. Một số thử nghiệm đã chạy. Một vài đội ngũ đã dùng khá sâu.</p>
                 <p>Nhưng nếu công việc vẫn gần như cũ, trách nhiệm còn mờ, quyết định chưa tốt hơn và giá trị tạo ra vẫn khó nhìn thấy, thì vấn đề có lẽ không còn nằm ở chuyện thiếu thêm công cụ.</p>
                 <p>Lúc này, điều đáng nhìn hơn là:</p>
               </div>
             </div>
             <blockquote className={`${styles.accentVoice} ${styles.heroSignal}`}>“Điều gì trong doanh nghiệp thực sự cần thay đổi — và AI nên tham gia vào phần nào?”</blockquote>
             <div className={styles.heroClose}>
-              <p className={styles.readingVoice}>Và đó thường là nơi tôi bắt đầu khi làm việc cùng Founder và đội ngũ điều hành.</p>
+              <p className={styles.readingVoice}>Tôi thường bắt đầu từ chính câu hỏi đó khi làm việc cùng Founder và đội ngũ điều hành.</p>
               <a href="#boi-canh" className={styles.lightCta}>Trao đổi về một vấn đề kinh doanh thực tế</a>
             </div>
           </div>
@@ -107,7 +107,7 @@ export default function AdvisoryPage() {
               <div className={styles.readingVoice}>
                 <p>Lúc đầu, câu hỏi thường là: “AI có thể giúp chúng ta làm gì?”</p>
                 <p>Nhưng đến khi AI đi vào công việc thật, câu hỏi đó không còn đủ nữa.</p>
-                <p>Một công cụ tốt không tự làm workflow tốt lên. Câu trả lời nhanh chưa chắc dẫn tới quyết định tốt hơn. Và một đầu ra AI nghe rất thuyết phục vẫn có thể sai ở đúng chỗ quan trọng nhất.</p>
+                <p>Một công cụ tốt không tự làm cho cách làm việc tốt hơn. Câu trả lời nhanh chưa chắc dẫn tới quyết định tốt hơn. Và một đầu ra AI nghe rất thuyết phục vẫn có thể sai ở đúng chỗ quan trọng nhất.</p>
               </div>
             </div>
             <div className={styles.diagnosticField}>
@@ -130,12 +130,12 @@ export default function AdvisoryPage() {
             <h2 className={styles.sectionAnchor}>HAI ĐIỂM XUẤT PHÁT</h2>
             <div className={styles.stateComposition}>
               <article className={styles.routeB}>
-                <p className={styles.routeLead}>Trường hợp tôi gặp nhiều hơn là doanh nghiệp đã dùng AI ở khá nhiều chỗ, nhưng giá trị tạo ra vẫn còn rời rạc:</p>
+                <p className={styles.routeLead}>Tôi gặp tình huống này nhiều hơn: doanh nghiệp đã dùng AI ở khá nhiều chỗ, nhưng giá trị tạo ra vẫn còn rời rạc:</p>
                 <ul className={styles.editorialList}>{routeBItems.map((item) => <li key={item}>{item}</li>)}</ul>
-                <p className={styles.routeQuestion}>Nếu đang ở đây, câu hỏi không còn là “cần thêm công cụ nào?”, mà là điều gì trong cách doanh nghiệp đang vận hành khiến những gì đã có vẫn chưa tạo ra giá trị tương xứng.</p>
+                <p className={styles.routeQuestion}>Nếu đang ở đây, câu hỏi đáng đặt không còn là “cần thêm công cụ nào?”, mà là điều gì trong cách doanh nghiệp đang vận hành khiến những gì đã có vẫn chưa tạo ra giá trị tương xứng.</p>
               </article>
               <article className={styles.routeA}>
-                <p>Ở một điểm xuất phát khác, Founder hoặc CEO biết AI quan trọng nhưng không muốn bắt đầu bằng tool hay một chương trình lớn khi chưa rõ doanh nghiệp thực sự cần thay đổi điều gì.</p>
+                <p>Cũng có một điểm xuất phát khác: Founder hoặc CEO biết AI quan trọng, nhưng không muốn lao vào thêm công cụ hay một chương trình lớn khi chưa rõ doanh nghiệp thực sự cần thay đổi điều gì.</p>
               </article>
             </div>
           </div>
@@ -155,7 +155,7 @@ export default function AdvisoryPage() {
               <h2 className={styles.sectionAnchor}>SAU BƯỚC ĐẦU, LÃNH ĐẠO CÓ GÌ TRONG TAY?</h2>
               <div className={styles.readingVoice}>
                 <p>Điểm bắt đầu thường là một ưu tiên kinh doanh cụ thể: nơi giá trị đang bị mất, quyết định đang mắc hoặc trách nhiệm chưa rõ.</p>
-                <p>Sau bước đầu, điều tôi muốn lãnh đạo có trong tay là ba thứ đủ rõ để tiếp tục ra quyết định.</p>
+                <p>Sau bước đầu, lãnh đạo cần có ba điều đủ rõ để biết nên đi tiếp thế nào.</p>
               </div>
             </div>
 
@@ -163,30 +163,30 @@ export default function AdvisoryPage() {
               <article className={`${styles.decisionAsset} ${styles.decisionAssetOne}`}>
                 <div className={styles.editorialNumeral} aria-label="1">01</div>
                 <div className={styles.assetContent}>
-                  <h3>BẢN ĐỒ GIÁ TRỊ &amp; VẬN HÀNH AI</h3>
-                  <p>Nhìn rõ AI đang tham gia ở đâu, nên tham gia đến đâu, giá trị đang thất thoát chỗ nào, phần nào trùng lặp hoặc phân mảnh, use case nào đáng ưu tiên và việc gì nên dừng, sửa, thử hay mở rộng.</p>
+                  <h3>BẢN ĐỒ GIÁ TRỊ &amp; CÁCH AI ĐANG ĐƯỢC DÙNG</h3>
+                  <p>Nhìn rõ AI đang tham gia ở đâu, nên tham gia đến đâu; giá trị đang thất thoát chỗ nào; phần nào đang trùng lặp hoặc phân mảnh; cách dùng nào đáng ưu tiên; và việc gì nên dừng, sửa, thử hay mở rộng.</p>
                 </div>
               </article>
               <article className={`${styles.decisionAsset} ${styles.decisionAssetTwo}`}>
                 <div className={styles.editorialNumeral} aria-label="2">02</div>
                 <div className={styles.assetContent}>
-                  <h3>BẢN ĐỒ QUYẾT ĐỊNH, VAI TRÒ &amp; ĐIỂM KIỂM SOÁT</h3>
-                  <p>Làm rõ ai có quyền quyết, ai chịu trách nhiệm, công việc đang được chuyển giao giữa những vai trò nào, điểm nào cần người kiểm lại và khoảng trống trách nhiệm nằm ở đâu.</p>
+                  <h3>BẢN ĐỒ QUYẾT ĐỊNH &amp; TRÁCH NHIỆM</h3>
+                  <p>Làm rõ ai có quyền quyết, ai chịu trách nhiệm, công việc đi qua những vai trò nào, chỗ nào cần người kiểm lại và khoảng trống trách nhiệm đang nằm ở đâu.</p>
                 </div>
               </article>
               <article className={`${styles.decisionAsset} ${styles.decisionAssetThree}`}>
                 <div className={styles.editorialNumeral} aria-label="3">03</div>
                 <div className={styles.assetContent}>
-                  <h3>LỘ TRÌNH THỬ NGHIỆM GIÁ TRỊ 90 NGÀY</h3>
-                  <p>Chọn 1–2 ưu tiên đáng kiểm chứng, xác định người sở hữu, baseline hoặc dấu mốc cần theo dõi, bằng chứng cần thấy, tiêu chí để tiếp tục, điều chỉnh hay dừng — và khi nào cần đúng technical specialist bước vào.</p>
+                  <h3>LỘ TRÌNH 90 NGÀY ĐỂ KIỂM CHỨNG GIÁ TRỊ</h3>
+                  <p>Chọn 1–2 ưu tiên đáng kiểm chứng, xác định người chịu trách nhiệm, mốc ban đầu cần theo dõi, bằng chứng cần thấy, tiêu chí để tiếp tục, điều chỉnh hay dừng — và khi nào cần chuyên gia kỹ thuật phù hợp bước vào.</p>
                 </div>
               </article>
             </div>
 
             <div className={styles.valueClose}>
               <div className={styles.readingVoice}>
-                <p>Mục tiêu không phải có thêm tài liệu, mà là để lãnh đạo đủ rõ để quyết định điều gì đáng làm tiếp — và điều gì không.</p>
-                <p>Và đôi khi, kết luận tốt nhất vẫn là: “Chưa nên làm.” Hoặc: “Phần này không cần AI.”</p>
+                <p>Tài liệu chỉ có ý nghĩa nếu nó giúp lãnh đạo đủ rõ để quyết định điều gì đáng làm tiếp — và điều gì không.</p>
+                <p>Đôi khi, kết luận tốt nhất vẫn là: “Chưa nên làm.” Hoặc: “Phần này không cần AI.”</p>
               </div>
               <a href="#boi-canh" className={styles.lightCta}>Trao đổi về một ưu tiên kinh doanh</a>
             </div>
@@ -200,7 +200,7 @@ export default function AdvisoryPage() {
             </figure>
             <div className={styles.advisorContent}>
               <h2 className={styles.sectionAnchor}>CÁCH TÔI NHÌN MỘT VẤN ĐỀ CÓ AI</h2>
-              <p className={`${styles.readingVoice} ${styles.advisorIntro}`}>Tôi không nhìn một bài toán AI chỉ bằng công nghệ. Khi AI đi vào công việc thật, bài toán cũng kéo theo câu chuyện về giá trị, cách đội ngũ phản ứng và chất lượng quyết định.</p>
+              <p className={`${styles.readingVoice} ${styles.advisorIntro}`}>Với tôi, một bài toán có AI hiếm khi chỉ là chuyện công nghệ. Khi AI đi vào công việc thật, câu chuyện về giá trị, phản ứng của đội ngũ và chất lượng quyết định thường đi cùng nhau.</p>
 
               <div className={styles.judgmentPath}>
                 <article className={styles.judgmentStep}>
@@ -209,7 +209,7 @@ export default function AdvisoryPage() {
                 </article>
                 <article className={styles.judgmentStep}>
                   <p className={styles.utilityVoice}>TÂM LÝ &amp; PHÁN ĐOÁN</p>
-                  <p className={styles.pathText}>Không phải ai cũng phản ứng với AI giống nhau. Có người còn dè dặt, có người lại tin quá nhanh. Và đôi khi, một đầu ra AI nghe quá hợp lý có thể khiến người ra quyết định dừng phản biện sớm hơn họ nên làm.</p>
+                  <p className={styles.pathText}>Phản ứng với AI rất khác nhau. Có người còn dè dặt, có người lại tin quá nhanh. Và đôi khi, một đầu ra AI nghe quá hợp lý khiến người ra quyết định dừng phản biện quá sớm.</p>
                 </article>
                 <article className={styles.judgmentStep}>
                   <p className={styles.utilityVoice}>AI &amp; CHẤT LƯỢNG ĐẦU RA</p>
@@ -217,8 +217,8 @@ export default function AdvisoryPage() {
                 </article>
               </div>
 
-              <p className={`${styles.accentVoice} ${styles.integratedTitle}`}>Tôi không tách ba phần này thành ba dịch vụ. Trong thực tế, chúng thường nằm trong cùng một vấn đề vận hành.</p>
-              <p className={styles.boundaryNote}>Khi công việc đi sâu sang engineering, data, security, integration hay technical architecture, đó là lúc cần đúng specialist bước vào.</p>
+              <p className={`${styles.accentVoice} ${styles.integratedTitle}`}>Ba góc nhìn này thường cùng xuất hiện trong một vấn đề vận hành; tôi không xem chúng như ba dịch vụ tách rời.</p>
+              <p className={styles.boundaryNote}>Khi vấn đề đi sâu vào kỹ thuật, dữ liệu, bảo mật, tích hợp hay kiến trúc hệ thống, đó là lúc cần đúng chuyên gia kỹ thuật bước vào.</p>
             </div>
           </div>
         </section>
@@ -227,16 +227,16 @@ export default function AdvisoryPage() {
           <div className={styles.shell}>
             <div className={styles.proofIntro}>
               <h2 className={styles.sectionAnchor}>VÌ SAO TÔI NHÌN VẤN ĐỀ THEO CÁCH NÀY?</h2>
-              <p className={styles.proofCredentials}>Cách nhìn này được hình thành qua hơn 20 năm kinh doanh và lãnh đạo, trong đó có giai đoạn tôi là Founder/CEO của BHT Media với trách nhiệm P&amp;L. Tôi cũng có hơn 3.000 giờ coaching &amp; training với C-Level, managers và business owners, và đạt chứng nhận ICF ACC vào năm 2021.</p>
+              <p className={styles.proofCredentials}>Cách nhìn này được hình thành qua hơn 20 năm làm kinh doanh và lãnh đạo, trong đó có giai đoạn tôi là Founder/CEO của BHT Media và chịu trách nhiệm P&amp;L. Tôi cũng có hơn 3.000 giờ coaching và đào tạo với C-Level, quản lý và chủ doanh nghiệp; năm 2021, tôi đạt chứng nhận ICF ACC.</p>
             </div>
 
             <article className={styles.essenceProof}>
               <div className={styles.essenceCopy}>
-                <h3>ESSENCE — NƠI TÔI ĐANG TRỰC TIẾP LÀM ĐIỀU MÌNH NÓI</h3>
+                <h3>ESSENCE — NƠI TÔI ĐANG TRỰC TIẾP VẬN HÀNH CÁCH LÀM NÀY</h3>
                 <div className={styles.readingVoice}>
                   <p>ESSENCE là hệ kinh doanh tôi đang trực tiếp xây và vận hành.</p>
-                  <p>Ở đây, AI được dùng sâu nhưng không mặc định là đúng. Với mỗi việc, cần rõ nguồn nào đáng tin, AI được giao phần nào, ai kiểm lại, bằng chứng nào đủ tốt và quyết định cuối cùng thuộc về ai.</p>
-                  <p>Đó là bằng chứng từ chính hệ tôi đang vận hành — không phải một client case, cũng không phải cơ sở để nói rằng tôi đã dẫn dắt AI transformation cho nhiều doanh nghiệp khác.</p>
+                  <p>Ở ESSENCE, AI được dùng sâu nhưng không mặc định là đúng. Với mỗi việc, cần rõ nguồn nào đáng tin, AI được giao phần nào, ai kiểm lại, bằng chứng nào đủ tốt và quyết định cuối cùng thuộc về ai.</p>
+                  <p>Đó là bằng chứng từ chính hệ tôi đang vận hành. Nó không phải một client case, và cũng không đủ để suy rộng thành thành tích chuyển đổi AI ở nhiều doanh nghiệp khác.</p>
                   <p>Tôi tin một hệ tốt bắt đầu từ việc đúng người giữ đúng trách nhiệm.</p>
                 </div>
               </div>
@@ -255,8 +255,8 @@ export default function AdvisoryPage() {
               <ul className={styles.fitList}>{fitItems.map((item) => <li key={item}>{item}</li>)}</ul>
             </div>
             <div className={styles.fitContext}>
-              <p>Tôi thường làm việc trực tiếp với Founder, CEO và người có quyền quyết định trên những vấn đề đủ quan trọng để ảnh hưởng đến cách tổ chức vận hành.</p>
-              <p>Quy mô không phải tiêu chí đầu tiên. Quan trọng hơn là vấn đề có đủ thật và người sở hữu có thực sự muốn thay đổi cách làm việc hay không.</p>
+              <p>Tôi thường làm việc trực tiếp với Founder, CEO và người có quyền quyết định khi vấn đề đủ quan trọng để ảnh hưởng đến cách tổ chức vận hành.</p>
+              <p>Quy mô không phải tiêu chí đầu tiên. Quan trọng hơn là vấn đề có đủ thật và người chịu trách nhiệm chính có thực sự muốn thay đổi cách làm việc hay không.</p>
               <p className={styles.nonFit}>Nếu điều anh/chị đang cần chủ yếu là đào tạo AI cơ bản, chatbot/agent dựng sẵn, triển khai kỹ thuật trọn gói hoặc một lời cam kết chắc chắn về ROI, có lẽ đây chưa phải cuộc trao đổi phù hợp.</p>
             </div>
           </div>
@@ -267,15 +267,15 @@ export default function AdvisoryPage() {
             <div className={styles.formScene}>
               <h2 className={styles.sectionAnchor}>HÃY BẮT ĐẦU BẰNG MỘT VẤN ĐỀ THẬT</h2>
               <div className={styles.readingVoice}>
-                <p>Anh/chị không cần chuẩn bị một AI strategy hoàn chỉnh và cũng không cần biết trước giải pháp.</p>
-                <p>Chỉ cần mang đến một vấn đề kinh doanh đủ thật để đáng cùng nhìn.</p>
+                <p>Anh/chị không cần chuẩn bị sẵn một chiến lược AI hoàn chỉnh, cũng không cần biết trước giải pháp.</p>
+                <p>Chỉ cần mang đến một vấn đề kinh doanh đủ thật để cùng nhìn cho rõ.</p>
               </div>
             </div>
             <div className={styles.formColumn}>
               <ContextForm />
               <div className={styles.formAfter}>
-                <p>Tôi sẽ đọc trước để hiểu bối cảnh và xem liệu một cuộc trao đổi sâu hơn có thực sự hữu ích hay không. Nếu phù hợp, chúng ta bắt đầu từ chính vấn đề đó.</p>
-                <p>Chưa cần mặc định trước giải pháp, cũng chưa cần bắt đầu bằng một chương trình lớn.</p>
+                <p>Tôi sẽ đọc trước để hiểu bối cảnh và xem một cuộc trao đổi sâu hơn có thực sự hữu ích không. Nếu phù hợp, chúng ta bắt đầu từ chính vấn đề đó.</p>
+                <p>Chưa cần chốt trước giải pháp, cũng chưa cần bắt đầu bằng một chương trình lớn.</p>
               </div>
             </div>
           </div>
