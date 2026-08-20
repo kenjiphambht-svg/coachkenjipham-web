@@ -4,6 +4,7 @@ import type { FormEvent } from "react";
 import HomeFooter from "@/components/homepage/HomeFooter";
 import styles from "@/styles/advisory.module.css";
 
+// Preview rebuild marker: portrait-v02 binary hotfix; no runtime behavior.
 const operatingQuestions = [
   "Chúng ta đang giải quyết vấn đề kinh doanh nào?",
   "Công việc thực sự cần thay đổi ở đâu?",
