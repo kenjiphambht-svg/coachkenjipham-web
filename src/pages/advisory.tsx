@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import type { FormEvent } from "react";
+import HomeFooter from "@/components/homepage/HomeFooter";
 import styles from "@/styles/advisory.module.css";
 
 const operatingQuestions = [
@@ -28,7 +29,7 @@ const fitItems = [
 
 function AdvisoryHeader() {
   return (
-    <header className={styles.header}>
+    <header className={styles.header} data-shell="advisory-header-exception">
       <div className={styles.headerInner}>
         <Link href="/" aria-label="Về trang chủ" className={styles.brandLink}>
           <span className={styles.brandLockup}>
@@ -54,15 +55,15 @@ function ContextForm() {
         <p id="advisory-role-help">Anh/chị đang chịu trách nhiệm chính về điều gì?</p>
         <textarea id="advisory-role" name="roleAndOrganization" rows={3} required aria-describedby="advisory-role-help" />
       </div>
-      <div className={styles.field}>
+      <div className={`${styles.field} ${styles.fieldPriority}`}>
         <label htmlFor="advisory-problem">Vấn đề kinh doanh quan trọng nhất</label>
         <p id="advisory-problem-help">Điều gì đang đủ tốn kém, đủ quan trọng hoặc ảnh hưởng đủ lớn để cần giải quyết?</p>
-        <textarea id="advisory-problem" name="businessPriority" rows={4} required aria-describedby="advisory-problem-help" />
+        <textarea id="advisory-problem" name="businessPriority" rows={5} required aria-describedby="advisory-problem-help" />
       </div>
       <div className={styles.field}>
         <label htmlFor="advisory-ai-state">AI hiện đang ở đâu?</label>
         <p id="advisory-ai-state-help">Tổ chức đã thử những gì? Điều gì đang hoạt động và điều gì chưa?</p>
-        <textarea id="advisory-ai-state" name="aiState" rows={4} required aria-describedby="advisory-ai-state-help" />
+        <textarea id="advisory-ai-state" name="aiState" rows={3} required aria-describedby="advisory-ai-state-help" />
       </div>
       <div className={styles.field}>
         <label htmlFor="advisory-why-now">Tại sao là lúc này?</label>
@@ -81,10 +82,10 @@ export default function AdvisoryPage() {
       <AdvisoryHeader />
 
       <main className={styles.page}>
-        <section className={`${styles.section} ${styles.hero} ${styles.rhythmOpen}`}>
+        <section className={`${styles.section} ${styles.hero} ${styles.statementScene} ${styles.rhythmOpen}`} data-review-crop="hero">
           <div className={styles.shell}>
             <div className={styles.heroStatement}>
-              <h1 className={styles.displayVoice}>CÓ NHIỀU CÔNG CỤ AI HƠN, DOANH NGHIỆP TẠO RA NHIỀU GIÁ TRỊ HƠN ?</h1>
+              <h1 className={styles.displayVoice}>CÓ NHIỀU CÔNG CỤ AI HƠN, DOANH NGHIỆP TẠO RA NHIỀU GIÁ TRỊ HƠN?</h1>
               <div className={`${styles.readingVoice} ${styles.heroArgument}`}>
                 <p>AI có thể đã xuất hiện ở nhiều nơi trong doanh nghiệp. Một số pilot đã chạy. Một vài đội ngũ dùng khá sâu.</p>
                 <p>Nhưng nếu công việc vẫn gần như cũ, trách nhiệm còn mờ, quyết định chưa tốt hơn và giá trị tạo ra vẫn khó nhìn thấy, thì vấn đề có lẽ không còn nằm ở chuyện thiếu thêm công cụ.</p>
@@ -99,9 +100,9 @@ export default function AdvisoryPage() {
           </div>
         </section>
 
-        <section className={`${styles.section} ${styles.reframeSection} ${styles.rhythmGo}`}>
-          <div className={`${styles.shell} ${styles.reframeLayout}`}>
-            <div className={styles.reframeArgument}>
+        <section className={`${styles.section} ${styles.reframeSection} ${styles.diagnosticScene} ${styles.rhythmGo}`}>
+          <div className={styles.shell}>
+            <div className={styles.reframeOpening}>
               <h2 className={styles.sectionAnchor}>KHI AI ĐI VÀO CÔNG VIỆC THẬT, BÀI TOÁN CŨNG THAY ĐỔI</h2>
               <div className={styles.readingVoice}>
                 <p>Lúc đầu, câu hỏi thường là: “AI có thể giúp chúng ta làm gì?”</p>
@@ -113,7 +114,10 @@ export default function AdvisoryPage() {
               <p className={styles.diagnosticIntro}>Lúc này, cần nhìn cho rõ vài điều:</p>
               <ol className={styles.diagnosticList}>
                 {operatingQuestions.map((item, index) => (
-                  <li key={item}><span className={styles.questionNumber}>{String(index + 1).padStart(2, "0")}</span><span>{item}</span></li>
+                  <li key={item}>
+                    <span className={styles.questionNumber} aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+                    <span>{item}</span>
+                  </li>
                 ))}
               </ol>
             </div>
@@ -121,7 +125,7 @@ export default function AdvisoryPage() {
           </div>
         </section>
 
-        <section className={`${styles.section} ${styles.startingStates} ${styles.rhythmGo}`}>
+        <section className={`${styles.section} ${styles.startingStates} ${styles.diagnosticScene} ${styles.rhythmGo}`} data-review-crop="starting-states">
           <div className={styles.shell}>
             <h2 className={styles.sectionAnchor}>HAI ĐIỂM XUẤT PHÁT</h2>
             <div className={styles.stateComposition}>
@@ -135,14 +139,17 @@ export default function AdvisoryPage() {
               </article>
             </div>
           </div>
-          <div className={`${styles.signatureMoment} ${styles.rhythmQuiet}`} data-review-crop="m3">
-            <div className={styles.signalShell}>
-              <p className={styles.signatureLine}>MỘT VẤN ĐỀ KINH DOANH THẬT TRƯỚC. AI SAU.</p>
-            </div>
+        </section>
+
+        <section className={`${styles.ahaScene} ${styles.statementScene} ${styles.rhythmQuiet}`} data-review-crop="aha">
+          <div className={styles.signalShell}>
+            <span className={styles.ahaMarker} aria-hidden="true" />
+            <p className={`${styles.accentVoice} ${styles.ahaLead}`}>Có thể bước đầu tiên không nằm ở AI.</p>
+            <p className={`${styles.displayVoice} ${styles.ahaSignal}`}>Hãy nhìn nơi giá trị thất thoát — và công việc mắc ở đâu.</p>
           </div>
         </section>
 
-        <section className={`${styles.section} ${styles.valueSection} ${styles.rhythmOpen}`} data-review-crop="m4">
+        <section className={`${styles.section} ${styles.valueSection} ${styles.decisionScene} ${styles.rhythmOpen}`} data-review-crop="tangible-value">
           <div className={styles.shell}>
             <div className={styles.valueOpening}>
               <h2 className={styles.sectionAnchor}>SAU BƯỚC ĐẦU, LÃNH ĐẠO CÓ GÌ TRONG TAY?</h2>
@@ -153,21 +160,21 @@ export default function AdvisoryPage() {
             </div>
 
             <div className={styles.decisionAssets}>
-              <article className={styles.decisionAsset}>
+              <article className={`${styles.decisionAsset} ${styles.decisionAssetOne}`}>
                 <div className={styles.editorialNumeral} aria-label="1">01</div>
                 <div className={styles.assetContent}>
                   <h3>BẢN ĐỒ GIÁ TRỊ &amp; VẬN HÀNH AI</h3>
                   <p>Nhìn rõ AI đang tham gia ở đâu, nên tham gia đến đâu, giá trị đang thất thoát chỗ nào, phần nào trùng lặp hoặc phân mảnh, use case nào đáng ưu tiên và việc gì nên dừng, sửa, thử hay mở rộng.</p>
                 </div>
               </article>
-              <article className={styles.decisionAsset}>
+              <article className={`${styles.decisionAsset} ${styles.decisionAssetTwo}`}>
                 <div className={styles.editorialNumeral} aria-label="2">02</div>
                 <div className={styles.assetContent}>
                   <h3>BẢN ĐỒ QUYẾT ĐỊNH, VAI TRÒ &amp; ĐIỂM KIỂM SOÁT</h3>
                   <p>Làm rõ ai có quyền quyết, ai chịu trách nhiệm, công việc đang được chuyển giao giữa những vai trò nào, điểm nào cần người kiểm lại và khoảng trống trách nhiệm nằm ở đâu.</p>
                 </div>
               </article>
-              <article className={styles.decisionAsset}>
+              <article className={`${styles.decisionAsset} ${styles.decisionAssetThree}`}>
                 <div className={styles.editorialNumeral} aria-label="3">03</div>
                 <div className={styles.assetContent}>
                   <h3>LỘ TRÌNH THỬ NGHIỆM GIÁ TRỊ 90 NGÀY</h3>
@@ -186,41 +193,37 @@ export default function AdvisoryPage() {
           </div>
         </section>
 
-        <section className={`${styles.section} ${styles.authoritySection} ${styles.rhythmOpen}`}>
-          <div className={styles.shell}>
-            <div className={styles.authorityOpening}>
-              <div>
-                <h2 className={styles.sectionAnchor}>CÁCH TÔI NHÌN MỘT VẤN ĐỀ CÓ AI</h2>
-                <p className={styles.readingVoice}>Tôi không nhìn một bài toán AI chỉ bằng công nghệ. Khi AI đi vào công việc thật, bài toán cũng kéo theo câu chuyện về giá trị, cách đội ngũ phản ứng và chất lượng quyết định.</p>
+        <section className={`${styles.section} ${styles.authoritySection} ${styles.humanProofScene} ${styles.rhythmOpen}`} data-review-crop="advisor-judgment">
+          <div className={`${styles.shell} ${styles.advisorStage}`}>
+            <figure className={styles.portraitWrap}>
+              <img src="/images/advisory/advisory-kenji-portrait-selected-v01.webp" alt="Kenji tại bàn làm việc trong không gian tối giản, với laptop và sổ ghi chép." width={1448} height={1086} loading="lazy" decoding="async" className={styles.portrait} />
+            </figure>
+            <div className={styles.advisorContent}>
+              <h2 className={styles.sectionAnchor}>CÁCH TÔI NHÌN MỘT VẤN ĐỀ CÓ AI</h2>
+              <p className={`${styles.readingVoice} ${styles.advisorIntro}`}>Tôi không nhìn một bài toán AI chỉ bằng công nghệ. Khi AI đi vào công việc thật, bài toán cũng kéo theo câu chuyện về giá trị, cách đội ngũ phản ứng và chất lượng quyết định.</p>
+
+              <div className={styles.judgmentPath}>
+                <article className={styles.judgmentStep}>
+                  <p className={styles.utilityVoice}>KINH DOANH</p>
+                  <p className={styles.pathText}>Vấn đề nào đáng giải, giá trị nằm ở đâu và doanh nghiệp sẵn sàng đánh đổi điều gì?</p>
+                </article>
+                <article className={styles.judgmentStep}>
+                  <p className={styles.utilityVoice}>TÂM LÝ &amp; PHÁN ĐOÁN</p>
+                  <p className={styles.pathText}>Không phải ai cũng phản ứng với AI giống nhau. Có người còn dè dặt, có người lại tin quá nhanh. Và đôi khi, một đầu ra AI nghe quá hợp lý có thể khiến người ra quyết định dừng phản biện sớm hơn họ nên làm.</p>
+                </article>
+                <article className={styles.judgmentStep}>
+                  <p className={styles.utilityVoice}>AI &amp; CHẤT LƯỢNG ĐẦU RA</p>
+                  <p className={styles.pathText}>AI nên tham gia ở đâu, dựa trên nguồn nào, ai kiểm lại và quyết định cuối cùng thuộc về ai?</p>
+                </article>
               </div>
-              <figure className={styles.portraitWrap}>
-                <img src="/images/advisory/advisory-kenji-portrait-selected-v01.webp" alt="Kenji tại bàn làm việc trong không gian tối giản, với laptop và sổ ghi chép." width={1448} height={1086} loading="lazy" decoding="async" className={styles.portrait} />
-              </figure>
-            </div>
 
-            <div className={styles.lenses}>
-              <article className={styles.lensPrimary}>
-                <p className={styles.utilityVoice}>KINH DOANH</p>
-                <p className={styles.lensText}>Vấn đề nào đáng giải, giá trị nằm ở đâu và doanh nghiệp sẵn sàng đánh đổi điều gì?</p>
-              </article>
-              <article className={styles.lensJudgment}>
-                <p className={styles.utilityVoice}>TÂM LÝ &amp; PHÁN ĐOÁN</p>
-                <p className={styles.lensText}>Không phải ai cũng phản ứng với AI giống nhau. Có người còn dè dặt, có người lại tin quá nhanh. Và đôi khi, một đầu ra AI nghe quá hợp lý có thể khiến người ra quyết định dừng phản biện sớm hơn họ nên làm.</p>
-              </article>
-              <article className={styles.lensAI}>
-                <p className={styles.utilityVoice}>AI &amp; CHẤT LƯỢNG ĐẦU RA</p>
-                <p className={styles.lensText}>AI nên tham gia ở đâu, dựa trên nguồn nào, ai kiểm lại và quyết định cuối cùng thuộc về ai?</p>
-              </article>
-            </div>
-
-            <div className={styles.integratedView}>
-              <p className={styles.integratedTitle}>Tôi không tách ba phần này thành ba dịch vụ. Trong thực tế, chúng thường nằm trong cùng một vấn đề vận hành.</p>
+              <p className={`${styles.accentVoice} ${styles.integratedTitle}`}>Tôi không tách ba phần này thành ba dịch vụ. Trong thực tế, chúng thường nằm trong cùng một vấn đề vận hành.</p>
               <p className={styles.boundaryNote}>Khi công việc đi sâu sang engineering, data, security, integration hay technical architecture, đó là lúc cần đúng specialist bước vào.</p>
             </div>
           </div>
         </section>
 
-        <section className={`${styles.section} ${styles.proofSection} ${styles.rhythmQuiet}`} data-review-crop="m6">
+        <section className={`${styles.section} ${styles.proofSection} ${styles.humanProofScene} ${styles.rhythmQuiet}`} data-review-crop="essence">
           <div className={styles.shell}>
             <div className={styles.proofIntro}>
               <h2 className={styles.sectionAnchor}>VÌ SAO TÔI NHÌN VẤN ĐỀ THEO CÁCH NÀY?</h2>
@@ -244,7 +247,7 @@ export default function AdvisoryPage() {
           </div>
         </section>
 
-        <section className={`${styles.section} ${styles.fitSection} ${styles.rhythmGo}`}>
+        <section className={`${styles.section} ${styles.fitSection} ${styles.diagnosticScene} ${styles.rhythmGo}`}>
           <div className={`${styles.shell} ${styles.fitLayout}`}>
             <div className={styles.fitPrimary}>
               <h2 className={styles.sectionAnchor}>KHI NÀO CUỘC TRAO ĐỔI NÀY ĐÁNG ĐỂ BẮT ĐẦU?</h2>
@@ -259,7 +262,7 @@ export default function AdvisoryPage() {
           </div>
         </section>
 
-        <section id="boi-canh" className={`${styles.section} ${styles.formSection} ${styles.rhythmQuiet}`}>
+        <section id="boi-canh" className={`${styles.section} ${styles.formSection} ${styles.statementScene} ${styles.rhythmQuiet}`} data-review-crop="form-footer">
           <div className={`${styles.shell} ${styles.formLayout}`}>
             <div className={styles.formScene}>
               <h2 className={styles.sectionAnchor}>HÃY BẮT ĐẦU BẰNG MỘT VẤN ĐỀ THẬT</h2>
@@ -279,7 +282,7 @@ export default function AdvisoryPage() {
         </section>
       </main>
 
-      <footer className={styles.footer}><div className={styles.footerInner}><span>Kenji Phạm</span><Link href="/chinh-sach-rieng-tu">Chính sách riêng tư</Link></div></footer>
+      <HomeFooter />
     </>
   );
 }
