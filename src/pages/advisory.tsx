@@ -8,23 +8,23 @@ const operatingQuestions = [
   "Chúng ta đang giải quyết vấn đề kinh doanh nào?",
   "Công việc thực sự cần thay đổi ở đâu?",
   "Ai chịu trách nhiệm cho kết quả?",
-  "AI đang dựa vào nguồn nào?",
+  "Hệ thống AI đang dựa vào nguồn nào?",
   "Đâu là dữ kiện, đâu là suy luận?",
-  "Ai cần kiểm lại trước khi đầu ra AI ảnh hưởng đến quyết định?",
+  "Ai cần kiểm lại trước khi đầu ra từ hệ thống AI, ảnh hưởng đến quyết định?",
 ];
 
 const routeBItems = [
-  "nhiều cách dùng AI nhưng chưa rõ cái nào đáng mở rộng;",
-  "AI được đặt vào cách làm việc cũ;",
+  "nhiều cách ứng dụng nhưng chưa rõ cái nào đáng mở rộng;",
+  "công cụ AI được đặt vào cách làm việc cũ;",
   "mỗi đội ngũ thử theo một cách khác nhau;",
   "trách nhiệm và cách kiểm soát đầu ra chưa rõ.",
 ];
 
 const fitItems = [
-  "phía sau câu chuyện AI là một vấn đề kinh doanh đủ quan trọng;",
-  "có người thực sự có quyền quyết định và chịu trách nhiệm;",
-  "tổ chức sẵn sàng xem lại cách công việc đang vận hành;",
-  "AI đã hoặc sắp ảnh hưởng đáng kể đến cách làm việc hoặc quyết định.",
+  "Phía sau câu chuyện ứng dụng AI là một vấn đề kinh doanh đủ quan trọng;",
+  "Người thực sự có quyền quyết định và chịu trách nhiệm;",
+  "Tổ chức sẵn sàng xem lại cách công việc đang vận hành;",
+  "Công nghệ AI đã hoặc sắp ảnh hưởng đáng kể đến cách làm việc hoặc quyết định.",
 ];
 
 function AdvisoryHeader() {
@@ -61,7 +61,7 @@ function ContextForm() {
         <textarea id="advisory-problem" name="businessPriority" rows={5} required aria-describedby="advisory-problem-help" />
       </div>
       <div className={styles.field}>
-        <label htmlFor="advisory-ai-state">AI hiện đang ở đâu?</label>
+        <label htmlFor="advisory-ai-state">Ứng dụng AI hiện đang ở đâu?</label>
         <p id="advisory-ai-state-help">Tổ chức đã thử những gì? Điều gì đang hoạt động và điều gì chưa?</p>
         <textarea id="advisory-ai-state" name="aiState" rows={3} required aria-describedby="advisory-ai-state-help" />
       </div>
@@ -87,15 +87,15 @@ export default function AdvisoryPage() {
             <div className={styles.heroStatement}>
               <h1 className={styles.displayVoice}>CÓ NHIỀU CÔNG CỤ AI HƠN, DOANH NGHIỆP TẠO RA NHIỀU GIÁ TRỊ HƠN?</h1>
               <div className={`${styles.readingVoice} ${styles.heroArgument}`}>
-                <p>AI có thể đã xuất hiện ở nhiều nơi trong doanh nghiệp. Một số thử nghiệm đã chạy. Một vài đội ngũ đã dùng khá sâu.</p>
+                <p>Trí tuệ nhân tạo (AI) có thể đã xuất hiện ở nhiều nơi trong doanh nghiệp. Một số thử nghiệm đã chạy. Một vài đội ngũ đã dùng khá sâu.</p>
                 <p>Nhưng nếu công việc vẫn gần như cũ, trách nhiệm còn mờ, quyết định chưa tốt hơn và giá trị tạo ra vẫn khó nhìn thấy, thì vấn đề có lẽ không còn nằm ở chuyện thiếu thêm công cụ.</p>
                 <p>Lúc này, điều đáng nhìn hơn là:</p>
               </div>
             </div>
-            <blockquote className={`${styles.accentVoice} ${styles.heroSignal}`}>“Điều gì trong doanh nghiệp thực sự cần thay đổi — và AI nên tham gia vào phần nào?”</blockquote>
+            <blockquote className={`${styles.accentVoice} ${styles.heroSignal}`}>“Điều gì trong doanh nghiệp thực sự cần thay đổi — và công nghệ này nên tham gia vào phần nào?”</blockquote>
             <div className={styles.heroClose}>
               <p className={styles.readingVoice}>Tôi thường bắt đầu từ chính câu hỏi đó khi làm việc cùng Founder và đội ngũ điều hành.</p>
-              <a href="#boi-canh" className={styles.lightCta}>Trao đổi về một vấn đề kinh doanh thực tế</a>
+              <a href="#boi-canh" className={styles.lightCta}>Trao đổi về một vấn đề kinh doanh cụ thể</a>
             </div>
           </div>
         </section>
@@ -103,15 +103,15 @@ export default function AdvisoryPage() {
         <section className={`${styles.section} ${styles.reframeSection} ${styles.diagnosticScene} ${styles.rhythmGo}`}>
           <div className={styles.shell}>
             <div className={styles.reframeOpening}>
-              <h2 className={styles.sectionAnchor}>KHI AI ĐI VÀO CÔNG VIỆC THẬT, BÀI TOÁN CŨNG THAY ĐỔI</h2>
+              <h2 className={styles.sectionAnchor}>KHI TRÍ TUỆ NHÂN TẠO ĐI VÀO VẬN HÀNH, BÀI TOÁN CŨNG THAY ĐỔI</h2>
               <div className={styles.readingVoice}>
-                <p>Lúc đầu, câu hỏi thường là: “AI có thể giúp chúng ta làm gì?”</p>
-                <p>Nhưng đến khi AI đi vào công việc thật, câu hỏi đó không còn đủ nữa.</p>
-                <p>Một công cụ tốt không tự làm cho cách làm việc tốt hơn. Câu trả lời nhanh chưa chắc dẫn tới quyết định tốt hơn. Và một đầu ra AI nghe rất thuyết phục vẫn có thể sai ở đúng chỗ quan trọng nhất.</p>
+                <p>Lúc đầu, câu hỏi thường là: “Các công cụ AI có thể giúp chúng ta làm gì?”</p>
+                <p>Nhưng đến khi công nghệ này đi vào công việc thật, câu hỏi đó không còn đủ nữa.</p>
+                <p>Một công cụ tốt không tự làm cho cách làm việc tốt hơn. Câu trả lời nhanh chưa chắc dẫn tới quyết định tốt hơn. Và một đầu ra từ hệ thống AI nghe rất thuyết phục vẫn có thể sai ở đúng chỗ quan trọng nhất.</p>
               </div>
             </div>
             <div className={styles.diagnosticField}>
-              <p className={styles.diagnosticIntro}>Lúc này, cần nhìn cho rõ vài điều:</p>
+              <p className={styles.diagnosticIntro}>Lúc này, có vài điều cần nhìn rõ:</p>
               <ol className={styles.diagnosticList}>
                 {operatingQuestions.map((item, index) => (
                   <li key={item}>
@@ -121,7 +121,7 @@ export default function AdvisoryPage() {
                 ))}
               </ol>
             </div>
-            <p className={styles.judgmentAnchor}>AI có thể tham gia rất sâu, nhưng người chịu trách nhiệm vẫn phải biết mình đang dựa vào điều gì để quyết định.</p>
+            <p className={styles.judgmentAnchor}>Công nghệ này có thể tham gia rất sâu, nhưng người chịu trách nhiệm vẫn phải biết mình đang dựa vào điều gì để quyết định.</p>
           </div>
         </section>
 
@@ -130,12 +130,13 @@ export default function AdvisoryPage() {
             <h2 className={styles.sectionAnchor}>HAI ĐIỂM XUẤT PHÁT</h2>
             <div className={styles.stateComposition}>
               <article className={styles.routeB}>
-                <p className={styles.routeLead}>Tôi gặp tình huống này nhiều hơn: doanh nghiệp đã dùng AI ở khá nhiều chỗ, nhưng giá trị tạo ra vẫn còn rời rạc:</p>
+                <p className={styles.routeLead}>Tôi gặp tình huống này nhiều hơn: doanh nghiệp đã dùng các công cụ AI ở khá nhiều chỗ, nhưng giá trị tạo ra vẫn còn rời rạc:</p>
                 <ul className={styles.editorialList}>{routeBItems.map((item) => <li key={item}>{item}</li>)}</ul>
                 <p className={styles.routeQuestion}>Nếu đang ở đây, câu hỏi đáng đặt không còn là “cần thêm công cụ nào?”, mà là điều gì trong cách doanh nghiệp đang vận hành khiến những gì đã có vẫn chưa tạo ra giá trị tương xứng.</p>
               </article>
               <article className={styles.routeA}>
-                <p>Cũng có một điểm xuất phát khác: Founder hoặc CEO biết AI quan trọng, nhưng không muốn lao vào thêm công cụ hay một chương trình lớn khi chưa rõ doanh nghiệp thực sự cần thay đổi điều gì.</p>
+                <p>Cũng có một điểm xuất phát khác:</p>
+                <p>Founder hoặc CEO biết việc ứng dụng AI là quan trọng, nhưng không muốn lao vào thêm công cụ hay một chương trình lớn khi chưa rõ doanh nghiệp thực sự cần thay đổi điều gì.</p>
               </article>
             </div>
           </div>
@@ -144,7 +145,7 @@ export default function AdvisoryPage() {
         <section className={`${styles.ahaScene} ${styles.statementScene} ${styles.rhythmQuiet}`} data-review-crop="aha">
           <div className={styles.signalShell}>
             <span className={styles.ahaMarker} aria-hidden="true" />
-            <p className={`${styles.accentVoice} ${styles.ahaLead}`}>Có thể bước đầu tiên không nằm ở AI.</p>
+            <p className={`${styles.accentVoice} ${styles.ahaLead}`}>Có thể bước đầu tiên không nằm ở công nghệ AI.</p>
             <p className={`${styles.displayVoice} ${styles.ahaSignal}`}>Hãy nhìn nơi giá trị thất thoát — và công việc mắc ở đâu.</p>
           </div>
         </section>
@@ -154,7 +155,7 @@ export default function AdvisoryPage() {
             <div className={styles.valueOpening}>
               <h2 className={styles.sectionAnchor}>SAU BƯỚC ĐẦU, LÃNH ĐẠO CÓ GÌ TRONG TAY?</h2>
               <div className={styles.readingVoice}>
-                <p>Điểm bắt đầu thường là một ưu tiên kinh doanh cụ thể: nơi giá trị đang bị mất, quyết định đang mắc hoặc trách nhiệm chưa rõ.</p>
+                <p>Điểm bắt đầu thường là một ưu tiên kinh doanh cụ thể: nơi giá trị đang bị mất, quyết định đang vướng mắc hoặc trách nhiệm chưa rõ.</p>
                 <p>Sau bước đầu, lãnh đạo cần có ba điều đủ rõ để biết nên đi tiếp thế nào.</p>
               </div>
             </div>
@@ -163,15 +164,15 @@ export default function AdvisoryPage() {
               <article className={`${styles.decisionAsset} ${styles.decisionAssetOne}`}>
                 <div className={styles.editorialNumeral} aria-label="1">01</div>
                 <div className={styles.assetContent}>
-                  <h3>BẢN ĐỒ GIÁ TRỊ &amp; CÁCH AI ĐANG ĐƯỢC DÙNG</h3>
-                  <p>Nhìn rõ AI đang tham gia ở đâu, nên tham gia đến đâu; giá trị đang thất thoát chỗ nào; phần nào đang trùng lặp hoặc phân mảnh; cách dùng nào đáng ưu tiên; và việc gì nên dừng, sửa, thử hay mở rộng.</p>
+                  <h3>BẢN ĐỒ GIÁ TRỊ &amp; CÁCH CÔNG NGHỆ AI ĐANG ĐƯỢC DÙNG</h3>
+                  <p>Nhìn rõ công nghệ AI đang tham gia ở đâu, nên tham gia đến đâu; giá trị đang thất thoát chỗ nào; phần nào đang trùng lặp hoặc phân mảnh; cách dùng nào đáng ưu tiên; và việc gì nên dừng, sửa, thử hay mở rộng.</p>
                 </div>
               </article>
               <article className={`${styles.decisionAsset} ${styles.decisionAssetTwo}`}>
                 <div className={styles.editorialNumeral} aria-label="2">02</div>
                 <div className={styles.assetContent}>
                   <h3>BẢN ĐỒ QUYẾT ĐỊNH &amp; TRÁCH NHIỆM</h3>
-                  <p>Làm rõ ai có quyền quyết, ai chịu trách nhiệm, công việc đi qua những vai trò nào, chỗ nào cần người kiểm lại và khoảng trống trách nhiệm đang nằm ở đâu.</p>
+                  <p>Làm rõ ai có quyền quyết định, ai chịu trách nhiệm, công việc đi qua những vai trò nào, chỗ nào cần người kiểm lại và khoảng trống trách nhiệm đang nằm ở đâu.</p>
                 </div>
               </article>
               <article className={`${styles.decisionAsset} ${styles.decisionAssetThree}`}>
@@ -186,7 +187,7 @@ export default function AdvisoryPage() {
             <div className={styles.valueClose}>
               <div className={styles.readingVoice}>
                 <p>Tài liệu chỉ có ý nghĩa nếu nó giúp lãnh đạo đủ rõ để quyết định điều gì đáng làm tiếp — và điều gì không.</p>
-                <p>Đôi khi, kết luận tốt nhất vẫn là: “Chưa nên làm.” Hoặc: “Phần này không cần AI.”</p>
+                <p>Đôi khi, kết luận tốt nhất vẫn là: “Chưa nên làm.” Hoặc: “Phần này không cần dùng công nghệ AI.”</p>
               </div>
               <a href="#boi-canh" className={styles.lightCta}>Trao đổi về một ưu tiên kinh doanh</a>
             </div>
@@ -199,8 +200,8 @@ export default function AdvisoryPage() {
               <img src="/images/advisory/advisory-kenji-portrait-selected-v01.webp" alt="Kenji tại bàn làm việc trong không gian tối giản, với laptop và sổ ghi chép." width={1448} height={1086} loading="lazy" decoding="async" className={styles.portrait} />
             </figure>
             <div className={styles.advisorContent}>
-              <h2 className={styles.sectionAnchor}>CÁCH TÔI NHÌN MỘT VẤN ĐỀ CÓ AI</h2>
-              <p className={`${styles.readingVoice} ${styles.advisorIntro}`}>Với tôi, một bài toán có AI hiếm khi chỉ là chuyện công nghệ. Khi AI đi vào công việc thật, câu chuyện về giá trị, phản ứng của đội ngũ và chất lượng quyết định thường đi cùng nhau.</p>
+              <h2 className={styles.sectionAnchor}>CÁCH TÔI NHÌN MỘT VẤN ĐỀ CÓ ỨNG DỤNG AI</h2>
+              <p className={`${styles.readingVoice} ${styles.advisorIntro}`}>Với tôi, một bài toán có ứng dụng AI hiếm khi chỉ là chuyện công nghệ. Khi công nghệ này đi vào công việc thật, câu chuyện về giá trị, phản ứng của đội ngũ và chất lượng quyết định thường đi cùng nhau.</p>
 
               <div className={styles.judgmentPath}>
                 <article className={styles.judgmentStep}>
@@ -209,11 +210,11 @@ export default function AdvisoryPage() {
                 </article>
                 <article className={styles.judgmentStep}>
                   <p className={styles.utilityVoice}>TÂM LÝ &amp; PHÁN ĐOÁN</p>
-                  <p className={styles.pathText}>Phản ứng với AI rất khác nhau. Có người còn dè dặt, có người lại tin quá nhanh. Và đôi khi, một đầu ra AI nghe quá hợp lý khiến người ra quyết định dừng phản biện quá sớm.</p>
+                  <p className={styles.pathText}>Phản ứng với công nghệ AI rất khác nhau. Có người còn dè dặt, có người lại tin quá nhanh. Và đôi khi, một đầu ra từ hệ thống AI nghe quá hợp lý khiến người ra quyết định dừng phản biện quá sớm.</p>
                 </article>
                 <article className={styles.judgmentStep}>
-                  <p className={styles.utilityVoice}>AI &amp; CHẤT LƯỢNG ĐẦU RA</p>
-                  <p className={styles.pathText}>AI nên tham gia ở đâu, dựa trên nguồn nào, ai kiểm lại và quyết định cuối cùng thuộc về ai?</p>
+                  <p className={styles.utilityVoice}>HỆ THỐNG AI &amp; CHẤT LƯỢNG ĐẦU RA</p>
+                  <p className={styles.pathText}>Hệ thống AI nên tham gia ở đâu, dựa trên nguồn nào, ai kiểm lại và quyết định cuối cùng thuộc về ai?</p>
                 </article>
               </div>
 
@@ -232,12 +233,11 @@ export default function AdvisoryPage() {
 
             <article className={styles.essenceProof}>
               <div className={styles.essenceCopy}>
-                <h3>ESSENCE — NƠI TÔI ĐANG TRỰC TIẾP VẬN HÀNH CÁCH LÀM NÀY</h3>
+                <h3>ESSENCE — NƠI TÔI TRỰC TIẾP VẬN HÀNH CÁCH LÀM NÀY</h3>
                 <div className={styles.readingVoice}>
-                  <p>ESSENCE là hệ kinh doanh tôi đang trực tiếp xây và vận hành.</p>
-                  <p>Ở ESSENCE, AI được dùng sâu nhưng không mặc định là đúng. Với mỗi việc, cần rõ nguồn nào đáng tin, AI được giao phần nào, ai kiểm lại, bằng chứng nào đủ tốt và quyết định cuối cùng thuộc về ai.</p>
-                  <p>Đó là bằng chứng từ chính hệ tôi đang vận hành. Nó không phải một client case, và cũng không đủ để suy rộng thành thành tích chuyển đổi AI ở nhiều doanh nghiệp khác.</p>
-                  <p>Tôi tin một hệ tốt bắt đầu từ việc đúng người giữ đúng trách nhiệm.</p>
+                  <p>ESSENCE là hệ kinh doanh tôi trực tiếp xây và vận hành. Ở đây, các công cụ AI được dùng sâu nhưng không được mặc định là đúng: nguồn phải rõ, trách nhiệm phải rõ, đầu ra phải có người kiểm lại và quyết định cuối cùng phải có người chịu trách nhiệm.</p>
+                  <p>Khi làm việc với một doanh nghiệp khác, tôi không áp một mô hình có sẵn. Tôi bắt đầu từ vấn đề cụ thể, cách công việc đang vận hành và người đang chịu trách nhiệm.</p>
+                  <p>Tôi tin một hệ tốt bắt đầu khi đúng người giữ đúng trách nhiệm.</p>
                 </div>
               </div>
               <figure className={styles.loopWrap}>
@@ -250,14 +250,13 @@ export default function AdvisoryPage() {
         <section className={`${styles.section} ${styles.fitSection} ${styles.diagnosticScene} ${styles.rhythmGo}`}>
           <div className={`${styles.shell} ${styles.fitLayout}`}>
             <div className={styles.fitPrimary}>
-              <h2 className={styles.sectionAnchor}>KHI NÀO CUỘC TRAO ĐỔI NÀY ĐÁNG ĐỂ BẮT ĐẦU?</h2>
-              <p className={styles.fitLead}>Cuộc trao đổi này thường đáng bắt đầu khi:</p>
+              <h2 className={styles.sectionAnchor}>CUỘC TRAO ĐỔI THẢO LUẬN NÀY THƯỜNG NÊN BẮT ĐẦU KHI:</h2>
               <ul className={styles.fitList}>{fitItems.map((item) => <li key={item}>{item}</li>)}</ul>
             </div>
             <div className={styles.fitContext}>
               <p>Tôi thường làm việc trực tiếp với Founder, CEO và người có quyền quyết định khi vấn đề đủ quan trọng để ảnh hưởng đến cách tổ chức vận hành.</p>
-              <p>Quy mô không phải tiêu chí đầu tiên. Quan trọng hơn là vấn đề có đủ thật và người chịu trách nhiệm chính có thực sự muốn thay đổi cách làm việc hay không.</p>
-              <p className={styles.nonFit}>Nếu điều anh/chị đang cần chủ yếu là đào tạo AI cơ bản, chatbot/agent dựng sẵn, triển khai kỹ thuật trọn gói hoặc một lời cam kết chắc chắn về ROI, có lẽ đây chưa phải cuộc trao đổi phù hợp.</p>
+              <p>Quy mô không phải tiêu chí đầu tiên. Quan trọng hơn là vấn đề tạo ra giá tri cho khách hàng và người chịu trách nhiệm chính có thực sự muốn thay đổi cách làm việc hay không.</p>
+              <p className={styles.nonFit}>Nếu điều anh/chị đang cần chủ yếu là đào tạo sử dụng công cụ AI cơ bản, chatbot/agent dựng sẵn, triển khai kỹ thuật trọn gói hoặc một lời cam kết chắc chắn về ROI, có lẽ đây chưa phải cuộc trao đổi phù hợp.</p>
             </div>
           </div>
         </section>
@@ -265,10 +264,10 @@ export default function AdvisoryPage() {
         <section id="boi-canh" className={`${styles.section} ${styles.formSection} ${styles.statementScene} ${styles.rhythmQuiet}`} data-review-crop="form-footer">
           <div className={`${styles.shell} ${styles.formLayout}`}>
             <div className={styles.formScene}>
-              <h2 className={styles.sectionAnchor}>HÃY BẮT ĐẦU BẰNG MỘT VẤN ĐỀ THẬT</h2>
+              <h2 className={styles.sectionAnchor}>HÃY BẮT ĐẦU BẰNG MỘT VẤN ĐỀ CỤ THỂ</h2>
               <div className={styles.readingVoice}>
-                <p>Anh/chị không cần chuẩn bị sẵn một chiến lược AI hoàn chỉnh, cũng không cần biết trước giải pháp.</p>
-                <p>Chỉ cần mang đến một vấn đề kinh doanh đủ thật để cùng nhìn cho rõ.</p>
+                <p>Anh/chị không cần chuẩn bị sẵn một chiến lược ứng dụng AI hoàn chỉnh, cũng không cần biết trước giải pháp.</p>
+                <p>Chỉ cần mang đến một vấn đề kinh doanh đang gặp phải để cùng nhìn rõ.</p>
               </div>
             </div>
             <div className={styles.formColumn}>
