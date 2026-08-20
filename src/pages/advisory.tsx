@@ -197,7 +197,7 @@ export default function AdvisoryPage() {
         <section className={`${styles.section} ${styles.authoritySection} ${styles.humanProofScene} ${styles.rhythmOpen}`} data-review-crop="advisor-judgment">
           <div className={`${styles.shell} ${styles.advisorStage}`}>
             <figure className={styles.portraitWrap}>
-              <img src="/images/advisory/advisory-kenji-portrait-selected-v01.webp" alt="Kenji tại bàn làm việc trong không gian tối giản, với laptop và sổ ghi chép." width={1448} height={1086} loading="lazy" decoding="async" className={styles.portrait} />
+              <img src="/images/advisory/advisory-kenji-portrait-friendly-editorial-selected-v02.webp" alt="Kenji ngồi trên ghế trong không gian sáng, mặc sơ mi trắng." loading="lazy" decoding="async" className={styles.portrait} />
             </figure>
             <div className={styles.advisorContent}>
               <h2 className={styles.sectionAnchor}>CÁCH TÔI NHÌN MỘT VẤN ĐỀ CÓ ỨNG DỤNG AI</h2>
