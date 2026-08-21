@@ -1,1 +1,0 @@
-ESSENCE v03 binary upload sentinel — safe to remove after blob verification.
