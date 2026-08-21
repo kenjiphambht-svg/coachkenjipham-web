@@ -122,7 +122,7 @@ export default function AdvisoryPage() {
                 ))}
               </ol>
             </div>
-            <p className={styles.judgmentAnchor}>Công nghệ này có thể tham gia rất sâu, nhưng người chịu trách nhiệm vẫn phải biết mình đang dựa vào điều gì để quyết định.</p>
+            <p className={styles.judgmentAnchor} data-weight-soften="judgment">Công nghệ này có thể tham gia rất sâu, nhưng người chịu trách nhiệm vẫn phải biết mình đang dựa vào điều gì để quyết định.</p>
           </div>
         </section>
 
@@ -131,7 +131,7 @@ export default function AdvisoryPage() {
             <h2 className={styles.sectionAnchor} data-type-scale="section">HAI ĐIỂM XUẤT PHÁT</h2>
             <div className={styles.stateComposition} data-state-composition>
               <article className={styles.routeB}>
-                <p className={styles.routeLead}>Tôi gặp tình huống này nhiều hơn: doanh nghiệp đã dùng các công cụ AI ở khá nhiều chỗ, nhưng giá trị tạo ra vẫn còn rời rạc:</p>
+                <p className={styles.routeLead} data-weight-soften="route-lead">Tôi gặp tình huống này nhiều hơn: doanh nghiệp đã dùng các công cụ AI ở khá nhiều chỗ, nhưng giá trị tạo ra vẫn còn rời rạc:</p>
                 <ul className={styles.editorialList}>{routeBItems.map((item) => <li key={item}>{item}</li>)}</ul>
               </article>
               <article className={styles.routeA} data-advisory-route-a>
@@ -240,8 +240,8 @@ export default function AdvisoryPage() {
                   <p>Tôi tin một hệ tốt bắt đầu khi đúng người giữ đúng trách nhiệm.</p>
                 </div>
               </div>
-              <figure className={styles.loopWrap}>
-                <img src="/images/advisory/advisory-essence-operating-loop-selected-v01.webp" alt="Sơ đồ vòng lặp vận hành ESSENCE: Nguồn thật → Quyền hạn → AI hỗ trợ → Người kiểm lại → Quyết định → Bằng chứng → Điều chỉnh cách làm." width={1254} height={1254} loading="lazy" decoding="async" className={styles.loopImage} />
+              <figure className={styles.loopWrap} data-essence-loop-wrap>
+                <img src="/images/advisory/advisory-essence-operating-loop-selected-v03.webp" alt="Sơ đồ vòng lặp vận hành ESSENCE: Nguồn thật → Quyền hạn → AI hỗ trợ → Người kiểm lại → Quyết định → Bằng chứng → Điều chỉnh cách làm." width={500} height={500} loading="lazy" decoding="async" className={styles.loopImage} />
               </figure>
             </article>
           </div>
@@ -330,6 +330,16 @@ export default function AdvisoryPage() {
           letter-spacing: -0.006em;
         }
 
+        main [data-weight-soften="judgment"],
+        main [data-weight-soften="route-lead"] {
+          font-weight: 500 !important;
+        }
+
+        main [data-essence-loop-wrap] {
+          width: min(100%, 620px);
+          max-width: 620px;
+        }
+
         main [data-type-scale="hero"] {
           font-size: clamp(54px, 5.55vw, 81px);
         }
@@ -383,6 +393,13 @@ export default function AdvisoryPage() {
             padding-top: 22px;
             font-size: 22px;
             line-height: 1.38;
+          }
+
+          main [data-essence-loop-wrap] {
+            width: calc(100vw - 16px);
+            max-width: calc(100vw - 16px);
+            margin-left: 50%;
+            transform: translateX(-50%);
           }
 
           main [data-type-scale="hero"] {
