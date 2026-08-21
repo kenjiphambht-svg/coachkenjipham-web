@@ -129,7 +129,7 @@ export default function AdvisoryPage() {
         <section className={`${styles.section} ${styles.startingStates} ${styles.diagnosticScene} ${styles.rhythmGo}`} data-review-crop="starting-states">
           <div className={styles.shell}>
             <h2 className={styles.sectionAnchor} data-type-scale="section">HAI ĐIỂM XUẤT PHÁT</h2>
-            <div className={styles.stateComposition}>
+            <div className={styles.stateComposition} data-state-composition>
               <article className={styles.routeB}>
                 <p className={styles.routeLead}>Tôi gặp tình huống này nhiều hơn: doanh nghiệp đã dùng các công cụ AI ở khá nhiều chỗ, nhưng giá trị tạo ra vẫn còn rời rạc:</p>
                 <ul className={styles.editorialList}>{routeBItems.map((item) => <li key={item}>{item}</li>)}</ul>
@@ -282,6 +282,11 @@ export default function AdvisoryPage() {
       <HomeFooter />
 
       <style jsx global>{`
+        main [data-state-composition] {
+          grid-template-columns: minmax(0, 1.55fr) minmax(340px, 0.95fr);
+          gap: 64px;
+        }
+
         main [data-advisory-route-a] {
           margin-top: 0;
           align-self: stretch;
@@ -345,7 +350,19 @@ export default function AdvisoryPage() {
           font-size: clamp(34px, 3.35vw, 47px);
         }
 
+        @media (max-width: 1020px) and (min-width: 721px) {
+          main [data-state-composition] {
+            grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+            gap: 46px;
+          }
+        }
+
         @media (max-width: 720px) {
+          main [data-state-composition] {
+            grid-template-columns: 1fr;
+            gap: 38px;
+          }
+
           main [data-advisory-route-a] {
             padding: 28px 22px 30px;
             border-left: 0;
