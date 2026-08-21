@@ -21,8 +21,8 @@ const routeBItems = [
 ];
 
 const fitItems = [
-  "Phía sau câu chuyện ứng dụng AI là một vấn đề kinh doanh đủ quan trọng;",
-  "Người thực sự có quyền quyết định và chịu trách nhiệm;",
+  "Có một vấn đề kinh doanh đủ quan trọng phía sau câu chuyện ứng dụng AI;",
+  "Có người đủ quyền quyết định và chịu trách nhiệm;",
   "Tổ chức sẵn sàng xem lại cách công việc đang vận hành;",
   "Công nghệ AI đã hoặc sắp ảnh hưởng đáng kể đến cách làm việc hoặc quyết định.",
 ];
@@ -85,7 +85,7 @@ export default function AdvisoryPage() {
         <section className={`${styles.section} ${styles.hero} ${styles.statementScene} ${styles.rhythmOpen}`} data-review-crop="hero">
           <div className={styles.shell}>
             <div className={styles.heroStatement}>
-              <h1 className={styles.displayVoice}>DOANH NGHIỆP ĐÃ DÙNG NHIỀU CÔNG CỤ AI HƠN. NHƯNG ĐIỀU GÌ THỰC SỰ TỐT LÊN?</h1>
+              <h1 className={styles.displayVoice} data-type-scale="hero">DOANH NGHIỆP ĐÃ DÙNG NHIỀU CÔNG CỤ AI HƠN. NHƯNG ĐIỀU GÌ THỰC SỰ TỐT LÊN?</h1>
               <div className={`${styles.readingVoice} ${styles.heroArgument}`}>
                 <p>Trí tuệ nhân tạo (AI) có thể đã xuất hiện ở nhiều nơi trong doanh nghiệp. Một số thử nghiệm đã chạy. Một vài đội ngũ đã dùng khá sâu.</p>
                 <p>Nhưng nếu công việc vẫn gần như cũ, trách nhiệm còn mờ, quyết định chưa tốt hơn và giá trị tạo ra vẫn khó nhìn thấy, thì vấn đề có lẽ không còn nằm ở chuyện thiếu thêm công cụ.</p>
@@ -103,11 +103,12 @@ export default function AdvisoryPage() {
         <section className={`${styles.section} ${styles.reframeSection} ${styles.diagnosticScene} ${styles.rhythmGo}`}>
           <div className={styles.shell}>
             <div className={styles.reframeOpening}>
-              <h2 className={styles.sectionAnchor}>KHI TRÍ TUỆ NHÂN TẠO ĐI VÀO VẬN HÀNH, BÀI TOÁN CŨNG THAY ĐỔI</h2>
+              <h2 className={styles.sectionAnchor} data-type-scale="section">KHI TRÍ TUỆ NHÂN TẠO ĐI VÀO VẬN HÀNH, BÀI TOÁN CŨNG THAY ĐỔI</h2>
               <div className={styles.readingVoice}>
                 <p>Lúc đầu, câu hỏi thường là: “Các công cụ AI có thể giúp chúng ta làm gì?”</p>
                 <p>Nhưng khi công nghệ này đi vào vận hành, câu hỏi đó không còn đủ nữa.</p>
-                <p>Một công cụ tốt chưa chắc làm cách vận hành hiệu quả hơn. Câu trả lời nhanh chưa chắc dẫn tới quyết định tốt hơn. Và kết quả đầu ra từ hệ thống AI nghe rất thuyết phục vẫn có thể sai ở đúng chỗ quan trọng nhất.</p>
+                <p>Một công cụ tốt chưa chắc làm cách vận hành hiệu quả hơn. Câu trả lời nhanh chưa chắc dẫn tới quyết định tốt hơn.</p>
+                <p>Và một đầu ra từ hệ thống AI nghe rất thuyết phục vẫn có thể sai ở đúng chỗ quan trọng nhất.</p>
               </div>
             </div>
             <div className={styles.diagnosticField}>
@@ -127,15 +128,16 @@ export default function AdvisoryPage() {
 
         <section className={`${styles.section} ${styles.startingStates} ${styles.diagnosticScene} ${styles.rhythmGo}`} data-review-crop="starting-states">
           <div className={styles.shell}>
-            <h2 className={styles.sectionAnchor}>HAI ĐIỂM XUẤT PHÁT</h2>
+            <h2 className={styles.sectionAnchor} data-type-scale="section">HAI ĐIỂM XUẤT PHÁT</h2>
             <div className={styles.stateComposition}>
               <article className={styles.routeB}>
                 <p className={styles.routeLead}>Tôi gặp tình huống này nhiều hơn: doanh nghiệp đã dùng các công cụ AI ở khá nhiều chỗ, nhưng giá trị tạo ra vẫn còn rời rạc:</p>
                 <ul className={styles.editorialList}>{routeBItems.map((item) => <li key={item}>{item}</li>)}</ul>
               </article>
-              <article className={styles.routeA}>
-                <p>Cũng có một điểm xuất phát khác:</p>
-                <p>Founder hoặc CEO biết việc ứng dụng AI là quan trọng, nhưng không muốn lao vào thêm công cụ hay một chương trình lớn khi chưa rõ doanh nghiệp thực sự cần thay đổi điều gì.</p>
+              <article className={styles.routeA} data-advisory-route-a>
+                <p data-route-a-kicker>MỘT ĐIỂM XUẤT PHÁT KHÁC</p>
+                <p data-route-a-body>Có những Founder hoặc CEO đã nhìn thấy AI sẽ ảnh hưởng đáng kể đến doanh nghiệp, nhưng chọn không vội thêm công cụ hay khởi động một chương trình lớn.</p>
+                <p data-route-a-emphasis>Họ muốn hiểu rõ điều gì thực sự cần thay đổi trước — để đầu tư đúng chỗ.</p>
               </article>
             </div>
           </div>
@@ -144,18 +146,18 @@ export default function AdvisoryPage() {
         <section className={`${styles.ahaScene} ${styles.statementScene} ${styles.rhythmQuiet}`} data-review-crop="aha">
           <div className={styles.signalShell}>
             <span className={styles.ahaMarker} aria-hidden="true" />
-            <p className={`${styles.accentVoice} ${styles.ahaLead}`}>Giá trị không nằm ở việc dùng thêm công cụ.</p>
-            <p className={`${styles.displayVoice} ${styles.ahaSignal}`}>Nó nằm ở việc thay đổi đúng chỗ trong cách doanh nghiệp vận hành.</p>
+            <p className={`${styles.accentVoice} ${styles.ahaLead}`} data-type-scale="aha-lead">Giá trị không nằm ở việc dùng thêm công cụ.</p>
+            <p className={`${styles.displayVoice} ${styles.ahaSignal}`} data-type-scale="aha-signal">Nó nằm ở việc thay đổi đúng chỗ trong cách doanh nghiệp vận hành.</p>
           </div>
         </section>
 
         <section className={`${styles.section} ${styles.valueSection} ${styles.decisionScene} ${styles.rhythmOpen}`} data-review-crop="tangible-value">
           <div className={styles.shell}>
             <div className={styles.valueOpening}>
-              <h2 className={styles.sectionAnchor}>SAU BƯỚC ĐẦU, LÃNH ĐẠO CÓ GÌ TRONG TAY?</h2>
+              <h2 className={styles.sectionAnchor} data-type-scale="section">SAU BƯỚC ĐẦU, LÃNH ĐẠO CÓ GÌ TRONG TAY?</h2>
               <div className={styles.readingVoice}>
                 <p>Điểm bắt đầu thường là một ưu tiên kinh doanh cụ thể: nơi giá trị đang bị mất, quyết định đang vướng mắc hoặc trách nhiệm chưa rõ.</p>
-                <p>Sau bước đầu, lãnh đạo cần có ba điều đủ rõ để biết nên đi tiếp thế nào.</p>
+                <p>Sau bước đầu, lãnh đạo cần có ba điều đủ rõ để quyết định bước tiếp theo.</p>
               </div>
             </div>
 
@@ -163,22 +165,22 @@ export default function AdvisoryPage() {
               <article className={`${styles.decisionAsset} ${styles.decisionAssetOne}`}>
                 <div className={styles.editorialNumeral} aria-label="1">01</div>
                 <div className={styles.assetContent}>
-                  <h3>BẢN ĐỒ GIÁ TRỊ &amp; CÁCH CÔNG NGHỆ AI ĐANG ĐƯỢC DÙNG</h3>
-                  <p>Nhìn rõ công nghệ AI đang được dùng ở đâu, giá trị đang thất thoát chỗ nào và việc gì nên dừng, sửa, thử hoặc mở rộng.</p>
+                  <h3 data-type-scale="decision-heading">BẢN ĐỒ GIÁ TRỊ &amp; CÁCH CÔNG NGHỆ AI ĐANG ĐƯỢC DÙNG</h3>
+                  <p>Thấy công nghệ AI đang được dùng ở đâu, giá trị đang mất ở đâu và phần nào nên dừng, sửa, thử hoặc mở rộng.</p>
                 </div>
               </article>
               <article className={`${styles.decisionAsset} ${styles.decisionAssetTwo}`}>
                 <div className={styles.editorialNumeral} aria-label="2">02</div>
                 <div className={styles.assetContent}>
-                  <h3>BẢN ĐỒ QUYẾT ĐỊNH &amp; TRÁCH NHIỆM</h3>
-                  <p>Làm rõ ai có quyền quyết định, ai chịu trách nhiệm, công việc đi qua những vai trò nào, chỗ nào cần người kiểm lại và khoảng trống trách nhiệm đang nằm ở đâu.</p>
+                  <h3 data-type-scale="decision-heading">BẢN ĐỒ QUYẾT ĐỊNH &amp; TRÁCH NHIỆM</h3>
+                  <p>Rõ ai quyết định, ai chịu trách nhiệm, chỗ nào cần người kiểm lại và khoảng trống trách nhiệm nằm ở đâu.</p>
                 </div>
               </article>
               <article className={`${styles.decisionAsset} ${styles.decisionAssetThree}`}>
                 <div className={styles.editorialNumeral} aria-label="3">03</div>
                 <div className={styles.assetContent}>
-                  <h3>LỘ TRÌNH 90 NGÀY ĐỂ KIỂM CHỨNG GIÁ TRỊ</h3>
-                  <p>Chọn 1–2 ưu tiên đáng kiểm chứng, xác định người chịu trách nhiệm, mốc ban đầu cần theo dõi, bằng chứng cần thấy, tiêu chí để tiếp tục, điều chỉnh hay dừng — và khi nào cần chuyên gia kỹ thuật phù hợp bước vào.</p>
+                  <h3 data-type-scale="decision-heading">LỘ TRÌNH 90 NGÀY ĐỂ KIỂM CHỨNG GIÁ TRỊ</h3>
+                  <p>Chọn 1–2 ưu tiên để kiểm chứng, cùng người chịu trách nhiệm, bằng chứng cần thấy và tiêu chí để tiếp tục, điều chỉnh hoặc dừng.</p>
                 </div>
               </article>
             </div>
@@ -199,7 +201,7 @@ export default function AdvisoryPage() {
               <img src="/images/advisory/advisory-kenji-portrait-friendly-editorial-selected-v02.webp" alt="Kenji ngồi trên ghế trong không gian sáng, mặc sơ mi trắng." loading="lazy" decoding="async" className={styles.portrait} />
             </figure>
             <div className={styles.advisorContent}>
-              <h2 className={styles.sectionAnchor}>CÁCH TÔI NHÌN MỘT VẤN ĐỀ CÓ ỨNG DỤNG AI</h2>
+              <h2 className={styles.sectionAnchor} data-type-scale="section">CÁCH TÔI NHÌN MỘT VẤN ĐỀ CÓ ỨNG DỤNG AI</h2>
               <p className={`${styles.readingVoice} ${styles.advisorIntro}`}>Khi công nghệ này đi vào vận hành, giá trị, phản ứng của đội ngũ và chất lượng quyết định thường đi cùng nhau.</p>
 
               <div className={styles.judgmentPath}>
@@ -209,7 +211,7 @@ export default function AdvisoryPage() {
                 </article>
                 <article className={styles.judgmentStep}>
                   <p className={styles.utilityVoice}>TÂM LÝ &amp; PHÁN ĐOÁN</p>
-                  <p className={styles.pathText}>Phản ứng với công nghệ AI rất khác nhau. Có người còn dè dặt, có người lại tin quá nhanh. Và đôi khi, một đầu ra từ hệ thống AI nghe quá hợp lý khiến người ra quyết định dừng phản biện quá sớm.</p>
+                  <p className={styles.pathText}>Có người còn dè dặt, có người lại tin quá nhanh. Một đầu ra từ hệ thống AI nghe hợp lý cũng có thể khiến người ra quyết định dừng phản biện quá sớm.</p>
                 </article>
                 <article className={styles.judgmentStep}>
                   <p className={styles.utilityVoice}>HỆ THỐNG AI &amp; CHẤT LƯỢNG ĐẦU RA</p>
@@ -217,7 +219,6 @@ export default function AdvisoryPage() {
                 </article>
               </div>
 
-              <p className={`${styles.accentVoice} ${styles.integratedTitle}`}>Trong thực tế, Kinh doanh, Tâm lý và công nghệ AI thường cùng nằm trong một vấn đề.</p>
               <p className={styles.boundaryNote}>Khi vấn đề đi sâu vào kỹ thuật, dữ liệu, bảo mật, tích hợp hay kiến trúc hệ thống, đó là lúc cần đúng chuyên gia kỹ thuật bước vào.</p>
             </div>
           </div>
@@ -226,8 +227,8 @@ export default function AdvisoryPage() {
         <section className={`${styles.section} ${styles.proofSection} ${styles.humanProofScene} ${styles.rhythmQuiet}`} data-review-crop="essence">
           <div className={styles.shell}>
             <div className={styles.proofIntro}>
-              <h2 className={styles.sectionAnchor}>VÌ SAO TÔI NHÌN VẤN ĐỀ THEO CÁCH NÀY?</h2>
-              <p className={styles.proofCredentials}>Cách nhìn này được hình thành qua hơn 20 năm làm vệc, kinh doanh và lãnh đạo, trong đó có giai đoạn tôi là Founder/CEO của BHT Media và chịu trách nhiệm P&amp;L. Tôi cũng có hơn 3.000 giờ coaching và đào tạo với C-Level, quản lý và chủ doanh nghiệp; năm 2021, tôi đạt chứng nhận ICF ACC.</p>
+              <h2 className={styles.sectionAnchor} data-type-scale="section">VÌ SAO TÔI NHÌN VẤN ĐỀ THEO CÁCH NÀY?</h2>
+              <p className={styles.proofCredentials}>Cách nhìn này được hình thành qua hơn 20 năm làm việc, kinh doanh và lãnh đạo, trong đó có giai đoạn tôi là Founder/CEO của BHT Media và chịu trách nhiệm P&amp;L. Tôi cũng có hơn 3.000 giờ coaching và đào tạo với C-Level, quản lý và chủ doanh nghiệp; năm 2021, tôi đạt chứng nhận ICF ACC.</p>
             </div>
 
             <article className={styles.essenceProof}>
@@ -249,11 +250,11 @@ export default function AdvisoryPage() {
         <section className={`${styles.section} ${styles.fitSection} ${styles.diagnosticScene} ${styles.rhythmGo}`}>
           <div className={`${styles.shell} ${styles.fitLayout}`}>
             <div className={styles.fitPrimary}>
-              <h2 className={styles.sectionAnchor}>CUỘC TRAO ĐỔI NÀY THƯỜNG NÊN BẮT ĐẦU KHI:</h2>
+              <h2 className={styles.sectionAnchor} data-type-scale="section">CUỘC TRAO ĐỔI NÀY THƯỜNG NÊN BẮT ĐẦU KHI:</h2>
               <ul className={styles.fitList}>{fitItems.map((item) => <li key={item}>{item}</li>)}</ul>
             </div>
             <div className={styles.fitContext}>
-              <p>Quy mô không phải tiêu chí đầu tiên. Quan trọng hơn là vấn đề có ảnh hưởng đủ lớn đến hoạt động kinh doanh và người chịu trách nhiệm chính có thực sự muốn thay đổi cách làm việc hay không.</p>
+              <p>Quy mô không phải tiêu chí đầu tiên. Quan trọng hơn là vấn đề có đủ ảnh hưởng và người chịu trách nhiệm chính có thực sự muốn thay đổi cách làm hay không.</p>
               <p className={styles.nonFit}>Nếu điều anh/chị đang cần chủ yếu là đào tạo sử dụng công cụ AI cơ bản, chatbot/agent dựng sẵn, triển khai kỹ thuật trọn gói hoặc một lời cam kết chắc chắn về ROI, có lẽ đây chưa phải cuộc trao đổi phù hợp.</p>
             </div>
           </div>
@@ -262,7 +263,7 @@ export default function AdvisoryPage() {
         <section id="boi-canh" className={`${styles.section} ${styles.formSection} ${styles.statementScene} ${styles.rhythmQuiet}`} data-review-crop="form-footer">
           <div className={`${styles.shell} ${styles.formLayout}`}>
             <div className={styles.formScene}>
-              <h2 className={styles.sectionAnchor}>HÃY BẮT ĐẦU BẰNG MỘT VẤN ĐỀ CỤ THỂ</h2>
+              <h2 className={styles.sectionAnchor} data-type-scale="section">HÃY BẮT ĐẦU BẰNG MỘT VẤN ĐỀ CỤ THỂ</h2>
               <div className={styles.readingVoice}>
                 <p>Anh/chị không cần chuẩn bị sẵn một chiến lược ứng dụng AI hoàn chỉnh, cũng không cần biết trước giải pháp.</p>
                 <p>Chỉ cần mang đến một vấn đề kinh doanh đang gặp phải để cùng nhìn rõ.</p>
@@ -279,6 +280,115 @@ export default function AdvisoryPage() {
       </main>
 
       <HomeFooter />
+
+      <style jsx global>{`
+        main [data-advisory-route-a] {
+          margin-top: 0;
+          align-self: stretch;
+          display: flex;
+          flex-direction: column;
+          padding: 34px 32px 36px;
+          border-top: 1px solid var(--essence-text-primary-2026);
+          border-left: 1px solid var(--essence-border-light-2026);
+          background: color-mix(in srgb, var(--essence-cream-2026) 46%, transparent);
+          color: var(--essence-text-primary-2026);
+        }
+
+        main [data-route-a-kicker] {
+          margin: 0;
+          font-family: Inter, Arial, sans-serif;
+          font-size: 11px;
+          line-height: 1.4;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          font-weight: 600;
+          color: var(--essence-text-secondary-2026);
+        }
+
+        main [data-route-a-body] {
+          margin: 26px 0 0;
+          font-family: Inter, Arial, sans-serif;
+          font-size: 18px;
+          line-height: 1.72;
+          font-weight: 400;
+        }
+
+        main [data-route-a-emphasis] {
+          margin: auto 0 0;
+          padding-top: 26px;
+          border-top: 1px solid var(--essence-border-light-2026);
+          font-family: "Cormorant Garamond", Georgia, serif;
+          font-size: clamp(22px, 1.8vw, 26px);
+          line-height: 1.36;
+          font-style: italic;
+          font-weight: 400;
+          letter-spacing: -0.006em;
+        }
+
+        main [data-type-scale="hero"] {
+          font-size: clamp(54px, 5.55vw, 81px);
+        }
+
+        main [data-type-scale="section"] {
+          font-size: clamp(36px, 3.6vw, 52px);
+        }
+
+        main [data-type-scale="aha-lead"] {
+          font-size: clamp(25px, 2.5vw, 34px);
+        }
+
+        main [data-type-scale="aha-signal"] {
+          font-size: clamp(52px, 5.4vw, 79px);
+        }
+
+        main [data-type-scale="decision-heading"] {
+          font-size: clamp(34px, 3.35vw, 47px);
+        }
+
+        @media (max-width: 720px) {
+          main [data-advisory-route-a] {
+            padding: 28px 22px 30px;
+            border-left: 0;
+          }
+
+          main [data-route-a-kicker] {
+            font-size: 10px;
+          }
+
+          main [data-route-a-body] {
+            margin-top: 22px;
+            font-size: 17px;
+            line-height: 1.7;
+          }
+
+          main [data-route-a-emphasis] {
+            margin-top: 26px;
+            padding-top: 22px;
+            font-size: 22px;
+            line-height: 1.38;
+          }
+
+          main [data-type-scale="hero"] {
+            font-size: clamp(38px, 10.8vw, 50px);
+          }
+
+          main [data-type-scale="section"] {
+            font-size: clamp(31px, 8.8vw, 40px);
+          }
+
+          main [data-type-scale="aha-lead"] {
+            font-size: 25px;
+          }
+
+          main [data-type-scale="aha-signal"] {
+            font-size: clamp(43px, 11.7vw, 58px);
+          }
+
+          main [data-type-scale="decision-heading"] {
+            font-size: 32px;
+          }
+        }
+      `}</style>
     </>
   );
 }
