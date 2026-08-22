@@ -1,77 +1,109 @@
-import { cp, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { cp, mkdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
-const ERROR_PAGES = new Set(["404.html", "500.html"]);
-const GENERATED_HEADERS_MARKER = "# Generated prerendered page cache headers";
+const ERROR_ROUTES = new Set(["/404", "/500"]);
 
-async function listHtmlFiles(root, current = root) {
-  const entries = await readdir(current, { withFileTypes: true });
-  const files = [];
+async function readJson(file) {
+  return JSON.parse(await readFile(file, "utf8"));
+}
 
-  for (const entry of entries) {
-    const absolute = path.join(current, entry.name);
-    if (entry.isDirectory()) {
-      files.push(...(await listHtmlFiles(root, absolute)));
+function classifyPage(route, artifact, prerenderManifest) {
+  if (
+    ERROR_ROUTES.has(route) ||
+    !artifact.startsWith("pages/") ||
+    !artifact.endsWith(".html")
+  ) {
+    return { eligible: false, reason: "not-a-public-html-route" };
+  }
+
+  if (prerenderManifest.notFoundRoutes.includes(route)) {
+    return { eligible: false, reason: "not-found-route" };
+  }
+
+  if (Object.hasOwn(prerenderManifest.dynamicRoutes, route)) {
+    return { eligible: false, reason: "dynamic-prerender-route" };
+  }
+
+  const prerender = prerenderManifest.routes[route];
+  if (!prerender) {
+    // Under pinned Next 15.5.21 Pages Router semantics, an HTML artifact in
+    // pages-manifest without a prerender-manifest record is an Automatic Static
+    // Optimization result: there is no data route or revalidation contract.
+    return { eligible: true, reason: "automatic-static-optimization" };
+  }
+
+  const foreverStatic =
+    prerender.initialRevalidateSeconds === false &&
+    prerender.initialExpireSeconds == null &&
+    prerender.srcRoute === null &&
+    prerender.experimentalPPR == null &&
+    prerender.renderingMode == null;
+
+  return foreverStatic
+    ? { eligible: true, reason: "non-revalidating-prerender" }
+    : { eligible: false, reason: "revalidating-or-unknown-prerender" };
+}
+
+export async function promoteOpenNextStaticPages({
+  nextDir,
+  sourceDir,
+  assetsDir,
+}) {
+  const [pagesManifest, prerenderManifest] = await Promise.all([
+    readJson(path.join(nextDir, "server/pages-manifest.json")),
+    readJson(path.join(nextDir, "prerender-manifest.json")),
+  ]);
+
+  if (
+    prerenderManifest.version !== 4 ||
+    !prerenderManifest.routes ||
+    !prerenderManifest.dynamicRoutes ||
+    !Array.isArray(prerenderManifest.notFoundRoutes)
+  ) {
+    throw new Error("Unsupported or incomplete Next prerender manifest; refusing promotion.");
+  }
+
+  const promoted = [];
+  const skipped = [];
+
+  for (const [route, artifact] of Object.entries(pagesManifest).sort(([a], [b]) =>
+    a.localeCompare(b),
+  )) {
+    const classification = classifyPage(route, artifact, prerenderManifest);
+    if (!classification.eligible) {
+      if (artifact.endsWith(".html") && !ERROR_ROUTES.has(route)) {
+        skipped.push({ route, reason: classification.reason });
+      }
       continue;
     }
 
-    const relative = path.relative(root, absolute);
-    if (entry.isFile() && relative.endsWith(".html") && !ERROR_PAGES.has(relative)) {
-      files.push(relative);
-    }
-  }
-
-  return files.sort();
-}
-
-export async function promoteOpenNextStaticPages({ sourceDir, assetsDir }) {
-  const pages = await listHtmlFiles(sourceDir);
-
-  for (const relative of pages) {
+    const relative = path.relative("pages", artifact);
     const destination = path.join(assetsDir, relative);
     await mkdir(path.dirname(destination), { recursive: true });
     await cp(path.join(sourceDir, relative), destination);
+    promoted.push({ route, file: relative, reason: classification.reason });
   }
 
-  await writeStaticPageHeaders(assetsDir, pages);
-
-  return pages;
-}
-
-async function writeStaticPageHeaders(assetsDir, pages) {
-  const headersPath = path.join(assetsDir, "_headers");
-  let existing = "";
-
-  try {
-    existing = await readFile(headersPath, "utf8");
-  } catch (error) {
-    if (error.code !== "ENOENT") throw error;
-  }
-
-  const retained = existing.split(GENERATED_HEADERS_MARKER, 1)[0].trimEnd();
-  const generated = pages
-    .map((page) => {
-      const route = page === "index.html" ? "/" : `/${page.slice(0, -".html".length)}`;
-      return `${route}\n  Cache-Control: public,max-age=0,s-maxage=31536000,must-revalidate`;
-    })
-    .join("\n\n");
-
-  await writeFile(
-    headersPath,
-    `${retained}\n\n${GENERATED_HEADERS_MARKER}\n${generated}\n`,
-  );
+  return { promoted, skipped };
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const projectRoot = process.cwd();
-  const pages = await promoteOpenNextStaticPages({
-    sourceDir: path.join(
-      projectRoot,
-      ".open-next/server-functions/default/.next/server/pages",
-    ),
+  const nextDir = path.join(
+    projectRoot,
+    ".open-next/server-functions/default/.next",
+  );
+  const result = await promoteOpenNextStaticPages({
+    nextDir,
+    sourceDir: path.join(nextDir, "server/pages"),
     assetsDir: path.join(projectRoot, ".open-next/assets"),
   });
 
-  console.log(`Promoted ${pages.length} prerendered HTML pages to Workers Static Assets.`);
+  console.log(
+    `Promoted ${result.promoted.length} manifest-verified static HTML pages to Workers Static Assets.`,
+  );
+  for (const route of result.skipped) {
+    console.log(`Kept ${route.route} Worker-handled: ${route.reason}.`);
+  }
 }
