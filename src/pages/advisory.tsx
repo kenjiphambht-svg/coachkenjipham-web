@@ -2,6 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import HomeFooter from "@/components/homepage/HomeFooter";
+import { isAcceptedAdvisoryIntakeResponse } from "@/lib/advisory/intake-response";
 import styles from "@/styles/advisory.module.css";
 
 const operatingQuestions = [
@@ -182,7 +183,7 @@ function ContextForm() {
       });
       const result = await response.json().catch(() => null);
 
-      if (!response.ok || result?.ok !== true || result?.submission_id !== activeSubmissionId) {
+      if (!isAcceptedAdvisoryIntakeResponse(response.status, response.ok, result, activeSubmissionId)) {
         throw new Error("INTAKE_NOT_ACCEPTED");
       }
 
