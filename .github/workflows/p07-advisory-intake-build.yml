@@ -9,6 +9,7 @@ on:
       - 'tests/advisory-intake.test.ts'
       - 'supabase/migrations/20260823151200_p07_b2b_advisory_intake_foundation.sql'
       - 'supabase/migrations/20260823152000_p07_b2b_advisory_intake_hardening.sql'
+      - 'supabase/migrations/20260823152500_p07_b2b_advisory_intake_conflict_hardening.sql'
       - 'supabase/rollbacks/20260823151200_p07_b2b_advisory_intake_foundation_down.sql'
       - 'supabase/tests/p07_b2b_advisory_intake_foundation.sql'
       - 'supabase/tests/p07_b2b_advisory_intake_hardening.sql'
@@ -83,6 +84,7 @@ jobs:
           SQL
           psql -h localhost -U postgres -v ON_ERROR_STOP=1 -f supabase/migrations/20260823151200_p07_b2b_advisory_intake_foundation.sql
           psql -h localhost -U postgres -v ON_ERROR_STOP=1 -f supabase/migrations/20260823152000_p07_b2b_advisory_intake_hardening.sql
+          psql -h localhost -U postgres -v ON_ERROR_STOP=1 -f supabase/migrations/20260823152500_p07_b2b_advisory_intake_conflict_hardening.sql
           psql -h localhost -U postgres -v ON_ERROR_STOP=1 -f supabase/tests/p07_b2b_advisory_intake_foundation.sql
           psql -h localhost -U postgres -v ON_ERROR_STOP=1 -f supabase/tests/p07_b2b_advisory_intake_hardening.sql
 
@@ -101,6 +103,7 @@ jobs:
           set -euo pipefail
           foundation='supabase/migrations/20260823151200_p07_b2b_advisory_intake_foundation.sql'
           hardening='supabase/migrations/20260823152000_p07_b2b_advisory_intake_hardening.sql'
+          conflict='supabase/migrations/20260823152500_p07_b2b_advisory_intake_conflict_hardening.sql'
           rollback='supabase/rollbacks/20260823151200_p07_b2b_advisory_intake_foundation_down.sql'
           grep -q 'create table crm.advisory_leads' "$foundation"
           grep -q 'create table crm.advisory_intake_events' "$foundation"
@@ -109,8 +112,9 @@ jobs:
           grep -q 'revoke all on function public.advisory_intake_register' "$foundation"
           grep -q 'advisory_leads_block_update' "$hardening"
           grep -q 'p_contact_email is null' "$hardening"
+          grep -q 'on conflict on constraint advisory_intake_submission_unique' "$conflict"
           grep -q 'ADVISORY_ROLLBACK_NONEMPTY_FORWARD_RECOVERY_REQUIRED' "$rollback"
-          if grep -Eiq '\b(raw_ip|user_agent|device_fingerprint|phone|budget|payment_data|company_size)\b[[:space:]]+(text|varchar|uuid|json|jsonb|bigint|integer|numeric|boolean|timestamptz)' "$foundation" "$hardening"; then
+          if grep -Eiq '\b(raw_ip|user_agent|device_fingerprint|phone|budget|payment_data|company_size)\b[[:space:]]+(text|varchar|uuid|json|jsonb|bigint|integer|numeric|boolean|timestamptz)' "$foundation" "$hardening" "$conflict"; then
             echo 'Forbidden canonical CRM field detected' >&2
             exit 1
           fi
