@@ -8,8 +8,10 @@ on:
       - 'src/lib/advisory/**'
       - 'tests/advisory-intake.test.ts'
       - 'supabase/migrations/20260823151200_p07_b2b_advisory_intake_foundation.sql'
+      - 'supabase/migrations/20260823152000_p07_b2b_advisory_intake_hardening.sql'
       - 'supabase/rollbacks/20260823151200_p07_b2b_advisory_intake_foundation_down.sql'
       - 'supabase/tests/p07_b2b_advisory_intake_foundation.sql'
+      - 'supabase/tests/p07_b2b_advisory_intake_hardening.sql'
       - '.github/workflows/p07-advisory-intake-build.yml'
 
 permissions:
@@ -19,6 +21,19 @@ jobs:
   test-and-build:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
     steps:
       - name: Checkout exact PR head
         uses: actions/checkout@v4
@@ -51,21 +66,51 @@ jobs:
       - name: Next build
         run: npm run build
 
-      - name: SQL contract presence checks
+      - name: Advisory SQL synthetic runtime matrix
+        env:
+          PGPASSWORD: postgres
         shell: bash
         run: |
           set -euo pipefail
-          migration='supabase/migrations/20260823151200_p07_b2b_advisory_intake_foundation.sql'
+          if ! command -v psql >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y postgresql-client
+          fi
+          psql -h localhost -U postgres -v ON_ERROR_STOP=1 <<'SQL'
+          create role anon nologin;
+          create role authenticated nologin;
+          create role service_role nologin;
+          SQL
+          psql -h localhost -U postgres -v ON_ERROR_STOP=1 -f supabase/migrations/20260823151200_p07_b2b_advisory_intake_foundation.sql
+          psql -h localhost -U postgres -v ON_ERROR_STOP=1 -f supabase/migrations/20260823152000_p07_b2b_advisory_intake_hardening.sql
+          psql -h localhost -U postgres -v ON_ERROR_STOP=1 -f supabase/tests/p07_b2b_advisory_intake_foundation.sql
+          psql -h localhost -U postgres -v ON_ERROR_STOP=1 -f supabase/tests/p07_b2b_advisory_intake_hardening.sql
+
+      - name: Rollback empty-state contract
+        env:
+          PGPASSWORD: postgres
+        shell: bash
+        run: |
+          set -euo pipefail
+          psql -h localhost -U postgres -v ON_ERROR_STOP=1 -f supabase/rollbacks/20260823151200_p07_b2b_advisory_intake_foundation_down.sql
+          psql -h localhost -U postgres -v ON_ERROR_STOP=1 -Atc "select to_regclass('crm.advisory_leads') is null;" | grep -qx t
+
+      - name: SQL boundary presence checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          foundation='supabase/migrations/20260823151200_p07_b2b_advisory_intake_foundation.sql'
+          hardening='supabase/migrations/20260823152000_p07_b2b_advisory_intake_hardening.sql'
           rollback='supabase/rollbacks/20260823151200_p07_b2b_advisory_intake_foundation_down.sql'
-          sqltest='supabase/tests/p07_b2b_advisory_intake_foundation.sql'
-          grep -q 'create table crm.advisory_leads' "$migration"
-          grep -q 'create table crm.advisory_intake_events' "$migration"
-          grep -q 'create table crm.advisory_lifecycle_events' "$migration"
-          grep -q 'ADVISORY_SUBMISSION_CONFLICT' "$migration"
-          grep -q 'revoke all on function public.advisory_intake_register' "$migration"
+          grep -q 'create table crm.advisory_leads' "$foundation"
+          grep -q 'create table crm.advisory_intake_events' "$foundation"
+          grep -q 'create table crm.advisory_lifecycle_events' "$foundation"
+          grep -q 'ADVISORY_SUBMISSION_CONFLICT' "$foundation"
+          grep -q 'revoke all on function public.advisory_intake_register' "$foundation"
+          grep -q 'advisory_leads_block_update' "$hardening"
+          grep -q 'p_contact_email is null' "$hardening"
           grep -q 'ADVISORY_ROLLBACK_NONEMPTY_FORWARD_RECOVERY_REQUIRED' "$rollback"
-          grep -q 'P07_ADVISORY_INTAKE_AT_01_08_PASS' "$sqltest"
-          if grep -Eiq '\b(raw_ip|user_agent|device_fingerprint|phone|budget|payment_data|company_size)\b[[:space:]]+(text|varchar|uuid|json|jsonb|bigint|integer|numeric|boolean|timestamptz)' "$migration"; then
+          if grep -Eiq '\b(raw_ip|user_agent|device_fingerprint|phone|budget|payment_data|company_size)\b[[:space:]]+(text|varchar|uuid|json|jsonb|bigint|integer|numeric|boolean|timestamptz)' "$foundation" "$hardening"; then
             echo 'Forbidden canonical CRM field detected' >&2
             exit 1
           fi
