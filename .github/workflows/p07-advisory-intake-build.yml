@@ -2,7 +2,9 @@ name: P07 Advisory Intake Build Evidence
 
 on:
   pull_request:
-    branches: [main]
+    branches:
+      - main
+      - p04/ps-001-advisory-build-01
     paths:
       - 'src/app/api/advisory/**'
       - 'src/lib/advisory/**'
