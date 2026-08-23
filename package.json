@@ -10,7 +10,7 @@
     "lint": "next lint",
     "test": "vitest run",
     "test:m1": "vitest run tests/knowledge-foundation.test.ts tests/knowledge-sql-contract.test.ts",
-    "cf:build": "node scripts/patch-opennext-cloudflare-react18.mjs --cloudflare-build && opennextjs-cloudflare build",
+    "cf:build": "node scripts/patch-opennext-cloudflare-react18.mjs --cloudflare-build && opennextjs-cloudflare build && node scripts/promote-opennext-static-pages.mjs",
     "cf:preview": "npm run cf:build && opennextjs-cloudflare preview",
     "cf:upload": "npm run cf:build && opennextjs-cloudflare upload"
   },

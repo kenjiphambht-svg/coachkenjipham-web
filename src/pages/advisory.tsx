@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import type { FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import HomeFooter from "@/components/homepage/HomeFooter";
 import styles from "@/styles/advisory.module.css";
 
@@ -27,6 +27,51 @@ const fitItems = [
   "Công nghệ AI đã hoặc sắp ảnh hưởng đáng kể đến cách làm việc hoặc quyết định.",
 ];
 
+type SubmissionStatus = "idle" | "submitting" | "error" | "success";
+
+type ContactFieldErrors = {
+  contact_name?: string;
+  contact_email?: string;
+};
+
+type IntakePayload = {
+  role_org_context: string;
+  business_problem: string;
+  ai_current_state: string;
+  why_now: string;
+  contact_name: string;
+  contact_email: string;
+  source_route: "/advisory";
+  locale?: string;
+  referrer?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_content?: string;
+  utm_term?: string;
+};
+
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function readTrimmed(formData: FormData, name: string) {
+  const value = formData.get(name);
+  return typeof value === "string" ? value.trim() : "";
+}
+
+function createSubmissionId() {
+  if (typeof window.crypto.randomUUID === "function") {
+    return window.crypto.randomUUID();
+  }
+
+  const bytes = new Uint8Array(16);
+  window.crypto.getRandomValues(bytes);
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0"));
+
+  return `${hex.slice(0, 4).join("")}-${hex.slice(4, 6).join("")}-${hex.slice(6, 8).join("")}-${hex.slice(8, 10).join("")}-${hex.slice(10, 16).join("")}`;
+}
+
 function AdvisoryHeader() {
   return (
     <header className={styles.header} data-shell="advisory-header-exception">
@@ -44,33 +89,274 @@ function AdvisoryHeader() {
 }
 
 function ContextForm() {
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  const [status, setStatus] = useState<SubmissionStatus>("idle");
+  const [fieldErrors, setFieldErrors] = useState<ContactFieldErrors>({});
+  const [validationSummary, setValidationSummary] = useState("");
+  const [submissionId, setSubmissionId] = useState<string | null>(null);
+  const [submittedFingerprint, setSubmittedFingerprint] = useState<string | null>(null);
+
+  function clearContactError(field: keyof ContactFieldErrors) {
+    setFieldErrors((current) => ({ ...current, [field]: undefined }));
+    setValidationSummary("");
+    if (status === "error") setStatus("idle");
   }
 
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (status === "submitting") return;
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const roleOrgContext = readTrimmed(formData, "role_org_context");
+    const businessProblem = readTrimmed(formData, "business_problem");
+    const aiCurrentState = readTrimmed(formData, "ai_current_state");
+    const whyNow = readTrimmed(formData, "why_now");
+    const contactName = readTrimmed(formData, "contact_name");
+    const contactEmail = readTrimmed(formData, "contact_email");
+
+    const nextErrors: ContactFieldErrors = {};
+    if (!contactName) nextErrors.contact_name = "Vui lòng cho biết tên của anh/chị.";
+    if (!contactEmail) {
+      nextErrors.contact_email = "Vui lòng nhập email để tôi có thể phản hồi.";
+    } else if (!emailPattern.test(contactEmail)) {
+      nextErrors.contact_email = "Email này có vẻ chưa đúng. Anh/chị kiểm tra lại giúp tôi.";
+    }
+
+    const missingContext = !roleOrgContext || !businessProblem || !aiCurrentState || !whyNow;
+    if (missingContext || Object.keys(nextErrors).length > 0) {
+      setFieldErrors(nextErrors);
+      setValidationSummary("Anh/chị kiểm tra lại những phần còn thiếu trước khi gửi.");
+      setStatus("idle");
+
+      const firstInvalid = form.querySelector<HTMLElement>(
+        !roleOrgContext
+          ? "[name='role_org_context']"
+          : !businessProblem
+            ? "[name='business_problem']"
+            : !aiCurrentState
+              ? "[name='ai_current_state']"
+              : !whyNow
+                ? "[name='why_now']"
+                : nextErrors.contact_name
+                  ? "[name='contact_name']"
+                  : "[name='contact_email']",
+      );
+      firstInvalid?.focus();
+      return;
+    }
+
+    setFieldErrors({});
+    setValidationSummary("");
+
+    const params = new URLSearchParams(window.location.search);
+    const payload: IntakePayload = {
+      role_org_context: roleOrgContext,
+      business_problem: businessProblem,
+      ai_current_state: aiCurrentState,
+      why_now: whyNow,
+      contact_name: contactName,
+      contact_email: contactEmail,
+      source_route: "/advisory",
+      locale: window.navigator.language || undefined,
+      referrer: document.referrer || undefined,
+      utm_source: params.get("utm_source") || undefined,
+      utm_medium: params.get("utm_medium") || undefined,
+      utm_campaign: params.get("utm_campaign") || undefined,
+      utm_content: params.get("utm_content") || undefined,
+      utm_term: params.get("utm_term") || undefined,
+    };
+
+    const fingerprint = JSON.stringify(payload);
+    const activeSubmissionId =
+      submissionId && submittedFingerprint === fingerprint ? submissionId : createSubmissionId();
+
+    setSubmissionId(activeSubmissionId);
+    setSubmittedFingerprint(fingerprint);
+    setStatus("submitting");
+
+    try {
+      const response = await fetch("/api/advisory/intake", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...payload, submission_id: activeSubmissionId }),
+      });
+      const result = await response.json().catch(() => null);
+
+      if (!response.ok || result?.ok !== true || result?.submission_id !== activeSubmissionId) {
+        throw new Error("INTAKE_NOT_ACCEPTED");
+      }
+
+      setStatus("success");
+    } catch {
+      setStatus("error");
+    }
+  }
+
+  if (status === "success") {
+    return (
+      <div className={`${styles.form} advisoryReceipt`} role="status" aria-live="polite" data-advisory-intake-receipt>
+        <h3>Đã nhận được bối cảnh.</h3>
+        <p>Cảm ơn anh/chị. Tôi sẽ đọc những gì anh/chị đã gửi trước khi quyết định bước tiếp theo. Nếu một cuộc trao đổi sâu hơn có thể hữu ích, ESSENCE sẽ liên hệ qua email anh/chị đã cung cấp. Anh/chị không cần gửi lại bốn phần thông tin này.</p>
+        <p className="advisoryReceiptBoundary">Việc gửi bối cảnh chưa phải là xác nhận lịch hẹn, đề xuất, mức phí hay cam kết hợp tác.</p>
+      </div>
+    );
+  }
+
+  const buttonLabel = status === "submitting" ? "Đang gửi…" : status === "error" ? "Thử gửi lại" : "Gửi bối cảnh vấn đề";
+
   return (
-    <form className={styles.form} onSubmit={handleSubmit} data-form-transport="pending-contract">
+    <form className={styles.form} onSubmit={handleSubmit} noValidate aria-busy={status === "submitting"} data-form-transport="/api/advisory/intake">
       <div className={styles.field}>
         <label htmlFor="advisory-role">Vai trò và tổ chức</label>
         <p id="advisory-role-help">Anh/chị đang phụ trách điều gì?</p>
-        <textarea id="advisory-role" name="roleAndOrganization" rows={3} required aria-describedby="advisory-role-help" />
+        <textarea id="advisory-role" name="role_org_context" rows={3} required aria-describedby="advisory-role-help" />
       </div>
       <div className={`${styles.field} ${styles.fieldPriority}`}>
         <label htmlFor="advisory-problem">Vấn đề cần giải quyết</label>
         <p id="advisory-problem-help">Vấn đề nào đang cần được giải quyết nhất?</p>
-        <textarea id="advisory-problem" name="businessPriority" rows={5} required aria-describedby="advisory-problem-help" />
+        <textarea id="advisory-problem" name="business_problem" rows={5} required aria-describedby="advisory-problem-help" />
       </div>
       <div className={styles.field}>
         <label htmlFor="advisory-ai-state">Hiện trạng ứng dụng AI</label>
         <p id="advisory-ai-state-help">Doanh nghiệp đang dùng hoặc đã thử công cụ AI ở đâu?</p>
-        <textarea id="advisory-ai-state" name="aiState" rows={3} required aria-describedby="advisory-ai-state-help" />
+        <textarea id="advisory-ai-state" name="ai_current_state" rows={3} required aria-describedby="advisory-ai-state-help" />
       </div>
       <div className={styles.field}>
         <label htmlFor="advisory-why-now">Vì sao là lúc này?</label>
         <p id="advisory-why-now-help">Vì sao vấn đề này cần được xử lý lúc này?</p>
-        <textarea id="advisory-why-now" name="whyNow" rows={3} required aria-describedby="advisory-why-now-help" />
+        <textarea id="advisory-why-now" name="why_now" rows={3} required aria-describedby="advisory-why-now-help" />
       </div>
-      <button type="submit" className={styles.primaryButton}>Gửi bối cảnh vấn đề</button>
+
+      <div className="advisoryContactGroup" data-advisory-contact-group>
+        <div className="advisoryContactIntro">
+          <h3>Thông tin để phản hồi</h3>
+          <p>Để tôi biết mình đang trao đổi với ai và có thể phản hồi sau khi đọc bối cảnh.</p>
+        </div>
+
+        <div className={`${styles.field} advisoryContactField`}>
+          <label htmlFor="advisory-contact-name">Tên anh/chị</label>
+          <input
+            id="advisory-contact-name"
+            name="contact_name"
+            type="text"
+            autoComplete="name"
+            required
+            aria-invalid={Boolean(fieldErrors.contact_name)}
+            aria-describedby={fieldErrors.contact_name ? "advisory-contact-name-error" : undefined}
+            onChange={() => clearContactError("contact_name")}
+          />
+          {fieldErrors.contact_name ? <p id="advisory-contact-name-error" className="advisoryFieldError" role="alert">{fieldErrors.contact_name}</p> : null}
+        </div>
+
+        <div className={`${styles.field} advisoryContactField`}>
+          <label htmlFor="advisory-contact-email">Email liên hệ</label>
+          <p id="advisory-contact-email-help">Dùng để phản hồi về chính bối cảnh anh/chị gửi.</p>
+          <input
+            id="advisory-contact-email"
+            name="contact_email"
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            required
+            aria-invalid={Boolean(fieldErrors.contact_email)}
+            aria-describedby={fieldErrors.contact_email ? "advisory-contact-email-help advisory-contact-email-error" : "advisory-contact-email-help"}
+            onChange={() => clearContactError("contact_email")}
+          />
+          {fieldErrors.contact_email ? <p id="advisory-contact-email-error" className="advisoryFieldError" role="alert">{fieldErrors.contact_email}</p> : null}
+        </div>
+      </div>
+
+      {validationSummary ? <p className="advisoryFormMessage" role="alert">{validationSummary}</p> : null}
+      {status === "error" ? (
+        <div className="advisoryFormMessage" role="alert" aria-live="assertive">
+          <strong>Chưa gửi được bối cảnh.</strong>
+          <p>Nội dung anh/chị đã nhập vẫn được giữ trên trang này. Vui lòng thử gửi lại.</p>
+        </div>
+      ) : null}
+
+      <p className="advisoryPrivacyNote">Thông tin liên hệ được dùng để đọc và phản hồi bối cảnh anh/chị gửi; việc gửi form không phải là đăng ký nhận nội dung marketing.</p>
+      <button type="submit" className={styles.primaryButton} disabled={status === "submitting"}>{buttonLabel}</button>
+
+      <style jsx>{`
+        .advisoryContactGroup {
+          display: grid;
+          gap: 24px;
+          margin-top: 8px;
+          padding-top: 30px;
+          border-top: 1px solid var(--essence-border-light-2026);
+        }
+
+        .advisoryContactIntro {
+          display: grid;
+          gap: 8px;
+        }
+
+        .advisoryContactIntro h3 {
+          margin: 0;
+          font-family: Inter, Arial, sans-serif;
+          font-size: 14px;
+          line-height: 1.4;
+          font-weight: 600;
+          letter-spacing: 0.06em;
+        }
+
+        .advisoryContactIntro p,
+        .advisoryPrivacyNote,
+        .advisoryFormMessage,
+        .advisoryFieldError {
+          margin: 0;
+          font-family: Inter, Arial, sans-serif;
+          font-size: 14px;
+          line-height: 1.6;
+        }
+
+        .advisoryContactField input {
+          box-sizing: border-box;
+          width: 100%;
+          min-height: 50px;
+          margin-top: 10px;
+          padding: 12px 14px;
+          border: 1px solid var(--essence-border-light-2026);
+          border-radius: 0;
+          background: transparent;
+          color: inherit;
+          font: inherit;
+        }
+
+        .advisoryContactField input:focus-visible {
+          outline: 2px solid currentColor;
+          outline-offset: 2px;
+        }
+
+        .advisoryContactField input[aria-invalid="true"] {
+          border-color: currentColor;
+          border-width: 2px;
+        }
+
+        .advisoryFieldError {
+          margin-top: 8px;
+          font-weight: 500;
+        }
+
+        .advisoryFormMessage {
+          display: grid;
+          gap: 6px;
+          padding-top: 4px;
+        }
+
+        .advisoryFormMessage p {
+          margin: 0;
+        }
+
+        .advisoryPrivacyNote {
+          color: var(--essence-text-secondary-2026);
+        }
+
+        button:disabled {
+          cursor: wait;
+          opacity: 0.7;
+        }
+      `}</style>
     </form>
   );
 }
@@ -358,6 +644,32 @@ export default function AdvisoryPage() {
 
         main [data-type-scale="decision-heading"] {
           font-size: clamp(34px, 3.35vw, 47px);
+        }
+
+        .advisoryReceipt {
+          display: grid;
+          gap: 18px;
+        }
+
+        .advisoryReceipt h3 {
+          margin: 0;
+          font-family: "Cormorant Garamond", Georgia, serif;
+          font-size: clamp(30px, 2.5vw, 40px);
+          line-height: 1.1;
+          font-weight: 500;
+        }
+
+        .advisoryReceipt p {
+          margin: 0;
+          font-family: Inter, Arial, sans-serif;
+          font-size: 16px;
+          line-height: 1.7;
+        }
+
+        .advisoryReceiptBoundary {
+          padding-top: 18px;
+          border-top: 1px solid var(--essence-border-light-2026);
+          color: var(--essence-text-secondary-2026);
         }
 
         @media (max-width: 1020px) and (min-width: 721px) {
