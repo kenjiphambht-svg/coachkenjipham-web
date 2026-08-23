@@ -29,14 +29,31 @@ export async function POST(request: NextRequest) {
     return json({ status: 'invalid_request', errorCode: 'ADVISORY_JSON_REQUIRED' }, 415);
   }
 
-  const contentLength = Number(request.headers.get('content-length') ?? '0');
-  if (Number.isFinite(contentLength) && contentLength > ADVISORY_MAX_BODY_BYTES) {
+  const contentLengthHeader = request.headers.get('content-length');
+  if (contentLengthHeader) {
+    const contentLength = Number(contentLengthHeader);
+    if (!Number.isFinite(contentLength) || contentLength < 0) {
+      return json({ status: 'invalid_request', errorCode: 'ADVISORY_CONTENT_LENGTH_INVALID' }, 400);
+    }
+    if (contentLength > ADVISORY_MAX_BODY_BYTES) {
+      return json({ status: 'invalid_request', errorCode: 'ADVISORY_BODY_TOO_LARGE' }, 413);
+    }
+  }
+
+  let rawText: string;
+  try {
+    rawText = await request.text();
+  } catch {
+    return json({ status: 'invalid_request', errorCode: 'ADVISORY_BODY_INVALID' }, 400);
+  }
+
+  if (new TextEncoder().encode(rawText).byteLength > ADVISORY_MAX_BODY_BYTES) {
     return json({ status: 'invalid_request', errorCode: 'ADVISORY_BODY_TOO_LARGE' }, 413);
   }
 
   let rawBody: unknown;
   try {
-    rawBody = await request.json();
+    rawBody = JSON.parse(rawText);
   } catch {
     return json({ status: 'invalid_request', errorCode: 'ADVISORY_BODY_INVALID' }, 400);
   }
