@@ -1,7 +1,7 @@
 -- 20260823152500 · Independent runtime hardening.
--- PL/pgSQL RETURNS TABLE exposes `submission_id` as an output variable, so the
--- insert must target the named uniqueness constraint rather than an ambiguous
--- ON CONFLICT (submission_id) reference.
+-- PL/pgSQL RETURNS TABLE exposes output variables named `submission_id` and
+-- `received_at`; qualify INSERT conflict/RETURNING targets so runtime column
+-- resolution cannot collide with those output variables.
 
 create or replace function public.advisory_intake_register(
   p_submission_id uuid,
@@ -88,7 +88,7 @@ begin
     raise exception 'ADVISORY_LEAD_RESOLUTION_FAILED';
   end if;
 
-  insert into crm.advisory_intake_events (
+  insert into crm.advisory_intake_events as intake (
     lead_id,
     submission_id,
     role_org_context,
@@ -108,7 +108,7 @@ begin
     v_email
   )
   on conflict on constraint advisory_intake_submission_unique do nothing
-  returning id, received_at into v_intake_id, v_received_at;
+  returning intake.id, intake.received_at into v_intake_id, v_received_at;
 
   if v_intake_id is null then
     select e.* into v_existing
