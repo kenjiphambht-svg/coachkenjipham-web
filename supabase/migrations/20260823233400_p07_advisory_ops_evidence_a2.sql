@@ -194,7 +194,23 @@ as $$
     select e.event_type, e.occurred_at
     from crm.advisory_lifecycle_events e
     where e.intake_event_id = i.id
-    order by e.occurred_at desc, e.id desc
+    order by
+      e.occurred_at desc,
+      case e.event_type
+        when 'FOLLOWUP_SUPPRESSED' then 110
+        when 'HANDED_OFF' then 100
+        when 'HANDOFF_ERROR' then 90
+        when 'HANDOFF_READY' then 80
+        when 'QUALIFIED' then 70
+        when 'REVIEWED' then 60
+        when 'ACK_SENT' then 50
+        when 'ACK_ERROR' then 40
+        when 'ACK_PENDING' then 30
+        when 'CRM_WRITTEN' then 20
+        when 'RECEIVED' then 10
+        else 0
+      end desc,
+      e.id desc
     limit 1
   ) latest on true
   where coalesce(latest.event_type, '') not in ('HANDED_OFF', 'FOLLOWUP_SUPPRESSED')
@@ -203,7 +219,7 @@ as $$
 $$;
 
 comment on function public.advisory_intake_list_pending(integer) is
-  'Service-role-only minimum pending Advisory intake read model for manual-first P09 operations. Returns only the locked contact/context fields plus bounded lifecycle state; no secrets, raw request metadata, provider credentials, or hidden scoring.';
+  'Service-role-only minimum pending Advisory intake read model for manual-first P09 operations. Equal occurred_at timestamps are tie-broken deterministically using the existing lifecycle vocabulary only; this read ordering creates no new care authority. Returns only the locked contact/context fields plus bounded lifecycle state; no secrets, raw request metadata, provider credentials, or hidden scoring.';
 
 revoke all on function public.advisory_intake_list_pending(integer)
   from public, anon, authenticated;
