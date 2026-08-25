@@ -1,0 +1,212 @@
+name: P04 Brand Pack one-shot build
+
+on:
+  push:
+    branches:
+      - p04/essence-brand-pack-web-implement-01
+
+permissions:
+  contents: write
+
+concurrency:
+  group: p04-brand-pack-one-shot
+  cancel-in-progress: true
+
+jobs:
+  implement-and-qa:
+    if: ${{ !contains(github.event.head_commit.message, '[p04-brand-pack-done]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: p04/essence-brand-pack-web-implement-01
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Download exact approved Brand Pack SVGs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p public/brand/essence
+          fetch_drive() {
+            local id="$1" out="$2"
+            curl -L --fail --retry 3 --retry-delay 2 \
+              "https://drive.usercontent.google.com/download?id=${id}&export=download&confirm=t" \
+              -o "$out" || \
+            curl -L --fail --retry 3 --retry-delay 2 \
+              "https://drive.google.com/uc?export=download&id=${id}" \
+              -o "$out"
+          }
+          fetch_drive 12kJoQIgDmMIzBLLMwSxmL-H-HdHohZmw public/brand/essence/02_MASTER_LIGHT.svg
+          fetch_drive 1W23VyxHcLZ3RQkOiHE1ragZZBhnXfaFn public/brand/essence/06_COMPACT_LIGHT.svg
+          fetch_drive 1SvCJpuAocOf4SpLf6yRq_Us6loXdsUXy public/brand/essence/13_ADVISORY_LIGHT.svg
+          fetch_drive 1pXy-Tqar_MYBNDacADKgCnsIraF63piq public/brand/essence/32_SIGNATURE_WEB_BLACK.svg
+          printf '%s  %s\n' \
+            a914f39f8b64bc6c36064003d67026f86f87d2d2080a91a44f21f5e7c4494888 public/brand/essence/02_MASTER_LIGHT.svg \
+            3fabc1f7beb0c522a43204a5477f18f4bed320e05b4504708c9a830b7020b654 public/brand/essence/06_COMPACT_LIGHT.svg \
+            e5bdb1f7cc4329ae68a430f8d67e9caadedaf53438d86b3e0e1a34ff56d73393 public/brand/essence/13_ADVISORY_LIGHT.svg \
+            b16f9a81c859f8c85f9a43f964438042546c6832e59e0a078a286f1c61c352a0 public/brand/essence/32_SIGNATURE_WEB_BLACK.svg \
+            | sha256sum -c -
+
+      - name: Apply exact bounded Brand Pack deltas
+        shell: python
+        run: |
+          from pathlib import Path
+          import json, re
+
+          def rewrite_regex(path, pattern, replacement, flags=0):
+              p = Path(path)
+              text = p.read_text()
+              new, n = re.subn(pattern, replacement, text, count=1, flags=flags)
+              if n != 1:
+                  raise SystemExit(f"Expected exactly one patch target in {path}, got {n}")
+              p.write_text(new)
+
+          def replace_once(path, old, new):
+              p = Path(path)
+              text = p.read_text()
+              n = text.count(old)
+              if n != 1:
+                  raise SystemExit(f"Expected exactly one literal target in {path}, got {n}")
+              p.write_text(text.replace(old, new, 1))
+
+          rewrite_regex(
+              "src/components/homepage/HomeHeader.tsx",
+              r'// Lockup logo —.*?function HeaderLogo\(\) \{\n.*?\n\}\n\nexport default function HomeHeader',
+              '''// Brand Pack v1.0 — shared shell uses the approved ESSENCE master identity only.\n// Founder signature is reserved for authorship contexts, not global navigation.\nfunction HeaderLogo() {\n  return (\n    <span className="flex items-center py-1">\n      <img\n        src="/brand/essence/02_MASTER_LIGHT.svg"\n        alt="ESSENCE"\n        className="block h-auto w-[180px] md:w-[210px]"\n      />\n    </span>\n  );\n}\n\nexport default function HomeHeader''',
+              re.S,
+          )
+
+          replace_once(
+              "src/components/homepage/HomeFooter.tsx",
+              '''        <p className="font-serif italic text-lg md:text-xl text-e26-text-dark mb-12">\n          Chuyển dòng chảy — Vững nhịp sống.\n        </p>\n\n''',
+              "",
+          )
+
+          replace_once(
+              "src/components/homepage/SignatureEnding.tsx",
+              '''        Mỗi người đều có một nhịp sống.\n        <br />\n        Essence chỉ mong bạn không đánh mất nhịp của mình.''',
+              '        Câu chuyện cuộc sống của bạn là một kiệt tác.',
+          )
+
+          replace_once(
+              "src/pages/ve-kenji.tsx",
+              '''            </ol>\n          </div>\n        </section>\n\n        <section className="px-6 py-20 md:py-36"''',
+              '''            </ol>\n            <div className="mt-14 flex justify-center md:mt-16">\n              <img\n                src="/brand/essence/32_SIGNATURE_WEB_BLACK.svg"\n                alt="Chữ ký Kenji Phạm"\n                className="block h-auto w-[200px] sm:w-[240px] md:w-[280px]"\n              />\n            </div>\n          </div>\n        </section>\n\n        <section className="px-6 py-20 md:py-36"''',
+          )
+
+          replace_once(
+              "src/pages/advisory.tsx",
+              '''          <span className={styles.brandLockup}>\n            <img src="/brand/logo/kenji-signature-2026.svg" alt="Kenji Phạm" />\n            <img src="/brand/logo/essence-wordmark-minimal-2026.svg" alt="Essence Coaching" />\n          </span>''',
+              '''          <picture className={styles.brandLockup}>\n            <source media="(max-width: 359px)" srcSet="/brand/essence/02_MASTER_LIGHT.svg" />\n            <img src="/brand/essence/13_ADVISORY_LIGHT.svg" alt="ESSENCE Advisory" />\n          </picture>''',
+          )
+
+          rewrite_regex(
+              "src/styles/advisory.module.css",
+              r'\.brandLockup \{\n.*?\n\}\n\.brandLockup img:first-child \{[^\n]*\}\n\.brandLockup img:last-child \{[^\n]*\}',
+              '''.brandLockup {\n  display: inline-flex;\n  align-items: center;\n}\n.brandLockup img { display: block; width: 280px; max-width: 100%; height: auto; }''',
+              re.S,
+          )
+          replace_once(
+              "src/styles/advisory.module.css",
+              '''  .brandLockup img:first-child { height: 40px; }\n  .brandLockup img:last-child { height: 28px; }''',
+              '''  .brandLockup img { width: 220px; }''',
+          )
+          replace_once(
+              "src/styles/advisory.module.css",
+              '''@media (prefers-reduced-motion: reduce) {''',
+              '''@media (max-width: 359px) {\n  .brandLockup img { width: 145px; }\n}\n\n@media (prefers-reduced-motion: reduce) {''',
+          )
+
+          manifest = {
+              "brandBaseline": "ESSENCE Brand Pack v1.0",
+              "authority": "Founder Approved via P02 exact implementation order",
+              "assets": [
+                  {"name":"02_MASTER_LIGHT.svg","driveId":"12kJoQIgDmMIzBLLMwSxmL-H-HdHohZmw","sha256":"a914f39f8b64bc6c36064003d67026f86f87d2d2080a91a44f21f5e7c4494888","runtimePath":"/brand/essence/02_MASTER_LIGHT.svg"},
+                  {"name":"06_COMPACT_LIGHT.svg","driveId":"1W23VyxHcLZ3RQkOiHE1ragZZBhnXfaFn","sha256":"3fabc1f7beb0c522a43204a5477f18f4bed320e05b4504708c9a830b7020b654","runtimePath":"/brand/essence/06_COMPACT_LIGHT.svg"},
+                  {"name":"13_ADVISORY_LIGHT.svg","driveId":"1SvCJpuAocOf4SpLf6yRq_Us6loXdsUXy","sha256":"e5bdb1f7cc4329ae68a430f8d67e9caadedaf53438d86b3e0e1a34ff56d73393","runtimePath":"/brand/essence/13_ADVISORY_LIGHT.svg"},
+                  {"name":"32_SIGNATURE_WEB_BLACK.svg","driveId":"1pXy-Tqar_MYBNDacADKgCnsIraF63piq","sha256":"b16f9a81c859f8c85f9a43f964438042546c6832e59e0a078a286f1c61c352a0","runtimePath":"/brand/essence/32_SIGNATURE_WEB_BLACK.svg"},
+              ],
+          }
+          Path("public/brand/essence/brand-baseline-v1.0.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
+
+      - name: Static acceptance guards
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(grep -Foc 'Câu chuyện cuộc sống của bạn là một kiệt tác.' src/components/homepage/SignatureEnding.tsx)" -eq 1
+          ! grep -Fq 'Chuyển dòng chảy — Vững nhịp sống.' src/components/homepage/HomeFooter.tsx
+          ! grep -Fq '/brand/logo/kenji-signature-2026.svg' src/components/homepage/HomeHeader.tsx
+          ! grep -Fq '/brand/logo/essence-wordmark-minimal-2026.svg' src/components/homepage/HomeHeader.tsx
+          test "$(grep -Foc '/brand/essence/32_SIGNATURE_WEB_BLACK.svg' src/pages/ve-kenji.tsx)" -eq 1
+          test "$(grep -Foc '/brand/essence/13_ADVISORY_LIGHT.svg' src/pages/advisory.tsx)" -eq 1
+          grep -Fq 'href="/ve-kenji" className={styles.trustLink}' src/pages/advisory.tsx
+          git diff --check
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test
+        run: npm test
+
+      - name: Production build
+        run: npm run build
+
+      - name: Capture desktop and mobile visual evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/p04-brand-evidence
+          (npm start -- -p 3000 > /tmp/p04-next.log 2>&1 & echo $! > /tmp/p04-next.pid)
+          for i in {1..60}; do
+            if curl -fsS http://127.0.0.1:3000/ >/dev/null; then break; fi
+            sleep 1
+          done
+          cat > /tmp/p04-capture.mjs <<'JS'
+          import { chromium } from 'playwright';
+          import fs from 'node:fs';
+          const browser = await chromium.launch({executablePath:'/usr/bin/google-chrome', headless:true});
+          const targets = [
+            ['home-header','http://127.0.0.1:3000/','header'],
+            ['home-ending','http://127.0.0.1:3000/','section:has-text("Câu chuyện cuộc sống của bạn là một kiệt tác.")'],
+            ['ve-kenji-signature','http://127.0.0.1:3000/ve-kenji','img[src="/brand/essence/32_SIGNATURE_WEB_BLACK.svg"]'],
+            ['phuong-phap-shell','http://127.0.0.1:3000/phuong-phap','header'],
+            ['advisory-header','http://127.0.0.1:3000/advisory','header[data-shell="advisory-header-exception"]'],
+          ];
+          for (const [name,url,selector] of targets) {
+            for (const [mode,w,h] of [['desktop',1440,1000],['mobile',390,844]]) {
+              const page = await browser.newPage({viewport:{width:w,height:h}});
+              await page.goto(url,{waitUntil:'networkidle'});
+              const loc = page.locator(selector).first();
+              await loc.scrollIntoViewIfNeeded();
+              await loc.screenshot({path:`/tmp/p04-brand-evidence/${name}-${mode}.png`});
+              await page.close();
+            }
+          }
+          await browser.close();
+          JS
+          npx -y -p playwright@1.55.0 node /tmp/p04-capture.mjs
+          kill "$(cat /tmp/p04-next.pid)" || true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p04-brand-pack-desktop-mobile-evidence
+          path: /tmp/p04-brand-evidence/*.png
+          if-no-files-found: error
+
+      - name: Commit bounded implementation and remove one-shot workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm .github/workflows/p04-brand-pack-one-shot.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/brand/essence src/components/homepage/HomeHeader.tsx src/components/homepage/HomeFooter.tsx src/components/homepage/SignatureEnding.tsx src/pages/ve-kenji.tsx src/pages/advisory.tsx src/styles/advisory.module.css .github/workflows/p04-brand-pack-one-shot.yml
+          git diff --cached --check
+          git commit -m "P04: implement Essence Brand Pack web migration [p04-brand-pack-done]"
+          git push origin HEAD:p04/essence-brand-pack-web-implement-01
