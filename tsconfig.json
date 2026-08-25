@@ -25,18 +25,12 @@
         "./src/*"
       ]
     },
-    "target": "ES2022",
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
+    "target": "ES2022"
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx",
     "next-env.d.ts",
-    ".next/types/**/*.ts"
+    "**/*.ts",
+    "**/*.tsx"
   ],
   "exclude": [
     "node_modules",
