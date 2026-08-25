@@ -1,0 +1,124 @@
+name: P04 Brand Pack surface visual QA
+
+on:
+  push:
+    branches:
+      - p04/essence-brand-pack-web-implement-01
+
+permissions:
+  contents: read
+
+concurrency:
+  group: p04-brand-pack-surface-visual-qa
+  cancel-in-progress: true
+
+jobs:
+  surface-qa:
+    if: ${{ contains(github.event.head_commit.message, '[p04-brand-visual-run]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: p04/essence-brand-pack-web-implement-01
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install locked app dependencies
+        run: npm ci
+
+      - name: Production build
+        run: npm run build
+
+      - name: Install ephemeral Playwright QA dependency
+        run: |
+          npm install --no-save --package-lock=false @playwright/test@1.55.0
+          npx playwright install chromium
+
+      - name: Run surface-level responsive and interaction QA
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/p04-brand-surface-evidence
+          (npm start -- -p 3000 > /tmp/p04-next.log 2>&1 & echo $! > /tmp/p04-next.pid)
+          for i in {1..60}; do
+            if curl -fsS http://127.0.0.1:3000/ >/dev/null; then break; fi
+            sleep 1
+          done
+          cat > p04-brand-surface.spec.cjs <<'JS'
+          const { test, expect } = require('@playwright/test');
+          const fs = require('node:fs');
+          const out = '/tmp/p04-brand-surface-evidence';
+          const base = 'http://127.0.0.1:3000';
+
+          async function settleSurface(page, locator) {
+            await locator.scrollIntoViewIfNeeded();
+            await page.waitForTimeout(850);
+            await expect(locator).toBeVisible();
+          }
+
+          test('desktop and mobile Brand Pack target surfaces', async ({ browser }) => {
+            const modes = [
+              ['desktop', { width: 1440, height: 1000 }],
+              ['mobile', { width: 390, height: 844 }],
+            ];
+            for (const [mode, viewport] of modes) {
+              const cases = [
+                ['home-header', '/', (page) => page.locator('header').first()],
+                ['home-ending', '/', (page) => page.locator('section').filter({ hasText: 'Câu chuyện cuộc sống của bạn là một kiệt tác.' }).first()],
+                ['ve-kenji-signature', '/ve-kenji', (page) => page.locator('img[src="/brand/essence/32_SIGNATURE_WEB_BLACK.svg"]')],
+                ['phuong-phap-shell', '/phuong-phap', (page) => page.locator('header').first()],
+                ['advisory-header', '/advisory', (page) => page.locator('header[data-shell="advisory-header-exception"]')],
+              ];
+              for (const [name, path, locate] of cases) {
+                const page = await browser.newPage({ viewport });
+                await page.goto(base + path, { waitUntil: 'networkidle' });
+                const surface = locate(page);
+                await settleSurface(page, surface);
+                if (name === 've-kenji-signature') {
+                  expect(await surface.evaluate((img) => img.complete && img.naturalWidth > 0 && img.naturalHeight > 0)).toBeTruthy();
+                }
+                await surface.screenshot({ path: `${out}/${name}-${mode}.png` });
+                await page.close();
+              }
+            }
+          });
+
+          test('shared menu interaction remains unchanged', async ({ page }) => {
+            await page.setViewportSize({ width: 390, height: 844 });
+            await page.goto(base + '/', { waitUntil: 'networkidle' });
+            const menu = page.getByRole('button', { name: 'Menu' });
+            await menu.click();
+            await expect(menu).toHaveAttribute('aria-expanded', 'true');
+            const panel = page.locator('#site-menu-panel');
+            await expect(panel).toHaveAttribute('aria-hidden', 'false');
+            const firstLink = panel.locator('a[href="/ban-sac-cua-ban"]').first();
+            await expect(firstLink).toBeFocused();
+            await page.keyboard.press('Escape');
+            await expect(menu).toBeFocused();
+            await expect(menu).toHaveAttribute('aria-expanded', 'false');
+          });
+
+          test('Advisory trust bridge remains bounded', async ({ page }) => {
+            await page.goto(base + '/advisory', { waitUntil: 'networkidle' });
+            const header = page.locator('header[data-shell="advisory-header-exception"]');
+            await expect(header).toBeVisible();
+            const trust = header.getByRole('link', { name: 'Về Kenji' });
+            await expect(trust).toHaveAttribute('href', '/ve-kenji');
+            await expect(header.getByRole('button', { name: 'Menu' })).toHaveCount(0);
+          });
+          JS
+          npx playwright test p04-brand-surface.spec.cjs --workers=1 --reporter=line
+          rm p04-brand-surface.spec.cjs
+          kill "$(cat /tmp/p04-next.pid)" || true
+          test "$(find /tmp/p04-brand-surface-evidence -name '*.png' | wc -l)" -eq 10
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p04-brand-pack-surface-qa-v2
+          path: /tmp/p04-brand-surface-evidence/*.png
+          if-no-files-found: error
