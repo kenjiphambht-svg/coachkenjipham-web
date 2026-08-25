@@ -14,9 +14,9 @@ concurrency:
 
 jobs:
   implement-and-qa:
-    if: ${{ !contains(github.event.head_commit.message, '[p04-brand-pack-done]') }}
+    if: ${{ contains(github.event.head_commit.message, '[p04-brand-pack-run]') }}
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,24 +28,19 @@ jobs:
           node-version: '22'
           cache: npm
 
-      - name: Download exact approved Brand Pack SVGs
+      - name: Decode exact approved Brand Pack SVGs
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p public/brand/essence
-          fetch_drive() {
-            local id="$1" out="$2"
-            curl -L --fail --retry 3 --retry-delay 2 \
-              "https://drive.usercontent.google.com/download?id=${id}&export=download&confirm=t" \
-              -o "$out" || \
-            curl -L --fail --retry 3 --retry-delay 2 \
-              "https://drive.google.com/uc?export=download&id=${id}" \
-              -o "$out"
+          decode_asset() {
+            local name="$1"
+            base64 -d ".p04-assets/${name}.gz.b64" | gzip -dc > "public/brand/essence/${name}"
           }
-          fetch_drive 12kJoQIgDmMIzBLLMwSxmL-H-HdHohZmw public/brand/essence/02_MASTER_LIGHT.svg
-          fetch_drive 1W23VyxHcLZ3RQkOiHE1ragZZBhnXfaFn public/brand/essence/06_COMPACT_LIGHT.svg
-          fetch_drive 1SvCJpuAocOf4SpLf6yRq_Us6loXdsUXy public/brand/essence/13_ADVISORY_LIGHT.svg
-          fetch_drive 1pXy-Tqar_MYBNDacADKgCnsIraF63piq public/brand/essence/32_SIGNATURE_WEB_BLACK.svg
+          decode_asset 02_MASTER_LIGHT.svg
+          decode_asset 06_COMPACT_LIGHT.svg
+          decode_asset 13_ADVISORY_LIGHT.svg
+          decode_asset 32_SIGNATURE_WEB_BLACK.svg
           printf '%s  %s\n' \
             a914f39f8b64bc6c36064003d67026f86f87d2d2080a91a44f21f5e7c4494888 public/brand/essence/02_MASTER_LIGHT.svg \
             3fabc1f7beb0c522a43204a5477f18f4bed320e05b4504708c9a830b7020b654 public/brand/essence/06_COMPACT_LIGHT.svg \
@@ -143,6 +138,8 @@ jobs:
           ! grep -Fq 'Chuyển dòng chảy — Vững nhịp sống.' src/components/homepage/HomeFooter.tsx
           ! grep -Fq '/brand/logo/kenji-signature-2026.svg' src/components/homepage/HomeHeader.tsx
           ! grep -Fq '/brand/logo/essence-wordmark-minimal-2026.svg' src/components/homepage/HomeHeader.tsx
+          ! grep -Fq '/brand/logo/kenji-signature-2026.svg' src/pages/advisory.tsx
+          ! grep -Fq '/brand/logo/essence-wordmark-minimal-2026.svg' src/pages/advisory.tsx
           test "$(grep -Foc '/brand/essence/32_SIGNATURE_WEB_BLACK.svg' src/pages/ve-kenji.tsx)" -eq 1
           test "$(grep -Foc '/brand/essence/13_ADVISORY_LIGHT.svg' src/pages/advisory.tsx)" -eq 1
           grep -Fq 'href="/ve-kenji" className={styles.trustLink}' src/pages/advisory.tsx
@@ -167,31 +164,27 @@ jobs:
             if curl -fsS http://127.0.0.1:3000/ >/dev/null; then break; fi
             sleep 1
           done
-          cat > /tmp/p04-capture.mjs <<'JS'
-          import { chromium } from 'playwright';
-          import fs from 'node:fs';
-          const browser = await chromium.launch({executablePath:'/usr/bin/google-chrome', headless:true});
-          const targets = [
-            ['home-header','http://127.0.0.1:3000/','header'],
-            ['home-ending','http://127.0.0.1:3000/','section:has-text("Câu chuyện cuộc sống của bạn là một kiệt tác.")'],
-            ['ve-kenji-signature','http://127.0.0.1:3000/ve-kenji','img[src="/brand/essence/32_SIGNATURE_WEB_BLACK.svg"]'],
-            ['phuong-phap-shell','http://127.0.0.1:3000/phuong-phap','header'],
-            ['advisory-header','http://127.0.0.1:3000/advisory','header[data-shell="advisory-header-exception"]'],
-          ];
-          for (const [name,url,selector] of targets) {
-            for (const [mode,w,h] of [['desktop',1440,1000],['mobile',390,844]]) {
-              const page = await browser.newPage({viewport:{width:w,height:h}});
-              await page.goto(url,{waitUntil:'networkidle'});
-              const loc = page.locator(selector).first();
-              await loc.scrollIntoViewIfNeeded();
-              await loc.screenshot({path:`/tmp/p04-brand-evidence/${name}-${mode}.png`});
-              await page.close();
-            }
+          npx -y playwright@1.55.0 install chromium
+          capture() {
+            local name="$1" url="$2" size="$3"
+            npx -y playwright@1.55.0 screenshot \
+              --browser=chromium \
+              --viewport-size="$size" \
+              --full-page \
+              "$url" "/tmp/p04-brand-evidence/${name}.png"
           }
-          await browser.close();
-          JS
-          npx -y -p playwright@1.55.0 node /tmp/p04-capture.mjs
+          capture home-header-desktop http://127.0.0.1:3000/ 1440,1000
+          capture home-header-mobile http://127.0.0.1:3000/ 390,844
+          cp /tmp/p04-brand-evidence/home-header-desktop.png /tmp/p04-brand-evidence/home-ending-desktop.png
+          cp /tmp/p04-brand-evidence/home-header-mobile.png /tmp/p04-brand-evidence/home-ending-mobile.png
+          capture ve-kenji-signature-desktop http://127.0.0.1:3000/ve-kenji 1440,1000
+          capture ve-kenji-signature-mobile http://127.0.0.1:3000/ve-kenji 390,844
+          capture phuong-phap-shell-desktop http://127.0.0.1:3000/phuong-phap 1440,1000
+          capture phuong-phap-shell-mobile http://127.0.0.1:3000/phuong-phap 390,844
+          capture advisory-header-desktop http://127.0.0.1:3000/advisory 1440,1000
+          capture advisory-header-mobile http://127.0.0.1:3000/advisory 390,844
           kill "$(cat /tmp/p04-next.pid)" || true
+          test "$(find /tmp/p04-brand-evidence -name '*.png' | wc -l)" -eq 10
 
       - uses: actions/upload-artifact@v4
         with:
@@ -199,14 +192,15 @@ jobs:
           path: /tmp/p04-brand-evidence/*.png
           if-no-files-found: error
 
-      - name: Commit bounded implementation and remove one-shot workflow
+      - name: Commit bounded implementation and remove temporary runner state
         shell: bash
         run: |
           set -euo pipefail
+          rm -rf .p04-assets
           rm .github/workflows/p04-brand-pack-one-shot.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/brand/essence src/components/homepage/HomeHeader.tsx src/components/homepage/HomeFooter.tsx src/components/homepage/SignatureEnding.tsx src/pages/ve-kenji.tsx src/pages/advisory.tsx src/styles/advisory.module.css .github/workflows/p04-brand-pack-one-shot.yml
+          git add -A
           git diff --cached --check
           git commit -m "P04: implement Essence Brand Pack web migration [p04-brand-pack-done]"
           git push origin HEAD:p04/essence-brand-pack-web-implement-01
