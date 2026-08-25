@@ -78,10 +78,10 @@ function AdvisoryHeader() {
     <header className={styles.header} data-shell="advisory-header-exception">
       <div className={styles.headerInner}>
         <Link href="/" aria-label="Về trang chủ" className={styles.brandLink}>
-          <span className={styles.brandLockup}>
-            <img src="/brand/logo/kenji-signature-2026.svg" alt="Kenji Phạm" />
-            <img src="/brand/logo/essence-wordmark-minimal-2026.svg" alt="Essence Coaching" />
-          </span>
+          <picture className={styles.brandLockup}>
+            <source media="(max-width: 359px)" srcSet="/brand/essence/02_MASTER_LIGHT.svg" />
+            <img src="/brand/essence/13_ADVISORY_LIGHT.svg" alt="ESSENCE Advisory" />
+          </picture>
         </Link>
         <Link href="/ve-kenji" className={styles.trustLink}>Về Kenji</Link>
       </div>

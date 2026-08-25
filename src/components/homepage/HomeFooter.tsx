@@ -28,10 +28,6 @@ export default function HomeFooter() {
       </span>
 
       <div className="relative max-w-4xl mx-auto text-center">
-        <p className="font-serif italic text-lg md:text-xl text-e26-text-dark mb-12">
-          Chuyển dòng chảy — Vững nhịp sống.
-        </p>
-
         {/* Tầng link 1 — "con người": trang niềm tin */}
         <nav
           aria-label="Trang niềm tin"

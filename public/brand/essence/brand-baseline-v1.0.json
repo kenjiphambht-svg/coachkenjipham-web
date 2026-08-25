@@ -1,0 +1,30 @@
+{
+  "brandBaseline": "ESSENCE Brand Pack v1.0",
+  "authority": "Founder Approved via P02 exact implementation order",
+  "assets": [
+    {
+      "name": "02_MASTER_LIGHT.svg",
+      "driveId": "12kJoQIgDmMIzBLLMwSxmL-H-HdHohZmw",
+      "sha256": "a914f39f8b64bc6c36064003d67026f86f87d2d2080a91a44f21f5e7c4494888",
+      "runtimePath": "/brand/essence/02_MASTER_LIGHT.svg"
+    },
+    {
+      "name": "06_COMPACT_LIGHT.svg",
+      "driveId": "1W23VyxHcLZ3RQkOiHE1ragZZBhnXfaFn",
+      "sha256": "3fabc1f7beb0c522a43204a5477f18f4bed320e05b4504708c9a830b7020b654",
+      "runtimePath": "/brand/essence/06_COMPACT_LIGHT.svg"
+    },
+    {
+      "name": "13_ADVISORY_LIGHT.svg",
+      "driveId": "1SvCJpuAocOf4SpLf6yRq_Us6loXdsUXy",
+      "sha256": "e5bdb1f7cc4329ae68a430f8d67e9caadedaf53438d86b3e0e1a34ff56d73393",
+      "runtimePath": "/brand/essence/13_ADVISORY_LIGHT.svg"
+    },
+    {
+      "name": "32_SIGNATURE_WEB_BLACK.svg",
+      "driveId": "1pXy-Tqar_MYBNDacADKgCnsIraF63piq",
+      "sha256": "b16f9a81c859f8c85f9a43f964438042546c6832e59e0a078a286f1c61c352a0",
+      "runtimePath": "/brand/essence/32_SIGNATURE_WEB_BLACK.svg"
+    }
+  ]
+}

@@ -30,34 +30,15 @@ const TRUST_LINKS = [
   { href: "/lien-he", label: "Liên hệ" },
 ];
 
-// Lockup logo — chữ ký Kenji (dòng chính) + wordmark Essence Coaching (phụ đề,
-// canh giữa bên dưới). Dùng 2 file SVG có sẵn trong public/brand/logo/, KHÔNG
-// sửa nội dung file gốc. Header luôn nằm trên nền kem/trong suốt — không dùng
-// bản -dark (để dành cho trang có header trên nền tối sau này, nếu có).
-// TINH CHỈNH 18/07/2026 (lần 2): Kenji yêu cầu tăng wordmark gấp đôi so với
-// mức 67% vừa chỉnh — h-[14px]/h-[17px] → h-[28px]/h-[34px]. LƯU Ý tự phản
-// biện: ở mức này wordmark RỘNG HƠN chữ ký (~130% thay vì phụ đề nhỏ hơn dòng
-// chính) — đã chụp ảnh thật gửi kèm báo cáo để Kenji xác nhận đúng ý muốn.
-// TINH CHỈNH 19/07/2026 (lần 3) — Header gọn lại: gap giữa 2 dòng lockup đã
-// đo thật = 4px (mt-1), đã nằm trong khoảng gợi ý 2-6px nên GIỮ NGUYÊN, chỉ
-// kéo sát thêm 1 nấc xuống mt-0.5 (2px) theo đúng tinh thần "sát". Phần lớn
-// độ cao header đo được (119px) đến từ padding ngoài (py-4), không phải gap
-// này — xem HomeHeader's header/nav padding.
-// TINH CHỈNH 20/07/2026 (lần 4) — kéo sát thêm nấc cuối: mt-0.5 (2px) →
-// mt-0 (0px), 2 dòng chạm sát nhau thật sự. KHÔNG đổi h-10/h-12/h-[28px]/
-// h-[34px] của 2 file SVG — chỉ khoảng cách giữa chúng.
+// Brand Pack v1.0 — shared shell uses the approved ESSENCE master identity only.
+// Founder signature is reserved for authorship contexts, not global navigation.
 function HeaderLogo() {
   return (
-    <span className="flex flex-col items-center">
+    <span className="flex items-center py-1">
       <img
-        src="/brand/logo/kenji-signature-2026.svg"
-        alt="Kenji Phạm"
-        className="h-10 md:h-12 w-auto"
-      />
-      <img
-        src="/brand/logo/essence-wordmark-minimal-2026.svg"
-        alt="Essence Coaching"
-        className="h-[28px] md:h-[34px] w-auto mt-0"
+        src="/brand/essence/02_MASTER_LIGHT.svg"
+        alt="ESSENCE"
+        className="block h-auto w-[180px] md:w-[210px]"
       />
     </span>
   );
