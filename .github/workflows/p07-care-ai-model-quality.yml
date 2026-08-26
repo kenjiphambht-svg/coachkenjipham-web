@@ -1,0 +1,84 @@
+name: P07 Care AI Model Quality
+
+on:
+  push:
+    branches:
+      - backend/p07-care-ai-model-quality-01
+  pull_request:
+    paths:
+      - 'src/lib/care-ai/model-quality-corpus.ts'
+      - 'src/lib/care-ai/openai-model-quality.ts'
+      - 'tests/care-ai-model-quality*.test.ts'
+      - '.github/workflows/p07-care-ai-model-quality.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  model-quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    steps:
+      - name: Checkout exact head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Assert bounded stacked diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='4e32ef0702d53cc6abe7f39a28f8394fdd918e99'
+          git cat-file -e "${BASE}^{commit}"
+          changed="$(git diff --name-only "${BASE}" HEAD)"
+          printf '%s\n' "$changed"
+          unexpected="$(printf '%s\n' "$changed" | grep -Ev '^(\.github/workflows/p07-care-ai-model-quality\.yml|src/lib/care-ai/(model-quality-corpus|openai-model-quality)\.ts|tests/care-ai-model-quality(\.live)?\.test\.ts)$' || true)"
+          if [ -n "$unexpected" ]; then
+            echo 'Unexpected file(s) outside approved model-quality lane:' >&2
+            printf '%s\n' "$unexpected" >&2
+            exit 1
+          fi
+          if printf '%s\n' "$changed" | grep -Eq '(^|/)(supabase|migrations?|api)(/|$)'; then
+            echo 'Forbidden Production/schema/API surface detected.' >&2
+            exit 1
+          fi
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run full repository tests
+        run: npm test
+
+      - name: Build Next.js
+        run: npm run build
+
+      - name: Credential gate — existing evaluation secret only
+        shell: bash
+        run: |
+          if [ -z "${OPENAI_API_KEY}" ]; then
+            echo 'CARE_MODEL_CREDENTIAL_MISSING: repository secret OPENAI_API_KEY is not available.' >&2
+            echo 'Founder must provide/authorize an evaluation API credential/account before live model-quality evidence can run.' >&2
+            exit 1
+          fi
+
+      - name: Run live synthetic model-quality corpus
+        env:
+          CARE_AI_MODEL_EVAL: '1'
+        run: npm test -- tests/care-ai-model-quality.live.test.ts
+
+      - name: Upload minimized synthetic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: care-ai-model-quality
+          path: artifacts/care-ai-model-quality.json
+          if-no-files-found: ignore
+          retention-days: 7
