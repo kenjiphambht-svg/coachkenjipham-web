@@ -139,7 +139,7 @@ describe('P07 Care AI website synthetic runtime — 04B/04E invariants', () => {
       recommendedNextAction: 'HUMAN_REVIEW',
     });
     expect(Object.keys(result.handoff ?? {}).sort()).toEqual([
-      'aiMustNotDoNext','exactBlock','family','recommendedNextAction','suppression','truthStatus','userNeed',
+      'aiMustNotDoNext','exactBlock','family','recommendedNextAction','route','suppression','truthStatus','userNeed',
     ]);
     expect(result.trace.actionState).toBe('ATTEMPTED');
     expect(result.trace.completionClaimAllowed).toBe(false);
