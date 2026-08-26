@@ -1,0 +1,58 @@
+name: P07 Care AI Website Synthetic
+
+on:
+  push:
+    branches:
+      - backend/p07-care-ai-website-synthetic-01
+  pull_request:
+    paths:
+      - 'src/lib/care-ai/**'
+      - 'tests/care-ai-website-synthetic.test.ts'
+      - '.github/workflows/p07-care-ai-website-synthetic.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Assert bounded synthetic-only diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='285a535509054996010aacc5eb96a73b8598c149'
+          git cat-file -e "${BASE}^{commit}"
+          changed="$(git diff --name-only "${BASE}" HEAD)"
+          printf '%s\n' "$changed"
+          unexpected="$(printf '%s\n' "$changed" | grep -Ev '^(\.github/workflows/p07-care-ai-website-synthetic\.yml|src/lib/care-ai/(contracts|synthetic-fixtures|synthetic-runtime)\.ts|tests/care-ai-website-synthetic\.test\.ts)$' || true)"
+          if [ -n "$unexpected" ]; then
+            echo 'Unexpected file(s) outside approved Website synthetic lane:' >&2
+            printf '%s\n' "$unexpected" >&2
+            exit 1
+          fi
+          if printf '%s\n' "$changed" | grep -Eq '(^|/)(supabase|migrations?|api)(/|$)'; then
+            echo 'Forbidden schema/API/Production surface detected.' >&2
+            exit 1
+          fi
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run full repository tests
+        run: npm test
+
+      - name: Build Next.js
+        run: npm run build
