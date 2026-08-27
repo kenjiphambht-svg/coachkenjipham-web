@@ -18,9 +18,9 @@ describe('P07 Care AI model-quality adapter — bounded contract', () => {
     expect(MODEL_QUALITY_GOLDENS.every((item) => item.turns.length >= 2)).toBe(true);
   });
 
-  it('uses the JIT-verified low-cost OpenRouter candidate and preserves strict structured output', async () => {
+  it('uses the JIT-verified low-cost OpenRouter Responses candidate and preserves strict structured output', async () => {
     const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify({
-      choices: [{ message: { content: JSON.stringify({
+      output: [{ content: [{ type: 'output_text', text: JSON.stringify({
         family: 'UNKNOWN',
         truthStatus: 'UNKNOWN',
         nextBestCare: 'ASK',
@@ -28,23 +28,26 @@ describe('P07 Care AI model-quality adapter — bounded contract', () => {
         memoryDecision: 'PRESERVE',
         handoffRequired: false,
         reply: 'Anh/chị đang hỏi cho chính mình, cho con/gia đình hay cho công việc/doanh nghiệp?',
-      }) } }],
+      }) }] }],
     }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
 
     const result = await runOpenRouterModelQualityCase({ apiKey: 'synthetic-test-key', turns: ['Em chưa biết bắt đầu từ đâu.'] });
     expect(result.nextBestCare).toBe('ASK');
     expect(MODEL_QUALITY_PROVIDER).toBe('OpenRouter');
     expect(MODEL_QUALITY_MODEL).toBe('openai/gpt-oss-20b');
-    expect(MODEL_QUALITY_ENDPOINT).toBe('https://openrouter.ai/api/v1/chat/completions');
+    expect(MODEL_QUALITY_ENDPOINT).toBe('https://openrouter.ai/api/v1/responses');
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const [url, request] = fetchMock.mock.calls[0];
     expect(url).toBe(MODEL_QUALITY_ENDPOINT);
     const body = JSON.parse(String(request?.body));
     expect(body.model).toBe('openai/gpt-oss-20b');
+    expect(body.store).toBe(false);
     expect(body.reasoning).toEqual({ effort: 'medium' });
-    expect(body.response_format.type).toBe('json_schema');
-    expect(body.response_format.json_schema.strict).toBe(true);
+    expect(body.max_output_tokens).toBe(1600);
+    expect(body.text.verbosity).toBe('low');
+    expect(body.text.format.type).toBe('json_schema');
+    expect(body.text.format.strict).toBe(true);
     expect(body.provider).toEqual({ sort: 'price', require_parameters: true, data_collection: 'deny' });
   });
 
