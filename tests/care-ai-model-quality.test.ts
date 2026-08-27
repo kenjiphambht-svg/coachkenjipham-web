@@ -44,7 +44,7 @@ describe('P07 Care AI model-quality adapter — bounded contract', () => {
     expect(body.model).toBe('openai/gpt-oss-20b');
     expect(body.store).toBe(false);
     expect(body.reasoning).toEqual({ effort: 'medium' });
-    expect(body.max_output_tokens).toBe(1600);
+    expect(body.max_output_tokens).toBe(2000);
     expect(body.text.verbosity).toBe('low');
     expect(body.text.format.type).toBe('json_schema');
     expect(body.text.format.strict).toBe(true);
