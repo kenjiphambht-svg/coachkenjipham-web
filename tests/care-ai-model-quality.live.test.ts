@@ -107,8 +107,6 @@ liveDescribe('P07 Care AI model-quality — live synthetic only', () => {
         record.comparisonNotes = evaluated.notes;
       } catch (error) {
         record.error = error instanceof Error ? error.message : String(error);
-        records.push(record);
-        break;
       }
 
       records.push(record);
@@ -116,6 +114,7 @@ liveDescribe('P07 Care AI model-quality — live synthetic only', () => {
 
     const hardFails = records.flatMap((record) => record.autoHardFails.map((fail) => `${record.id}:${fail}`));
     const errors = records.filter((record) => record.error).map((record) => `${record.id}:${record.error}`);
+    const attempted = records.length;
     const completed = records.filter((record) => record.actual).length;
     const scenarioCompleted = records.filter((record) => record.sourceKind === 'SCENARIO' && record.actual).length;
     const goldenCompleted = records.filter((record) => record.sourceKind === 'GOLDEN' && record.actual).length;
@@ -132,12 +131,13 @@ liveDescribe('P07 Care AI model-quality — live synthetic only', () => {
         providerSort: 'price',
         dataCollection: 'deny',
       },
+      attempted,
       completed,
       scenarioCompleted,
       goldenCompleted,
       autoHardFails: hardFails,
       errors,
-      note: 'comparisonNotes are evidence for P09 review and do not automatically mean behavior failure; actual E06 Voice requires P09 human review.',
+      note: 'All 50 cases are attempted even when one provider/model case errors. comparisonNotes are evidence for P09 review and do not automatically mean behavior failure; actual E06 Voice requires P09 human review.',
       records,
     };
 
@@ -145,6 +145,7 @@ liveDescribe('P07 Care AI model-quality — live synthetic only', () => {
     fs.mkdirSync(artifactDir, { recursive: true });
     fs.writeFileSync(path.join(artifactDir, 'care-ai-model-quality.json'), JSON.stringify(artifact, null, 2), 'utf8');
 
+    expect(attempted).toBe(50);
     expect(errors).toEqual([]);
     expect(completed).toBe(50);
     expect(scenarioCompleted).toBe(40);
