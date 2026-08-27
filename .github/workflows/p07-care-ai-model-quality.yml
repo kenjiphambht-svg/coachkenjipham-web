@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
     steps:
       - name: Checkout exact head
         uses: actions/checkout@v4
@@ -60,11 +60,11 @@ jobs:
       - name: Build Next.js
         run: npm run build
 
-      - name: Credential gate — existing evaluation secret only
+      - name: Credential gate — Founder-approved OpenRouter evaluation secret only
         shell: bash
         run: |
-          if [ -z "${OPENAI_API_KEY}" ]; then
-            echo 'CARE_MODEL_CREDENTIAL_MISSING: repository secret OPENAI_API_KEY is not available.' >&2
+          if [ -z "${OPENROUTER_API_KEY}" ]; then
+            echo 'CARE_MODEL_CREDENTIAL_MISSING: repository secret OPENROUTER_API_KEY is not available.' >&2
             echo 'Founder must provide/authorize an evaluation API credential/account before live model-quality evidence can run.' >&2
             exit 1
           fi
