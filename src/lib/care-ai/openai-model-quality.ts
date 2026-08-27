@@ -8,7 +8,7 @@ import type {
 
 export const MODEL_QUALITY_PROVIDER = 'OpenRouter' as const;
 export const MODEL_QUALITY_MODEL = 'openai/gpt-oss-20b' as const;
-export const MODEL_QUALITY_ENDPOINT = 'https://openrouter.ai/api/v1/chat/completions' as const;
+export const MODEL_QUALITY_ENDPOINT = 'https://openrouter.ai/api/v1/responses' as const;
 
 export interface ModelQualityDecision {
   family: CareFamily;
@@ -87,19 +87,18 @@ Return the structured decision plus a concise customer-facing reply. The reply m
 
 function extractOutputText(payload: unknown): string {
   if (!payload || typeof payload !== 'object') throw new Error('CARE_MODEL_INVALID_RESPONSE');
-  const choices = (payload as { choices?: unknown[] }).choices;
-  if (!Array.isArray(choices) || choices.length === 0) throw new Error('CARE_MODEL_MISSING_OUTPUT');
-  const first = choices[0];
-  if (!first || typeof first !== 'object') throw new Error('CARE_MODEL_MISSING_OUTPUT');
-  const message = (first as { message?: unknown }).message;
-  if (!message || typeof message !== 'object') throw new Error('CARE_MODEL_MISSING_OUTPUT');
-  const content = (message as { content?: unknown }).content;
-  if (typeof content === 'string') return content;
-  if (Array.isArray(content)) {
+  const direct = (payload as { output_text?: unknown }).output_text;
+  if (typeof direct === 'string' && direct.length > 0) return direct;
+  const output = (payload as { output?: unknown[] }).output;
+  if (!Array.isArray(output)) throw new Error('CARE_MODEL_MISSING_OUTPUT');
+  for (const item of output) {
+    if (!item || typeof item !== 'object') continue;
+    const content = (item as { content?: unknown[] }).content;
+    if (!Array.isArray(content)) continue;
     for (const part of content) {
       if (!part || typeof part !== 'object') continue;
       const candidate = part as { type?: string; text?: string };
-      if ((candidate.type === 'text' || candidate.type === 'output_text') && typeof candidate.text === 'string') return candidate.text;
+      if (candidate.type === 'output_text' && typeof candidate.text === 'string') return candidate.text;
     }
   }
   throw new Error('CARE_MODEL_MISSING_OUTPUT_TEXT');
@@ -119,15 +118,15 @@ export async function runOpenRouterModelQualityCase(args: {
     },
     body: JSON.stringify({
       model: MODEL_QUALITY_MODEL,
-      messages: [
-        { role: 'system', content: CARE_INSTRUCTIONS },
-        { role: 'user', content: conversation },
-      ],
+      store: false,
       reasoning: { effort: 'medium' },
-      max_tokens: 1200,
-      response_format: {
-        type: 'json_schema',
-        json_schema: {
+      max_output_tokens: 1600,
+      instructions: CARE_INSTRUCTIONS,
+      input: conversation,
+      text: {
+        verbosity: 'low',
+        format: {
+          type: 'json_schema',
           name: 'kenji_care_model_quality_decision',
           strict: true,
           schema: DECISION_SCHEMA,
