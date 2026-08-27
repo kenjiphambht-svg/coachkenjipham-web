@@ -128,8 +128,8 @@ liveDescribe('P07 Care AI model-quality — live synthetic only', () => {
       configuration: {
         reasoningEffort: 'medium',
         structuredOutput: true,
+        store: false,
         providerSort: 'price',
-        requireParameters: true,
         dataCollection: 'deny',
       },
       completed,
