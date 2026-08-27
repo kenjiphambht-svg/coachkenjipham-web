@@ -48,7 +48,7 @@ describe('P07 Care AI model-quality adapter — bounded contract', () => {
     expect(body.text.verbosity).toBe('low');
     expect(body.text.format.type).toBe('json_schema');
     expect(body.text.format.strict).toBe(true);
-    expect(body.provider).toEqual({ sort: 'price', require_parameters: true, data_collection: 'deny' });
+    expect(body.provider).toEqual({ sort: 'price', data_collection: 'deny' });
   });
 
   it('does not hide provider HTTP failure as a successful Care response', async () => {
