@@ -1,6 +1,11 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { MODEL_QUALITY_CASES, MODEL_QUALITY_GOLDENS, MODEL_QUALITY_SCENARIOS } from '@/lib/care-ai/model-quality-corpus';
-import { MODEL_QUALITY_MODEL, runOpenAIModelQualityCase } from '@/lib/care-ai/openai-model-quality';
+import {
+  MODEL_QUALITY_ENDPOINT,
+  MODEL_QUALITY_MODEL,
+  MODEL_QUALITY_PROVIDER,
+  runOpenRouterModelQualityCase,
+} from '@/lib/care-ai/openai-model-quality';
 
 afterEach(() => vi.restoreAllMocks());
 
@@ -13,9 +18,9 @@ describe('P07 Care AI model-quality adapter — bounded contract', () => {
     expect(MODEL_QUALITY_GOLDENS.every((item) => item.turns.length >= 2)).toBe(true);
   });
 
-  it('uses the locked evaluation candidate and does not store provider responses', async () => {
+  it('uses the JIT-verified low-cost OpenRouter candidate and preserves strict structured output', async () => {
     const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify({
-      output: [{ content: [{ type: 'output_text', text: JSON.stringify({
+      choices: [{ message: { content: JSON.stringify({
         family: 'UNKNOWN',
         truthStatus: 'UNKNOWN',
         nextBestCare: 'ASK',
@@ -23,27 +28,29 @@ describe('P07 Care AI model-quality adapter — bounded contract', () => {
         memoryDecision: 'PRESERVE',
         handoffRequired: false,
         reply: 'Anh/chị đang hỏi cho chính mình, cho con/gia đình hay cho công việc/doanh nghiệp?',
-      }) }] }],
+      }) } }],
     }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
 
-    const result = await runOpenAIModelQualityCase({ apiKey: 'synthetic-test-key', turns: ['Em chưa biết bắt đầu từ đâu.'] });
+    const result = await runOpenRouterModelQualityCase({ apiKey: 'synthetic-test-key', turns: ['Em chưa biết bắt đầu từ đâu.'] });
     expect(result.nextBestCare).toBe('ASK');
-    expect(MODEL_QUALITY_MODEL).toBe('gpt-5.6-terra');
+    expect(MODEL_QUALITY_PROVIDER).toBe('OpenRouter');
+    expect(MODEL_QUALITY_MODEL).toBe('openai/gpt-oss-20b');
+    expect(MODEL_QUALITY_ENDPOINT).toBe('https://openrouter.ai/api/v1/chat/completions');
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const [url, request] = fetchMock.mock.calls[0];
-    expect(url).toBe('https://api.openai.com/v1/responses');
+    expect(url).toBe(MODEL_QUALITY_ENDPOINT);
     const body = JSON.parse(String(request?.body));
-    expect(body.model).toBe('gpt-5.6-terra');
-    expect(body.store).toBe(false);
+    expect(body.model).toBe('openai/gpt-oss-20b');
     expect(body.reasoning).toEqual({ effort: 'medium' });
-    expect(body.text.verbosity).toBe('low');
-    expect(body.text.format.type).toBe('json_schema');
+    expect(body.response_format.type).toBe('json_schema');
+    expect(body.response_format.json_schema.strict).toBe(true);
+    expect(body.provider).toEqual({ sort: 'price', require_parameters: true, data_collection: 'deny' });
   });
 
   it('does not hide provider HTTP failure as a successful Care response', async () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response('{"error":"invalid"}', { status: 401 }));
-    await expect(runOpenAIModelQualityCase({ apiKey: 'bad-key', turns: ['Synthetic only'] }))
+    await expect(runOpenRouterModelQualityCase({ apiKey: 'bad-key', turns: ['Synthetic only'] }))
       .rejects.toThrow('CARE_MODEL_HTTP_401');
   });
 });
