@@ -134,7 +134,6 @@ export async function runOpenRouterModelQualityCase(args: {
       },
       provider: {
         sort: 'price',
-        require_parameters: true,
         data_collection: 'deny',
       },
     }),
