@@ -5,12 +5,13 @@ import { ALL_CARE_SYNTHETIC_FIXTURES } from '@/lib/care-ai/synthetic-fixtures';
 import { MODEL_QUALITY_CASES } from '@/lib/care-ai/model-quality-corpus';
 import {
   MODEL_QUALITY_MODEL,
-  runOpenAIModelQualityCase,
+  MODEL_QUALITY_PROVIDER,
+  runOpenRouterModelQualityCase,
   type ModelQualityDecision,
 } from '@/lib/care-ai/openai-model-quality';
 
 const LIVE = process.env.CARE_AI_MODEL_EVAL === '1';
-const API_KEY = process.env.OPENAI_API_KEY ?? '';
+const API_KEY = process.env.OPENROUTER_API_KEY ?? '';
 
 interface EvalRecord {
   id: string;
@@ -71,7 +72,7 @@ const liveDescribe = LIVE ? describe : describe.skip;
 
 liveDescribe('P07 Care AI model-quality — live synthetic only', () => {
   it('runs 40 scenarios + 10 Golden through the approved model and emits P09 evidence', async () => {
-    if (!API_KEY) throw new Error('CARE_MODEL_CREDENTIAL_MISSING: OPENAI_API_KEY is not available to this workflow.');
+    if (!API_KEY) throw new Error('CARE_MODEL_CREDENTIAL_MISSING: OPENROUTER_API_KEY is not available to this workflow.');
 
     expect(MODEL_QUALITY_CASES).toHaveLength(50);
     expect(ALL_CARE_SYNTHETIC_FIXTURES).toHaveLength(50);
@@ -99,7 +100,7 @@ liveDescribe('P07 Care AI model-quality — live synthetic only', () => {
       };
 
       try {
-        const actual = await runOpenAIModelQualityCase({ apiKey: API_KEY, turns: modelCase.turns });
+        const actual = await runOpenRouterModelQualityCase({ apiKey: API_KEY, turns: modelCase.turns });
         record.actual = actual;
         const evaluated = evaluateHardBoundaries(fixture, actual);
         record.autoHardFails = evaluated.hardFails;
@@ -122,9 +123,15 @@ liveDescribe('P07 Care AI model-quality — live synthetic only', () => {
     const artifact = {
       generatedAt: new Date().toISOString(),
       scope: 'SYNTHETIC_ONLY_NO_REAL_CUSTOMER_DATA',
-      provider: 'OpenAI',
+      provider: MODEL_QUALITY_PROVIDER,
       model: MODEL_QUALITY_MODEL,
-      configuration: { reasoningEffort: 'medium', textVerbosity: 'low', structuredOutput: true, store: false },
+      configuration: {
+        reasoningEffort: 'medium',
+        structuredOutput: true,
+        providerSort: 'price',
+        requireParameters: true,
+        dataCollection: 'deny',
+      },
       completed,
       scenarioCompleted,
       goldenCompleted,
