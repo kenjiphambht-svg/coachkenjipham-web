@@ -140,37 +140,41 @@ export default function KhoiDauPage() {
 
         <section className="bg-e26-ivory px-6 py-20 md:px-8 md:py-32">
           <div className="mx-auto max-w-[1120px] space-y-20 md:space-y-28">
-            <Lang90Reveal id="ca-nhan" className="scroll-mt-24">
-              <div className="max-w-[700px]">
-                <BanSacUtility>Cá nhân</BanSacUtility>
-                <BanSacAnchor className="mt-5">Khi chuyện nằm ở đời sống riêng hoặc gia đình.</BanSacAnchor>
-                <div className="mt-9 space-y-6">
-                  <BanSacBody>
-                    Bạn không cần biết ngay đây là “chuyện của mình” hay “chuyện của mối quan hệ”. Chỉ cần chọn Cá nhân nếu điều bạn muốn nhìn lại thuộc đời sống riêng hoặc gia đình.
-                  </BanSacBody>
-                  <BanSacBody>
-                    Phần Khởi đầu này được thiết kế để giúp bạn nhận ra mình đang đứng ở đâu trong bối cảnh đó trước khi tự chọn có cần đi tiếp hay không.
-                  </BanSacBody>
+            <div id="ca-nhan" className="scroll-mt-24">
+              <Lang90Reveal>
+                <div className="max-w-[700px]">
+                  <BanSacUtility>Cá nhân</BanSacUtility>
+                  <BanSacAnchor className="mt-5">Khi chuyện nằm ở đời sống riêng hoặc gia đình.</BanSacAnchor>
+                  <div className="mt-9 space-y-6">
+                    <BanSacBody>
+                      Bạn không cần biết ngay đây là “chuyện của mình” hay “chuyện của mối quan hệ”. Chỉ cần chọn Cá nhân nếu điều bạn muốn nhìn lại thuộc đời sống riêng hoặc gia đình.
+                    </BanSacBody>
+                    <BanSacBody>
+                      Phần Khởi đầu này được thiết kế để giúp bạn nhận ra mình đang đứng ở đâu trong bối cảnh đó trước khi tự chọn có cần đi tiếp hay không.
+                    </BanSacBody>
+                  </div>
+                  <BanSacUtility className="mt-8 text-e26-gold-deep">Đang chuẩn bị</BanSacUtility>
                 </div>
-                <BanSacUtility className="mt-8 text-e26-gold-deep">Đang chuẩn bị</BanSacUtility>
-              </div>
-            </Lang90Reveal>
+              </Lang90Reveal>
+            </div>
 
-            <Lang90Reveal id="cong-viec" className="scroll-mt-24 md:ml-[16%]">
-              <div className="max-w-[700px]">
-                <BanSacUtility>Công việc</BanSacUtility>
-                <BanSacAnchor className="mt-5">Khi điều cần làm rõ nằm ở công việc.</BanSacAnchor>
-                <div className="mt-9 space-y-6">
-                  <BanSacBody>
-                    Chọn Công việc khi điều bạn muốn nhìn lại thuộc vai trò lãnh đạo, kinh doanh, đội ngũ, tổ chức hoặc một quyết định có hệ quả.
-                  </BanSacBody>
-                  <BanSacBody>
-                    Đây không phải bài kiểm tra tâm lý cho người làm việc. Mục đích vẫn là giúp một bối cảnh còn mơ hồ trở nên rõ hơn trước khi bạn quyết định bước tiếp theo.
-                  </BanSacBody>
+            <div id="cong-viec" className="scroll-mt-24 md:ml-[16%]">
+              <Lang90Reveal>
+                <div className="max-w-[700px]">
+                  <BanSacUtility>Công việc</BanSacUtility>
+                  <BanSacAnchor className="mt-5">Khi điều cần làm rõ nằm ở công việc.</BanSacAnchor>
+                  <div className="mt-9 space-y-6">
+                    <BanSacBody>
+                      Chọn Công việc khi điều bạn muốn nhìn lại thuộc vai trò lãnh đạo, kinh doanh, đội ngũ, tổ chức hoặc một quyết định có hệ quả.
+                    </BanSacBody>
+                    <BanSacBody>
+                      Đây không phải bài kiểm tra tâm lý cho người làm việc. Mục đích vẫn là giúp một bối cảnh còn mơ hồ trở nên rõ hơn trước khi bạn quyết định bước tiếp theo.
+                    </BanSacBody>
+                  </div>
+                  <BanSacUtility className="mt-8 text-e26-gold-deep">Đang chuẩn bị</BanSacUtility>
                 </div>
-                <BanSacUtility className="mt-8 text-e26-gold-deep">Đang chuẩn bị</BanSacUtility>
-              </div>
-            </Lang90Reveal>
+              </Lang90Reveal>
+            </div>
           </div>
         </section>
 
