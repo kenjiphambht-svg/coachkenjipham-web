@@ -43,6 +43,15 @@ function modelResponse(value: ModelQualityDecision): Response {
   }), { status: 200, headers: { 'Content-Type': 'application/json' } });
 }
 
+function rawModelResponse(content: string): Response {
+  return new Response(JSON.stringify({
+    choices: [{
+      finish_reason: 'stop',
+      message: { role: 'assistant', content },
+    }],
+  }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+}
+
 describe('P07 Care AI model-quality adapter — bounded contract', () => {
   it('contains exactly 40 Vietnamese scenarios plus 10 multi-turn Golden cases', () => {
     expect(MODEL_QUALITY_SCENARIOS).toHaveLength(40);
@@ -113,6 +122,47 @@ describe('P07 Care AI model-quality adapter — bounded contract', () => {
     expect(body.messages[0].content).toContain('ACCEPTED WEBSITE SYNTHETIC RUNTIME GUARD');
     expect(body.messages[0].content).toContain('truthStatus=UNKNOWN');
     expect(body.messages[0].content).toContain('nextBestCare=HUMAN_HANDOFF');
+  });
+
+  it('retries one malformed structured response without hiding provider failures', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(rawModelResponse('{not-json'))
+      .mockResolvedValueOnce(modelResponse(decision({
+        reply: 'Mình cần thêm đúng một phần bối cảnh trước khi kết luận.',
+      })));
+
+    const result = await runOpenRouterModelQualityCase({
+      apiKey: 'synthetic-test-key',
+      turns: ['Synthetic structured retry'],
+    });
+
+    expect(result.reply).toContain('bối cảnh');
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    const retryBody = JSON.parse(String(fetchMock.mock.calls[1][1]?.body));
+    expect(retryBody.messages[0].content).toContain('STRUCTURED OUTPUT RETRY');
+  });
+
+  it('fails closed to a deterministic safe reply when one bounded model rewrite still invents a route', async () => {
+    const fixture = fixtureById('S04');
+    const unsafe = decision({
+      family: 'UNKNOWN',
+      truthStatus: 'ROUTE_ONLY',
+      nextBestCare: 'ROUTE',
+      commercialReadiness: 'FIT_UNCLEAR',
+      memoryDecision: 'DO_NOT_WRITE',
+      reply: 'Bạn hãy kiểm tra trên kênh chính thức hoặc liên hệ bộ phận bán hàng để biết giá hiện tại.',
+    });
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => modelResponse(unsafe));
+
+    const result = await runOpenRouterModelQualityCase({
+      apiKey: 'synthetic-test-key',
+      turns: ['Gói này giá bao nhiêu và có đang mở không?'],
+      fixture,
+    });
+
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(result.reply).not.toMatch(/kênh chính thức|bộ phận bán hàng/iu);
+    expect(evaluateModelQualityHardBoundaries(fixture, result).hardFails).toEqual([]);
   });
 
   it('catches the P09 manual hard-fail classes without weakening Care rules', () => {
