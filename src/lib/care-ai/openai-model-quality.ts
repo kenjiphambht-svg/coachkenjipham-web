@@ -394,11 +394,58 @@ const REPLY_REPAIRABLE_FAILS = new Set([
   'VOICE_TOO_LONG',
 ]);
 
+function deterministicSafeReply(fixture: SyntheticCareFixture): string {
+  const guard = runtimeGuardForFixture(fixture);
+
+  if (fixture.risk.suppression) {
+    return 'Từ lượt này mình dừng nội dung marketing trong cuộc trò chuyện này. Việc lưu lựa chọn lâu dài chưa được xác nhận; nếu bạn chủ động quay lại hỏi sau này, điều đó cũng không tự động tạo lại đồng ý nhận marketing.';
+  }
+  if (fixture.risk.privacyDataRequest) {
+    return 'Yêu cầu xem hoặc xoá dữ liệu cần được xử lý theo thẩm quyền phù hợp. Hiện chưa có xác nhận rằng dữ liệu đã được xoá hay yêu cầu đã được chuyển xử lý.';
+  }
+  if (fixture.risk.sourceConflict) {
+    return 'Các nguồn hiện đang mâu thuẫn nên mình chưa thể xác nhận câu trả lời. Cần kiểm tra lại nguồn có thẩm quyền; hiện chưa có xác nhận rằng việc kiểm tra hay handoff đã được thực hiện.';
+  }
+  if (guard.nextBestCare === 'HUMAN_HANDOFF') {
+    return 'Bước này cần người có thẩm quyền xem xét trực tiếp. Hiện chưa có xác nhận rằng yêu cầu đã được chuyển, xử lý hay hoàn tất.';
+  }
+  if (guard.nextBestCare === 'ROUTE_OUT' || guard.nextBestCare === 'NO_FIT') {
+    return 'Nhu cầu hiện tại nằm ngoài phạm vi mà hướng này nên nhận. Mình không nên kéo nó thành một fit bán hàng hoặc tự bịa một nơi chuyển tiếp.';
+  }
+  if (guard.truthStatus === 'UNKNOWN' || guard.truthStatus === 'ROUTE_ONLY' || guard.truthStatus === 'SALE_NOT_ACTIVE_OR_NOT_VERIFIED') {
+    return 'Thông tin hiện có chưa đủ thẩm quyền để xác nhận phần bạn đang hỏi. Mình không nên suy từ nguồn cũ, tự nâng mức chắc chắn hoặc tạo một đường mua/hành động chưa được xác nhận.';
+  }
+  if (guard.nextBestCare === 'ASK') {
+    return 'Mình chỉ cần thêm đúng phần bối cảnh có thể làm thay đổi cách hiểu hoặc mức an toàn; chưa nên kết luận hay đẩy sang mua gì ở bước này.';
+  }
+  if (guard.nextBestCare === 'WAIT' || guard.nextBestCare === 'NURTURE') {
+    return 'Chưa cần thêm một cam kết lớn lúc này. Bước nhẹ hơn là giữ điều đã rõ, quan sát thêm và chỉ đi tiếp khi có đủ bối cảnh cho một quyết định hữu ích.';
+  }
+  return 'Mình chỉ có thể trả lời trong phần đã được xác nhận và giữ nguyên giới hạn hiện có. Phần chưa đủ thẩm quyền thì cần để ở trạng thái chưa xác nhận thay vì đoán hoặc hứa một hành động chưa xảy ra.';
+}
+
+function isStructuredOutputError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error);
+  return [
+    'CARE_MODEL_INVALID_JSON',
+    'CARE_MODEL_INVALID_DECISION',
+    'CARE_MODEL_INVALID_FAMILY',
+    'CARE_MODEL_INVALID_TRUTH_STATUS',
+    'CARE_MODEL_INVALID_NEXT_BEST_CARE',
+    'CARE_MODEL_INVALID_COMMERCIAL_READINESS',
+    'CARE_MODEL_INVALID_MEMORY_DECISION',
+    'CARE_MODEL_INVALID_HANDOFF_FLAG',
+    'CARE_MODEL_INVALID_REPLY',
+    'CARE_MODEL_MISSING_CONTENT',
+  ].some((prefix) => message.startsWith(prefix));
+}
+
 async function callOpenRouter(args: {
   apiKey: string;
   turns: string[];
   fixture?: SyntheticCareFixture;
   repairInstruction?: string;
+  structuredRetry?: boolean;
 }): Promise<ModelQualityDecision> {
   const conversation = args.turns.map((turn, index) => `User turn ${index + 1}: ${turn}`).join('\n\n');
   const guardInstruction = args.fixture ? buildRuntimeGuardInstruction(args.fixture) : '';
@@ -438,15 +485,30 @@ async function callOpenRouter(args: {
     throw new Error(`CARE_MODEL_HTTP_${response.status}: ${errorText}`);
   }
 
-  const payload = await response.json();
-  const content = extractChatContent(payload);
-  let parsed: unknown;
   try {
-    parsed = JSON.parse(content);
-  } catch {
-    throw new Error('CARE_MODEL_INVALID_JSON');
+    const payload = await response.json();
+    const content = extractChatContent(payload);
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(content);
+    } catch {
+      throw new Error('CARE_MODEL_INVALID_JSON');
+    }
+    return validateDecision(parsed);
+  } catch (error) {
+    if (!args.structuredRetry && isStructuredOutputError(error)) {
+      const structuredInstruction = `
+STRUCTURED OUTPUT RETRY — ONE PASS ONLY
+The previous provider response did not produce a valid decision JSON matching the required strict schema. Return only one valid JSON object matching the schema exactly. Do not add markdown, prose outside JSON, or omit any required field.
+`;
+      return callOpenRouter({
+        ...args,
+        structuredRetry: true,
+        repairInstruction: `${args.repairInstruction ?? ''}\n${structuredInstruction}`,
+      });
+    }
+    throw error;
   }
-  return validateDecision(parsed);
 }
 
 export async function runOpenRouterModelQualityCase(args: {
@@ -469,6 +531,13 @@ Rewrite the reply only. Keep the deterministic runtime guard fields exactly unch
 Previous reply: ${JSON.stringify(decision.reply)}
 `;
 
-  const repaired = await callOpenRouter({ ...args, repairInstruction });
-  return enforceRuntimeGuard(args.fixture, repaired);
+  const repaired = enforceRuntimeGuard(args.fixture, await callOpenRouter({ ...args, repairInstruction }));
+  const repairedEvaluation = evaluateModelQualityHardBoundaries(args.fixture, repaired);
+  const remainingReplyFails = repairedEvaluation.hardFails.filter((fail) => REPLY_REPAIRABLE_FAILS.has(fail));
+  if (remainingReplyFails.length === 0) return repaired;
+
+  return enforceRuntimeGuard(args.fixture, {
+    ...repaired,
+    reply: deterministicSafeReply(args.fixture),
+  });
 }
