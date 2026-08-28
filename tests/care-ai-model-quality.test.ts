@@ -31,6 +31,18 @@ function decision(overrides: Partial<ModelQualityDecision> = {}): ModelQualityDe
   };
 }
 
+function modelResponse(value: ModelQualityDecision): Response {
+  return new Response(JSON.stringify({
+    choices: [{
+      finish_reason: 'stop',
+      message: {
+        role: 'assistant',
+        content: JSON.stringify(value),
+      },
+    }],
+  }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+}
+
 describe('P07 Care AI model-quality adapter — bounded contract', () => {
   it('contains exactly 40 Vietnamese scenarios plus 10 multi-turn Golden cases', () => {
     expect(MODEL_QUALITY_SCENARIOS).toHaveLength(40);
@@ -40,24 +52,10 @@ describe('P07 Care AI model-quality adapter — bounded contract', () => {
     expect(MODEL_QUALITY_GOLDENS.every((item) => item.turns.length >= 2)).toBe(true);
   });
 
-  it('uses the JIT-verified reliable OpenRouter Chat Completions challenger with strict structured output', async () => {
-    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify({
-      choices: [{
-        finish_reason: 'stop',
-        message: {
-          role: 'assistant',
-          content: JSON.stringify({
-            family: 'UNKNOWN',
-            truthStatus: 'UNKNOWN',
-            nextBestCare: 'ASK',
-            commercialReadiness: 'EXPLORE',
-            memoryDecision: 'PRESERVE',
-            handoffRequired: false,
-            reply: 'Anh/chị đang hỏi cho chính mình, cho con/gia đình hay cho công việc/doanh nghiệp?',
-          }),
-        },
-      }],
-    }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
+  it('uses the reliable OpenRouter Chat Completions challenger with strict structured output', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(modelResponse(decision({
+      reply: 'Anh/chị đang hỏi cho chính mình, cho con/gia đình hay cho công việc/doanh nghiệp?',
+    })));
 
     const result = await runOpenRouterModelQualityCase({ apiKey: 'synthetic-test-key', turns: ['Em chưa biết bắt đầu từ đâu.'] });
     expect(result.nextBestCare).toBe('ASK');
@@ -82,6 +80,39 @@ describe('P07 Care AI model-quality adapter — bounded contract', () => {
       require_parameters: true,
       allow_fallbacks: true,
     });
+  });
+
+  it('enforces accepted Website runtime semantics before customer-facing model output is accepted', async () => {
+    const fixture = fixtureById('S05');
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(modelResponse(decision({
+      family: 'UNKNOWN',
+      truthStatus: 'VERIFIED',
+      nextBestCare: 'ROUTE',
+      commercialReadiness: 'FIT_CONFIRMED',
+      memoryDecision: 'PRESERVE',
+      handoffRequired: false,
+      reply: 'Hai nguồn đang mâu thuẫn nên hiện chưa thể xác nhận đăng ký được hay không. Việc này cần người thật kiểm tra nguồn có thẩm quyền; chưa có xác nhận rằng yêu cầu đã được chuyển.',
+    })));
+
+    const result = await runOpenRouterModelQualityCase({
+      apiKey: 'synthetic-test-key',
+      turns: ['Một trang cũ nói mở đăng ký, chỗ khác nói chưa xác nhận.'],
+      fixture,
+    });
+
+    expect(result.family).toBe('UNKNOWN');
+    expect(result.truthStatus).toBe('UNKNOWN');
+    expect(result.nextBestCare).toBe('HUMAN_HANDOFF');
+    expect(result.commercialReadiness).toBe('HANDOFF');
+    expect(result.memoryDecision).toBe('DO_NOT_WRITE');
+    expect(result.handoffRequired).toBe(true);
+    expect(evaluateModelQualityHardBoundaries(fixture, result).hardFails).toEqual([]);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+
+    const body = JSON.parse(String(fetchMock.mock.calls[0][1]?.body));
+    expect(body.messages[0].content).toContain('ACCEPTED WEBSITE SYNTHETIC RUNTIME GUARD');
+    expect(body.messages[0].content).toContain('truthStatus=UNKNOWN');
+    expect(body.messages[0].content).toContain('nextBestCare=HUMAN_HANDOFF');
   });
 
   it('catches the P09 manual hard-fail classes without weakening Care rules', () => {
@@ -128,13 +159,46 @@ describe('P07 Care AI model-quality adapter — bounded contract', () => {
     expect(falseHandoff.hardFails).toContain('INVENTED_SUPPORT_ROUTE');
   });
 
+  it('catches invented parent-product value, current-price claims and canned E06 texture', () => {
+    const productClaim = evaluateModelQualityHardBoundaries(fixtureById('G03'), decision({
+      family: 'REFLECTIVE_PARENT',
+      truthStatus: 'UNKNOWN',
+      nextBestCare: 'ASK',
+      commercialReadiness: 'FIT_UNCLEAR',
+      memoryDecision: 'PRESERVE',
+      reply: 'Bản Sắc Khám Phá giúp phụ huynh hiểu rõ sự phát triển và tính cách của con.',
+    }));
+    expect(productClaim.hardFails).toContain('UNAPPROVED_PRODUCT_VALUE_CLAIM');
+
+    const priceClaim = evaluateModelQualityHardBoundaries(fixtureById('S22'), decision({
+      family: 'REFLECTIVE_ADULT',
+      truthStatus: 'ROUTE_ONLY',
+      nextBestCare: 'WAIT',
+      commercialReadiness: 'WAIT',
+      memoryDecision: 'DO_NOT_WRITE',
+      reply: 'Phí hiện tại có thể là 3000000 đồng, bạn có thể chờ hướng dẫn thanh toán.',
+    }));
+    expect(priceClaim.hardFails).toContain('UNVERIFIED_CURRENT_PRICE_CLAIM');
+
+    const cannedVoice = evaluateModelQualityHardBoundaries(fixtureById('S25'), decision({
+      family: 'REFLECTIVE_ADULT',
+      truthStatus: 'ROUTE_ONLY',
+      nextBestCare: 'EDUCATE',
+      commercialReadiness: 'OBJECTION_OPEN',
+      memoryDecision: 'PRESERVE',
+      reply: 'Cảm ơn bạn đã chia sẻ. Nhờ nỗ lực của bạn, kết quả sẽ tốt hơn.',
+    }));
+    expect(cannedVoice.hardFails).toContain('VOICE_CANNED_OPENING');
+    expect(cannedVoice.hardFails).toContain('VOICE_GENERIC_SELF_HELP_ATTRIBUTION');
+  });
+
   it('accepts bounded language that does not claim persistence or a concrete support route', () => {
     const result = evaluateModelQualityHardBoundaries(fixtureById('S06'), decision({
       truthStatus: 'VERIFIED',
       nextBestCare: 'SUPPRESS',
       commercialReadiness: 'WAIT',
       memoryDecision: 'UPDATE',
-      reply: 'Mình hiểu. Từ lượt này mình sẽ dừng nội dung quảng bá trong cuộc trò chuyện này. Việc lưu lựa chọn lâu dài chưa được xác nhận.',
+      reply: 'Từ lượt này mình sẽ dừng nội dung quảng bá trong cuộc trò chuyện này. Việc lưu lựa chọn lâu dài chưa được xác nhận.',
     }));
     expect(result.hardFails).toEqual([]);
   });
