@@ -34,7 +34,7 @@ interface EvalRecord {
 const liveDescribe = LIVE ? describe : describe.skip;
 
 liveDescribe('P07 Care AI model-quality — live synthetic only', () => {
-  it('runs 40 scenarios + 10 Golden through the approved model and emits P09 evidence', async () => {
+  it('runs 40 scenarios + 10 Golden through the guarded model layer and emits P09 evidence', async () => {
     if (!API_KEY) throw new Error('CARE_MODEL_CREDENTIAL_MISSING: OPENROUTER_API_KEY is not available to this workflow.');
 
     expect(MODEL_QUALITY_CASES).toHaveLength(50);
@@ -63,7 +63,11 @@ liveDescribe('P07 Care AI model-quality — live synthetic only', () => {
       };
 
       try {
-        const actual = await runOpenRouterModelQualityCase({ apiKey: API_KEY, turns: modelCase.turns });
+        const actual = await runOpenRouterModelQualityCase({
+          apiKey: API_KEY,
+          turns: modelCase.turns,
+          fixture,
+        });
         record.actual = actual;
         const evaluated = evaluateModelQualityHardBoundaries(fixture, actual);
         record.autoHardFails = evaluated.hardFails;
@@ -92,6 +96,8 @@ liveDescribe('P07 Care AI model-quality — live synthetic only', () => {
         challengerReason: 'gpt-oss-20b failed output reliability on both Responses and Chat Completions paths',
         maxTokens: 1600,
         structuredOutput: true,
+        deterministicSemanticGuard: 'accepted WebsiteSyntheticCareRuntime semantics from PR #177',
+        replyRepair: 'one bounded rewrite pass only when reply-level authority/Voice hard-fails are detected',
         openRouterPromptStorage: 'not opted in',
         providerSort: 'price',
         dataCollection: 'deny',
@@ -104,7 +110,7 @@ liveDescribe('P07 Care AI model-quality — live synthetic only', () => {
       goldenCompleted,
       autoHardFails: hardFails,
       errors,
-      note: 'All 50 cases are attempted even when one provider/model case errors. Automated hard-fail checks are intentionally stricter after P09 review; comparisonNotes remain evidence for P09 and are not automatically behavior failure. Actual E06 Voice still requires P09 human review.',
+      note: 'All 50 cases are attempted even when one provider/model case errors. Accepted deterministic runtime semantics constrain authority/state before customer-facing generation; the model is evaluated on safe natural-language rendering inside that guard. Automated hard-fail checks include P09 Care/authority, route/action capability and E06 Voice classes. P09 still performs final human Voice/authority acceptance.',
       records,
     };
 
