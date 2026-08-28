@@ -40,7 +40,7 @@ describe('P07 Care AI model-quality adapter — bounded contract', () => {
     expect(MODEL_QUALITY_GOLDENS.every((item) => item.turns.length >= 2)).toBe(true);
   });
 
-  it('uses the JIT-verified low-cost OpenRouter Chat Completions candidate with strict structured output', async () => {
+  it('uses the JIT-verified reliable OpenRouter Chat Completions challenger with strict structured output', async () => {
     const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify({
       choices: [{
         finish_reason: 'stop',
@@ -62,18 +62,18 @@ describe('P07 Care AI model-quality adapter — bounded contract', () => {
     const result = await runOpenRouterModelQualityCase({ apiKey: 'synthetic-test-key', turns: ['Em chưa biết bắt đầu từ đâu.'] });
     expect(result.nextBestCare).toBe('ASK');
     expect(MODEL_QUALITY_PROVIDER).toBe('OpenRouter');
-    expect(MODEL_QUALITY_MODEL).toBe('openai/gpt-oss-20b');
+    expect(MODEL_QUALITY_MODEL).toBe('openai/gpt-4.1-mini');
     expect(MODEL_QUALITY_ENDPOINT).toBe('https://openrouter.ai/api/v1/chat/completions');
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const [url, request] = fetchMock.mock.calls[0];
     expect(url).toBe(MODEL_QUALITY_ENDPOINT);
     const body = JSON.parse(String(request?.body));
-    expect(body.model).toBe('openai/gpt-oss-20b');
+    expect(body.model).toBe('openai/gpt-4.1-mini');
     expect(body.messages[0].role).toBe('system');
     expect(body.messages[1].role).toBe('user');
-    expect(body.reasoning).toEqual({ effort: 'low', exclude: true });
-    expect(body.max_tokens).toBe(3000);
+    expect(body.reasoning).toBeUndefined();
+    expect(body.max_tokens).toBe(1600);
     expect(body.response_format.type).toBe('json_schema');
     expect(body.response_format.json_schema.strict).toBe(true);
     expect(body.provider).toEqual({
