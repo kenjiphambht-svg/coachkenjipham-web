@@ -1,0 +1,70 @@
+name: P07 Care AI Test Console Meta Sandbox
+
+on:
+  push:
+    branches:
+      - backend/p07-care-ai-test-console-meta-sandbox-01
+  pull_request:
+    branches:
+      - backend/p07-care-ai-model-quality-01
+
+permissions:
+  contents: read
+
+jobs:
+  bounded-test-console:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Assert bounded stacked diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='768a1c40268e560ca8854c85bf8fc28cce61afba'
+          git cat-file -e "${BASE}^{commit}"
+          changed="$(git diff --name-only "${BASE}" HEAD)"
+          printf '%s\n' "$changed"
+          unexpected="$(printf '%s\n' "$changed" | grep -Ev '^(\.github/workflows/p07-care-ai-test-console-meta-sandbox\.yml|src/lib/care-ai/(contracts|provider-neutral-model|meta-channel|model-quality-evaluator)\.ts|src/pages/care-ai-test\.tsx|src/pages/api/internal/care-ai-(test|meta-webhook)\.ts|tests/care-ai-(provider-neutral|meta-sandbox|test-console-source-contract)\.test\.ts)$' || true)"
+          if [ -n "$unexpected" ]; then
+            echo 'Unexpected file(s) outside approved Test Console / Meta sandbox lane:' >&2
+            printf '%s\n' "$unexpected" >&2
+            exit 1
+          fi
+          if printf '%s\n' "$changed" | grep -Eq '(^|/)(supabase|migrations?)(/|$)'; then
+            echo 'Forbidden Production/schema surface detected.' >&2
+            exit 1
+          fi
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run full repository tests
+        run: npm test
+
+      - name: Build Next.js with Test Console and Meta sandbox disabled
+        env:
+          CARE_AI_TEST_UI_ENABLED: 'false'
+          CARE_META_SANDBOX_ENABLED: 'false'
+          CARE_META_LIVE_TEST_ENABLED: 'false'
+          CARE_META_OUTBOUND_ENABLED: 'false'
+        run: npm run build
+
+      - name: Assert build acceptance is credential-independent
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "${OPENAI_API_KEY:-}"
+          test -z "${CARE_MODEL_API_KEY:-}"
+          test -z "${CARE_META_MESSENGER_ACCESS_TOKEN:-}"
+          test -z "${CARE_META_INSTAGRAM_ACCESS_TOKEN:-}"
+          echo 'PASS: model and Meta credentials are late-bound; build acceptance requires none.'
