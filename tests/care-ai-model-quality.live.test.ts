@@ -85,6 +85,11 @@ liveDescribe('P07 Care AI model-quality — live synthetic only', () => {
     const completed = records.filter((record) => record.actual).length;
     const scenarioCompleted = records.filter((record) => record.sourceKind === 'SCENARIO' && record.actual).length;
     const goldenCompleted = records.filter((record) => record.sourceKind === 'GOLDEN' && record.actual).length;
+    const responseModes = records.reduce<Record<string, number>>((acc, record) => {
+      const mode = record.actual?.responseMode ?? 'NONE';
+      acc[mode] = (acc[mode] ?? 0) + 1;
+      return acc;
+    }, {});
 
     const artifact = {
       generatedAt: new Date().toISOString(),
@@ -96,8 +101,9 @@ liveDescribe('P07 Care AI model-quality — live synthetic only', () => {
         challengerReason: 'gpt-oss-20b failed output reliability on both Responses and Chat Completions paths',
         maxTokens: 1600,
         structuredOutput: true,
+        structuredRetry: 'one fail-closed retry for malformed structured output only',
         deterministicSemanticGuard: 'accepted WebsiteSyntheticCareRuntime semantics from PR #177',
-        replyRepair: 'one bounded rewrite pass only when reply-level authority/Voice hard-fails are detected',
+        replyRepair: 'one bounded model rewrite pass; deterministic safe fallback only if reply-level hard-fails remain',
         openRouterPromptStorage: 'not opted in',
         providerSort: 'price',
         dataCollection: 'deny',
@@ -108,9 +114,10 @@ liveDescribe('P07 Care AI model-quality — live synthetic only', () => {
       completed,
       scenarioCompleted,
       goldenCompleted,
+      responseModes,
       autoHardFails: hardFails,
       errors,
-      note: 'All 50 cases are attempted even when one provider/model case errors. Accepted deterministic runtime semantics constrain authority/state before customer-facing generation; the model is evaluated on safe natural-language rendering inside that guard. Automated hard-fail checks include P09 Care/authority, route/action capability and E06 Voice classes. P09 still performs final human Voice/authority acceptance.',
+      note: 'All 50 cases are attempted even when one provider/model case errors. Accepted deterministic runtime semantics constrain authority/state before customer-facing generation. responseMode records whether the accepted reply is raw model output, one bounded model repair, or deterministic fail-closed fallback. Automated hard-fail checks include P09 Care/authority, route/action capability, Vietnamese-language operational-route patterns and E06 Voice classes. P09 still performs final human Voice/authority acceptance.',
       records,
     };
 
