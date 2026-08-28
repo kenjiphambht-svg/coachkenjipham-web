@@ -543,7 +543,7 @@ export async function runOpenRouterModelQualityCase(args: {
   turns: string[];
   fixture?: SyntheticCareFixture;
 }): Promise<ModelQualityDecision> {
-  let decision = { ...(await callOpenRouter(args)), responseMode: 'MODEL' as const };
+  let decision: ModelQualityDecision = { ...(await callOpenRouter(args)), responseMode: 'MODEL' };
   if (!args.fixture) return decision;
 
   decision = enforceRuntimeGuard(args.fixture, decision);
