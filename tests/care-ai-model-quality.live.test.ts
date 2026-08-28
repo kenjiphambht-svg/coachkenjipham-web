@@ -89,9 +89,8 @@ liveDescribe('P07 Care AI model-quality — live synthetic only', () => {
       model: MODEL_QUALITY_MODEL,
       configuration: {
         endpointStyle: 'chat_completions',
-        reasoningEffort: 'low',
-        reasoningReturned: false,
-        maxTokens: 3000,
+        challengerReason: 'gpt-oss-20b failed output reliability on both Responses and Chat Completions paths',
+        maxTokens: 1600,
         structuredOutput: true,
         openRouterPromptStorage: 'not opted in',
         providerSort: 'price',
