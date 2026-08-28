@@ -8,7 +8,7 @@ import type {
 } from './contracts';
 
 export const MODEL_QUALITY_PROVIDER = 'OpenRouter' as const;
-export const MODEL_QUALITY_MODEL = 'openai/gpt-oss-20b' as const;
+export const MODEL_QUALITY_MODEL = 'openai/gpt-4.1-mini' as const;
 export const MODEL_QUALITY_ENDPOINT = 'https://openrouter.ai/api/v1/chat/completions' as const;
 
 export interface ModelQualityDecision {
@@ -235,8 +235,7 @@ export async function runOpenRouterModelQualityCase(args: {
         { role: 'system', content: CARE_INSTRUCTIONS },
         { role: 'user', content: conversation },
       ],
-      reasoning: { effort: 'low', exclude: true },
-      max_tokens: 3000,
+      max_tokens: 1600,
       response_format: {
         type: 'json_schema',
         json_schema: {
