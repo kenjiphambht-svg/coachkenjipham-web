@@ -2,19 +2,27 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 describe('Care AI Founder Test Console source contract', () => {
-  it('requires an explicit UI flag plus access-token gate and never auto-enables from preview hosting', () => {
+  it('opens only the exact PR #179 synthetic review window or an explicit environment gate, while retaining token auth', () => {
     const api = readFileSync('src/pages/api/internal/care-ai-test.ts', 'utf8');
     const page = readFileSync('src/pages/care-ai-test.tsx', 'utf8');
+    expect(api).toContain("P09_SYNTHETIC_REVIEW_PR = '179'");
+    expect(api).toContain("P09_SYNTHETIC_REVIEW_BRANCH = 'backend/p07-care-ai-test-console-meta-sandbox-01'");
+    expect(api).toContain("process.env.VERCEL_ENV === 'preview'");
+    expect(api).toContain('VERCEL_GIT_PULL_REQUEST_ID');
+    expect(api).toContain('VERCEL_GIT_COMMIT_REF');
+    expect(api).toContain("createHash('sha256')");
     expect(api).toContain("CARE_AI_TEST_UI_ENABLED === 'true'");
     expect(api).toContain('CARE_AI_TEST_ACCESS_TOKEN');
     expect(api).toContain("'x-care-test-token'");
-    expect(api).not.toContain("process.env.VERCEL_ENV === 'preview'");
-    expect(page).toContain("CARE_AI_TEST_UI_ENABLED === 'true'");
+    expect(api).toContain("2026-09-05T23:59:59+07:00");
+    expect(page).toContain("P09_SYNTHETIC_REVIEW_PR = '179'");
+    expect(page).toContain("process.env.VERCEL_ENV === 'preview'");
+    expect(page).toContain('VERCEL_GIT_PULL_REQUEST_ID');
     expect(page).toContain('CARE_AI_TEST_ACCESS_TOKEN');
-    expect(page).not.toContain("process.env.VERCEL_ENV === 'preview'");
+    expect(page).toContain('P09 synthetic review gate');
   });
 
-  it('does not persist, log, or echo model secrets and clears the browser field after each run', () => {
+  it('does not persist, log, or echo model/test secrets and clears the browser API-key field after each run', () => {
     const api = readFileSync('src/pages/api/internal/care-ai-test.ts', 'utf8');
     const page = readFileSync('src/pages/care-ai-test.tsx', 'utf8');
     expect(api).toContain('secretPersisted: false');
@@ -23,6 +31,8 @@ describe('Care AI Founder Test Console source contract', () => {
     expect(api).not.toContain('console.log');
     expect(page).toContain('type="password"');
     expect(page).toContain("setApiKey('')");
+    expect(api).not.toContain('uETVLlkc0grrZETd6qE3K1wnnf2v8Mb1Ru9gGwsfp_U');
+    expect(page).not.toContain('uETVLlkc0grrZETd6qE3K1wnnf2v8Mb1Ru9gGwsfp_U');
   });
 
   it('exposes the canonical 40+10 selector through deterministic fixture guard plus hardened scoring', () => {
