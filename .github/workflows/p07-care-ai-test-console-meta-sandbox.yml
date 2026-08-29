@@ -229,7 +229,7 @@ jobs:
           test -f wrangler-dry-run/worker.js
           echo 'PASS: Wrangler accepted the exact-head Cloudflare package without deploying it.'
 
-      - name: Securely provision existing approved model-test secret into Cloudflare review runtime
+      - name: Securely complete P09 model-secret runtime binding
         shell: bash
         env:
           MODEL_TEST_SECRET: ${{ secrets.OPENROUTER_API_KEY }}
@@ -237,12 +237,37 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: '7d37ce0eda3f7f74771590bda7c97e65'
         run: |
           set -euo pipefail
+          BASE='https://backend-p07-care-ai-test-con-01b5-essence-web-portability-proof.kenjipham-bht.workers.dev'
+          READY_URL="${BASE}/api/internal/care-ai-test?runtimeSelfTest=p09-review-runner"
+
+          code="$(curl -sS --max-time 10 -o p09-pre-provision-readiness.json -w '%{http_code}' "$READY_URL" || true)"
+          if [ "$code" = '200' ]; then
+            if node - <<'NODE'
+          const fs = require('fs');
+          const result = JSON.parse(fs.readFileSync('p09-pre-provision-readiness.json', 'utf8'));
+          const ok =
+            result.passed === true &&
+            result.runnerEnabled === true &&
+            result.accessTokenAuthorizerReady === true &&
+            result.callerAccessRequired === true &&
+            result.modelConfigReady === true &&
+            result.modelSecretAvailable === true &&
+            result.providerInvoked === false &&
+            result.secretExposed === false;
+          if (!ok) process.exit(1);
+          NODE
+            then
+              echo 'PASS: P09 model-test secret is already present in Cloudflare runtime; no Cloudflare API credential is needed by CI.'
+              exit 0
+            fi
+          fi
+
           if [ -z "${MODEL_TEST_SECRET:-}" ]; then
             echo 'BLOCKED: approved OPENROUTER_API_KEY is not available to this GitHub Actions runtime; no value was exposed.' >&2
             exit 42
           fi
           if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
-            echo 'BLOCKED: CLOUDFLARE_API_TOKEN is not available to this GitHub Actions runtime; no credential was exported.' >&2
+            echo 'BLOCKED: Cloudflare runtime still lacks the P09 model-test secret and CLOUDFLARE_API_TOKEN is not available to CI. Add CARE_P09_REVIEW_MODEL_API_KEY in Cloudflare secret storage or provide an approved secure Cloudflare deployment credential; no secret value was exported.' >&2
             exit 43
           fi
           printf '%s' "$MODEL_TEST_SECRET" | npx wrangler secret put CARE_P09_REVIEW_MODEL_API_KEY --name essence-web-portability-proof
@@ -314,6 +339,7 @@ jobs:
             result.mode === 'CLOUDFLARE_P09_SYNTHETIC_REVIEW_RUNNER_SELF_TEST' &&
             result.runnerEnabled === true &&
             result.accessTokenAuthorizerReady === true &&
+            result.callerAccessRequired === true &&
             result.modelConfigReady === true &&
             result.modelSecretAvailable === true &&
             result.providerInvoked === false &&
@@ -342,6 +368,7 @@ jobs:
               passed: result.passed === true,
               runnerEnabled: result.runnerEnabled === true,
               accessTokenAuthorizerReady: result.accessTokenAuthorizerReady === true,
+              callerAccessRequired: result.callerAccessRequired === true,
               modelConfigReady: result.modelConfigReady === true,
               modelSecretAvailable: result.modelSecretAvailable === true,
               providerInvoked: result.providerInvoked === true,
@@ -353,7 +380,7 @@ jobs:
           NODE
             exit 1
           fi
-          echo 'PASS: P09 server-side synthetic review runner is exact-head runtime-ready; access/model secrets remain Cloudflare-only and provider was not invoked by readiness QA.'
+          echo 'PASS: P09 server-side synthetic review runner is exact-head runtime-ready; caller access token + model secret remain runtime-only and provider was not invoked by readiness QA.'
 
       - name: Assert paid model and real Meta credentials are not directly used by CI test steps
         shell: bash
