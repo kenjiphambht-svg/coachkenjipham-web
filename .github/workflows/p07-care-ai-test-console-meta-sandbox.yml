@@ -169,8 +169,6 @@ jobs:
               ),
           ]
 
-          # Regression guards: detector must catch constructed secret-shaped material
-          # without treating dependency names or a PEM header sentinel as credentials.
           openai_rule = rules[0][1]
           pem_rule = rules[-1][1]
           assert not openai_rule.search('task-async-storage-instance.js')
@@ -221,6 +219,15 @@ jobs:
           path: care-ai-secret-scan-report.txt
           if-no-files-found: error
           retention-days: 3
+
+      - name: Validate Cloudflare package with Wrangler dry-run
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf wrangler-dry-run
+          npx wrangler deploy --dry-run --outdir wrangler-dry-run
+          test -f wrangler-dry-run/worker.js
+          echo 'PASS: Wrangler accepted the exact-head Cloudflare package without deploying it.'
 
       - name: Assert paid model and real Meta credentials are not used by CI
         shell: bash
