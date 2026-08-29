@@ -229,6 +229,52 @@ jobs:
           test -f wrangler-dry-run/worker.js
           echo 'PASS: Wrangler accepted the exact-head Cloudflare package without deploying it.'
 
+      - name: Verify deployed Cloudflare credential path without exporting secret
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='https://backend-p07-care-ai-test-con-01b5-essence-web-portability-proof.kenjipham-bht.workers.dev'
+          SELF_TEST="${BASE}/api/internal/care-ai-test?runtimeSelfTest=credential-path"
+          ready='false'
+
+          for attempt in $(seq 1 60); do
+            code="$(curl -sS --max-time 10 -o runtime-self-test.json -w '%{http_code}' "$SELF_TEST" || true)"
+            if [ "$code" = '200' ]; then
+              if node - <<'NODE'
+          const fs = require('fs');
+          const result = JSON.parse(fs.readFileSync('runtime-self-test.json', 'utf8'));
+          const checks = result.checks || {};
+          const ok =
+            result.passed === true &&
+            result.mode === 'CLOUDFLARE_RUNTIME_CREDENTIAL_PATH_SELF_TEST' &&
+            checks.noTokenStatus === 401 &&
+            checks.invalidTokenStatus === 401 &&
+            checks.configuredRuntimeTokenStatus === 200 &&
+            checks.spoofedForwardedHostStatus === 404 &&
+            result.retiredCredentialFallbackPresent === false &&
+            result.secretExposed === false &&
+            result.providerInvoked === false &&
+            result.productionActionExecuted === false &&
+            result.productionWriteExecuted === false &&
+            result.metaOutboundExecuted === false &&
+            result.paymentBookingDeleteQuoteExecuted === false;
+          if (!ok) process.exit(1);
+          NODE
+              then
+                ready='true'
+                break
+              fi
+            fi
+            sleep 5
+          done
+
+          test "$ready" = 'true'
+          page_code="$(curl -sS --max-time 10 -o /dev/null -w '%{http_code}' "${BASE}/care-ai-test")"
+          no_token_code="$(curl -sS --max-time 10 -o /dev/null -w '%{http_code}' "${BASE}/api/internal/care-ai-test")"
+          test "$page_code" = '200'
+          test "$no_token_code" = '401'
+          echo 'PASS: Cloudflare exact review alias loaded; no/invalid credentials fail closed; configured runtime secret authorizes only through an internal service-binding probe; forwarded-host spoof fails closed; no secret left Cloudflare.'
+
       - name: Assert paid model and real Meta credentials are not used by CI
         shell: bash
         run: |
