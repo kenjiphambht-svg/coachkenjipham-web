@@ -145,11 +145,40 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if grep -RIE --binary-files=without-match '(sk-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9]{20,}|xox[baprs]-[A-Za-z0-9-]{20,}|AIza[0-9A-Za-z_-]{20,}|BEGIN [A-Z ]*PRIVATE KEY)' .next .open-next 2>/dev/null; then
-            echo 'Credential-like material found in generated bundle.' >&2
+          report='.care-ai-secret-scan-report.txt'
+          : > "$report"
+
+          scan_rule() {
+            local label="$1"
+            local pattern="$2"
+            while IFS= read -r file; do
+              [ -n "$file" ] && printf '%s\t%s\n' "$label" "$file" >> "$report"
+            done < <(grep -RIlE --binary-files=without-match "$pattern" .next .open-next 2>/dev/null || true)
+          }
+
+          scan_rule 'OPENAI_STYLE_KEY' 'sk-[A-Za-z0-9_-]{20,}'
+          scan_rule 'GITHUB_TOKEN' 'gh[pousr]_[A-Za-z0-9]{20,}'
+          scan_rule 'SLACK_TOKEN' 'xox[baprs]-[A-Za-z0-9-]{20,}'
+          scan_rule 'GOOGLE_API_KEY' 'AIza[0-9A-Za-z_-]{20,}'
+          scan_rule 'PRIVATE_KEY_HEADER' 'BEGIN [A-Z ]*PRIVATE KEY'
+
+          sort -u -o "$report" "$report"
+          if [ -s "$report" ]; then
+            count="$(wc -l < "$report" | tr -d ' ')"
+            echo "Credential-like material found in generated bundle (${count} redacted finding(s))." >&2
+            echo 'Matched values are never printed. See the short-lived diagnostic artifact for rule labels and file paths only.' >&2
             exit 1
           fi
           echo 'PASS: generated bundles contain no recognized credential prefix/private-key material.'
+
+      - name: Upload redacted bundle-scan diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p07-care-ai-bundle-secret-scan-${{ github.sha }}
+          path: .care-ai-secret-scan-report.txt
+          if-no-files-found: error
+          retention-days: 3
 
       - name: Assert paid model and real Meta credentials are not used by CI
         shell: bash
