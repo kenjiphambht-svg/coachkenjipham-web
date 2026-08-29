@@ -1,3 +1,4 @@
+// P07 runtime refresh after secure P09 model-secret placement; no secret value is stored in source.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "essence-web-portability-proof",
