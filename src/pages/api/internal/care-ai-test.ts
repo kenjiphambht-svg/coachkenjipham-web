@@ -1,4 +1,3 @@
-import { createHash, timingSafeEqual } from 'node:crypto';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { CareChannel } from '../../../lib/care-ai/contracts';
 import { MODEL_QUALITY_CASES } from '../../../lib/care-ai/model-quality-corpus';
@@ -12,47 +11,16 @@ import {
   type CareModelProvider,
 } from '../../../lib/care-ai/provider-neutral-model';
 import { syntheticChannelInbound } from '../../../lib/care-ai/meta-channel';
+import {
+  careTestAccessAuthorized,
+  careTestReviewExpiresAt,
+  cloudflareSyntheticReviewEnabled,
+} from '../../../lib/care-ai/test-console-gate';
 
-const P09_SYNTHETIC_REVIEW_PR = '179';
-const P09_SYNTHETIC_REVIEW_BRANCH = 'backend/p07-care-ai-test-console-meta-sandbox-01';
-const P09_SYNTHETIC_REVIEW_TOKEN_SHA256 = 'd2c1c4c07424e9de9dcfd286ddb0f5afb10b1d6c93bdcf64ada442fd8fe8227a';
-const P09_SYNTHETIC_REVIEW_EXPIRES_AT = Date.parse('2026-09-05T23:59:59+07:00');
-
-function exactPr179ReviewWindow(): boolean {
-  return (
-    process.env.VERCEL_ENV === 'preview' &&
-    process.env.VERCEL_GIT_PULL_REQUEST_ID === P09_SYNTHETIC_REVIEW_PR &&
-    process.env.VERCEL_GIT_COMMIT_REF === P09_SYNTHETIC_REVIEW_BRANCH &&
-    Date.now() <= P09_SYNTHETIC_REVIEW_EXPIRES_AT
-  );
-}
-
-function enabled(): boolean {
-  const explicitEnvironmentGate =
-    process.env.CARE_AI_TEST_UI_ENABLED === 'true' && Boolean(process.env.CARE_AI_TEST_ACCESS_TOKEN);
-  return explicitEnvironmentGate || exactPr179ReviewWindow();
-}
-
-function constantTimeTokenMatch(provided: string, expected: string): boolean {
-  const providedBuffer = Buffer.from(provided, 'utf8');
-  const expectedBuffer = Buffer.from(expected, 'utf8');
-  return providedBuffer.length === expectedBuffer.length && timingSafeEqual(providedBuffer, expectedBuffer);
-}
-
-function constantTimeSha256Match(provided: string, expectedHex: string): boolean {
-  const actual = Buffer.from(createHash('sha256').update(provided, 'utf8').digest('hex'), 'utf8');
-  const expected = Buffer.from(expectedHex, 'utf8');
-  return actual.length === expected.length && timingSafeEqual(actual, expected);
-}
-
-function authorized(req: NextApiRequest): boolean {
-  const provided = req.headers['x-care-test-token'];
-  if (typeof provided !== 'string' || !provided) return false;
-
-  const expected = process.env.CARE_AI_TEST_ACCESS_TOKEN || '';
-  if (expected && constantTimeTokenMatch(provided, expected)) return true;
-
-  return exactPr179ReviewWindow() && constantTimeSha256Match(provided, P09_SYNTHETIC_REVIEW_TOKEN_SHA256);
+function requestHost(req: NextApiRequest): string | undefined {
+  const forwardedHost = req.headers['x-forwarded-host'];
+  if (typeof forwardedHost === 'string' && forwardedHost.trim()) return forwardedHost.split(',')[0].trim();
+  return req.headers.host;
 }
 
 function allowedCompatibleHosts(): string[] {
@@ -89,22 +57,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
 
-  if (!enabled()) return res.status(404).json({ error: 'CARE_TEST_DISABLED' });
-  if (!authorized(req)) return res.status(401).json({ error: 'CARE_TEST_UNAUTHORIZED' });
+  if (!cloudflareSyntheticReviewEnabled({ host: requestHost(req) })) {
+    return res.status(404).json({ error: 'CARE_TEST_DISABLED' });
+  }
+
+  const provided = req.headers['x-care-test-token'];
+  const token = typeof provided === 'string' ? provided : undefined;
+  if (!careTestAccessAuthorized(token)) {
+    return res.status(401).json({ error: 'CARE_TEST_UNAUTHORIZED' });
+  }
 
   if (req.method === 'GET') {
     return res.status(200).json({
       enabled: true,
-      mode: exactPr179ReviewWindow() ? 'P09_PR179_SYNTHETIC_REVIEW' : 'EXPLICIT_TEST_GATE',
+      mode: 'CLOUDFLARE_P09_SYNTHETIC_REVIEW',
       providers: CARE_MODEL_PROVIDERS.map(({ id, label, defaultBaseUrl }) => ({ id, label, defaultBaseUrl })),
       channels: ['website', 'facebook_messenger', 'instagram'],
       fixtureCount: MODEL_QUALITY_CASES.length,
       credentialMode: process.env.CARE_MODEL_API_KEY ? 'SERVER_SECRET_AVAILABLE' : 'EPHEMERAL_KEY_REQUIRED',
       accessTokenRequired: true,
       compatibleHostAllowlistConfigured: allowedCompatibleHosts().length > 0,
-      reviewExpiresAt: exactPr179ReviewWindow() ? '2026-09-05T23:59:59+07:00' : null,
+      reviewExpiresAt: careTestReviewExpiresAt(),
       realMetaTrafficEnabled: false,
       customerDataAllowed: false,
+      productionWriteEnabled: false,
+      paymentBookingDeleteQuoteAuthority: false,
     });
   }
 
@@ -182,7 +159,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         : null,
       secretPersisted: false,
       productionActionExecuted: false,
+      productionWriteExecuted: false,
       metaOutboundExecuted: false,
+      paymentBookingDeleteQuoteExecuted: false,
     });
   } catch (error) {
     return res.status(502).json({ error: safeError(error) });

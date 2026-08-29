@@ -2,13 +2,10 @@ import type { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { FormEvent, useMemo, useState } from 'react';
 import { MODEL_QUALITY_GOLDENS, MODEL_QUALITY_SCENARIOS } from '../lib/care-ai/model-quality-corpus';
+import { cloudflareSyntheticReviewEnabled } from '../lib/care-ai/test-console-gate';
 
 type Provider = 'openai_responses' | 'openai_compatible_chat' | 'anthropic_messages' | 'google_gemini';
 type Channel = 'website' | 'facebook_messenger' | 'instagram';
-
-const P09_SYNTHETIC_REVIEW_PR = '179';
-const P09_SYNTHETIC_REVIEW_BRANCH = 'backend/p07-care-ai-test-console-meta-sandbox-01';
-const P09_SYNTHETIC_REVIEW_EXPIRES_AT = Date.parse('2026-09-05T23:59:59+07:00');
 
 interface TestResult {
   fixtureId?: string | null;
@@ -35,19 +32,10 @@ interface TestResult {
   error?: string;
 }
 
-function exactPr179ReviewWindow(): boolean {
-  return (
-    process.env.VERCEL_ENV === 'preview' &&
-    process.env.VERCEL_GIT_PULL_REQUEST_ID === P09_SYNTHETIC_REVIEW_PR &&
-    process.env.VERCEL_GIT_COMMIT_REF === P09_SYNTHETIC_REVIEW_BRANCH &&
-    Date.now() <= P09_SYNTHETIC_REVIEW_EXPIRES_AT
-  );
-}
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const explicitEnvironmentGate =
-    process.env.CARE_AI_TEST_UI_ENABLED === 'true' && Boolean(process.env.CARE_AI_TEST_ACCESS_TOKEN);
-  if (!explicitEnvironmentGate && !exactPr179ReviewWindow()) return { notFound: true };
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const forwardedHost = req.headers['x-forwarded-host'];
+  const host = typeof forwardedHost === 'string' ? forwardedHost.split(',')[0].trim() : req.headers.host;
+  if (!cloudflareSyntheticReviewEnabled({ host })) return { notFound: true };
   return { props: {} };
 };
 
@@ -124,8 +112,8 @@ export default function CareAiTestPage() {
       <Head><title>Kenji Care AI — Founder Test Console</title></Head>
       <main style={{ maxWidth: 980, margin: '0 auto', padding: '32px 20px 64px', fontFamily: 'Arial, sans-serif' }}>
         <h1>Kenji Care AI — Founder Test Console</h1>
-        <p><strong>P09 synthetic review gate:</strong> chỉ mở trên Vercel Preview của PR #179 trong cửa sổ review tạm thời và mọi API run vẫn cần test access token. Không có Production action hoặc Meta outbound send từ console này.</p>
-        <p><strong>Scope:</strong> synthetic/admin test only; không dùng customer/child/private data thật. Cửa sổ PR #179 hiện hết hạn sau 2026-09-05 23:59 ICT nếu không được gia hạn bằng một gate mới.</p>
+        <p><strong>P09 synthetic review gate:</strong> Cloudflare Preview là canonical review surface. Trang chỉ mở trên đúng Cloudflare branch-review host trong cửa sổ review và mọi API run vẫn cần access token riêng.</p>
+        <p><strong>Scope:</strong> synthetic/admin test only; không dùng customer/child/private data thật, không Production write, không real Meta traffic/outbound.</p>
         <p><strong>Guard note:</strong> 40+10 canonical fixtures dùng deterministic Care guard. Freeform hiện chỉ là model-output sandbox để Founder/P09 xem nội dung, chưa phải Production Care authority.</p>
 
         <form onSubmit={submit} style={{ display: 'grid', gap: 16 }}>

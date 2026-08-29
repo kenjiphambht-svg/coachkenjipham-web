@@ -8,7 +8,17 @@
     "global_fetch_strictly_public"
   ],
   "vars": {
-    "CLOUDFLARE_PORTABILITY_PROOF": "1"
+    "CLOUDFLARE_PORTABILITY_PROOF": "1",
+    "CARE_AI_TEST_RUNTIME_SURFACE": "cloudflare-preview",
+    "CARE_AI_TEST_UI_ENABLED": "true",
+    "CARE_AI_TEST_REVIEW_HOST": "backend-p07-care-ai-test-con-01b5-essence-web-portability-proof.kenjipham-bht.workers.dev",
+    "CARE_AI_TEST_REVIEW_EXPIRES_AT": "2026-09-05T23:59:59+07:00",
+    "CARE_META_SANDBOX_ENABLED": "false",
+    "CARE_META_LIVE_TEST_ENABLED": "false",
+    "CARE_META_OUTBOUND_ENABLED": "false"
+  },
+  "secrets": {
+    "required": ["CARE_AI_TEST_ACCESS_TOKEN"]
   },
   "assets": {
     "directory": ".open-next/assets",

@@ -2,24 +2,30 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 describe('Care AI Founder Test Console source contract', () => {
-  it('opens only the exact PR #179 synthetic review window or an explicit environment gate, while retaining token auth', () => {
+  it('uses Cloudflare-only review gating with a late-bound runtime secret and no Vercel bypass', () => {
     const api = readFileSync('src/pages/api/internal/care-ai-test.ts', 'utf8');
     const page = readFileSync('src/pages/care-ai-test.tsx', 'utf8');
-    expect(api).toContain("P09_SYNTHETIC_REVIEW_PR = '179'");
-    expect(api).toContain("P09_SYNTHETIC_REVIEW_BRANCH = 'backend/p07-care-ai-test-console-meta-sandbox-01'");
-    expect(api).toContain("process.env.VERCEL_ENV === 'preview'");
-    expect(api).toContain('VERCEL_GIT_PULL_REQUEST_ID');
-    expect(api).toContain('VERCEL_GIT_COMMIT_REF');
-    expect(api).toContain("createHash('sha256')");
-    expect(api).toContain("CARE_AI_TEST_UI_ENABLED === 'true'");
-    expect(api).toContain('CARE_AI_TEST_ACCESS_TOKEN');
-    expect(api).toContain("'x-care-test-token'");
-    expect(api).toContain("2026-09-05T23:59:59+07:00");
-    expect(page).toContain("P09_SYNTHETIC_REVIEW_PR = '179'");
-    expect(page).toContain("process.env.VERCEL_ENV === 'preview'");
-    expect(page).toContain('VERCEL_GIT_PULL_REQUEST_ID');
-    expect(page).toContain('CARE_AI_TEST_ACCESS_TOKEN');
-    expect(page).toContain('P09 synthetic review gate');
+    const gate = readFileSync('src/lib/care-ai/test-console-gate.ts', 'utf8');
+    const wrangler = readFileSync('wrangler.jsonc', 'utf8');
+
+    expect(api).toContain('cloudflareSyntheticReviewEnabled');
+    expect(page).toContain('cloudflareSyntheticReviewEnabled');
+    expect(gate).toContain("CARE_AI_TEST_RUNTIME_SURFACE === 'cloudflare-preview'");
+    expect(gate).toContain('CARE_AI_TEST_REVIEW_HOST');
+    expect(gate).toContain('CARE_AI_TEST_REVIEW_EXPIRES_AT');
+    expect(gate).toContain('CARE_AI_TEST_ACCESS_TOKEN');
+    expect(gate).toContain('timingSafeEqual');
+    expect(wrangler).toContain('"required": ["CARE_AI_TEST_ACCESS_TOKEN"]');
+    expect(wrangler).toContain('"CARE_AI_TEST_RUNTIME_SURFACE": "cloudflare-preview"');
+    expect(wrangler).toContain('"CARE_AI_TEST_UI_ENABLED": "true"');
+
+    for (const source of [api, page, gate, wrangler]) {
+      expect(source).not.toContain('VERCEL_ENV');
+      expect(source).not.toContain('VERCEL_GIT_PULL_REQUEST_ID');
+      expect(source).not.toContain('VERCEL_GIT_COMMIT_REF');
+      expect(source).not.toContain('TOKEN_SHA256');
+      expect(source).not.toContain("createHash('sha256')");
+    }
   });
 
   it('does not persist, log, or echo model/test secrets and clears the browser API-key field after each run', () => {
@@ -27,12 +33,12 @@ describe('Care AI Founder Test Console source contract', () => {
     const page = readFileSync('src/pages/care-ai-test.tsx', 'utf8');
     expect(api).toContain('secretPersisted: false');
     expect(api).toContain('productionActionExecuted: false');
+    expect(api).toContain('productionWriteExecuted: false');
     expect(api).toContain('metaOutboundExecuted: false');
+    expect(api).toContain('paymentBookingDeleteQuoteExecuted: false');
     expect(api).not.toContain('console.log');
     expect(page).toContain('type="password"');
     expect(page).toContain("setApiKey('')");
-    expect(api).not.toContain('uETVLlkc0grrZETd6qE3K1wnnf2v8Mb1Ru9gGwsfp_U');
-    expect(page).not.toContain('uETVLlkc0grrZETd6qE3K1wnnf2v8Mb1Ru9gGwsfp_U');
   });
 
   it('exposes the canonical 40+10 selector through deterministic fixture guard plus hardened scoring', () => {
@@ -56,7 +62,6 @@ describe('Care AI Founder Test Console source contract', () => {
     expect(source).toContain('CARE_META_TEST_SENDER_IDS');
     expect(source).toContain('CARE_META_TEST_SENDER_ALLOWLIST_MISSING');
     expect(source).toContain('outboundSent: false');
-    expect(source).not.toContain("process.env.VERCEL_ENV === 'preview'");
     expect(source).not.toContain('graph.facebook.com');
     expect(source).not.toContain('graph.instagram.com');
   });

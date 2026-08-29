@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 jobs:
   bounded-test-console:
@@ -28,7 +29,7 @@ jobs:
           git cat-file -e "${BASE}^{commit}"
           changed="$(git diff --name-only "${BASE}" HEAD)"
           printf '%s\n' "$changed"
-          unexpected="$(printf '%s\n' "$changed" | grep -Ev '^(\.github/workflows/p07-care-ai-test-console-meta-sandbox\.yml|src/lib/care-ai/(contracts|provider-neutral-model|meta-channel|model-quality-evaluator)\.ts|src/pages/care-ai-test\.tsx|src/pages/api/internal/care-ai-(test|meta-webhook)\.ts|tests/care-ai-(provider-neutral|meta-sandbox|test-console-source-contract)\.test\.ts)$' || true)"
+          unexpected="$(printf '%s\n' "$changed" | grep -Ev '^(\.github/workflows/p07-care-ai-test-console-meta-sandbox\.yml|wrangler\.jsonc|src/lib/care-ai/(contracts|provider-neutral-model|meta-channel|model-quality-evaluator|test-console-gate)\.ts|src/pages/care-ai-test\.tsx|src/pages/api/internal/care-ai-(test|meta-webhook)\.ts|tests/care-ai-(provider-neutral|meta-sandbox|test-console-source-contract|test-console-gate)\.test\.ts)$' || true)"
           if [ -n "$unexpected" ]; then
             echo 'Unexpected file(s) outside approved Test Console / Meta sandbox lane:' >&2
             printf '%s\n' "$unexpected" >&2
@@ -38,6 +39,67 @@ jobs:
             echo 'Forbidden Production/schema surface detected.' >&2
             exit 1
           fi
+
+      - name: Secret-scan current bounded head and PR text
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, math, os, re, subprocess, sys
+          from pathlib import Path
+
+          base = '768a1c40268e560ca8854c85bf8fc28cce61afba'
+          files = subprocess.check_output(['git', 'diff', '--name-only', base, 'HEAD'], text=True).splitlines()
+          prefix_patterns = [
+              re.compile(r'sk-[A-Za-z0-9_-]{20,}'),
+              re.compile(r'gh[pousr]_[A-Za-z0-9]{20,}'),
+              re.compile(r'xox[baprs]-[A-Za-z0-9-]{20,}'),
+              re.compile(r'AIza[0-9A-Za-z_-]{20,}'),
+              re.compile(r'-----BEGIN [A-Z ]*PRIVATE KEY-----'),
+          ]
+          tokenish = re.compile(r'(?<![A-Za-z0-9_-])([A-Za-z0-9_-]{32,})(?![A-Za-z0-9_-])')
+
+          def entropy(value: str) -> float:
+              if not value:
+                  return 0.0
+              counts = {c: value.count(c) for c in set(value)}
+              n = len(value)
+              return -sum((count/n) * math.log2(count/n) for count in counts.values())
+
+          def scan(label: str, text: str) -> list[str]:
+              findings = []
+              for pattern in prefix_patterns:
+                  if pattern.search(text):
+                      findings.append(f'{label}: credential-prefix/private-key pattern')
+              for match in tokenish.finditer(text):
+                  value = match.group(1)
+                  if re.fullmatch(r'[0-9a-fA-F]{40}|[0-9a-fA-F]{64}', value):
+                      continue
+                  if value.startswith(('CARE_', 'CLOUDFLARE_', 'MODEL_', 'WORKERS_')):
+                      continue
+                  if entropy(value) >= 4.35 and any(c.islower() for c in value) and any(c.isupper() for c in value) and any(c.isdigit() for c in value):
+                      findings.append(f'{label}: high-entropy token-like literal at offset {match.start()}')
+              return findings
+
+          findings = []
+          for name in files:
+              path = Path(name)
+              if path.is_file():
+                  findings.extend(scan(name, path.read_text('utf-8', errors='ignore')))
+
+          event_path = os.environ.get('GITHUB_EVENT_PATH')
+          if event_path and Path(event_path).is_file():
+              event = json.loads(Path(event_path).read_text('utf-8'))
+              body = ((event.get('pull_request') or {}).get('body') or '')
+              findings.extend(scan('pull_request.body', body))
+
+          if findings:
+              print('Potential credential material detected; values intentionally not printed.', file=sys.stderr)
+              for finding in findings:
+                  print(f'- {finding}', file=sys.stderr)
+              raise SystemExit(1)
+          print('PASS: no credential-like literal detected in current bounded files or PR body.')
+          PY
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -51,20 +113,41 @@ jobs:
       - name: Run full repository tests
         run: npm test
 
-      - name: Build Next.js with Test Console and Meta sandbox disabled
+      - name: Build Next.js with local runtime gates disabled
         env:
+          CARE_AI_TEST_RUNTIME_SURFACE: 'ci-disabled'
           CARE_AI_TEST_UI_ENABLED: 'false'
           CARE_META_SANDBOX_ENABLED: 'false'
           CARE_META_LIVE_TEST_ENABLED: 'false'
           CARE_META_OUTBOUND_ENABLED: 'false'
         run: npm run build
 
-      - name: Assert build acceptance is credential-independent
+      - name: Build Cloudflare OpenNext bundle
+        env:
+          CARE_AI_TEST_RUNTIME_SURFACE: 'ci-disabled'
+          CARE_AI_TEST_UI_ENABLED: 'false'
+          CARE_META_SANDBOX_ENABLED: 'false'
+          CARE_META_LIVE_TEST_ENABLED: 'false'
+          CARE_META_OUTBOUND_ENABLED: 'false'
+        run: npm run cf:build
+
+      - name: Scan generated bundles for credential prefixes
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RIE --binary-files=without-match '(sk-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9]{20,}|xox[baprs]-[A-Za-z0-9-]{20,}|AIza[0-9A-Za-z_-]{20,}|BEGIN [A-Z ]*PRIVATE KEY)' .next .open-next 2>/dev/null; then
+            echo 'Credential-like material found in generated bundle.' >&2
+            exit 1
+          fi
+          echo 'PASS: generated bundles contain no recognized credential prefix/private-key material.'
+
+      - name: Assert paid model and real Meta credentials are not used by CI
         shell: bash
         run: |
           set -euo pipefail
           test -z "${OPENAI_API_KEY:-}"
+          test -z "${OPENROUTER_API_KEY:-}"
           test -z "${CARE_MODEL_API_KEY:-}"
           test -z "${CARE_META_MESSENGER_ACCESS_TOKEN:-}"
           test -z "${CARE_META_INSTAGRAM_ACCESS_TOKEN:-}"
-          echo 'PASS: model and Meta credentials are late-bound; build acceptance requires none.'
+          echo 'PASS: paid model benchmark and real Meta credentials are not used in this repair CI.'
