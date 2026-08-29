@@ -128,7 +128,12 @@ function cleanJsonText(value: string): string {
 }
 
 function parseDecision(value: string): CareModelDecision {
-  const parsed = JSON.parse(cleanJsonText(value)) as Partial<CareModelDecision>;
+  let parsed: Partial<CareModelDecision>;
+  try {
+    parsed = JSON.parse(cleanJsonText(value)) as Partial<CareModelDecision>;
+  } catch {
+    throw new Error('CARE_MODEL_INVALID_JSON');
+  }
   if (
     !parsed ||
     typeof parsed.reply !== 'string' || !parsed.reply.trim() || parsed.reply.length > 1600 ||
@@ -241,6 +246,15 @@ async function runOpenAICompatible(request: CareModelRequest): Promise<CareModel
         { role: 'user', content: conversationText(request.channel, request.turns) },
       ],
       temperature: 0.2,
+      max_tokens: 1400,
+      response_format: {
+        type: 'json_schema',
+        json_schema: {
+          name: 'care_model_decision',
+          strict: true,
+          schema: DECISION_SCHEMA,
+        },
+      },
     }),
   })) as { choices?: Array<{ message?: { content?: string } }> };
   return enforceAuthorityGuard(
