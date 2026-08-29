@@ -7,6 +7,7 @@ import {
 } from '../src/lib/care-ai/test-console-gate';
 import {
   p09ReviewCallerAuthorized,
+  p09ReviewOidcClaimsAuthorized,
   p09ReviewResponse,
   p09ReviewRunnerEnabled,
   parseP09ReviewRunnerInput,
@@ -72,11 +73,39 @@ describe('P09 server-side synthetic review runner', () => {
     expect(p09ReviewRunnerEnabled({ CARE_P09_REVIEW_RUNNER_ENABLED: 'false' })).toBe(false);
   });
 
-  it('requires the caller to present the same late-bound access secret', () => {
+  it('keeps the late-bound access token verifier available only for runtime readiness', () => {
     expect(p09ReviewCallerAuthorized(undefined, reviewEnv)).toBe(false);
     expect(p09ReviewCallerAuthorized('synthetic-ci-invalid-token', reviewEnv)).toBe(false);
     expect(p09ReviewCallerAuthorized('synthetic-ci-retired-token', reviewEnv)).toBe(false);
     expect(p09ReviewCallerAuthorized('synthetic-ci-rotated-token', reviewEnv)).toBe(true);
+  });
+
+  it('accepts only repo-bound push OIDC claims for the secure runner caller', () => {
+    const sha = 'a'.repeat(40);
+    const claims = {
+      iss: 'https://token.actions.githubusercontent.com',
+      aud: 'essence-p09-review',
+      sub: 'repo:kenjiphambht-svg@232888500/coachkenjipham-web@1240291235:ref:refs/heads/backend/p07-care-ai-test-console-meta-sandbox-01',
+      exp: 2_000_000_000,
+      nbf: 1_700_000_000,
+      repository: 'kenjiphambht-svg/coachkenjipham-web',
+      repository_id: '1240291235',
+      repository_owner_id: '232888500',
+      actor_id: '232888500',
+      event_name: 'push',
+      ref: 'refs/heads/backend/p07-care-ai-test-console-meta-sandbox-01',
+      ref_type: 'branch',
+      workflow: 'P07 Care AI Test Console Meta Sandbox',
+      workflow_ref: 'kenjiphambht-svg/coachkenjipham-web/.github/workflows/p07-care-ai-test-console-meta-sandbox.yml@refs/heads/backend/p07-care-ai-test-console-meta-sandbox-01',
+      workflow_sha: sha,
+      sha,
+      runner_environment: 'github-hosted',
+    };
+    expect(p09ReviewOidcClaimsAuthorized(claims, 1_800_000_000)).toBe(true);
+    expect(p09ReviewOidcClaimsAuthorized({ ...claims, aud: 'wrong-audience' }, 1_800_000_000)).toBe(false);
+    expect(p09ReviewOidcClaimsAuthorized({ ...claims, repository: 'other/repo' }, 1_800_000_000)).toBe(false);
+    expect(p09ReviewOidcClaimsAuthorized({ ...claims, event_name: 'pull_request' }, 1_800_000_000)).toBe(false);
+    expect(p09ReviewOidcClaimsAuthorized({ ...claims, workflow_sha: 'b'.repeat(40) }, 1_800_000_000)).toBe(false);
   });
 
   it('accepts only the approved P09 review slots and channels', () => {
