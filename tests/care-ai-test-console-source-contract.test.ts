@@ -15,9 +15,11 @@ describe('Care AI Founder Test Console source contract', () => {
     expect(gate).toContain('CARE_AI_TEST_REVIEW_EXPIRES_AT');
     expect(gate).toContain('CARE_AI_TEST_ACCESS_TOKEN');
     expect(gate).toContain('timingSafeEqual');
+    expect(gate).toContain('resolveCareTestRequestHost');
     expect(wrangler).toContain('"required": ["CARE_AI_TEST_ACCESS_TOKEN"]');
     expect(wrangler).toContain('"CARE_AI_TEST_RUNTIME_SURFACE": "cloudflare-preview"');
     expect(wrangler).toContain('"CARE_AI_TEST_UI_ENABLED": "true"');
+    expect(wrangler).toContain('"WORKER_SELF_REFERENCE"');
 
     for (const source of [api, page, gate, wrangler]) {
       expect(source).not.toContain('VERCEL_ENV');
@@ -26,6 +28,18 @@ describe('Care AI Founder Test Console source contract', () => {
       expect(source).not.toContain('TOKEN_SHA256');
       expect(source).not.toContain("createHash('sha256')");
     }
+  });
+
+  it('self-tests the real Cloudflare credential path without exporting the runtime secret or invoking providers', () => {
+    const api = readFileSync('src/pages/api/internal/care-ai-test.ts', 'utf8');
+    expect(api).toContain('getCloudflareContext');
+    expect(api).toContain('WORKER_SELF_REFERENCE');
+    expect(api).toContain('CLOUDFLARE_RUNTIME_CREDENTIAL_PATH_SELF_TEST');
+    expect(api).toContain('configuredRuntimeTokenStatus');
+    expect(api).toContain('spoofedForwardedHostStatus');
+    expect(api).toContain('retiredCredentialFallbackPresent: false');
+    expect(api).toContain('secretExposed: false');
+    expect(api).toContain('providerInvoked: false');
   });
 
   it('does not persist, log, or echo model/test secrets and clears the browser API-key field after each run', () => {
