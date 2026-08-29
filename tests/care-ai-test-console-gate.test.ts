@@ -6,6 +6,7 @@ import {
   type CareTestGateEnv,
 } from '../src/lib/care-ai/test-console-gate';
 import {
+  p09ReviewCallerAuthorized,
   p09ReviewResponse,
   p09ReviewRunnerEnabled,
   parseP09ReviewRunnerInput,
@@ -69,6 +70,13 @@ describe('P09 server-side synthetic review runner', () => {
   it('requires an explicit runtime runner flag', () => {
     expect(p09ReviewRunnerEnabled({ CARE_P09_REVIEW_RUNNER_ENABLED: 'true' })).toBe(true);
     expect(p09ReviewRunnerEnabled({ CARE_P09_REVIEW_RUNNER_ENABLED: 'false' })).toBe(false);
+  });
+
+  it('requires the caller to present the same late-bound access secret', () => {
+    expect(p09ReviewCallerAuthorized(undefined, reviewEnv)).toBe(false);
+    expect(p09ReviewCallerAuthorized('synthetic-ci-invalid-token', reviewEnv)).toBe(false);
+    expect(p09ReviewCallerAuthorized('synthetic-ci-retired-token', reviewEnv)).toBe(false);
+    expect(p09ReviewCallerAuthorized('synthetic-ci-rotated-token', reviewEnv)).toBe(true);
   });
 
   it('accepts only the approved P09 review slots and channels', () => {
