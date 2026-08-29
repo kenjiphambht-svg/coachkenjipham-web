@@ -16,6 +16,15 @@ function normalizeHost(value?: string): string {
   return (value || '').trim().toLowerCase().replace(/:\d+$/, '');
 }
 
+function firstHeaderHost(value?: string): string | undefined {
+  const candidate = (value || '').split(',')[0]?.trim();
+  return candidate || undefined;
+}
+
+export function resolveCareTestRequestHost(host?: string, forwardedHost?: string): string | undefined {
+  return firstHeaderHost(host) || firstHeaderHost(forwardedHost);
+}
+
 function reviewExpiry(env: CareTestGateEnv): number {
   const parsed = Date.parse(env.CARE_AI_TEST_REVIEW_EXPIRES_AT || '');
   return Number.isFinite(parsed) ? parsed : Number.NaN;
