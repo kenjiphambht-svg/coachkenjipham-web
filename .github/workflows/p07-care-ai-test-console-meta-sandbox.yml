@@ -40,12 +40,14 @@ jobs:
             exit 1
           fi
 
-      - name: Secret-scan current bounded head and PR text
+      - name: Secret-scan current bounded head and current PR text
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           python - <<'PY'
-          import json, math, os, re, subprocess, sys
+          import json, math, os, re, subprocess, sys, urllib.request
           from pathlib import Path
 
           base = '768a1c40268e560ca8854c85bf8fc28cce61afba'
@@ -87,18 +89,26 @@ jobs:
               if path.is_file():
                   findings.extend(scan(name, path.read_text('utf-8', errors='ignore')))
 
-          event_path = os.environ.get('GITHUB_EVENT_PATH')
-          if event_path and Path(event_path).is_file():
-              event = json.loads(Path(event_path).read_text('utf-8'))
-              body = ((event.get('pull_request') or {}).get('body') or '')
-              findings.extend(scan('pull_request.body', body))
+          repo = os.environ['GITHUB_REPOSITORY']
+          token = os.environ['GH_TOKEN']
+          request = urllib.request.Request(
+              f'https://api.github.com/repos/{repo}/pulls/179',
+              headers={
+                  'Authorization': f'Bearer {token}',
+                  'Accept': 'application/vnd.github+json',
+                  'User-Agent': 'p07-care-secret-scan',
+              },
+          )
+          with urllib.request.urlopen(request, timeout=20) as response:
+              pr = json.load(response)
+          findings.extend(scan('pull_request.body', pr.get('body') or ''))
 
           if findings:
               print('Potential credential material detected; values intentionally not printed.', file=sys.stderr)
               for finding in findings:
                   print(f'- {finding}', file=sys.stderr)
               raise SystemExit(1)
-          print('PASS: no credential-like literal detected in current bounded files or PR body.')
+          print('PASS: no credential-like literal detected in current bounded files or current PR body.')
           PY
 
       - name: Setup Node
