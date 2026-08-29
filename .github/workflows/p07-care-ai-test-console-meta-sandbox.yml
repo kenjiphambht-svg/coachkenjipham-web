@@ -20,6 +20,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Assert bounded stacked diff
         shell: bash
@@ -145,7 +146,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          report='.care-ai-secret-scan-report.txt'
+          report='care-ai-secret-scan-report.txt'
           : > "$report"
 
           scan_rule() {
@@ -175,8 +176,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: p07-care-ai-bundle-secret-scan-${{ github.sha }}
-          path: .care-ai-secret-scan-report.txt
+          name: p07-care-ai-bundle-secret-scan-${{ github.event.pull_request.head.sha || github.sha }}
+          path: care-ai-secret-scan-report.txt
           if-no-files-found: error
           retention-days: 3
 
