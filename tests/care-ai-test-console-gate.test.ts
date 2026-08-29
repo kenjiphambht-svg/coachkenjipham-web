@@ -107,6 +107,7 @@ describe('P09 server-side synthetic review runner', () => {
   });
 
   it('returns only redacted reply + semantic/evaluation data, without input or provider config', () => {
+    const syntheticCredential = 's' + 'k-' + 'abcdefghijklmnop123456';
     const result = p09ReviewResponse(
       { reviewId: 'website-1', channel: 'website', turns: ['synthetic'] },
       {
@@ -116,7 +117,7 @@ describe('P09 server-side synthetic review runner', () => {
         commercialReadiness: 'EXPLORE',
         memoryDecision: 'DO_NOT_WRITE',
         handoffRequired: false,
-        reply: 'Mình chưa đủ dữ kiện để kết luận. sk-abcdefghijklmnop123456',
+        reply: `Mình chưa đủ dữ kiện để kết luận. ${syntheticCredential}`,
       },
     );
     expect(result.modelReply).toContain('[REDACTED_CREDENTIAL]');
