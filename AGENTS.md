@@ -35,7 +35,7 @@ This is the shared instruction file for Codex, Claude Code, and future AI coding
   trúc/route lớn hoặc file dùng chung (Header/Footer/globals.css/tailwind.config);
   (d) bất kỳ hành động khai báo trang với Google (submit Search Console, thêm
   route vào sitemap công khai, gỡ noindex, đổi robots.txt cho phép crawl).
-- Không tự deploy ngoài luồng PR → merge → Vercel auto-deploy bình thường của repo.
+- Deployment authority — **Cloudflare primary**: GitHub `main` là source code authority; Cloudflare Workers là production runtime/deployment authority. Không tự deploy ngoài luồng PR → Founder-authorized merge → Cloudflare build/deploy bình thường của repo. Vercel chỉ là backup/fallback có chủ đích; preview/deploy Vercel không phải production evidence mặc định và không được dùng làm nguồn trạng thái production chính.
 - The 9 legacy color variables in `globals.css` (`--cream`, `--gold`, `--ink`, `--body-text`, `--cream-muted`, `--gold-brand`, `--gold-deep`, `--dark-section`, `--cream-light`) are used ONLY by `kidbook.tsx` and `ai-startup.tsx` (legacy routes). Do not use these variables for any new component or route — all new code must use the `--essence-*-2026` tokens only.
 - Khi Kenji gõ "fable mode" hoặc việc đụng route sống/quyết định khó đảo ngược — đọc `.claude/skills/fable-mode/SKILL.md` trước khi làm.
 
