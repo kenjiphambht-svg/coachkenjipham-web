@@ -11,6 +11,7 @@ on:
 permissions:
   contents: read
   pull-requests: read
+  id-token: write
 
 jobs:
   bounded-test-console:
@@ -249,7 +250,9 @@ jobs:
             result.passed === true &&
             result.runnerEnabled === true &&
             result.accessTokenAuthorizerReady === true &&
+            result.accessTokenRuntimeOnly === true &&
             result.callerAccessRequired === true &&
+            result.callerAuthMode === 'GITHUB_OIDC_REPO_BOUND' &&
             result.modelConfigReady === true &&
             result.modelSecretAvailable === true &&
             result.providerInvoked === false &&
@@ -318,7 +321,7 @@ jobs:
           no_token_code="$(curl -sS --max-time 10 -o /dev/null -w '%{http_code}' "${BASE}/api/internal/care-ai-test")"
           test "$page_code" = '200'
           test "$no_token_code" = '401'
-          echo 'PASS: Cloudflare exact review alias loaded; no/invalid credentials fail closed; configured runtime secret authorizes only through an internal service-binding probe; forwarded-host spoof fails closed; no secret left Cloudflare.'
+          echo 'PASS: Cloudflare exact review alias loaded; no/invalid credentials fail closed; configured runtime secret authorizes only through an in-process runtime probe; forwarded-host spoof fails closed; no secret left Cloudflare.'
 
       - name: Verify P09 server-side review runner readiness without exporting secrets
         shell: bash
@@ -337,9 +340,12 @@ jobs:
           const ok =
             result.passed === true &&
             result.mode === 'CLOUDFLARE_P09_SYNTHETIC_REVIEW_RUNNER_SELF_TEST' &&
+            result.runnerRevision === 'P09_SECURE_RUNNER_GITHUB_OIDC_V1' &&
             result.runnerEnabled === true &&
             result.accessTokenAuthorizerReady === true &&
+            result.accessTokenRuntimeOnly === true &&
             result.callerAccessRequired === true &&
+            result.callerAuthMode === 'GITHUB_OIDC_REPO_BOUND' &&
             result.modelConfigReady === true &&
             result.modelSecretAvailable === true &&
             result.providerInvoked === false &&
@@ -366,9 +372,11 @@ jobs:
             const result = JSON.parse(fs.readFileSync('p09-runner-self-test.json', 'utf8'));
             console.error(JSON.stringify({
               passed: result.passed === true,
+              runnerRevision: result.runnerRevision || null,
               runnerEnabled: result.runnerEnabled === true,
               accessTokenAuthorizerReady: result.accessTokenAuthorizerReady === true,
-              callerAccessRequired: result.callerAccessRequired === true,
+              accessTokenRuntimeOnly: result.accessTokenRuntimeOnly === true,
+              callerAuthMode: result.callerAuthMode || null,
               modelConfigReady: result.modelConfigReady === true,
               modelSecretAvailable: result.modelSecretAvailable === true,
               providerInvoked: result.providerInvoked === true,
@@ -380,15 +388,95 @@ jobs:
           NODE
             exit 1
           fi
-          echo 'PASS: P09 server-side synthetic review runner is exact-head runtime-ready; caller access token + model secret remain runtime-only and provider was not invoked by readiness QA.'
+          echo 'PASS: P09 server-side synthetic review runner is exact-version runtime-ready; access/model secrets remain Cloudflare-runtime-only; repo-bound GitHub OIDC is the caller boundary.'
 
-      - name: Assert paid model and real Meta credentials are not directly used by CI test steps
+      - name: Execute one bounded P09 model call through repo-bound GitHub OIDC
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='https://backend-p07-care-ai-test-con-01b5-essence-web-portability-proof.kenjipham-bht.workers.dev'
+          CALL_URL="${BASE}/api/internal/care-ai-test?p09Review=1"
+
+          oidc_json="$(curl -fsS \
+            -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=essence-p09-review")"
+          OIDC_TOKEN="$(printf '%s' "$oidc_json" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const x=JSON.parse(s);if(!x.value)process.exit(1);process.stdout.write(x.value)})")"
+          unset oidc_json
+          test -n "$OIDC_TOKEN"
+
+          payload='{"reviewId":"website-1","channel":"website","turns":["Tôi đang hơi rối và chưa biết nên bắt đầu từ đâu. Hãy phản hồi ngắn gọn, không chẩn đoán và không hứa hẹn kết quả."]}'
+          success='false'
+          last_code='000'
+          for attempt in $(seq 1 20); do
+            last_code="$(curl -sS --max-time 30 -o p09-live-probe.json -w '%{http_code}' \
+              -X POST \
+              -H "Authorization: Bearer ${OIDC_TOKEN}" \
+              -H 'Content-Type: application/json' \
+              --data "$payload" \
+              "$CALL_URL" || true)"
+            if [ "$last_code" = '200' ]; then
+              if node - <<'NODE'
+          const fs = require('fs');
+          const result = JSON.parse(fs.readFileSync('p09-live-probe.json', 'utf8'));
+          const decision = result.semanticDecision || {};
+          const ok =
+            result.reviewId === 'website-1' &&
+            result.channel === 'website' &&
+            typeof result.modelReply === 'string' &&
+            result.modelReply.length > 0 &&
+            result.modelReply.length <= 1600 &&
+            typeof decision.family === 'string' &&
+            typeof decision.truthStatus === 'string' &&
+            typeof decision.nextBestCare === 'string' &&
+            result.evaluation?.mode === 'P09_FREEFORM_BOUNDARY_REVIEW' &&
+            result.evaluation?.autoVerdict === 'P09_REVIEW_REQUIRED' &&
+            result.inputEchoed === false &&
+            result.secretExposed === false &&
+            result.secretPersisted === false &&
+            result.providerConfigExposed === false &&
+            result.productionActionExecuted === false &&
+            result.productionWriteExecuted === false &&
+            result.metaOutboundExecuted === false &&
+            result.paymentBookingDeleteQuoteExecuted === false;
+          if (!ok) process.exit(1);
+          NODE
+              then
+                success='true'
+                break
+              fi
+            fi
+            if [ "$last_code" = '502' ]; then
+              break
+            fi
+            sleep 5
+          done
+          unset OIDC_TOKEN
+
+          if [ "$success" != 'true' ]; then
+            echo "P09 bounded model call failed closed with HTTP ${last_code}; provider error body is reduced to its safe error code only." >&2
+            node - <<'NODE'
+          const fs = require('fs');
+          try {
+            const result = JSON.parse(fs.readFileSync('p09-live-probe.json', 'utf8'));
+            console.error(JSON.stringify({ error: typeof result.error === 'string' ? result.error : 'UNSPECIFIED' }));
+          } catch {
+            console.error('{"error":"UNPARSEABLE"}');
+          }
+          NODE
+            exit 1
+          fi
+          echo 'PASS: one bounded synthetic Website model call executed on Cloudflare through repo/branch/workflow-bound GitHub OIDC; access token and model secret never left Cloudflare; response contract is redacted and action-free.'
+
+      - name: Assert paid model and real Meta credentials are not exported to CI
         shell: bash
         run: |
           set -euo pipefail
           test -z "${OPENAI_API_KEY:-}"
           test -z "${OPENROUTER_API_KEY:-}"
           test -z "${CARE_MODEL_API_KEY:-}"
+          test -z "${CARE_AI_TEST_ACCESS_TOKEN:-}"
+          test -z "${CARE_P09_REVIEW_MODEL_API_KEY:-}"
           test -z "${CARE_META_MESSENGER_ACCESS_TOKEN:-}"
           test -z "${CARE_META_INSTAGRAM_ACCESS_TOKEN:-}"
-          echo 'PASS: no paid model benchmark or real Meta credential is directly invoked by CI test steps; the model-test secret provisioning step is server-to-server only.'
+          echo 'PASS: Cloudflare access/model secrets and real Meta credentials are not exported to CI; only the single bounded OIDC-authenticated runtime call may invoke the approved model.'
