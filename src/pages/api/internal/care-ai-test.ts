@@ -32,6 +32,17 @@ const P09_REVIEW_SLOT_PREFIX: Record<CareChannel, string> = {
   instagram: 'instagram',
 };
 
+const P09_GITHUB_OIDC_ISSUER = 'https://token.actions.githubusercontent.com';
+const P09_GITHUB_OIDC_JWKS = `${P09_GITHUB_OIDC_ISSUER}/.well-known/jwks`;
+const P09_GITHUB_OIDC_AUDIENCE = 'essence-p09-review';
+const P09_GITHUB_REPOSITORY = 'kenjiphambht-svg/coachkenjipham-web';
+const P09_GITHUB_REPOSITORY_ID = '1240291235';
+const P09_GITHUB_OWNER_ID = '232888500';
+const P09_GITHUB_BRANCH_REF = 'refs/heads/backend/p07-care-ai-test-console-meta-sandbox-01';
+const P09_GITHUB_WORKFLOW = 'P07 Care AI Test Console Meta Sandbox';
+const P09_GITHUB_WORKFLOW_REF = `${P09_GITHUB_REPOSITORY}/.github/workflows/p07-care-ai-test-console-meta-sandbox.yml@${P09_GITHUB_BRANCH_REF}`;
+const P09_RUNNER_REVISION = 'P09_SECURE_RUNNER_GITHUB_OIDC_V1';
+
 interface P09ReviewRunnerEnv {
   CARE_P09_REVIEW_RUNNER_ENABLED?: string;
   CARE_P09_REVIEW_MODEL_PROVIDER?: string;
@@ -45,6 +56,26 @@ interface P09ReviewRunnerEnv {
   ANTHROPIC_API_KEY?: string;
   GEMINI_API_KEY?: string;
   GOOGLE_API_KEY?: string;
+}
+
+interface GitHubOidcClaims {
+  aud?: string | string[];
+  iss?: string;
+  sub?: string;
+  exp?: number;
+  nbf?: number;
+  repository?: string;
+  repository_id?: string | number;
+  repository_owner_id?: string | number;
+  actor_id?: string | number;
+  event_name?: string;
+  ref?: string;
+  ref_type?: string;
+  workflow?: string;
+  workflow_ref?: string;
+  workflow_sha?: string;
+  sha?: string;
+  runner_environment?: string;
 }
 
 export interface P09ReviewRunnerInput {
@@ -154,6 +185,90 @@ export function p09ReviewCallerAuthorized(
   env?: Parameters<typeof careTestAccessAuthorized>[1],
 ): boolean {
   return careTestAccessAuthorized(provided, env);
+}
+
+function audienceContains(aud: string | string[] | undefined, expected: string): boolean {
+  return typeof aud === 'string' ? aud === expected : Array.isArray(aud) && aud.includes(expected);
+}
+
+export function p09ReviewOidcClaimsAuthorized(
+  claims: GitHubOidcClaims,
+  nowSeconds = Math.floor(Date.now() / 1000),
+): boolean {
+  const legacySubject = `repo:${P09_GITHUB_REPOSITORY}:ref:${P09_GITHUB_BRANCH_REF}`;
+  const immutableSubject = `repo:kenjiphambht-svg@${P09_GITHUB_OWNER_ID}/coachkenjipham-web@${P09_GITHUB_REPOSITORY_ID}:ref:${P09_GITHUB_BRANCH_REF}`;
+  return (
+    claims.iss === P09_GITHUB_OIDC_ISSUER &&
+    audienceContains(claims.aud, P09_GITHUB_OIDC_AUDIENCE) &&
+    (claims.sub === legacySubject || claims.sub === immutableSubject) &&
+    typeof claims.exp === 'number' &&
+    claims.exp > nowSeconds &&
+    (typeof claims.nbf !== 'number' || claims.nbf <= nowSeconds + 30) &&
+    claims.repository === P09_GITHUB_REPOSITORY &&
+    String(claims.repository_id || '') === P09_GITHUB_REPOSITORY_ID &&
+    String(claims.repository_owner_id || '') === P09_GITHUB_OWNER_ID &&
+    String(claims.actor_id || '') === P09_GITHUB_OWNER_ID &&
+    claims.event_name === 'push' &&
+    claims.ref === P09_GITHUB_BRANCH_REF &&
+    claims.ref_type === 'branch' &&
+    claims.workflow === P09_GITHUB_WORKFLOW &&
+    claims.workflow_ref === P09_GITHUB_WORKFLOW_REF &&
+    typeof claims.sha === 'string' &&
+    claims.sha.length === 40 &&
+    claims.workflow_sha === claims.sha &&
+    claims.runner_environment === 'github-hosted'
+  );
+}
+
+function base64UrlBytes(value: string): Uint8Array {
+  const normalized = value.replace(/-/g, '+').replace(/_/g, '/');
+  const padded = normalized + '='.repeat((4 - (normalized.length % 4)) % 4);
+  const binary = atob(padded);
+  return Uint8Array.from(binary, (character) => character.charCodeAt(0));
+}
+
+function decodeJwtJson(value: string): Record<string, unknown> {
+  return JSON.parse(new TextDecoder().decode(base64UrlBytes(value))) as Record<string, unknown>;
+}
+
+async function p09ReviewGithubOidcAuthorized(req: NextApiRequest): Promise<boolean> {
+  try {
+    const authorization = typeof req.headers.authorization === 'string' ? req.headers.authorization : '';
+    if (!authorization.startsWith('Bearer ') || authorization.length > 12000) return false;
+    const token = authorization.slice('Bearer '.length).trim();
+    const parts = token.split('.');
+    if (parts.length !== 3) return false;
+
+    const header = decodeJwtJson(parts[0]);
+    const claims = decodeJwtJson(parts[1]) as GitHubOidcClaims;
+    if (header.alg !== 'RS256' || typeof header.kid !== 'string') return false;
+
+    const jwksResponse = await fetch(P09_GITHUB_OIDC_JWKS, {
+      headers: { Accept: 'application/json' },
+      cache: 'no-store',
+    });
+    if (!jwksResponse.ok) return false;
+    const jwks = (await jwksResponse.json()) as { keys?: Array<Record<string, unknown>> };
+    const jwk = jwks.keys?.find((candidate) => candidate.kid === header.kid);
+    if (!jwk) return false;
+
+    const key = await crypto.subtle.importKey(
+      'jwk',
+      jwk as JsonWebKey,
+      { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+      false,
+      ['verify'],
+    );
+    const verified = await crypto.subtle.verify(
+      'RSASSA-PKCS1-v1_5',
+      key,
+      base64UrlBytes(parts[2]),
+      new TextEncoder().encode(`${parts[0]}.${parts[1]}`),
+    );
+    return verified && p09ReviewOidcClaimsAuthorized(claims);
+  } catch {
+    return false;
+  }
 }
 
 function p09ModelSecret(provider: CareModelProvider, env: P09ReviewRunnerEnv): string {
@@ -283,10 +398,13 @@ function p09RunnerSelfTest() {
       return {
         passed: false,
         mode: 'CLOUDFLARE_P09_SYNTHETIC_REVIEW_RUNNER_SELF_TEST',
+        runnerRevision: P09_RUNNER_REVISION,
         error: safeError(error),
         runnerEnabled: p09ReviewRunnerEnabled(),
         accessTokenAuthorizerReady: careTestAccessAuthorized(configuredToken),
+        accessTokenRuntimeOnly: true,
         callerAccessRequired: true,
+        callerAuthMode: 'GITHUB_OIDC_REPO_BOUND',
         modelConfigReady: false,
         modelSecretAvailable: false,
         providerInvoked: false,
@@ -300,9 +418,12 @@ function p09RunnerSelfTest() {
   return {
     passed: runnerEnabled && accessTokenAuthorizerReady && modelConfigReady && modelSecretAvailable,
     mode: 'CLOUDFLARE_P09_SYNTHETIC_REVIEW_RUNNER_SELF_TEST',
+    runnerRevision: P09_RUNNER_REVISION,
     runnerEnabled,
     accessTokenAuthorizerReady,
+    accessTokenRuntimeOnly: true,
     callerAccessRequired: true,
+    callerAuthMode: 'GITHUB_OIDC_REPO_BOUND',
     modelConfigReady,
     modelSecretAvailable,
     providerInvoked: false,
@@ -327,7 +448,7 @@ async function runP09Review(req: NextApiRequest, res: NextApiResponse) {
   if (!configuredToken || !careTestAccessAuthorized(configuredToken)) {
     return res.status(503).json({ error: 'CARE_P09_REVIEW_ACCESS_RUNTIME_NOT_READY' });
   }
-  if (!p09ReviewCallerAuthorized(requestAccessToken(req))) {
+  if (!(await p09ReviewGithubOidcAuthorized(req))) {
     return res.status(401).json({ error: 'CARE_P09_REVIEW_UNAUTHORIZED' });
   }
 
@@ -378,6 +499,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       credentialMode: process.env.CARE_MODEL_API_KEY ? 'SERVER_SECRET_AVAILABLE' : 'EPHEMERAL_KEY_REQUIRED',
       accessTokenRequired: true,
       p09ServerSideRunnerEnabled: p09ReviewRunnerEnabled(),
+      p09ServerSideRunnerCallerAuth: 'GITHUB_OIDC_REPO_BOUND',
       compatibleHostAllowlistConfigured: allowedCompatibleHosts().length > 0,
       reviewExpiresAt: careTestReviewExpiresAt(),
       realMetaTrafficEnabled: false,
