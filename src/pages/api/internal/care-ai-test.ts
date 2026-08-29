@@ -60,6 +60,11 @@ function requestHost(req: NextApiRequest): string | undefined {
   return resolveCareTestRequestHost(host, forwarded);
 }
 
+function requestAccessToken(req: NextApiRequest): string | undefined {
+  const provided = req.headers['x-care-test-token'];
+  return typeof provided === 'string' ? provided : undefined;
+}
+
 function runtimeSelfTestMode(req: NextApiRequest): string {
   const value = req.query.runtimeSelfTest;
   return String(Array.isArray(value) ? value[0] || '' : value || '');
@@ -142,6 +147,13 @@ function runnerEnv(env?: P09ReviewRunnerEnv): P09ReviewRunnerEnv {
 
 export function p09ReviewRunnerEnabled(env?: P09ReviewRunnerEnv): boolean {
   return runnerEnv(env).CARE_P09_REVIEW_RUNNER_ENABLED === 'true';
+}
+
+export function p09ReviewCallerAuthorized(
+  provided: string | undefined,
+  env?: Parameters<typeof careTestAccessAuthorized>[1],
+): boolean {
+  return careTestAccessAuthorized(provided, env);
 }
 
 function p09ModelSecret(provider: CareModelProvider, env: P09ReviewRunnerEnv): string {
@@ -274,6 +286,7 @@ function p09RunnerSelfTest() {
         error: safeError(error),
         runnerEnabled: p09ReviewRunnerEnabled(),
         accessTokenAuthorizerReady: careTestAccessAuthorized(configuredToken),
+        callerAccessRequired: true,
         modelConfigReady: false,
         modelSecretAvailable: false,
         providerInvoked: false,
@@ -289,6 +302,7 @@ function p09RunnerSelfTest() {
     mode: 'CLOUDFLARE_P09_SYNTHETIC_REVIEW_RUNNER_SELF_TEST',
     runnerEnabled,
     accessTokenAuthorizerReady,
+    callerAccessRequired: true,
     modelConfigReady,
     modelSecretAvailable,
     providerInvoked: false,
@@ -312,6 +326,9 @@ async function runP09Review(req: NextApiRequest, res: NextApiResponse) {
   const configuredToken = process.env.CARE_AI_TEST_ACCESS_TOKEN || '';
   if (!configuredToken || !careTestAccessAuthorized(configuredToken)) {
     return res.status(503).json({ error: 'CARE_P09_REVIEW_ACCESS_RUNTIME_NOT_READY' });
+  }
+  if (!p09ReviewCallerAuthorized(requestAccessToken(req))) {
+    return res.status(401).json({ error: 'CARE_P09_REVIEW_UNAUTHORIZED' });
   }
 
   try {
@@ -346,8 +363,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
   if (p09ReviewRequested(req)) return runP09Review(req, res);
 
-  const provided = req.headers['x-care-test-token'];
-  const token = typeof provided === 'string' ? provided : undefined;
+  const token = requestAccessToken(req);
   if (!careTestAccessAuthorized(token)) {
     return res.status(401).json({ error: 'CARE_TEST_UNAUTHORIZED' });
   }
