@@ -54,11 +54,14 @@ jobs:
           base = '768a1c40268e560ca8854c85bf8fc28cce61afba'
           files = subprocess.check_output(['git', 'diff', '--name-only', base, 'HEAD'], text=True).splitlines()
           prefix_patterns = [
-              re.compile(r'sk-[A-Za-z0-9_-]{20,}'),
-              re.compile(r'gh[pousr]_[A-Za-z0-9]{20,}'),
-              re.compile(r'xox[baprs]-[A-Za-z0-9-]{20,}'),
-              re.compile(r'AIza[0-9A-Za-z_-]{20,}'),
-              re.compile(r'-----BEGIN [A-Z ]*PRIVATE KEY-----'),
+              re.compile(r'(?<![A-Za-z0-9_-])sk-[A-Za-z0-9_-]{20,}'),
+              re.compile(r'(?<![A-Za-z0-9_])gh[pousr]_[A-Za-z0-9]{20,}'),
+              re.compile(r'(?<![A-Za-z0-9_-])xox[baprs]-[A-Za-z0-9-]{20,}'),
+              re.compile(r'(?<![A-Za-z0-9_-])AIza[0-9A-Za-z_-]{20,}'),
+              re.compile(
+                  r'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----\s+[A-Za-z0-9+/=\r\n]{64,}\s+-----END (?:RSA |EC |OPENSSH )?PRIVATE KEY-----',
+                  re.MULTILINE,
+              ),
           ]
           tokenish = re.compile(r'(?<![A-Za-z0-9_-])([A-Za-z0-9_-]{32,})(?![A-Za-z0-9_-])')
 
@@ -73,7 +76,7 @@ jobs:
               findings = []
               for pattern in prefix_patterns:
                   if pattern.search(text):
-                      findings.append(f'{label}: credential-prefix/private-key pattern')
+                      findings.append(f'{label}: credential/private-key pattern')
               for match in tokenish.finditer(text):
                   value = match.group(1)
                   if re.fullmatch(r'[0-9a-fA-F]{40}|[0-9a-fA-F]{64}', value):
@@ -142,35 +145,73 @@ jobs:
           CARE_META_OUTBOUND_ENABLED: 'false'
         run: npm run cf:build
 
-      - name: Scan generated bundles for credential prefixes
+      - name: Scan generated bundles for credential material
         shell: bash
         run: |
           set -euo pipefail
-          report='care-ai-secret-scan-report.txt'
-          : > "$report"
+          python - <<'PY'
+          import re, sys
+          from pathlib import Path
 
-          scan_rule() {
-            local label="$1"
-            local pattern="$2"
-            while IFS= read -r file; do
-              [ -n "$file" ] && printf '%s\t%s\n' "$label" "$file" >> "$report"
-            done < <(grep -RIlE --binary-files=without-match "$pattern" .next .open-next 2>/dev/null || true)
-          }
+          report = Path('care-ai-secret-scan-report.txt')
+          roots = [Path('.next'), Path('.open-next')]
+          rules = [
+              ('OPENAI_STYLE_KEY', re.compile(r'(?<![A-Za-z0-9_-])sk-[A-Za-z0-9_-]{20,}')),
+              ('GITHUB_TOKEN', re.compile(r'(?<![A-Za-z0-9_])gh[pousr]_[A-Za-z0-9]{20,}')),
+              ('SLACK_TOKEN', re.compile(r'(?<![A-Za-z0-9_-])xox[baprs]-[A-Za-z0-9-]{20,}')),
+              ('GOOGLE_API_KEY', re.compile(r'(?<![A-Za-z0-9_-])AIza[0-9A-Za-z_-]{20,}')),
+              (
+                  'PRIVATE_KEY_BLOCK',
+                  re.compile(
+                      r'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----\s+[A-Za-z0-9+/=\r\n]{64,}\s+-----END (?:RSA |EC |OPENSSH )?PRIVATE KEY-----',
+                      re.MULTILINE,
+                  ),
+              ),
+          ]
 
-          scan_rule 'OPENAI_STYLE_KEY' 'sk-[A-Za-z0-9_-]{20,}'
-          scan_rule 'GITHUB_TOKEN' 'gh[pousr]_[A-Za-z0-9]{20,}'
-          scan_rule 'SLACK_TOKEN' 'xox[baprs]-[A-Za-z0-9-]{20,}'
-          scan_rule 'GOOGLE_API_KEY' 'AIza[0-9A-Za-z_-]{20,}'
-          scan_rule 'PRIVATE_KEY_HEADER' 'BEGIN [A-Z ]*PRIVATE KEY'
+          # Regression guards: detector must catch constructed secret-shaped material
+          # without treating dependency names or a PEM header sentinel as credentials.
+          openai_rule = rules[0][1]
+          pem_rule = rules[-1][1]
+          assert not openai_rule.search('task-async-storage-instance.js')
+          assert openai_rule.search('prefix ' + 's' + 'k-' + ('A' * 24))
+          assert not pem_rule.search('-----BEGIN ' + 'PRIVATE KEY-----')
+          synthetic_pem = (
+              '-----BEGIN ' + 'PRIVATE KEY-----\n' + ('A' * 80) + '\n-----END PRIVATE KEY-----'
+          )
+          assert pem_rule.search(synthetic_pem)
 
-          sort -u -o "$report" "$report"
-          if [ -s "$report" ]; then
-            count="$(wc -l < "$report" | tr -d ' ')"
-            echo "Credential-like material found in generated bundle (${count} redacted finding(s))." >&2
-            echo 'Matched values are never printed. See the short-lived diagnostic artifact for rule labels and file paths only.' >&2
-            exit 1
-          fi
-          echo 'PASS: generated bundles contain no recognized credential prefix/private-key material.'
+          findings = set()
+          for root in roots:
+              if not root.exists():
+                  continue
+              for path in root.rglob('*'):
+                  if not path.is_file():
+                      continue
+                  try:
+                      text = path.read_text('utf-8', errors='ignore')
+                  except OSError:
+                      continue
+                  for label, pattern in rules:
+                      if pattern.search(text):
+                          findings.add((label, path.as_posix()))
+
+          report.write_text(
+              ''.join(f'{label}\t{path}\n' for label, path in sorted(findings)),
+              encoding='utf-8',
+          )
+          if findings:
+              print(
+                  f'Credential-like material found in generated bundle ({len(findings)} redacted finding(s)).',
+                  file=sys.stderr,
+              )
+              print(
+                  'Matched values are never printed. Diagnostic artifact contains rule labels and file paths only.',
+                  file=sys.stderr,
+              )
+              raise SystemExit(1)
+          print('PASS: generated bundles contain no recognized credential/private-key material.')
+          PY
 
       - name: Upload redacted bundle-scan diagnostics
         if: always()
