@@ -275,6 +275,66 @@ jobs:
           test "$no_token_code" = '401'
           echo 'PASS: Cloudflare exact review alias loaded; no/invalid credentials fail closed; configured runtime secret authorizes only through an internal service-binding probe; forwarded-host spoof fails closed; no secret left Cloudflare.'
 
+      - name: Verify P09 server-side review runner readiness without exporting secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='https://backend-p07-care-ai-test-con-01b5-essence-web-portability-proof.kenjipham-bht.workers.dev'
+          SELF_TEST="${BASE}/api/internal/care-ai-test?runtimeSelfTest=p09-review-runner"
+          ready='false'
+
+          for attempt in $(seq 1 60); do
+            code="$(curl -sS --max-time 10 -o p09-runner-self-test.json -w '%{http_code}' "$SELF_TEST" || true)"
+            if [ "$code" = '200' ]; then
+              if node - <<'NODE'
+          const fs = require('fs');
+          const result = JSON.parse(fs.readFileSync('p09-runner-self-test.json', 'utf8'));
+          const ok =
+            result.passed === true &&
+            result.mode === 'CLOUDFLARE_P09_SYNTHETIC_REVIEW_RUNNER_SELF_TEST' &&
+            result.runnerEnabled === true &&
+            result.accessTokenAuthorizerReady === true &&
+            result.modelConfigReady === true &&
+            result.modelSecretAvailable === true &&
+            result.providerInvoked === false &&
+            result.secretExposed === false &&
+            result.productionActionExecuted === false &&
+            result.productionWriteExecuted === false &&
+            result.metaOutboundExecuted === false &&
+            result.paymentBookingDeleteQuoteExecuted === false;
+          if (!ok) process.exit(1);
+          NODE
+              then
+                ready='true'
+                break
+              fi
+            fi
+            sleep 5
+          done
+
+          if [ "$ready" != 'true' ]; then
+            echo 'P09 runner is not runtime-ready; response is redacted to readiness booleans only.' >&2
+            node - <<'NODE'
+          const fs = require('fs');
+          try {
+            const result = JSON.parse(fs.readFileSync('p09-runner-self-test.json', 'utf8'));
+            console.error(JSON.stringify({
+              passed: result.passed === true,
+              runnerEnabled: result.runnerEnabled === true,
+              accessTokenAuthorizerReady: result.accessTokenAuthorizerReady === true,
+              modelConfigReady: result.modelConfigReady === true,
+              modelSecretAvailable: result.modelSecretAvailable === true,
+              providerInvoked: result.providerInvoked === true,
+              secretExposed: result.secretExposed === true,
+            }));
+          } catch {
+            console.error('{"readiness":"unparseable"}');
+          }
+          NODE
+            exit 1
+          fi
+          echo 'PASS: P09 server-side synthetic review runner is exact-head runtime-ready; access/model secrets remain Cloudflare-only and provider was not invoked by readiness QA.'
+
       - name: Assert paid model and real Meta credentials are not used by CI
         shell: bash
         run: |
