@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   careTestAccessAuthorized,
   cloudflareSyntheticReviewEnabled,
+  resolveCareTestRequestHost,
   type CareTestGateEnv,
 } from '../src/lib/care-ai/test-console-gate';
 
@@ -35,6 +36,12 @@ describe('Care AI Cloudflare synthetic review gate', () => {
     })).toBe(false);
   });
 
+  it('uses the direct Host header before any forwarded-host value', () => {
+    expect(resolveCareTestRequestHost(exactHost, 'spoofed.example')).toBe(exactHost);
+    expect(resolveCareTestRequestHost('not-authorized.invalid', exactHost)).toBe('not-authorized.invalid');
+    expect(resolveCareTestRequestHost(undefined, exactHost)).toBe(exactHost);
+  });
+
   it('fails closed when the runtime access secret is absent', () => {
     const env = { ...reviewEnv, CARE_AI_TEST_ACCESS_TOKEN: '' };
     expect(cloudflareSyntheticReviewEnabled({
@@ -44,9 +51,10 @@ describe('Care AI Cloudflare synthetic review gate', () => {
     })).toBe(false);
   });
 
-  it('rejects no token and invalid token, and accepts only the configured runtime token', () => {
+  it('rejects no token, invalid/retired tokens, and accepts only the configured runtime token', () => {
     expect(careTestAccessAuthorized(undefined, reviewEnv)).toBe(false);
     expect(careTestAccessAuthorized('synthetic-ci-invalid-token', reviewEnv)).toBe(false);
+    expect(careTestAccessAuthorized('synthetic-ci-retired-token', reviewEnv)).toBe(false);
     expect(careTestAccessAuthorized('synthetic-ci-rotated-token', reviewEnv)).toBe(true);
   });
 });
