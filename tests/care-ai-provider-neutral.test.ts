@@ -43,7 +43,7 @@ describe('Care AI provider-neutral adapters', () => {
     expect(String(init?.body)).not.toContain('facebook_messenger');
   });
 
-  it('normalizes OpenAI-compatible and Anthropic output', async () => {
+  it('normalizes OpenAI-compatible and Anthropic output and requests strict structured JSON', async () => {
     const spy = vi.spyOn(globalThis, 'fetch');
     spy.mockImplementationOnce(() => okJson({ choices: [{ message: { content: JSON.stringify(decision) } }] }));
     const compatible = await runCareModel({
@@ -58,6 +58,14 @@ describe('Care AI provider-neutral adapters', () => {
       turns: ['Cho tôi hỏi giá.'],
     });
     expect(compatible.truthStatus).toBe('BOUNDED');
+    const [, compatibleInit] = spy.mock.calls[0];
+    const compatibleBody = JSON.parse(String(compatibleInit?.body));
+    expect(compatibleBody.response_format).toMatchObject({
+      type: 'json_schema',
+      json_schema: { name: 'care_model_decision', strict: true },
+    });
+    expect(compatibleBody.response_format.json_schema.schema.additionalProperties).toBe(false);
+    expect(compatibleBody.max_tokens).toBe(1400);
 
     spy.mockImplementationOnce(() => okJson({ content: [{ type: 'text', text: JSON.stringify(decision) }] }));
     const anthropic = await runCareModel({
@@ -66,6 +74,21 @@ describe('Care AI provider-neutral adapters', () => {
       turns: ['Tôi muốn nói chuyện với người thật.'],
     });
     expect(anthropic.family).toBe('REFLECTIVE_ADULT');
+  });
+
+  it('fails closed with a safe code when compatible output is not JSON', async () => {
+    vi.spyOn(globalThis, 'fetch').mockImplementation(() => okJson({ choices: [{ message: { content: 'not-json' } }] }));
+    await expect(runCareModel({
+      config: {
+        provider: 'openai_compatible_chat',
+        model: 'any-model',
+        apiKey: 'secret',
+        baseUrl: 'https://example.test/v1/chat/completions',
+        allowedCompatibleHosts: ['example.test'],
+      },
+      channel: 'website',
+      turns: ['Một câu test.'],
+    })).rejects.toThrow('CARE_MODEL_INVALID_JSON');
   });
 
   it('normalizes Gemini output and keeps the key out of URL/body', async () => {
