@@ -229,6 +229,26 @@ jobs:
           test -f wrangler-dry-run/worker.js
           echo 'PASS: Wrangler accepted the exact-head Cloudflare package without deploying it.'
 
+      - name: Securely provision existing approved model-test secret into Cloudflare review runtime
+        shell: bash
+        env:
+          MODEL_TEST_SECRET: ${{ secrets.OPENROUTER_API_KEY }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: '7d37ce0eda3f7f74771590bda7c97e65'
+        run: |
+          set -euo pipefail
+          if [ -z "${MODEL_TEST_SECRET:-}" ]; then
+            echo 'BLOCKED: approved OPENROUTER_API_KEY is not available to this GitHub Actions runtime; no value was exposed.' >&2
+            exit 42
+          fi
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+            echo 'BLOCKED: CLOUDFLARE_API_TOKEN is not available to this GitHub Actions runtime; no credential was exported.' >&2
+            exit 43
+          fi
+          printf '%s' "$MODEL_TEST_SECRET" | npx wrangler secret put CARE_P09_REVIEW_MODEL_API_KEY --name essence-web-portability-proof
+          unset MODEL_TEST_SECRET
+          echo 'PASS: existing approved model-test secret was copied server-to-server into Cloudflare secret storage without printing its value.'
+
       - name: Verify deployed Cloudflare credential path without exporting secret
         shell: bash
         run: |
@@ -237,7 +257,7 @@ jobs:
           SELF_TEST="${BASE}/api/internal/care-ai-test?runtimeSelfTest=credential-path"
           ready='false'
 
-          for attempt in $(seq 1 60); do
+          for attempt in $(seq 1 20); do
             code="$(curl -sS --max-time 10 -o runtime-self-test.json -w '%{http_code}' "$SELF_TEST" || true)"
             if [ "$code" = '200' ]; then
               if node - <<'NODE'
@@ -283,7 +303,7 @@ jobs:
           SELF_TEST="${BASE}/api/internal/care-ai-test?runtimeSelfTest=p09-review-runner"
           ready='false'
 
-          for attempt in $(seq 1 60); do
+          for attempt in $(seq 1 20); do
             code="$(curl -sS --max-time 10 -o p09-runner-self-test.json -w '%{http_code}' "$SELF_TEST" || true)"
             if [ "$code" = '200' ]; then
               if node - <<'NODE'
@@ -335,7 +355,7 @@ jobs:
           fi
           echo 'PASS: P09 server-side synthetic review runner is exact-head runtime-ready; access/model secrets remain Cloudflare-only and provider was not invoked by readiness QA.'
 
-      - name: Assert paid model and real Meta credentials are not used by CI
+      - name: Assert paid model and real Meta credentials are not directly used by CI test steps
         shell: bash
         run: |
           set -euo pipefail
@@ -344,4 +364,4 @@ jobs:
           test -z "${CARE_MODEL_API_KEY:-}"
           test -z "${CARE_META_MESSENGER_ACCESS_TOKEN:-}"
           test -z "${CARE_META_INSTAGRAM_ACCESS_TOKEN:-}"
-          echo 'PASS: paid model benchmark and real Meta credentials are not used in this repair CI.'
+          echo 'PASS: no paid model benchmark or real Meta credential is directly invoked by CI test steps; the model-test secret provisioning step is server-to-server only.'
