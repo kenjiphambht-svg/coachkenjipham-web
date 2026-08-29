@@ -19,7 +19,6 @@ describe('Care AI Founder Test Console source contract', () => {
     expect(wrangler).toContain('"required": ["CARE_AI_TEST_ACCESS_TOKEN"]');
     expect(wrangler).toContain('"CARE_AI_TEST_RUNTIME_SURFACE": "cloudflare-preview"');
     expect(wrangler).toContain('"CARE_AI_TEST_UI_ENABLED": "true"');
-    expect(wrangler).toContain('"WORKER_SELF_REFERENCE"');
 
     for (const source of [api, page, gate, wrangler]) {
       expect(source).not.toContain('VERCEL_ENV');
@@ -30,11 +29,11 @@ describe('Care AI Founder Test Console source contract', () => {
     }
   });
 
-  it('self-tests the real Cloudflare credential path without exporting the runtime secret or invoking providers', () => {
+  it('self-tests the real Cloudflare runtime secret through the same authorizer without exporting it or invoking providers', () => {
     const api = readFileSync('src/pages/api/internal/care-ai-test.ts', 'utf8');
-    expect(api).toContain('getCloudflareContext');
-    expect(api).toContain('WORKER_SELF_REFERENCE');
     expect(api).toContain('CLOUDFLARE_RUNTIME_CREDENTIAL_PATH_SELF_TEST');
+    expect(api).toContain('IN_PROCESS_CURRENT_RUNTIME_SECRET_NO_EXPORT');
+    expect(api).toContain('careTestAccessAuthorized(configuredToken)');
     expect(api).toContain('configuredRuntimeTokenStatus');
     expect(api).toContain('spoofedForwardedHostStatus');
     expect(api).toContain('retiredCredentialFallbackPresent: false');
