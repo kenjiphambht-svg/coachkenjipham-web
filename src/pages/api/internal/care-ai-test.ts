@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 import type { CareChannel } from '../../../lib/care-ai/contracts';
 import { MODEL_QUALITY_CASES } from '../../../lib/care-ai/model-quality-corpus';
 import { ALL_CARE_SYNTHETIC_FIXTURES } from '../../../lib/care-ai/synthetic-fixtures';
@@ -15,12 +16,27 @@ import {
   careTestAccessAuthorized,
   careTestReviewExpiresAt,
   cloudflareSyntheticReviewEnabled,
+  resolveCareTestRequestHost,
 } from '../../../lib/care-ai/test-console-gate';
 
+type ServiceFetcher = {
+  fetch(input: string | URL | Request, init?: RequestInit): Promise<Response>;
+};
+
+type CareCloudflareBindings = {
+  WORKER_SELF_REFERENCE?: ServiceFetcher;
+};
+
 function requestHost(req: NextApiRequest): string | undefined {
+  const host = typeof req.headers.host === 'string' ? req.headers.host : undefined;
   const forwardedHost = req.headers['x-forwarded-host'];
-  if (typeof forwardedHost === 'string' && forwardedHost.trim()) return forwardedHost.split(',')[0].trim();
-  return req.headers.host;
+  const forwarded = typeof forwardedHost === 'string' ? forwardedHost : undefined;
+  return resolveCareTestRequestHost(host, forwarded);
+}
+
+function runtimeSelfTestRequested(req: NextApiRequest): boolean {
+  const value = req.query.runtimeSelfTest;
+  return (Array.isArray(value) ? value[0] : value) === 'credential-path';
 }
 
 function allowedCompatibleHosts(): string[] {
@@ -53,12 +69,98 @@ function safeError(error: unknown): string {
   return 'CARE_TEST_PROVIDER_ERROR';
 }
 
+async function runCloudflareCredentialPathSelfTest(req: NextApiRequest) {
+  const reviewHost = requestHost(req) || '';
+  const configuredToken = process.env.CARE_AI_TEST_ACCESS_TOKEN || '';
+
+  try {
+    const { env } = await getCloudflareContext({ async: true });
+    const bindings = env as unknown as CareCloudflareBindings;
+    const self = bindings.WORKER_SELF_REFERENCE;
+    if (!self || typeof self.fetch !== 'function' || !configuredToken || !reviewHost) {
+      return {
+        passed: false,
+        mode: 'CLOUDFLARE_RUNTIME_CREDENTIAL_PATH_SELF_TEST',
+        reason: 'CARE_TEST_RUNTIME_SELF_REFERENCE_UNAVAILABLE',
+        secretExposed: false,
+        providerInvoked: false,
+        productionActionExecuted: false,
+        productionWriteExecuted: false,
+        metaOutboundExecuted: false,
+        paymentBookingDeleteQuoteExecuted: false,
+      } as const;
+    }
+
+    const apiUrl = `https://${reviewHost}/api/internal/care-ai-test`;
+    const invalidProbe = 'p07-runtime-invalid-credential-probe';
+    const [noToken, invalidToken, configuredTokenResponse, spoofedForwardedHost] = await Promise.all([
+      self.fetch(apiUrl, { method: 'GET' }),
+      self.fetch(apiUrl, {
+        method: 'GET',
+        headers: { 'x-care-test-token': invalidProbe },
+      }),
+      self.fetch(apiUrl, {
+        method: 'GET',
+        headers: { 'x-care-test-token': configuredToken },
+      }),
+      self.fetch('https://not-authorized.invalid/api/internal/care-ai-test', {
+        method: 'GET',
+        headers: {
+          'x-care-test-token': configuredToken,
+          'x-forwarded-host': reviewHost,
+        },
+      }),
+    ]);
+
+    const passed =
+      noToken.status === 401 &&
+      invalidToken.status === 401 &&
+      configuredTokenResponse.status === 200 &&
+      spoofedForwardedHost.status === 404;
+
+    return {
+      passed,
+      mode: 'CLOUDFLARE_RUNTIME_CREDENTIAL_PATH_SELF_TEST',
+      checks: {
+        noTokenStatus: noToken.status,
+        invalidTokenStatus: invalidToken.status,
+        configuredRuntimeTokenStatus: configuredTokenResponse.status,
+        spoofedForwardedHostStatus: spoofedForwardedHost.status,
+      },
+      retiredCredentialFallbackPresent: false,
+      secretExposed: false,
+      providerInvoked: false,
+      productionActionExecuted: false,
+      productionWriteExecuted: false,
+      metaOutboundExecuted: false,
+      paymentBookingDeleteQuoteExecuted: false,
+    } as const;
+  } catch {
+    return {
+      passed: false,
+      mode: 'CLOUDFLARE_RUNTIME_CREDENTIAL_PATH_SELF_TEST',
+      reason: 'CARE_TEST_RUNTIME_SELF_TEST_FAILED',
+      secretExposed: false,
+      providerInvoked: false,
+      productionActionExecuted: false,
+      productionWriteExecuted: false,
+      metaOutboundExecuted: false,
+      paymentBookingDeleteQuoteExecuted: false,
+    } as const;
+  }
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
 
   if (!cloudflareSyntheticReviewEnabled({ host: requestHost(req) })) {
     return res.status(404).json({ error: 'CARE_TEST_DISABLED' });
+  }
+
+  if (req.method === 'GET' && runtimeSelfTestRequested(req)) {
+    const selfTest = await runCloudflareCredentialPathSelfTest(req);
+    return res.status(selfTest.passed ? 200 : 503).json(selfTest);
   }
 
   const provided = req.headers['x-care-test-token'];
