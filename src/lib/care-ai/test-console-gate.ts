@@ -8,6 +8,10 @@ export interface CareTestGateEnv {
   CARE_AI_TEST_ACCESS_TOKEN?: string;
 }
 
+function runtimeEnv(env?: CareTestGateEnv): CareTestGateEnv {
+  return env ?? (process.env as CareTestGateEnv);
+}
+
 function normalizeHost(value?: string): string {
   return (value || '').trim().toLowerCase().replace(/:\d+$/, '');
 }
@@ -22,7 +26,7 @@ export function cloudflareSyntheticReviewEnabled(args: {
   now?: number;
   env?: CareTestGateEnv;
 }): boolean {
-  const env = args.env || process.env;
+  const env = runtimeEnv(args.env);
   const now = args.now ?? Date.now();
   const expectedHost = normalizeHost(env.CARE_AI_TEST_REVIEW_HOST);
   const requestHost = normalizeHost(args.host);
@@ -40,7 +44,7 @@ export function cloudflareSyntheticReviewEnabled(args: {
 }
 
 export function careTestAccessAuthorized(provided: string | undefined, env?: CareTestGateEnv): boolean {
-  const expected = (env || process.env).CARE_AI_TEST_ACCESS_TOKEN || '';
+  const expected = runtimeEnv(env).CARE_AI_TEST_ACCESS_TOKEN || '';
   if (!provided || !expected) return false;
 
   const providedBuffer = Buffer.from(provided, 'utf8');
@@ -49,6 +53,6 @@ export function careTestAccessAuthorized(provided: string | undefined, env?: Car
 }
 
 export function careTestReviewExpiresAt(env?: CareTestGateEnv): string | null {
-  const value = (env || process.env).CARE_AI_TEST_REVIEW_EXPIRES_AT || '';
+  const value = runtimeEnv(env).CARE_AI_TEST_REVIEW_EXPIRES_AT || '';
   return Number.isFinite(Date.parse(value)) ? value : null;
 }
