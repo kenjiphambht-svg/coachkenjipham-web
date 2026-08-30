@@ -1,64 +1,16 @@
 import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import GrainOverlay from "@/components/homepage/GrainOverlay";
 import HomeHeader from "@/components/homepage/HomeHeader";
-import HomeHero from "@/components/homepage/HomeHero";
-import KenjiSection from "@/components/homepage/KenjiSection";
-import KietTac from "@/components/homepage/KietTac";
-import TwoStates from "@/components/homepage/TwoStates";
-import WhatIsEssence from "@/components/homepage/WhatIsEssence";
-import AnDinhAnThinh from "@/components/homepage/AnDinhAnThinh";
-import ImageBridge from "@/components/homepage/ImageBridge";
-import NotPromised from "@/components/homepage/NotPromised";
-import NotesTeaser from "@/components/homepage/NotesTeaser";
-import SignatureEnding from "@/components/homepage/SignatureEnding";
 import HomeFooter from "@/components/homepage/HomeFooter";
 import { useHomeReveal } from "@/components/homepage/useHomeReveal";
 
-// Canonical Villa composition — Essence 2026. This is the single
-// implementation source rendered by the canonical route `/`. Remains NOINDEX
-// until the separately approved M6 Search Indexing Launch.
-//
-// SỬA 07/08/2026 (Founder Decision — Homepage Route B, L0 C-19): route phụ
-// `/trang-chu-v2` đã bị RETIRE và xoá khỏi repo (src/pages/trang-chu-v2.tsx).
-// `/` là Homepage duy nhất. `/trang-chu-v2` không còn tồn tại. Component này
-// đơn giản hoá theo — bỏ hẳn dual-route `pageUrl` contract (từng nhận 1
-// trong 2 URL để tự-canonical theo route đang render), thay bằng hằng số
-// CANONICAL_URL cố định. KHÔNG đổi copy/bố cục/ảnh/typography/schema/
-// noindex — đúng phạm vi "chỉ dọn residue kỹ thuật đã chứng minh" của brief
-// cleanup.
-// (SỬA 07/08/2026, lần 2 — Founder review PR #148: câu trên từng viết dính
-// liền "`/` là Homepage duy nhất, không còn tồn tại." — đọc mơ hồ như thể
-// "/" không còn tồn tại. Tách lại thành 2 câu rõ nghĩa. Không đổi runtime.)
-//
-// SỬA 20/07/2026 — nội dung chữ toàn trang đồng bộ theo Google Doc "HOMEPAGE
-// V9-FINAL — NGUỒN SỰ THẬT CHO CHỮ" (brief V9-FINAL). Thêm 2 khối MỚI:
-// Signature Moment (②b, giữa Hero/Kiệt Tác) và Signature Ending (⑨b, trước
-// Footer) — cả hai là 1 câu serif italic căn giữa, không ảnh không nút, chỉ
-// dựng khối tĩnh + fade-in cơ bản (animation/scroll-lock thật để dành PR
-// Light System sau).
-// SỬA 21/07/2026 (brief Kenji hoà vào đen + vệt sơn sáng) — Signature Moment
-// (②b) KHÔNG còn là section riêng nền kem nữa: đã GỠ <SignatureMoment />
-// khỏi đây, câu chữ dời vào NGAY TRONG HomeHero.tsx (đứng trên vệt sơn sáng
-// giữa vùng tối cuối Hero, nơi ảnh Kenji đang chìm dần) — xem ghi chú đầy đủ
-// tại HomeHero.tsx (khối "LỚP 4"). File SignatureMoment.tsx không còn được
-// dùng ở đâu (đã grep xác nhận) nên đã xoá khỏi repo.
-// NỘI DUNG THEO BAN-CHOT.md (16/07/2026). ĐẢO MẠCH 19/07/2026 (Experience
-// Bible): mở cửa → gọi cảm xúc → KHOẢNG LẶNG (Kiệt Tác) → rồi mới Kenji. Thứ
-// tự: Header, Hero (bao gồm Signature Moment ②b ở cuối), Kiệt Tác (H1 duy
-// nhất, ĐEN), Kenji Là Ai, Hai Cửa, Essence Là Gì, An Định → An Thịnh, cầu
-// nối ảnh, Điều Essence Không Hứa (teaser), Một Góc Để Quay Lại, Signature
-// Ending, Footer.
-// Đã bỏ HatMamSection khỏi trang chủ (Hạt Mầm giờ dẫn qua thẻ "Bản Sắc Của
-// Con" ở Hai Cửa) — GIỮ NGUYÊN file HatMamSection.tsx trong repo, không xoá.
-// Nhịp sáng-tối SAU ĐẢO: kem (Hero) → ĐEN (Kiệt Tác) → kem (Kenji, Hai Cửa,
-// Essence) → ĐEN (An Định → An Thịnh) → kem → đen (footer). Vẫn ĐÚNG 2 khối
-// tối giữa trang. Ảnh hero chờm ranh giới kem→đen (kỹ thuật đắt).
-// Motion: reveal riêng của homepage (.e26-reveal, 250ms/12px) — useHomeReveal.
-// Canonical URL cố định — trước 07/08/2026 đây là 1 trong 2 giá trị của prop
-// `pageUrl` (route nào render component thì tự truyền URL của chính nó).
-// Giờ chỉ còn đúng 1 route sống nên không cần prop nữa.
 const CANONICAL_URL = "https://coachkenjipham.com/";
+
+const softLink =
+  "group inline-flex items-center gap-2 font-sans text-[13px] font-medium uppercase tracking-[0.12em] text-e26-text transition-opacity hover:opacity-60";
 
 export default function VillaPage() {
   useHomeReveal();
@@ -66,100 +18,219 @@ export default function VillaPage() {
   return (
     <>
       <SEO
-        title="Kenji Phạm — Huấn luyện viên Tâm lý Chiều sâu, Essence Coach"
-        ogTitle="Kenji Phạm — Essence Coaching"
-        description="Essence Coaching là hành trình do Kenji Phạm kiến tạo, giúp bạn nhận ra bản sắc, sống đúng nhịp của mình và để An Thịnh trở thành kết quả tự nhiên."
-        ogDescription="Nhìn rõ điều đang vận hành bên trong, nhận ra bản sắc và sống đúng nhịp của mình — để An Thịnh không còn là điều phải mãi theo đuổi."
+        title="ESSENCE — Từ Bản sắc đến Hiện thực"
+        ogTitle="ESSENCE — Câu chuyện cuộc sống của bạn là một kiệt tác."
+        description="ESSENCE giúp điều được nhìn rõ đi tiếp vào lựa chọn, hành động và hiện thực có thể quan sát — trong đời sống hoặc công việc."
+        ogDescription="Từ điều được nhận ra đến lựa chọn có ý thức, hiện thực và bằng chứng để tiếp tục học và điều chỉnh."
         image="https://coachkenjipham.com/essence-og-1200x630.png"
         url={CANONICAL_URL}
       />
 
       <Head>
         <meta name="robots" content="noindex" />
-        {/* CANONICAL — Founder Decision 02/08/2026: domain canonical chính thức
-            là apex `https://coachkenjipham.com` (KHÔNG www). Mọi absolute URL ở
-            đây (canonical, og:url, JSON-LD url) đã dùng đúng apex.
-            SỬA 07/08/2026 (L0 C-19): `/trang-chu-v2` đã RETIRE và xoá khỏi repo
-            — không còn "quyết định hợp nhất" nào phải chờ nữa, nên bỏ luôn
-            SELF-CANONICAL theo prop, dùng thẳng CANONICAL_URL cố định.
-            Vẫn noindex nên thẻ này hiện KHÔNG có tác dụng indexing; nó tồn
-            tại để khi M6 kích hoạt index thì không phải sửa bù SEO.
-            HẠ TẦNG (đã xong 02/08/2026, verify live): apex là Primary Domain
-            trên Vercel, www trả 308 vĩnh viễn về apex, HTTP→HTTPS đúng, không
-            vòng lặp. Chuẩn hoá host CHỈ nằm ở Vercel dashboard — KHÔNG thêm
-            redirect theo host vào vercel.json (chồng 2 lớp = rủi ro vòng lặp).
-            Bằng chứng: docs/website/homepage/HOMEPAGE_FINAL_COMPLETION_RECORD.md
-            mục 4. */}
         <link rel="canonical" href={CANONICAL_URL} />
-        {/* Favicon bộ 2026 — chỉ gắn riêng trang này (không sửa _document.tsx/SEO.tsx
-            dùng chung, vì /kidbook và /ai-startup cũng gọi component đó). */}
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
         <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
         <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180.png" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        {/* Person + Organization JSON-LD — cấu trúc theo "Schema đề xuất" trong
-            BAN-CHOT.md (thay cho WebSite schema của bản trước). Tên entity theo
-            L0 C-07 (31/07/2026): "Essence Coaching" — không hậu tố "System". */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Person",
-              name: "Kenji Phạm",
-              alternateName: "Coach Kenji Phạm",
-              jobTitle: "Huấn luyện viên Tâm lý Chiều sâu, Essence Coach",
-              worksFor: {
-                "@type": "Organization",
-                name: "Essence Coaching",
-              },
-              address: {
-                "@type": "PostalAddress",
-                addressLocality: "Sài Gòn",
-                addressCountry: "VN",
-              },
-              url: CANONICAL_URL,
-            }),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              name: "Essence Coaching",
-              founder: {
-                "@type": "Person",
-                name: "Kenji Phạm",
-              },
-              address: {
-                "@type": "PostalAddress",
-                addressLocality: "Sài Gòn",
-                addressCountry: "VN",
-              },
-              url: CANONICAL_URL,
-            }),
-          }}
-        />
       </Head>
 
       <GrainOverlay />
       <HomeHeader />
-      <main className="bg-e26-ivory">
-        <HomeHero />
-        <KietTac />
-        <KenjiSection />
-        <TwoStates />
-        <WhatIsEssence />
-        <AnDinhAnThinh />
-        <ImageBridge />
-        <NotPromised />
-        <NotesTeaser />
-        <SignatureEnding />
+
+      <main className="bg-e26-ivory text-e26-text">
+        {/* 01 — Recognition / BIẾT → LÀM */}
+        <section className="relative isolate min-h-[88svh] overflow-hidden px-6 pb-20 pt-28 md:flex md:min-h-[92svh] md:items-center md:px-10 md:pb-28 md:pt-32">
+          <div className="absolute inset-0 -z-20">
+            <Image
+              src="/images/home/window-first-light.webp"
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+          </div>
+          <div className="absolute inset-0 -z-10 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_84%,transparent)]" aria-hidden="true" />
+
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="e26-reveal max-w-[760px]">
+              <p className="mb-8 font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-e26-text-2">ESSENCE</p>
+              <h1 className="max-w-[720px] font-serif text-[44px] font-medium leading-[1.06] md:text-[66px] lg:text-[76px]">
+                Có những điều bạn biết rất rõ.
+              </h1>
+              <div className="mt-10 max-w-[620px] space-y-3 font-sans text-[17px] font-normal leading-[1.8] md:text-[19px]">
+                <p>Biết một cuộc nói chuyện đã đến lúc phải diễn ra.</p>
+                <p>Biết một việc nên dừng.</p>
+                <p>Biết một quyết định không thể để lâu hơn nữa.</p>
+                <p>Biết cách cũ không còn đưa bạn tới nơi bạn muốn.</p>
+              </div>
+              <p className="mt-10 max-w-[610px] font-serif text-[27px] font-normal leading-[1.35] md:text-[34px]">
+                Nhưng từ <em>biết</em> đến thật sự sống và làm khác đi vẫn còn một khoảng.
+              </p>
+              <p className="mt-8 font-sans text-[15px] font-medium leading-[1.7]">ESSENCE bắt đầu từ khoảng đó.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* 02 — ESSENCE / Reframe */}
+        <section className="px-6 py-20 md:px-10 md:py-32">
+          <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-[0.85fr_1.15fr] md:gap-20">
+            <h2 className="e26-reveal max-w-[430px] font-serif text-[34px] font-medium leading-[1.16] md:text-[48px]">
+              ESSENCE không bắt đầu bằng việc nói bạn nên làm gì.
+            </h2>
+            <div className="e26-reveal max-w-[650px] space-y-7 font-sans text-[17px] font-normal leading-[1.85] md:text-[18px]">
+              <p>
+                ESSENCE làm việc ở khoảng giữa điều đã được nhìn ra và điều thật sự đi vào đời sống hoặc công việc: nhìn rõ hơn → tự chọn → đưa lựa chọn đó vào thực tế → nhìn điều xảy ra → học và điều chỉnh.
+              </p>
+              <p>
+                Ở cấp độ cá nhân, <strong className="font-medium">Bản sắc</strong> là phần bạn ngày càng nhận ra trung thực hơn qua những gì đã sống — cả điều dễ đón nhận lẫn những phần bạn từng né tránh, chưa hiểu hoặc chưa muốn nhận.
+              </p>
+              <p className="font-serif text-[27px] leading-[1.4] md:text-[31px]">
+                Không phải để đóng bạn vào một định nghĩa. <br className="hidden md:block" />Là để bạn có thêm quyền chọn.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* 03 — Từ Bản sắc đến Hiện thực */}
+        <section className="border-y border-[color-mix(in_srgb,var(--essence-black-2026)_10%,transparent)] bg-[color-mix(in_srgb,var(--essence-white-2026)_55%,var(--essence-ivory-2026))] px-6 py-20 md:px-10 md:py-32">
+          <div className="mx-auto max-w-6xl">
+            <div className="e26-reveal grid gap-12 md:grid-cols-[0.9fr_1.1fr] md:gap-20">
+              <div>
+                <p className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-e26-text-2">Core Principle</p>
+                <h2 className="mt-5 max-w-[520px] font-serif text-[38px] font-medium leading-[1.08] md:text-[56px]">
+                  TỪ BẢN SẮC ĐẾN HIỆN THỰC.
+                </h2>
+                <p className="mt-8 font-sans text-[13px] font-medium uppercase tracking-[0.12em] text-e26-text-2">
+                  NHẬN RA → LỰA CHỌN → HIỆN THỰC → HỌC
+                </p>
+              </div>
+
+              <div className="max-w-[660px] space-y-7 font-sans text-[17px] font-normal leading-[1.85] md:text-[18px]">
+                <p>Một điều được nhìn ra chỉ thật sự có ý nghĩa khi nó bắt đầu có mặt trong thực tế.</p>
+                <div className="grid gap-x-10 gap-y-3 md:grid-cols-2">
+                  <p>Một ranh giới được nói ra.</p>
+                  <p>Một lựa chọn nghề nghiệp được đưa ra.</p>
+                  <p>Một quyết định trong doanh nghiệp có người thực sự sở hữu.</p>
+                  <p>Một cách làm mới được thử thay vì tiếp tục nằm trong cuộc họp.</p>
+                </div>
+                <p>
+                  Với <strong className="font-medium">nhân hiệu</strong>, điều đó có thể là cách bạn hiện diện rõ hơn từ điều bạn chọn đứng về — thay vì dựng một hình ảnh trước rồi cố sống cho giống nó.
+                </p>
+                <p className="text-e26-text-2">Hiện thực cho phản hồi để điều đã chọn tiếp tục được kiểm chứng và điều chỉnh.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 04 — Brand Signature Signal */}
+        <section className="flex min-h-[68svh] items-center bg-e26-black px-6 py-28 text-e26-ivory md:min-h-[76svh] md:px-10 md:py-36">
+          <div className="e26-reveal mx-auto max-w-6xl text-center">
+            <p className="mx-auto max-w-[980px] font-serif text-[48px] font-normal leading-[1.04] md:text-[76px] lg:text-[92px]">
+              Câu chuyện cuộc sống của bạn là một kiệt tác.
+            </p>
+          </div>
+        </section>
+
+        {/* 05 — Two contexts */}
+        <section className="px-6 py-20 md:px-10 md:py-32">
+          <div className="mx-auto max-w-6xl">
+            <h2 className="e26-reveal max-w-[760px] font-serif text-[38px] font-medium leading-[1.1] md:text-[56px]">
+              HAI BỐI CẢNH. CÙNG MỘT BẢN SẮC
+            </h2>
+
+            <div className="mt-14 grid gap-0 border-y border-[color-mix(in_srgb,var(--essence-black-2026)_14%,transparent)] md:grid-cols-2 md:divide-x md:divide-[color-mix(in_srgb,var(--essence-black-2026)_14%,transparent)]">
+              <article className="e26-reveal py-10 md:pr-14 md:py-14">
+                <p className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-e26-text-2">ESSENCE COACHING</p>
+                <p className="mt-6 max-w-[480px] font-serif text-[27px] font-normal leading-[1.4] md:text-[32px]">
+                  Khi điều cần nhìn rõ nằm trong đời sống của bạn — lựa chọn, mối quan hệ, vai trò, gia đình hay cách bạn đang sống với bản thân.
+                </p>
+                <Link className={`${softLink} mt-9`} href="/coaching">ESSENCE Coaching <span aria-hidden="true">→</span></Link>
+              </article>
+
+              <article className="e26-reveal border-t border-[color-mix(in_srgb,var(--essence-black-2026)_14%,transparent)] py-10 md:border-t-0 md:pl-14 md:py-14">
+                <p className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-e26-text-2">ESSENCE ADVISORY</p>
+                <p className="mt-6 max-w-[480px] font-serif text-[27px] font-normal leading-[1.4] md:text-[32px]">
+                  Khi điều cần nhìn rõ nằm trong công việc hoặc doanh nghiệp — một bài toán quan trọng, quyết định có hệ quả, cách vận hành hay thay đổi cần được đưa vào thực tế.
+                </p>
+                <Link className={`${softLink} mt-9`} href="/advisory">ESSENCE Advisory <span aria-hidden="true">→</span></Link>
+              </article>
+            </div>
+
+            <div className="e26-reveal mt-10 max-w-[820px] space-y-3 font-sans text-[16px] font-normal leading-[1.8] text-e26-text-2 md:text-[17px]">
+              <p>Ở cá nhân, Bản sắc đi qua những vai trò bạn sống và điều bạn chọn đứng về.</p>
+              <p>Ở doanh nghiệp, nó được biểu hiện qua điều tổ chức chọn đứng về, cách quyết định, vận hành và thể hiện — không phải một nhãn tâm lý.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* 06 — One ESSENCE / Kenji founder seed */}
+        <section className="bg-[color-mix(in_srgb,var(--essence-white-2026)_58%,var(--essence-ivory-2026))] px-6 py-20 md:px-10 md:py-32">
+          <div className="mx-auto grid max-w-6xl items-center gap-14 md:grid-cols-[0.76fr_1.24fr] md:gap-20">
+            <div className="e26-reveal relative mx-auto aspect-[4/5] w-full max-w-[390px] overflow-hidden bg-e26-cream-deep">
+              <Image src="/images/home/kenji-portrait.webp" alt="Kenji Phạm — Founder, ESSENCE" fill sizes="(max-width: 768px) 84vw, 32vw" className="object-cover" />
+            </div>
+
+            <div className="e26-reveal max-w-[680px]">
+              <h2 className="font-serif text-[38px] font-medium leading-[1.1] md:text-[54px]">
+                VÌ SAO CẢ HAI CÙNG LÀ BẢN SẮC?
+              </h2>
+              <div className="mt-9 space-y-6 font-sans text-[17px] font-normal leading-[1.85] md:text-[18px]">
+                <p>Trước ESSENCE, tôi từng làm nhiều công việc liên quan đến hình ảnh, định vị và cách một người xuất hiện trước công chúng.</p>
+                <p>Tôi nhận ra một khoảng lệch: hình ảnh có thể được xây rất nhanh, trong khi điều người đứng phía sau thật sự muốn đứng về và có thể sống cùng lâu dài chưa chắc đã rõ.</p>
+                <p className="font-serif text-[28px] leading-[1.35] md:text-[34px]">“Điều gì ở đây thật sự đáng để được xây?”</p>
+                <p>Dù ở CÁ NHÂN hay CÔNG VIỆC, ESSENCE vẫn quay lại một mạch: nhìn điều đang xảy ra → sở hữu lựa chọn hoặc quyết định → đưa nó vào thực tế → nhìn bằng chứng.</p>
+              </div>
+              <p className="mt-9 font-serif text-[21px] leading-[1.4]">Kenji Phạm <span className="font-sans text-[12px] uppercase tracking-[0.13em] text-e26-text-2">— Founder, ESSENCE</span></p>
+              <Link className={`${softLink} mt-8`} href="/ve-kenji">Về Kenji <span aria-hidden="true">→</span></Link>
+            </div>
+          </div>
+        </section>
+
+        {/* 07 — Open paths + trust + return */}
+        <section className="px-6 py-20 md:px-10 md:py-32">
+          <div className="mx-auto max-w-6xl">
+            <div className="e26-reveal grid gap-12 md:grid-cols-[1.05fr_0.95fr] md:gap-20">
+              <div className="max-w-[620px]">
+                <h2 className="font-serif text-[38px] font-medium leading-[1.12] md:text-[54px]">Nếu chưa rõ nên bắt đầu từ đâu.</h2>
+                <p className="mt-8 font-sans text-[17px] font-normal leading-[1.85] md:text-[18px]">
+                  Có thể bạn đã thấy một điều có liên quan tới bạn, nhưng chưa gọi tên được nó.
+                </p>
+                <p className="mt-5 font-serif text-[27px] font-normal leading-[1.4] md:text-[32px]">
+                  Khởi đầu là nơi để điều còn mơ hồ bắt đầu có hình — trước khi bạn tự chọn bước tiếp theo.
+                </p>
+                <Link className={`${softLink} mt-8`} href="/khoi-dau">Khởi đầu <span aria-hidden="true">→</span></Link>
+
+                <div className="mt-12 border-t border-[color-mix(in_srgb,var(--essence-black-2026)_12%,transparent)] pt-7">
+                  <p className="font-sans text-[15px] leading-[1.7] text-e26-text-2">Nếu bạn muốn hiểu thêm trước, Góc đọc vẫn là một lối đi hợp lệ.</p>
+                  <p className="mt-3 font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-e26-text-2">Góc đọc</p>
+                </div>
+              </div>
+
+              <aside className="border-t border-[color-mix(in_srgb,var(--essence-black-2026)_14%,transparent)] pt-8 md:border-l md:border-t-0 md:pl-12 md:pt-0">
+                <p className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-e26-text-2">ĐIỀU ESSENCE CAM KẾT GIỮ</p>
+                <div className="mt-7 space-y-4 font-sans text-[17px] font-normal leading-[1.8] md:text-[18px]">
+                  <p>ESSENCE giữ quyền lựa chọn ở bạn.</p>
+                  <p>Không dùng một chiếc nhãn để định nghĩa bạn.</p>
+                  <p>Giữ điều được nhận ra kết nối với lựa chọn và thực tế.</p>
+                  <p>Và chỉ hứa những điều ESSENCE có thể chịu trách nhiệm.</p>
+                </div>
+              </aside>
+            </div>
+
+            <div className="e26-reveal mt-20 border-t border-[color-mix(in_srgb,var(--essence-black-2026)_14%,transparent)] pt-10 md:mt-28 md:pt-12">
+              <p className="max-w-[760px] font-serif text-[28px] font-normal leading-[1.4] md:text-[38px]">
+                Nếu đã rõ, bạn có thể đi thẳng tới nơi phù hợp. Nếu chưa rõ, Khởi đầu là một nơi để bắt đầu.
+              </p>
+              <p className="mt-8 font-sans text-[16px] font-normal leading-[1.8] text-e26-text-2 md:text-[17px]">
+                Nếu hôm nay chưa phải lúc, bạn có thể quay lại khi thấy phù hợp.
+              </p>
+            </div>
+          </div>
+        </section>
       </main>
+
       <HomeFooter />
     </>
   );
