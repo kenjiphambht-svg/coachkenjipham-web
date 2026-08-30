@@ -195,9 +195,19 @@ export function assertSafeCompatibleEndpoint(raw: string, allowedHosts: string[]
 }
 
 async function postJson(url: string, init: RequestInit): Promise<unknown> {
-  const response = await fetch(url, { ...init, redirect: 'error' });
+  let response: Response;
+  try {
+    response = await fetch(url, { ...init, redirect: 'manual' });
+  } catch (error) {
+    if (error instanceof TypeError) throw new Error('CARE_MODEL_FETCH_TYPE_ERROR');
+    throw error;
+  }
   if (!response.ok) throw new Error(`CARE_MODEL_HTTP_${response.status}`);
-  return response.json();
+  try {
+    return await response.json();
+  } catch {
+    throw new Error('CARE_MODEL_RESPONSE_PARSE_ERROR');
+  }
 }
 
 function requireText(value: unknown, code: string): string {
@@ -284,9 +294,11 @@ async function runAnthropic(request: CareModelRequest): Promise<CareModelDecisio
 
 async function runGemini(request: CareModelRequest): Promise<CareModelDecision> {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(request.config.model)}:generateContent`;
+  const apiKey = request.config.apiKey.trim();
+  if (!apiKey || /[\u0000-\u001F\u007F]/.test(apiKey)) throw new Error('CARE_MODEL_CREDENTIAL_INVALID_FORMAT');
   const payload = (await postJson(url, {
     method: 'POST',
-    headers: { 'x-goog-api-key': request.config.apiKey, 'Content-Type': 'application/json' },
+    headers: { 'x-goog-api-key': apiKey, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: instructionsFor(request) }] },
       contents: [{ role: 'user', parts: [{ text: conversationText(request.channel, request.turns) }] }],
