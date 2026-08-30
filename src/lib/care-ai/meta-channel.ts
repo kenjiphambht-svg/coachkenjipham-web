@@ -1,4 +1,4 @@
-import { createHmac, timingSafeEqual } from 'node:crypto';
+import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
 import type { CareChannel } from './contracts';
 
 export interface CareInboundMessage {
@@ -16,7 +16,6 @@ interface MetaMessagingEvent {
   recipient?: { id?: string };
   timestamp?: number;
   message?: { text?: string; mid?: string };
-  postback?: { title?: string; payload?: string };
 }
 
 interface MetaWebhookPayload {
@@ -27,12 +26,32 @@ interface MetaWebhookPayload {
 export interface MetaSendConfig {
   sendEndpoint: string;
   accessToken: string;
+  expectedPageId?: string;
 }
+
+export interface MetaIdempotencyStore {
+  claim(args: {
+    channel: CareChannel;
+    externalMessageId: string;
+    ttlSeconds: number;
+    nowMs?: number;
+  }): Promise<boolean>;
+}
+
+export interface MetaD1PreparedStatement {
+  bind(...values: unknown[]): MetaD1PreparedStatement;
+  first<T = Record<string, unknown>>(): Promise<T | null>;
+}
+
+export interface MetaD1Database {
+  prepare(sql: string): MetaD1PreparedStatement;
+}
+
+const META_SEND_HOST = 'graph.facebook.com';
+const META_DELIVERY_CLAIM_TABLE = 'care_meta_delivery_claims';
 
 function textFromEvent(event: MetaMessagingEvent): string | undefined {
   if (event.message?.text?.trim()) return event.message.text.trim();
-  if (event.postback?.title?.trim()) return event.postback.title.trim();
-  if (event.postback?.payload?.trim()) return event.postback.payload.trim();
   return undefined;
 }
 
@@ -88,8 +107,34 @@ export function syntheticChannelInbound(channel: CareChannel, text: string): Car
 export function formatMetaTextSendPayload(recipientId: string, text: string) {
   return {
     recipient: { id: recipientId },
+    messaging_type: 'RESPONSE',
     message: { text },
   };
+}
+
+export function assertOfficialMetaSendEndpoint(raw: string, expectedPageId?: string): string {
+  let endpoint: URL;
+  try {
+    endpoint = new URL(raw);
+  } catch {
+    throw new Error('CARE_META_SEND_ENDPOINT_INVALID');
+  }
+  if (
+    endpoint.protocol !== 'https:' ||
+    endpoint.hostname.toLowerCase() !== META_SEND_HOST ||
+    endpoint.port ||
+    endpoint.username ||
+    endpoint.password ||
+    endpoint.search ||
+    endpoint.hash
+  ) {
+    throw new Error('CARE_META_SEND_ENDPOINT_NOT_OFFICIAL');
+  }
+  const match = endpoint.pathname.match(/^\/v\d+\.\d+\/([^/]+)\/messages\/?$/);
+  if (!match) throw new Error('CARE_META_SEND_ENDPOINT_PATH_INVALID');
+  const pageId = decodeURIComponent(match[1]);
+  if (expectedPageId && pageId !== expectedPageId) throw new Error('CARE_META_SEND_ENDPOINT_PAGE_MISMATCH');
+  return endpoint.toString();
 }
 
 export async function sendMetaText(args: {
@@ -99,11 +144,10 @@ export async function sendMetaText(args: {
 }): Promise<{ recipientId?: string; messageId?: string }> {
   if (!args.config.sendEndpoint) throw new Error('CARE_META_SEND_ENDPOINT_REQUIRED');
   if (!args.config.accessToken) throw new Error('CARE_META_ACCESS_TOKEN_REQUIRED');
-  const endpoint = new URL(args.config.sendEndpoint);
-  if (endpoint.protocol !== 'https:' || endpoint.username || endpoint.password) throw new Error('CARE_META_SEND_ENDPOINT_INVALID');
-  const response = await fetch(endpoint.toString(), {
+  const endpoint = assertOfficialMetaSendEndpoint(args.config.sendEndpoint, args.config.expectedPageId);
+  const response = await fetch(endpoint, {
     method: 'POST',
-    redirect: 'error',
+    redirect: 'manual',
     headers: {
       Authorization: `Bearer ${args.config.accessToken}`,
       'Content-Type': 'application/json',
@@ -113,6 +157,34 @@ export async function sendMetaText(args: {
   if (!response.ok) throw new Error(`CARE_META_SEND_HTTP_${response.status}`);
   const payload = (await response.json()) as { recipient_id?: string; message_id?: string };
   return { recipientId: payload.recipient_id, messageId: payload.message_id };
+}
+
+function deliveryClaimKey(channel: CareChannel, externalMessageId: string): string {
+  return createHash('sha256').update(`${channel}\u0000${externalMessageId}`, 'utf8').digest('hex');
+}
+
+export function createD1MetaIdempotencyStore(db: MetaD1Database): MetaIdempotencyStore {
+  return {
+    async claim({ channel, externalMessageId, ttlSeconds, nowMs = Date.now() }) {
+      if (!externalMessageId.trim()) throw new Error('CARE_META_MESSAGE_ID_REQUIRED');
+      if (!Number.isInteger(ttlSeconds) || ttlSeconds < 300 || ttlSeconds > 604800) {
+        throw new Error('CARE_META_IDEMPOTENCY_TTL_INVALID');
+      }
+      const claimKey = deliveryClaimKey(channel, externalMessageId);
+      const expiresAtMs = nowMs + ttlSeconds * 1000;
+      const result = await db
+        .prepare(
+          `INSERT INTO ${META_DELIVERY_CLAIM_TABLE} (claim_key, expires_at_ms)\n` +
+            `VALUES (?1, ?2)\n` +
+            `ON CONFLICT(claim_key) DO UPDATE SET expires_at_ms = excluded.expires_at_ms\n` +
+            `WHERE ${META_DELIVERY_CLAIM_TABLE}.expires_at_ms <= ?3\n` +
+            `RETURNING claim_key`,
+        )
+        .bind(claimKey, expiresAtMs, nowMs)
+        .first<{ claim_key: string }>();
+      return result?.claim_key === claimKey;
+    },
+  };
 }
 
 export function verifyMetaWebhook(args: {
