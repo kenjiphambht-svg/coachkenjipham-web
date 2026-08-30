@@ -230,20 +230,15 @@ jobs:
           test -f wrangler-dry-run/worker.js
           echo 'PASS: Wrangler accepted the exact-head Cloudflare package without deploying it.'
 
-      - name: Securely complete P09 model-secret runtime binding
+      - name: Verify P09 model secret is already bound in Cloudflare runtime
         shell: bash
-        env:
-          MODEL_TEST_SECRET: ${{ secrets.OPENROUTER_API_KEY }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: '7d37ce0eda3f7f74771590bda7c97e65'
         run: |
           set -euo pipefail
           BASE='https://backend-p07-care-ai-test-con-01b5-essence-web-portability-proof.kenjipham-bht.workers.dev'
           READY_URL="${BASE}/api/internal/care-ai-test?runtimeSelfTest=p09-review-runner"
-
           code="$(curl -sS --max-time 10 -o p09-pre-provision-readiness.json -w '%{http_code}' "$READY_URL" || true)"
-          if [ "$code" = '200' ]; then
-            if node - <<'NODE'
+          test "$code" = '200'
+          node - <<'NODE'
           const fs = require('fs');
           const result = JSON.parse(fs.readFileSync('p09-pre-provision-readiness.json', 'utf8'));
           const ok =
@@ -259,23 +254,7 @@ jobs:
             result.secretExposed === false;
           if (!ok) process.exit(1);
           NODE
-            then
-              echo 'PASS: P09 model-test secret is already present in Cloudflare runtime; no Cloudflare API credential is needed by CI.'
-              exit 0
-            fi
-          fi
-
-          if [ -z "${MODEL_TEST_SECRET:-}" ]; then
-            echo 'BLOCKED: approved OPENROUTER_API_KEY is not available to this GitHub Actions runtime; no value was exposed.' >&2
-            exit 42
-          fi
-          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
-            echo 'BLOCKED: Cloudflare runtime still lacks the P09 model-test secret and CLOUDFLARE_API_TOKEN is not available to CI. Add CARE_P09_REVIEW_MODEL_API_KEY in Cloudflare secret storage or provide an approved secure Cloudflare deployment credential; no secret value was exported.' >&2
-            exit 43
-          fi
-          printf '%s' "$MODEL_TEST_SECRET" | npx wrangler secret put CARE_P09_REVIEW_MODEL_API_KEY --name essence-web-portability-proof
-          unset MODEL_TEST_SECRET
-          echo 'PASS: existing approved model-test secret was copied server-to-server into Cloudflare secret storage without printing its value.'
+          echo 'PASS: Cloudflare runtime already holds the approved P09 model secret; CI has no provider-secret fallback and writes no provider credential.'
 
       - name: Verify deployed Cloudflare credential path without exporting secret
         shell: bash
@@ -391,7 +370,7 @@ jobs:
           echo 'PASS: P09 server-side synthetic review runner is exact-version runtime-ready; access/model secrets remain Cloudflare-runtime-only; repo-bound GitHub OIDC is the caller boundary.'
 
       - name: Execute one bounded P09 model call through repo-bound GitHub OIDC
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && contains(github.event.head_commit.message, '[provider-probe]')
         shell: bash
         run: |
           set -euo pipefail
@@ -468,15 +447,17 @@ jobs:
           fi
           echo 'PASS: one bounded synthetic Website model call executed on Cloudflare through repo/branch/workflow-bound GitHub OIDC; access token and model secret never left Cloudflare; response contract is redacted and action-free.'
 
-      - name: Assert paid model and real Meta credentials are not exported to CI
+      - name: Assert provider and real Meta credentials are not exported to CI
         shell: bash
         run: |
           set -euo pipefail
           test -z "${OPENAI_API_KEY:-}"
           test -z "${OPENROUTER_API_KEY:-}"
+          test -z "${GEMINI_API_KEY:-}"
+          test -z "${GOOGLE_API_KEY:-}"
           test -z "${CARE_MODEL_API_KEY:-}"
           test -z "${CARE_AI_TEST_ACCESS_TOKEN:-}"
           test -z "${CARE_P09_REVIEW_MODEL_API_KEY:-}"
           test -z "${CARE_META_MESSENGER_ACCESS_TOKEN:-}"
           test -z "${CARE_META_INSTAGRAM_ACCESS_TOKEN:-}"
-          echo 'PASS: Cloudflare access/model secrets and real Meta credentials are not exported to CI; only the single bounded OIDC-authenticated runtime call may invoke the approved model.'
+          echo 'PASS: provider secrets, Cloudflare access secret and real Meta credentials are not exported to CI; provider invocation is commit-gated and otherwise skipped.'
