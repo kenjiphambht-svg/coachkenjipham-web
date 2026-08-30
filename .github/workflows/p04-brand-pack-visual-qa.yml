@@ -56,13 +56,22 @@ jobs:
           const base = 'http://127.0.0.1:3000';
           test.setTimeout(90_000);
 
-          async function forceReveal(page) {
-            await page.evaluate(async () => {
-              if (document.fonts?.ready) await document.fonts.ready;
+          async function prepareFullPage(page) {
+            if (await page.evaluate(() => Boolean(document.fonts?.ready))) {
+              await page.evaluate(() => document.fonts.ready);
+            }
+            const reveals = page.locator('.e26-reveal');
+            const count = await reveals.count();
+            for (let i = 0; i < count; i += 1) {
+              await reveals.nth(i).scrollIntoViewIfNeeded();
+              await page.waitForTimeout(60);
+            }
+            await page.waitForTimeout(350);
+            await page.evaluate(() => {
               document.querySelectorAll('.e26-reveal').forEach((el) => el.classList.add('is-visible'));
               window.scrollTo({ top: 0, behavior: 'instant' });
             });
-            await page.waitForTimeout(250);
+            await page.waitForTimeout(300);
           }
 
           test('final desktop and mobile full-page evidence', async ({ browser }) => {
@@ -72,7 +81,7 @@ jobs:
             ]) {
               const page = await browser.newPage({ viewport });
               await page.goto(base + '/', { waitUntil: 'networkidle' });
-              await forceReveal(page);
+              await prepareFullPage(page);
               await expect(page.locator('main section')).toHaveCount(7);
               await expect(page.getByText('Câu chuyện cuộc sống của bạn là một kiệt tác.', { exact: true })).toBeVisible();
               await expect(page.getByText('NHẬN RA', { exact: true }).first()).toBeVisible();
@@ -111,7 +120,7 @@ jobs:
           test('mobile readability and tap targets', async ({ browser }) => {
             const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
             await page.goto(base + '/', { waitUntil: 'networkidle' });
-            await forceReveal(page);
+            await prepareFullPage(page);
 
             const bodyBlocks = page.locator('[data-body-copy]');
             expect(await bodyBlocks.count()).toBeGreaterThanOrEqual(7);
