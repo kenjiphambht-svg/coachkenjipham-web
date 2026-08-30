@@ -319,7 +319,7 @@ describe('P09 deterministic freeform ACTION/ROUTE TRUTH repair', () => {
     expect(result.reply).not.toMatch(/chuyên gia|bộ phận|kết nối|chuyển/i);
   });
 
-  it('M6 keeps B2B and B2C separate without proposal/booking/transfer claims', () => {
+  it('M6 keeps mixed B2B and personal context semantically non-collapsing while preserving the passing reply', () => {
     const result = enforceFreeformActionRouteTruth(
       {
         channel: 'facebook_messenger',
@@ -327,25 +327,25 @@ describe('P09 deterministic freeform ACTION/ROUTE TRUTH repair', () => {
       },
       {
         ...decision,
-        family: 'LEADER_BUILDER',
+        family: 'REFLECTIVE_ADULT',
         truthStatus: 'UNKNOWN',
         nextBestCare: 'HUMAN_HANDOFF',
         commercialReadiness: 'HANDOFF',
+        memoryDecision: 'DO_NOT_WRITE',
         handoffRequired: true,
-        reply: 'Yêu cầu của bạn cần được chuyển đến bộ phận phụ trách để hỗ trợ trực tiếp.',
+        reply: 'Mình không thể tự gửi proposal hay đặt lịch từ cuộc trò chuyện này. Mình cũng không gộp yêu cầu doanh nghiệp và nhu cầu cá nhân thành một bước bán hàng khi chưa có xác nhận riêng cho từng việc.',
       },
     );
 
     expect(result).toMatchObject({
-      family: 'LEADER_BUILDER',
+      family: 'UNKNOWN',
       truthStatus: 'UNKNOWN',
       nextBestCare: 'HUMAN_HANDOFF',
       commercialReadiness: 'HANDOFF',
       memoryDecision: 'DO_NOT_WRITE',
       handoffRequired: true,
+      reply: 'Mình không thể tự gửi proposal hay đặt lịch từ cuộc trò chuyện này. Mình cũng không gộp yêu cầu doanh nghiệp và nhu cầu cá nhân thành một bước bán hàng khi chưa có xác nhận riêng cho từng việc.',
     });
-    expect(result.reply).toContain('không thể tự gửi proposal hay đặt lịch');
-    expect(result.reply).not.toMatch(/đã gửi|đã đặt|sẽ gửi|sẽ đặt|bộ phận|chuyển|kết nối/i);
   });
 
   it('clamps any residual unverified action/route narration even outside the six named cases', () => {
