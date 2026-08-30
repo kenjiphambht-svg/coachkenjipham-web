@@ -91,12 +91,12 @@ describe('Care AI provider-neutral adapters', () => {
     })).rejects.toThrow('CARE_MODEL_INVALID_JSON');
   });
 
-  it('normalizes Gemini output and keeps the key out of URL/body', async () => {
+  it('normalizes Gemini output, trims outer key whitespace, keeps the key out of URL/body and does not follow redirects', async () => {
     const spy = vi.spyOn(globalThis, 'fetch').mockImplementation(() =>
       okJson({ candidates: [{ content: { parts: [{ text: JSON.stringify(decision) }] } }] }),
     );
     await runCareModel({
-      config: { provider: 'google_gemini', model: 'gemini-test', apiKey: 'secret-value' },
+      config: { provider: 'google_gemini', model: 'gemini-test', apiKey: '  secret-value  ' },
       channel: 'website',
       turns: ['Một câu test.'],
     });
@@ -105,6 +105,16 @@ describe('Care AI provider-neutral adapters', () => {
     expect(String(url)).not.toContain('secret-value');
     expect(String(init?.body)).not.toContain('secret-value');
     expect(headers['x-goog-api-key']).toBe('secret-value');
+    expect(init?.redirect).toBe('manual');
+  });
+
+  it('classifies a provider fetch TypeError without exposing the underlying runtime message', async () => {
+    vi.spyOn(globalThis, 'fetch').mockRejectedValue(new TypeError('provider transport detail must stay private'));
+    await expect(runCareModel({
+      config: { provider: 'google_gemini', model: 'gemini-test', apiKey: 'secret-value' },
+      channel: 'website',
+      turns: ['Một câu test.'],
+    })).rejects.toThrow('CARE_MODEL_FETCH_TYPE_ERROR');
   });
 
   it('enforces a supplied deterministic Care guard over model decision fields', async () => {
