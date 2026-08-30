@@ -1,5 +1,5 @@
-// P07 runtime refresh after Founder Gemini Free Tier secret placement; no secret value is stored in source.
-// Founder-approved bounded switch to Gemini 3.5 Flash-Lite; provider family, secret path and Meta gates remain unchanged.
+// P07 bounded Messenger/Page controlled-live Stage A configuration.
+// Founder-approved Page: Kenji Phạm - Essence (102524972270814). Secrets remain runtime-only.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "essence-web-portability-proof",
@@ -18,10 +18,15 @@
     "CARE_P09_REVIEW_RUNNER_ENABLED": "true",
     "CARE_P09_REVIEW_MODEL_PROVIDER": "google_gemini",
     "CARE_P09_REVIEW_MODEL_NAME": "gemini-3.5-flash-lite",
+    "CARE_MODEL_PROVIDER": "google_gemini",
+    "CARE_MODEL_NAME": "gemini-3.5-flash-lite",
     "CARE_MODEL_ALLOWED_COMPATIBLE_HOSTS": "",
-    "CARE_META_SANDBOX_ENABLED": "false",
+    "CARE_META_SANDBOX_ENABLED": "true",
     "CARE_META_LIVE_TEST_ENABLED": "false",
-    "CARE_META_OUTBOUND_ENABLED": "false"
+    "CARE_META_OUTBOUND_ENABLED": "false",
+    "CARE_META_MESSENGER_SEND_ENDPOINT": "https://graph.facebook.com/v26.0/102524972270814/messages",
+    "CARE_META_TEST_SENDER_IDS": "",
+    "CARE_META_IDEMPOTENCY_TTL_SECONDS": "86400"
   },
   "secrets": {
     "required": ["CARE_AI_TEST_ACCESS_TOKEN"]
