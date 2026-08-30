@@ -1,0 +1,51 @@
+// P07 bounded Care AI Messenger controlled-live Worker.
+// Isolated from coachkenjipham.com production runtime: workers.dev only, no routes/custom domains.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "p07-care-ai-meta-test",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-08-15",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "global_fetch_strictly_public"
+  ],
+  "vars": {
+    "CLOUDFLARE_PORTABILITY_PROOF": "1",
+    "CARE_AI_TEST_RUNTIME_SURFACE": "cloudflare-preview",
+    "CARE_AI_TEST_UI_ENABLED": "true",
+    "CARE_AI_TEST_REVIEW_HOST": "p07-care-ai-meta-test.kenjipham-bht.workers.dev",
+    "CARE_AI_TEST_REVIEW_EXPIRES_AT": "2026-09-05T23:59:59+07:00",
+    "CARE_P09_REVIEW_RUNNER_ENABLED": "true",
+    "CARE_P09_REVIEW_MODEL_PROVIDER": "google_gemini",
+    "CARE_P09_REVIEW_MODEL_NAME": "gemini-3.5-flash-lite",
+    "CARE_MODEL_PROVIDER": "google_gemini",
+    "CARE_MODEL_NAME": "gemini-3.5-flash-lite",
+    "CARE_MODEL_ALLOWED_COMPATIBLE_HOSTS": "",
+    "CARE_META_SANDBOX_ENABLED": "true",
+    "CARE_META_LIVE_TEST_ENABLED": "false",
+    "CARE_META_OUTBOUND_ENABLED": "false",
+    "CARE_META_MESSENGER_SEND_ENDPOINT": "https://graph.facebook.com/v26.0/102524972270814/messages",
+    "CARE_META_TEST_SENDER_IDS": "",
+    "CARE_META_IDEMPOTENCY_TTL_SECONDS": "86400"
+  },
+  "d1_databases": [
+    {
+      "binding": "CARE_META_IDEMPOTENCY_DB",
+      "database_name": "care-meta-idempotency",
+      "database_id": "09d17d94-2325-4afb-9500-ddac0c31e275"
+    }
+  ],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS",
+    "run_worker_first": false
+  },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "p07-care-ai-meta-test"
+    }
+  ],
+  "workers_dev": true,
+  "preview_urls": true
+}
