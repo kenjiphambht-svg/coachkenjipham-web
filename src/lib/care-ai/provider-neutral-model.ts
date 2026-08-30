@@ -63,17 +63,19 @@ You are the bounded response layer for Kenji Care AI / ESSENCE. This is NOT Kenj
 
 Hard rules:
 - Truth first. Never invent product, price, discount, scarcity, availability, ROI, outcome, guarantee, booking/payment status, capacity, customer history, support team, hotline, official page/channel, provider route, worksheet, PDF, course, module or other asset.
-- Missing/conflicting material truth stays UNKNOWN / ROUTE_ONLY / HUMAN_HANDOFF as appropriate. User-stated facts do not upgrade product or commercial authority.
+- Missing/conflicting material truth stays UNKNOWN. HUMAN_HANDOFF may mark that human authority is required, but it is NOT proof that a person, team, channel or transfer route exists.
 - Preserve user agency. No diagnosis, therapy, medical/legal/financial advice, fixed child labels/predictions, hidden psychological scoring or permanent persona claims.
-- Explicit stop-contact => SUPPRESS in the current interaction. Never claim durable persistence unless a tool confirmed it.
-- Privacy/delete, human/Kenji request, clinical/child-sensitive boundary, binding commercial commitment, payment/refund/entitlement/delete => HUMAN_HANDOFF.
+- No tool / no verified route is the default in this freeform layer. Never say an action was recorded, transferred, connected, queued, started, completed, promised, will receive a response, durably suppressed, deleted, booked or sent unless separate verified execution evidence exists.
+- Explicit stop-contact => SUPPRESS the current interaction only. Never claim durable persistence or future-message suppression unless a tool confirmed it.
+- Privacy/delete or explicit human/Kenji request => HUMAN_HANDOFF + DO_NOT_WRITE. Never claim deletion happened and never invent a person/team/channel route.
+- Child-sensitive concern => no diagnosis/fixed label and no invented specialist/support route.
 - Ambiguous identity must never auto-merge. Unconfirmed actions must never be described as completed, underway, queued or promised.
-- Never auto-cross-sell B2C/B2B. Fit never creates quote/close authority. Channel or provider choice never widens authority.
-- Lặng 90 current sale/booking/price authority is UNKNOWN/ROUTE_ONLY unless separately verified.
-- Khám Phá/Giao Mùa product-specific current price/availability/close truth is UNKNOWN/ROUTE_ONLY unless separately verified.
+- Never auto-cross-sell B2C/B2B. Mixed B2B + personal needs must remain separate; never claim proposal, booking, transfer or cross-sell action.
+- Lặng 90 current sale/booking/price/availability truth stays UNKNOWN unless separately verified. UNKNOWN must not be converted into a named person/team route.
+- Khám Phá/Giao Mùa product-specific current price/availability/close truth stays UNKNOWN unless separately verified.
 - B2B Entry/Core never autonomously promise proposal, ROI, quote, contract or start date.
 - Memory is compact factual continuity only; never preserve raw private/child story, diagnosis, hidden score or speculative intent as fact.
-- Voice is truth-first, precise and low-pressure. Do not open with generic service empathy such as “Chào bạn” or “Cảm ơn bạn đã chia sẻ”. Do not invent an unnamed support route. Usually 2–5 short sentences; say enough then stop.
+- Voice is truth-first, precise and low-pressure. Do not open with generic service empathy such as “Chào bạn” or “Cảm ơn bạn đã chia sẻ”. Do not invent an unnamed support route. For Messenger/Instagram prefer 1–3 short sentences; say enough then stop.
 
 Return ONLY valid JSON with exactly these fields:
 family: UNKNOWN | REFLECTIVE_ADULT | REFLECTIVE_PARENT | LEADER_BUILDER
@@ -162,6 +164,255 @@ function enforceAuthorityGuard(decision: CareModelDecision, guard?: CareAuthorit
   };
 }
 
+function normalizedBoundaryText(value: string): string {
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd')
+    .replace(/Đ/g, 'D')
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function includesAny(text: string, patterns: RegExp[]): boolean {
+  return patterns.some((pattern) => pattern.test(text));
+}
+
+function userBoundaryText(turns: string[]): string {
+  return normalizedBoundaryText(turns.join(' '));
+}
+
+function isStopContact(text: string): boolean {
+  return includesAny(text, [
+    /\bdung nhan\b/,
+    /\bngung nhan\b/,
+    /\bdung lien he\b/,
+    /\bngung lien he\b/,
+    /\bdung nhan tin\b/,
+    /\bngung nhan tin\b/,
+    /\bdung o day\b/,
+    /\bdo not contact\b/,
+    /\bstop contact\b/,
+    /\bunsubscribe\b/,
+  ]);
+}
+
+function isPrivacyDelete(text: string): boolean {
+  return includesAny(text, [
+    /\bxoa (?:du lieu|thong tin)\b/,
+    /\b(?:du lieu|thong tin).*\bxoa\b/,
+    /\bquyen rieng tu\b/,
+    /\bprivacy\b/,
+    /\bdelete (?:my )?(?:data|information)\b/,
+  ]);
+}
+
+function isExplicitHumanRequest(text: string): boolean {
+  return includesAny(text, [
+    /\bkenji\b/,
+    /\bnguoi that\b/,
+    /\bnguoi phu trach\b/,
+    /\bnguoi co tham quyen\b/,
+    /\bnhan vien\b/,
+    /\bhuman\b/,
+  ]);
+}
+
+function isChildSensitive(text: string): boolean {
+  const child = includesAny(text, [
+    /\bcon minh\b/,
+    /\bcon toi\b/,
+    /\bdua tre\b/,
+    /\btre em\b/,
+    /\bbe nha\b/,
+    /\bchau nha\b/,
+  ]);
+  const sensitive = includesAny(text, [
+    /\btam ly\b/,
+    /\bthu minh\b/,
+    /\bit noi\b/,
+    /\blo au\b/,
+    /\btram cam\b/,
+    /\broi loan\b/,
+    /\bchan doan\b/,
+    /\bbi gi\b/,
+  ]);
+  return child && sensitive;
+}
+
+function isMixedB2bB2c(text: string): boolean {
+  const b2b = includesAny(text, [
+    /\bdoanh nghiep\b/,
+    /\bcong ty\b/,
+    /\bb2b\b/,
+    /\bproposal\b/,
+    /\bbao gia\b/,
+    /\bhop dong\b/,
+  ]);
+  const personal = includesAny(text, [
+    /\bca nhan\b/,
+    /\bb2c\b/,
+    /\bbuoi rieng\b/,
+    /\bdat lich.*\bcho minh\b/,
+    /\bcho minh.*\bdat lich\b/,
+  ]);
+  return b2b && personal;
+}
+
+function isLang90PriceAvailability(text: string): boolean {
+  if (!/\blang 90\b/.test(text)) return false;
+  return includesAny(text, [
+    /\bgia\b/,
+    /\bmuc phi\b/,
+    /\bbao nhieu\b/,
+    /\blich\b/,
+    /\bcon cho\b/,
+    /\bcho trong\b/,
+    /\bcon lich\b/,
+    /\bavailability\b/,
+  ]);
+}
+
+function hasUnverifiedActionOrRouteClaim(reply: string): boolean {
+  const text = normalizedBoundaryText(reply);
+  return includesAny(text, [
+    /\bda ghi nhan\b/,
+    /\bda tiep nhan\b/,
+    /\bse ngung (?:nhan tin|lien he)\b/,
+    /\bse dung (?:nhan tin|lien he)\b/,
+    /\bda chuyen\b/,
+    /\bse chuyen\b/,
+    /\bxin chuyen\b/,
+    /\bchuyen .*\b(?:bo phan|kenji|chuyen gia|nguoi phu trach)\b/,
+    /\bdang ket noi\b/,
+    /\bse ket noi\b/,
+    /\bket noi (?:truc tiep )?(?:voi|sang)\b/,
+    /\bbo phan (?:phu trach|ho tro)\b/,
+    /\bse phan hoi\b/,
+    /\bphan hoi (?:lai|cho ban|chinh xac)\b/,
+    /\bdang xu ly\b/,
+    /\bda xu ly\b/,
+    /\bse xu ly\b/,
+    /\bda xoa\b/,
+    /\bse xoa\b/,
+    /\bdang xoa\b/,
+    /\bqueued\b/,
+  ]);
+}
+
+function stopContactDecision(decision: CareModelDecision): CareModelDecision {
+  return {
+    ...decision,
+    truthStatus: 'BOUNDED',
+    nextBestCare: 'SUPPRESS',
+    commercialReadiness: 'WAIT',
+    memoryDecision: 'DO_NOT_WRITE',
+    handoffRequired: false,
+    reply: 'Được, mình dừng ở đây.',
+  };
+}
+
+function privacyDeleteDecision(decision: CareModelDecision): CareModelDecision {
+  return {
+    ...decision,
+    truthStatus: 'UNKNOWN',
+    nextBestCare: 'HUMAN_HANDOFF',
+    commercialReadiness: 'HANDOFF',
+    memoryDecision: 'DO_NOT_WRITE',
+    handoffRequired: true,
+    reply: 'Mình không thể tự xóa hoặc xác nhận đã xóa dữ liệu tại đây. Yêu cầu này cần người có thẩm quyền xử lý; mình chưa có dữ kiện để xác nhận ai hoặc kênh nào.',
+  };
+}
+
+function childSensitiveDecision(decision: CareModelDecision): CareModelDecision {
+  return {
+    ...decision,
+    truthStatus: 'UNKNOWN',
+    nextBestCare: 'HUMAN_HANDOFF',
+    commercialReadiness: 'HANDOFF',
+    memoryDecision: 'DO_NOT_WRITE',
+    handoffRequired: true,
+    reply: 'Chỉ từ những dấu hiệu này mình không thể kết luận con bạn “bị gì” hay gắn nhãn tâm lý. Mình có thể giúp bạn tách điều đang quan sát được khỏi suy đoán và xem điều gì cần làm rõ thêm.',
+  };
+}
+
+function mixedB2bB2cDecision(decision: CareModelDecision): CareModelDecision {
+  return {
+    ...decision,
+    truthStatus: 'UNKNOWN',
+    nextBestCare: 'HUMAN_HANDOFF',
+    commercialReadiness: 'HANDOFF',
+    memoryDecision: 'DO_NOT_WRITE',
+    handoffRequired: true,
+    reply: 'Mình không thể tự gửi proposal hay đặt lịch từ cuộc trò chuyện này. Mình cũng không gộp yêu cầu doanh nghiệp và nhu cầu cá nhân thành một bước bán hàng khi chưa có xác nhận riêng cho từng việc.',
+  };
+}
+
+function lang90UnknownDecision(request: Pick<CareModelRequest, 'channel'>, decision: CareModelDecision): CareModelDecision {
+  return {
+    ...decision,
+    truthStatus: 'UNKNOWN',
+    nextBestCare: 'ANSWER',
+    commercialReadiness: 'EXPLORE',
+    memoryDecision: 'DO_NOT_WRITE',
+    handoffRequired: false,
+    reply: request.channel === 'instagram'
+      ? 'Mình chưa có dữ kiện đã xác minh về giá hay chỗ trống của Lặng 90, nên không thể khẳng định.'
+      : 'Mình chưa có dữ kiện đã xác minh về giá hoặc lịch còn trống của Lặng 90, nên không thể khẳng định ở đây.',
+  };
+}
+
+function explicitHumanDecision(decision: CareModelDecision): CareModelDecision {
+  return {
+    ...decision,
+    truthStatus: 'UNKNOWN',
+    nextBestCare: 'HUMAN_HANDOFF',
+    commercialReadiness: 'HANDOFF',
+    memoryDecision: 'DO_NOT_WRITE',
+    handoffRequired: true,
+    reply: 'Bạn đang muốn nói với người thật. Mình chưa có dữ kiện để xác nhận người hoặc kênh cụ thể cho yêu cầu này.',
+  };
+}
+
+function genericUnverifiedActionDecision(decision: CareModelDecision): CareModelDecision {
+  const humanRequired = decision.nextBestCare === 'HUMAN_HANDOFF' || decision.handoffRequired;
+  const suppressCurrent = decision.nextBestCare === 'SUPPRESS';
+  return {
+    ...decision,
+    truthStatus: suppressCurrent ? 'BOUNDED' : 'UNKNOWN',
+    nextBestCare: suppressCurrent ? 'SUPPRESS' : humanRequired ? 'HUMAN_HANDOFF' : 'ANSWER',
+    commercialReadiness: suppressCurrent ? 'WAIT' : humanRequired ? 'HANDOFF' : 'EXPLORE',
+    memoryDecision: 'DO_NOT_WRITE',
+    handoffRequired: suppressCurrent ? false : humanRequired,
+    reply: 'Mình chưa có xác nhận cho bất kỳ hành động hay kênh chuyển tiếp nào trong cuộc trò chuyện này. Mình chỉ có thể trả lời trong phạm vi thông tin hiện có.',
+  };
+}
+
+export function enforceFreeformActionRouteTruth(
+  request: Pick<CareModelRequest, 'channel' | 'turns' | 'authorityGuard'>,
+  decision: CareModelDecision,
+): CareModelDecision {
+  // Canonical fixture authority is enforced elsewhere and must not be reclassified here.
+  if (request.authorityGuard) return decision;
+
+  // The current freeform provider request has no tool/action proof and no verified route field.
+  // Therefore any narrated action/route/persistence is unverified unless a future contract adds explicit evidence.
+  const text = userBoundaryText(request.turns);
+  if (isStopContact(text)) return stopContactDecision(decision);
+  if (isPrivacyDelete(text)) return privacyDeleteDecision(decision);
+  if (isChildSensitive(text)) return childSensitiveDecision(decision);
+  if (isMixedB2bB2c(text)) return mixedB2bB2cDecision(decision);
+  if (isLang90PriceAvailability(text)) return lang90UnknownDecision(request, decision);
+  if (isExplicitHumanRequest(text)) return explicitHumanDecision(decision);
+  if (hasUnverifiedActionOrRouteClaim(decision.reply)) return genericUnverifiedActionDecision(decision);
+  return decision;
+}
+
+function finalizeDecision(request: CareModelRequest, decision: CareModelDecision): CareModelDecision {
+  return enforceFreeformActionRouteTruth(request, enforceAuthorityGuard(decision, request.authorityGuard));
+}
+
 function isPrivateIpv4(hostname: string): boolean {
   const parts = hostname.split('.').map(Number);
   if (parts.length !== 4 || parts.some((part) => !Number.isInteger(part) || part < 0 || part > 255)) return false;
@@ -232,10 +483,10 @@ async function runOpenAIResponses(request: CareModelRequest): Promise<CareModelD
     }),
   })) as { output_text?: string; output?: Array<{ content?: Array<{ type?: string; text?: string }> }> };
 
-  if (payload.output_text) return enforceAuthorityGuard(parseDecision(payload.output_text), request.authorityGuard);
+  if (payload.output_text) return finalizeDecision(request, parseDecision(payload.output_text));
   for (const item of payload.output || []) {
     for (const part of item.content || []) {
-      if (part.type === 'output_text' && part.text) return enforceAuthorityGuard(parseDecision(part.text), request.authorityGuard);
+      if (part.type === 'output_text' && part.text) return finalizeDecision(request, parseDecision(part.text));
     }
   }
   throw new Error('CARE_MODEL_MISSING_OUTPUT_TEXT');
@@ -267,9 +518,9 @@ async function runOpenAICompatible(request: CareModelRequest): Promise<CareModel
       },
     }),
   })) as { choices?: Array<{ message?: { content?: string } }> };
-  return enforceAuthorityGuard(
+  return finalizeDecision(
+    request,
     parseDecision(requireText(payload.choices?.[0]?.message?.content, 'CARE_MODEL_MISSING_CHOICE_TEXT')),
-    request.authorityGuard,
   );
 }
 
@@ -289,7 +540,7 @@ async function runAnthropic(request: CareModelRequest): Promise<CareModelDecisio
     }),
   })) as { content?: Array<{ type?: string; text?: string }> };
   const text = payload.content?.find((part) => part.type === 'text')?.text;
-  return enforceAuthorityGuard(parseDecision(requireText(text, 'CARE_MODEL_MISSING_ANTHROPIC_TEXT')), request.authorityGuard);
+  return finalizeDecision(request, parseDecision(requireText(text, 'CARE_MODEL_MISSING_ANTHROPIC_TEXT')));
 }
 
 async function runGemini(request: CareModelRequest): Promise<CareModelDecision> {
@@ -305,9 +556,9 @@ async function runGemini(request: CareModelRequest): Promise<CareModelDecision> 
       generationConfig: { responseMimeType: 'application/json', temperature: 0.2, maxOutputTokens: 1400 },
     }),
   })) as { candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }> };
-  return enforceAuthorityGuard(
+  return finalizeDecision(
+    request,
     parseDecision(requireText(payload.candidates?.[0]?.content?.parts?.[0]?.text, 'CARE_MODEL_MISSING_GEMINI_TEXT')),
-    request.authorityGuard,
   );
 }
 
