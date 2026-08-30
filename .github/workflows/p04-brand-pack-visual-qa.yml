@@ -60,6 +60,20 @@ jobs:
             await expect(locator).toBeVisible();
           }
 
+          test('Home full-page desktop and mobile previews', async ({ browser }) => {
+            const modes = [
+              ['desktop', { width: 1440, height: 1000 }],
+              ['mobile', { width: 390, height: 844 }],
+            ];
+            for (const [mode, viewport] of modes) {
+              const page = await browser.newPage({ viewport });
+              await page.goto(base + '/', { waitUntil: 'networkidle' });
+              await page.waitForTimeout(1000);
+              await page.screenshot({ path: `${out}/home-full-${mode}.png`, fullPage: true });
+              await page.close();
+            }
+          });
+
           test('desktop and mobile Brand Pack target surfaces', async ({ browser }) => {
             const modes = [
               ['desktop', { width: 1440, height: 1000 }],
@@ -130,7 +144,7 @@ jobs:
           npx playwright test p04-brand-surface.spec.cjs --workers=1 --reporter=line
           rm p04-brand-surface.spec.cjs
           kill "$(cat /tmp/p04-next.pid)" || true
-          test "$(find /tmp/p04-brand-surface-evidence -name '*.png' | wc -l)" -eq 12
+          test "$(find /tmp/p04-brand-surface-evidence -name '*.png' | wc -l)" -eq 14
 
       - uses: actions/upload-artifact@v4
         with:
