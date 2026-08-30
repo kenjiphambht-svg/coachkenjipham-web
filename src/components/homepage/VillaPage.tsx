@@ -21,7 +21,7 @@ export default function VillaPage() {
         title="ESSENCE — Từ Bản sắc đến Hiện thực"
         ogTitle="ESSENCE — Câu chuyện cuộc sống của bạn là một kiệt tác."
         description="ESSENCE giúp điều được nhìn rõ đi tiếp vào lựa chọn, hành động và hiện thực có thể quan sát — trong đời sống hoặc công việc."
-        ogDescription="Từ điều được nhận ra đến lựa chọn có ý thức, hiện thực và bằng chứng để tiếp tục học và điều chỉnh."
+        ogDescription="Từ điều được nhận ra đến lựa chọn có ý thức và hiện thực có thể quan sát."
         image="https://coachkenjipham.com/essence-og-1200x630.png"
         url={CANONICAL_URL}
       />
@@ -55,8 +55,8 @@ export default function VillaPage() {
 
           <div className="mx-auto w-full max-w-6xl">
             <div className="e26-reveal max-w-[760px]">
-              <p className="mb-8 font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-e26-text-2">ESSENCE</p>
-              <h1 className="max-w-[720px] font-serif text-[44px] font-medium leading-[1.06] md:text-[66px] lg:text-[76px]">
+              <p className="mb-8 font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-[#E0C068]">ESSENCE</p>
+              <h1 className="max-w-[720px] font-serif text-[44px] font-medium leading-[1.06] tracking-[-0.018em] md:text-[66px] lg:text-[76px]">
                 Có những điều bạn biết rất rõ.
               </h1>
               <div className="mt-10 max-w-[620px] space-y-3 font-sans text-[17px] font-normal leading-[1.8] md:text-[19px]">
@@ -65,7 +65,7 @@ export default function VillaPage() {
                 <p>Biết một quyết định không thể để lâu hơn nữa.</p>
                 <p>Biết cách cũ không còn đưa bạn tới nơi bạn muốn.</p>
               </div>
-              <p className="mt-10 max-w-[610px] font-serif text-[27px] font-normal leading-[1.35] md:text-[34px]">
+              <p className="mt-10 max-w-[610px] font-serif text-[27px] font-normal leading-[1.35] tracking-[-0.01em] md:text-[34px]">
                 Nhưng từ <em>biết</em> đến thật sự sống và làm khác đi vẫn còn một khoảng.
               </p>
               <p className="mt-8 font-sans text-[15px] font-medium leading-[1.7]">ESSENCE bắt đầu từ khoảng đó.</p>
@@ -76,17 +76,17 @@ export default function VillaPage() {
         {/* 02 — ESSENCE / Reframe */}
         <section className="px-6 py-20 md:px-10 md:py-32">
           <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-[0.85fr_1.15fr] md:gap-20">
-            <h2 className="e26-reveal max-w-[430px] font-serif text-[34px] font-medium leading-[1.16] md:text-[48px]">
+            <h2 className="e26-reveal max-w-[430px] font-serif text-[34px] font-medium leading-[1.16] tracking-[-0.014em] md:text-[48px]">
               ESSENCE không bắt đầu bằng việc nói bạn nên làm gì.
             </h2>
             <div className="e26-reveal max-w-[650px] space-y-7 font-sans text-[17px] font-normal leading-[1.85] md:text-[18px]">
               <p>
-                ESSENCE làm việc ở khoảng giữa điều đã được nhìn ra và điều thật sự đi vào đời sống hoặc công việc: nhìn rõ hơn → tự chọn → đưa lựa chọn đó vào thực tế → nhìn điều xảy ra → học và điều chỉnh.
+                ESSENCE làm việc ở khoảng giữa điều đã được nhìn ra và điều thật sự đi vào đời sống hoặc công việc: NHẬN RA → LỰA CHỌN → HIỆN THỰC.
               </p>
               <p>
                 Ở cấp độ cá nhân, <strong className="font-medium">Bản sắc</strong> là phần bạn ngày càng nhận ra trung thực hơn qua những gì đã sống — cả điều dễ đón nhận lẫn những phần bạn từng né tránh, chưa hiểu hoặc chưa muốn nhận.
               </p>
-              <p className="font-serif text-[27px] leading-[1.4] md:text-[31px]">
+              <p className="font-serif text-[27px] font-medium leading-[1.4] tracking-[-0.01em] md:text-[31px]">
                 Không phải để đóng bạn vào một định nghĩa. <br className="hidden md:block" />Là để bạn có thêm quyền chọn.
               </p>
             </div>
@@ -94,21 +94,21 @@ export default function VillaPage() {
         </section>
 
         {/* 03 — Từ Bản sắc đến Hiện thực */}
-        <section className="border-y border-[color-mix(in_srgb,var(--essence-black-2026)_10%,transparent)] bg-[color-mix(in_srgb,var(--essence-white-2026)_55%,var(--essence-ivory-2026))] px-6 py-20 md:px-10 md:py-32">
+        <section className="border-y border-[#E0C068]/25 bg-[color-mix(in_srgb,var(--essence-white-2026)_55%,var(--essence-ivory-2026))] px-6 py-20 md:px-10 md:py-32">
           <div className="mx-auto max-w-6xl">
             <div className="e26-reveal grid gap-12 md:grid-cols-[0.9fr_1.1fr] md:gap-20">
               <div>
                 <p className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-e26-text-2">Core Principle</p>
-                <h2 className="mt-5 max-w-[520px] font-serif text-[38px] font-medium leading-[1.08] md:text-[56px]">
+                <h2 className="mt-5 max-w-[520px] font-serif text-[38px] font-medium leading-[1.08] tracking-[-0.016em] md:text-[56px]">
                   TỪ BẢN SẮC ĐẾN HIỆN THỰC.
                 </h2>
-                <p className="mt-8 font-sans text-[13px] font-medium uppercase tracking-[0.12em] text-e26-text-2">
-                  NHẬN RA → LỰA CHỌN → HIỆN THỰC → HỌC
+                <p className="mt-8 font-sans text-[13px] font-semibold uppercase tracking-[0.12em] text-e26-text">
+                  NHẬN RA → LỰA CHỌN → HIỆN THỰC
                 </p>
               </div>
 
               <div className="max-w-[660px] space-y-7 font-sans text-[17px] font-normal leading-[1.85] md:text-[18px]">
-                <p>Một điều được nhìn ra chỉ thật sự có ý nghĩa khi nó bắt đầu có mặt trong thực tế.</p>
+                <p className="font-medium">Một điều được nhìn ra chỉ thật sự có ý nghĩa khi nó bắt đầu có mặt trong thực tế.</p>
                 <div className="grid gap-x-10 gap-y-3 md:grid-cols-2">
                   <p>Một ranh giới được nói ra.</p>
                   <p>Một lựa chọn nghề nghiệp được đưa ra.</p>
@@ -127,7 +127,7 @@ export default function VillaPage() {
         {/* 04 — Brand Signature Signal */}
         <section className="flex min-h-[68svh] items-center bg-e26-black px-6 py-28 text-e26-ivory md:min-h-[76svh] md:px-10 md:py-36">
           <div className="e26-reveal mx-auto max-w-6xl text-center">
-            <p className="mx-auto max-w-[980px] font-serif text-[48px] font-normal leading-[1.04] md:text-[76px] lg:text-[92px]">
+            <p className="mx-auto max-w-[980px] font-serif text-[48px] font-normal leading-[1.04] tracking-[-0.018em] md:text-[76px] lg:text-[92px]">
               Câu chuyện cuộc sống của bạn là một kiệt tác.
             </p>
           </div>
@@ -136,25 +136,25 @@ export default function VillaPage() {
         {/* 05 — Two contexts */}
         <section className="px-6 py-20 md:px-10 md:py-32">
           <div className="mx-auto max-w-6xl">
-            <h2 className="e26-reveal max-w-[760px] font-serif text-[38px] font-medium leading-[1.1] md:text-[56px]">
+            <h2 className="e26-reveal max-w-[760px] font-serif text-[38px] font-medium leading-[1.1] tracking-[-0.016em] md:text-[56px]">
               HAI BỐI CẢNH. CÙNG MỘT BẢN SẮC
             </h2>
 
             <div className="mt-14 grid gap-0 border-y border-[color-mix(in_srgb,var(--essence-black-2026)_14%,transparent)] md:grid-cols-2 md:divide-x md:divide-[color-mix(in_srgb,var(--essence-black-2026)_14%,transparent)]">
               <article className="e26-reveal py-10 md:pr-14 md:py-14">
                 <p className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-e26-text-2">ESSENCE COACHING</p>
-                <p className="mt-6 max-w-[480px] font-serif text-[27px] font-normal leading-[1.4] md:text-[32px]">
+                <p className="mt-6 max-w-[480px] font-serif text-[27px] font-normal leading-[1.4] tracking-[-0.01em] md:text-[32px]">
                   Khi điều cần nhìn rõ nằm trong đời sống của bạn — lựa chọn, mối quan hệ, vai trò, gia đình hay cách bạn đang sống với bản thân.
                 </p>
-                <Link className={`${softLink} mt-9`} href="/coaching">ESSENCE Coaching <span aria-hidden="true">→</span></Link>
+                <Link className={`${softLink} mt-9`} href="/coaching">ESSENCE Coaching <span className="text-[#E0C068]" aria-hidden="true">→</span></Link>
               </article>
 
               <article className="e26-reveal border-t border-[color-mix(in_srgb,var(--essence-black-2026)_14%,transparent)] py-10 md:border-t-0 md:pl-14 md:py-14">
                 <p className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-e26-text-2">ESSENCE ADVISORY</p>
-                <p className="mt-6 max-w-[480px] font-serif text-[27px] font-normal leading-[1.4] md:text-[32px]">
+                <p className="mt-6 max-w-[480px] font-serif text-[27px] font-normal leading-[1.4] tracking-[-0.01em] md:text-[32px]">
                   Khi điều cần nhìn rõ nằm trong công việc hoặc doanh nghiệp — một bài toán quan trọng, quyết định có hệ quả, cách vận hành hay thay đổi cần được đưa vào thực tế.
                 </p>
-                <Link className={`${softLink} mt-9`} href="/advisory">ESSENCE Advisory <span aria-hidden="true">→</span></Link>
+                <Link className={`${softLink} mt-9`} href="/advisory">ESSENCE Advisory <span className="text-[#E0C068]" aria-hidden="true">→</span></Link>
               </article>
             </div>
 
@@ -173,17 +173,17 @@ export default function VillaPage() {
             </div>
 
             <div className="e26-reveal max-w-[680px]">
-              <h2 className="font-serif text-[38px] font-medium leading-[1.1] md:text-[54px]">
+              <h2 className="font-serif text-[38px] font-medium leading-[1.1] tracking-[-0.016em] md:text-[54px]">
                 VÌ SAO CẢ HAI CÙNG LÀ BẢN SẮC?
               </h2>
               <div className="mt-9 space-y-6 font-sans text-[17px] font-normal leading-[1.85] md:text-[18px]">
                 <p>Trước ESSENCE, tôi từng làm nhiều công việc liên quan đến hình ảnh, định vị và cách một người xuất hiện trước công chúng.</p>
                 <p>Tôi nhận ra một khoảng lệch: hình ảnh có thể được xây rất nhanh, trong khi điều người đứng phía sau thật sự muốn đứng về và có thể sống cùng lâu dài chưa chắc đã rõ.</p>
-                <p className="font-serif text-[28px] leading-[1.35] md:text-[34px]">“Điều gì ở đây thật sự đáng để được xây?”</p>
-                <p>Dù ở CÁ NHÂN hay CÔNG VIỆC, ESSENCE vẫn quay lại một mạch: nhìn điều đang xảy ra → sở hữu lựa chọn hoặc quyết định → đưa nó vào thực tế → nhìn bằng chứng.</p>
+                <p className="font-serif text-[28px] font-medium leading-[1.35] tracking-[-0.01em] md:text-[34px]">“Điều gì ở đây thật sự đáng để được xây?”</p>
+                <p>Dù ở CÁ NHÂN hay CÔNG VIỆC, ESSENCE vẫn quay lại một mạch: NHẬN RA → LỰA CHỌN → HIỆN THỰC.</p>
               </div>
-              <p className="mt-9 font-serif text-[21px] leading-[1.4]">Kenji Phạm <span className="font-sans text-[12px] uppercase tracking-[0.13em] text-e26-text-2">— Founder, ESSENCE</span></p>
-              <Link className={`${softLink} mt-8`} href="/ve-kenji">Về Kenji <span aria-hidden="true">→</span></Link>
+              <p className="mt-9 font-serif text-[21px] leading-[1.4]">Kenji Phạm <span className="font-sans text-[12px] uppercase tracking-[0.13em] text-[#E0C068]">— Founder, ESSENCE</span></p>
+              <Link className={`${softLink} mt-8`} href="/ve-kenji">Về Kenji <span className="text-[#E0C068]" aria-hidden="true">→</span></Link>
             </div>
           </div>
         </section>
@@ -193,14 +193,14 @@ export default function VillaPage() {
           <div className="mx-auto max-w-6xl">
             <div className="e26-reveal grid gap-12 md:grid-cols-[1.05fr_0.95fr] md:gap-20">
               <div className="max-w-[620px]">
-                <h2 className="font-serif text-[38px] font-medium leading-[1.12] md:text-[54px]">Nếu chưa rõ nên bắt đầu từ đâu.</h2>
+                <h2 className="font-serif text-[38px] font-medium leading-[1.12] tracking-[-0.014em] md:text-[54px]">Nếu chưa rõ nên bắt đầu từ đâu.</h2>
                 <p className="mt-8 font-sans text-[17px] font-normal leading-[1.85] md:text-[18px]">
                   Có thể bạn đã thấy một điều có liên quan tới bạn, nhưng chưa gọi tên được nó.
                 </p>
-                <p className="mt-5 font-serif text-[27px] font-normal leading-[1.4] md:text-[32px]">
+                <p className="mt-5 font-serif text-[27px] font-normal leading-[1.4] tracking-[-0.01em] md:text-[32px]">
                   Khởi đầu là nơi để điều còn mơ hồ bắt đầu có hình — trước khi bạn tự chọn bước tiếp theo.
                 </p>
-                <Link className={`${softLink} mt-8`} href="/khoi-dau">Khởi đầu <span aria-hidden="true">→</span></Link>
+                <Link className={`${softLink} mt-8`} href="/khoi-dau">Khởi đầu <span className="text-[#E0C068]" aria-hidden="true">→</span></Link>
 
                 <div className="mt-12 border-t border-[color-mix(in_srgb,var(--essence-black-2026)_12%,transparent)] pt-7">
                   <p className="font-sans text-[15px] leading-[1.7] text-e26-text-2">Nếu bạn muốn hiểu thêm trước, Góc đọc vẫn là một lối đi hợp lệ.</p>
@@ -209,7 +209,7 @@ export default function VillaPage() {
               </div>
 
               <aside className="border-t border-[color-mix(in_srgb,var(--essence-black-2026)_14%,transparent)] pt-8 md:border-l md:border-t-0 md:pl-12 md:pt-0">
-                <p className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-e26-text-2">ĐIỀU ESSENCE CAM KẾT GIỮ</p>
+                <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-e26-text">ĐIỀU ESSENCE CAM KẾT GIỮ</p>
                 <div className="mt-7 space-y-4 font-sans text-[17px] font-normal leading-[1.8] md:text-[18px]">
                   <p>ESSENCE giữ quyền lựa chọn ở bạn.</p>
                   <p>Không dùng một chiếc nhãn để định nghĩa bạn.</p>
@@ -220,7 +220,7 @@ export default function VillaPage() {
             </div>
 
             <div className="e26-reveal mt-20 border-t border-[color-mix(in_srgb,var(--essence-black-2026)_14%,transparent)] pt-10 md:mt-28 md:pt-12">
-              <p className="max-w-[760px] font-serif text-[28px] font-normal leading-[1.4] md:text-[38px]">
+              <p className="max-w-[760px] font-serif text-[28px] font-medium leading-[1.4] tracking-[-0.01em] md:text-[38px]">
                 Nếu đã rõ, bạn có thể đi thẳng tới nơi phù hợp. Nếu chưa rõ, Khởi đầu là một nơi để bắt đầu.
               </p>
               <p className="mt-8 font-sans text-[16px] font-normal leading-[1.8] text-e26-text-2 md:text-[17px]">
