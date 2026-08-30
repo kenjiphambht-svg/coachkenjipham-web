@@ -17,11 +17,10 @@ const TRUST_LINKS = [
 const HOME_COACHING_CHILDREN = [
   { href: "/ban-sac-cua-ban", label: "Bản Sắc Của Bạn" },
   { href: "/ban-sac-cua-con", label: "Bản Sắc Của Con" },
-  { href: "/phuong-phap", label: "Phương pháp" },
+  { href: "/phuong-phap", label: "Phương pháp coaching" },
 ];
 
-const HOME_PRIMARY_LINKS = [
-  { href: "/advisory", label: "ESSENCE Advisory" },
+const HOME_SHARED_LINKS = [
   { href: "/khoi-dau", label: "Khởi đầu" },
   { href: "/ve-kenji", label: "Về Kenji" },
   { href: "/#goc-doc", label: "Góc đọc" },
@@ -149,50 +148,71 @@ export default function HomeHeader({ homeIa = false }: HomeHeaderProps) {
           </div>
 
           {homeIa ? (
-            <nav aria-label="Điều hướng trang" onClick={(e) => e.stopPropagation()} className="relative z-10 flex-1 overflow-y-auto pb-12 pt-12 md:flex md:items-center md:overflow-visible md:pb-16 md:pt-6">
-              <div className="grid w-full gap-14 md:grid-cols-[1.12fr_0.88fr] md:gap-24 lg:gap-36">
-                <div className={`relative border-l border-[#E0C068]/45 pl-5 transition-transform md:pl-9 ${open ? "translate-y-0" : "translate-y-3"} ${thresholdMotion}`}>
-                  <span className="absolute -left-px top-0 h-16 w-px bg-[#E0C068]" aria-hidden="true" />
-                  <Link
-                    ref={firstLinkRef}
-                    href="/coaching"
-                    tabIndex={open ? 0 : -1}
-                    onClick={closeMenu}
-                    className="group relative inline-flex min-h-11 items-center font-serif text-[38px] font-medium leading-[1.03] tracking-[-0.018em] text-e26-text md:text-[56px] lg:text-[62px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
-                  >
-                    ESSENCE Coaching
-                    <span className={`absolute -bottom-2 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform group-hover:scale-x-100 ${thresholdMotion}`} aria-hidden="true" />
-                  </Link>
+            <nav aria-label="Điều hướng trang" onClick={(e) => e.stopPropagation()} className="relative z-10 flex-1 overflow-y-auto pb-12 pt-10 md:flex md:items-center md:overflow-visible md:pb-14 md:pt-6">
+              <div className="w-full">
+                <div className="grid gap-10 md:grid-cols-2 md:gap-16 lg:gap-24">
+                  <div className={`relative border-l border-[#E0C068]/45 pl-5 transition-transform md:pl-9 ${open ? "translate-y-0" : "translate-y-3"} ${thresholdMotion}`}>
+                    <span className="absolute -left-px top-0 h-16 w-px bg-[#E0C068]" aria-hidden="true" />
+                    <Link
+                      ref={firstLinkRef}
+                      href="/coaching"
+                      tabIndex={open ? 0 : -1}
+                      onClick={closeMenu}
+                      className="group relative inline-flex min-h-11 items-center font-serif text-[38px] font-medium leading-[1.03] tracking-[-0.018em] text-e26-text md:text-[52px] lg:text-[58px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
+                    >
+                      ESSENCE Coaching
+                      <span className={`absolute -bottom-2 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform group-hover:scale-x-100 ${thresholdMotion}`} aria-hidden="true" />
+                    </Link>
 
-                  <div className="mt-7 flex flex-col gap-1 md:mt-10 md:gap-2">
-                    {HOME_COACHING_CHILDREN.map((link) => (
+                    <div className="mt-6 flex flex-col gap-1 md:mt-8 md:gap-2">
+                      {HOME_COACHING_CHILDREN.map((link) => (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          tabIndex={open ? 0 : -1}
+                          onClick={closeMenu}
+                          className={`group flex min-h-11 w-fit items-center gap-3 font-sans text-[15px] leading-[1.5] text-e26-text-2 transition-colors hover:text-e26-text md:text-[16px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream ${thresholdMotion}`}
+                        >
+                          <span className={`h-px w-5 bg-[color-mix(in_srgb,var(--essence-black-2026)_22%,transparent)] transition-all group-hover:w-8 group-hover:bg-[#E0C068] ${thresholdMotion}`} aria-hidden="true" />
+                          {link.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className={`relative border-l border-[#E0C068]/45 pl-5 transition-transform md:pl-9 ${open ? "translate-y-0" : "translate-y-3"} ${thresholdMotion}`}>
+                    <span className="absolute -left-px top-0 h-16 w-px bg-[#E0C068]" aria-hidden="true" />
+                    <Link
+                      href="/advisory"
+                      tabIndex={open ? 0 : -1}
+                      onClick={closeMenu}
+                      className="group relative inline-flex min-h-11 items-center font-serif text-[38px] font-medium leading-[1.03] tracking-[-0.018em] text-e26-text md:text-[52px] lg:text-[58px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
+                    >
+                      ESSENCE Advisory
+                      <span className={`absolute -bottom-2 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform group-hover:scale-x-100 ${thresholdMotion}`} aria-hidden="true" />
+                    </Link>
+                  </div>
+                </div>
+
+                <div className={`mt-10 border-t border-[color-mix(in_srgb,var(--essence-black-2026)_13%,transparent)] pt-7 transition-transform md:mt-12 md:pt-8 ${open ? "translate-y-0" : "translate-y-5"} ${thresholdMotion}`}>
+                  <div className="mb-4 flex items-center gap-4 md:mb-5">
+                    <span className="h-px w-8 bg-[#E0C068]/70" aria-hidden="true" />
+                    <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-e26-text-2">ESSENCE</span>
+                  </div>
+                  <div className="grid gap-x-10 gap-y-1 sm:grid-cols-2 md:grid-cols-4">
+                    {HOME_SHARED_LINKS.map((link) => (
                       <Link
                         key={link.href}
                         href={link.href}
                         tabIndex={open ? 0 : -1}
                         onClick={closeMenu}
-                        className={`group flex min-h-11 w-fit items-center gap-3 font-sans text-[15px] leading-[1.5] text-e26-text-2 transition-colors hover:text-e26-text md:text-[16px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream ${thresholdMotion}`}
+                        className={`group relative flex min-h-11 w-fit items-center font-serif text-[27px] font-normal leading-[1.12] tracking-[-0.01em] text-e26-text md:text-[30px] lg:text-[32px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream`}
                       >
-                        <span className={`h-px w-5 bg-[color-mix(in_srgb,var(--essence-black-2026)_22%,transparent)] transition-all group-hover:w-8 group-hover:bg-[#E0C068] ${thresholdMotion}`} aria-hidden="true" />
                         {link.label}
+                        <span className={`absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform group-hover:scale-x-100 ${thresholdMotion}`} aria-hidden="true" />
                       </Link>
                     ))}
                   </div>
-                </div>
-
-                <div className={`grid content-start gap-2 border-t border-[color-mix(in_srgb,var(--essence-black-2026)_12%,transparent)] pt-8 transition-transform md:border-t-0 md:pt-0 ${open ? "translate-y-0" : "translate-y-5"} ${thresholdMotion}`}>
-                  {HOME_PRIMARY_LINKS.map((link, index) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      tabIndex={open ? 0 : -1}
-                      onClick={closeMenu}
-                      className={`group relative flex min-h-11 w-fit items-center font-serif leading-[1.08] tracking-[-0.012em] text-e26-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream ${index === 0 ? "text-[34px] font-medium md:text-[48px]" : "text-[28px] font-normal md:text-[38px]"}`}
-                    >
-                      {link.label}
-                      <span className={`absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform group-hover:scale-x-100 ${thresholdMotion}`} aria-hidden="true" />
-                    </Link>
-                  ))}
                 </div>
               </div>
             </nav>
