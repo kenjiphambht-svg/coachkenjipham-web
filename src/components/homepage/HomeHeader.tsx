@@ -1,27 +1,11 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-// Header dùng chung cho toàn site (nhiều trang, không chỉ trang chủ) — theo
-// BRIEF-CLAUDE-CODE-trang-chu-CHOT.md, quyết định B: menu sổ dạng tấm phủ
-// toàn màn hình (không còn 6 link nằm ngang trên thanh header).
-// (SỬA 07/08/2026: bỏ số đếm cụ thể "10 trang" — route /trang-chu-v2 đã
-// retire, số trang dùng chung header có thể đổi theo thời gian nên không
-// khoá cứng một con số dễ lỗi thời.)
-// 6 mục đều là link trang thật, không còn anchor cuộn (#essence, #hat-mam,
-// #ghi-chep đã bỏ khỏi menu theo BAN-CHOT).
 const PRODUCT_LINKS = [
   { href: "/ban-sac-cua-ban", label: "Bản Sắc Của Bạn" },
   { href: "/ban-sac-cua-con", label: "Bản Sắc Của Con" },
 ];
 
-// SỬA 23/07/2026 (brief bổ sung mục menu ⑨, MT4) — thêm "Một góc để quay lại".
-// Section ⑨ nằm TRÊN trang chủ (không có route trang riêng — 3 card còn "chưa
-// mở"), nên trỏ ANCHOR tới section: href đầy đủ "/#..." để chạy
-// đúng CẢ khi đang ở trang khác dùng chung Header (10 trang) — bấm sẽ về trang
-// chủ rồi cuộn tới ⑨. Đặt ngay SAU "Điều Essence không hứa" (⑧) và TRƯỚC "Liên
-// hệ" — đúng thứ tự mạch cuộn trang (⑧ rồi ⑨), giữ Liên hệ ở cuối theo lệ.
-// (Lưu ý: menu vốn đã bỏ anchor #essence/#hat-mam/#ghi-chep theo BAN-CHOT; đây
-// là anchor DUY NHẤT được thêm lại theo yêu cầu đích danh của Kenji cho ⑨.)
 const TRUST_LINKS = [
   { href: "/ve-kenji", label: "Về Kenji" },
   { href: "/phuong-phap", label: "Phương pháp" },
@@ -30,8 +14,20 @@ const TRUST_LINKS = [
   { href: "/lien-he", label: "Liên hệ" },
 ];
 
-// Brand Pack v1.0 — shared shell uses the approved ESSENCE master identity only.
-// Founder signature is reserved for authorship contexts, not global navigation.
+const HOME_COACHING_CHILDREN = [
+  { href: "/ban-sac-cua-ban", label: "Bản Sắc Của Bạn" },
+  { href: "/ban-sac-cua-con", label: "Bản Sắc Của Con" },
+  { href: "/phuong-phap", label: "Phương pháp" },
+];
+
+const HOME_PRIMARY_LINKS = [
+  { href: "/advisory", label: "ESSENCE Advisory" },
+  { href: "/khoi-dau", label: "Khởi đầu" },
+  { href: "/ve-kenji", label: "Về Kenji" },
+  { href: "/#goc-doc", label: "Góc đọc" },
+  { href: "/lien-he", label: "Liên hệ" },
+];
+
 function HeaderLogo() {
   return (
     <span className="flex items-center py-1">
@@ -44,13 +40,16 @@ function HeaderLogo() {
   );
 }
 
-export default function HomeHeader() {
+type HomeHeaderProps = {
+  homeIa?: boolean;
+};
+
+export default function HomeHeader({ homeIa = false }: HomeHeaderProps) {
   const [open, setOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
 
-  // Escape đóng menu + trả focus về nút MENU.
   useEffect(() => {
     if (!open) return;
 
@@ -62,7 +61,6 @@ export default function HomeHeader() {
       }
       if (e.key !== "Tab" || !panelRef.current) return;
 
-      // Focus trap: Tab không thoát ra ngoài tấm phủ.
       const focusable = panelRef.current.querySelectorAll<HTMLElement>(
         'a[href], button:not([disabled])'
       );
@@ -89,16 +87,11 @@ export default function HomeHeader() {
     };
   }, [open]);
 
+  const closeMenu = () => setOpen(false);
+
   return (
-    <header className="relative z-50 bg-e26-ivory border-b border-e26-border px-6">
-      {/* TINH CHỈNH 19/07/2026 (lần 4, v8-FINAL) — thu gọn thêm: py-2.5 (10px,
-          lần 3) vẫn còn thấy dày → py-1.5 (6px). Áp cùng mức cho cả header
-          cuộn (đây) lẫn tấm phủ menu (bên dưới) để nhất quán.
-          TINH CHỈNH 20/07/2026 (lần 5) — thu hẹp thêm 1 nấc: py-1.5 (6px) →
-          py-1 (4px), CHỈ khung/spacing, KHÔNG đụng kích thước 2 file SVG logo
-          (giữ nguyên h-10/h-12 chữ ký, h-[28px]/h-[34px] wordmark). Áp cùng
-          mức cho cả 2 chỗ (đây + tấm phủ menu bên dưới). */}
-      <div className="max-w-[1120px] mx-auto flex items-center justify-between py-1">
+    <header className="relative z-50 border-b border-e26-border bg-e26-ivory px-6">
+      <div className="mx-auto flex max-w-[1120px] items-center justify-between py-1">
         <Link
           href="/"
           aria-label="Về trang chủ"
@@ -112,14 +105,12 @@ export default function HomeHeader() {
           onClick={() => setOpen(true)}
           aria-expanded={open}
           aria-controls="site-menu-panel"
-          className="font-sans text-sm tracking-[0.16em] uppercase text-e26-text hover:text-e26-gold-deep transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory"
+          className="font-sans text-sm uppercase tracking-[0.16em] text-e26-text transition-colors duration-300 hover:text-e26-gold-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory"
         >
           Menu
         </button>
       </div>
 
-      {/* Tấm phủ toàn màn hình — luôn nằm trong DOM để transition mượt,
-          ẩn bằng transform + opacity khi đóng (không unmount). */}
       <div
         id="site-menu-panel"
         ref={panelRef}
@@ -127,14 +118,28 @@ export default function HomeHeader() {
         aria-modal="true"
         aria-label="Menu điều hướng"
         aria-hidden={!open}
-        onClick={() => setOpen(false)}
-        className={`fixed inset-0 z-50 bg-e26-cream transition-all duration-[400ms] ease-out motion-reduce:transition-none motion-reduce:duration-0 ${
+        onClick={closeMenu}
+        className={`fixed inset-0 z-50 overflow-hidden bg-e26-cream transition-all duration-[420ms] ease-out motion-reduce:transition-none motion-reduce:duration-0 ${
           open
-            ? "opacity-100 translate-y-0 pointer-events-auto"
-            : "opacity-0 -translate-y-4 pointer-events-none"
+            ? "pointer-events-auto translate-y-0 opacity-100"
+            : "pointer-events-none -translate-y-3 opacity-0"
         }`}
       >
-        <div className="max-w-[1120px] mx-auto h-full flex flex-col px-6">
+        {homeIa && (
+          <>
+            <div
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--essence-white-2026) 88%, transparent), transparent 34%), linear-gradient(118deg, color-mix(in srgb, var(--essence-ivory-2026) 72%, transparent), transparent 54%)",
+              }}
+              aria-hidden="true"
+            />
+            <div className="pointer-events-none absolute bottom-0 right-[12%] h-[58%] w-px bg-[#E0C068]/20" aria-hidden="true" />
+          </>
+        )}
+
+        <div className="relative mx-auto flex h-full max-w-[1180px] flex-col px-6 md:px-10">
           <div className="flex items-center justify-between py-1">
             <Link
               href="/"
@@ -150,51 +155,106 @@ export default function HomeHeader() {
               tabIndex={open ? 0 : -1}
               onClick={(e) => {
                 e.stopPropagation();
-                setOpen(false);
+                closeMenu();
                 menuButtonRef.current?.focus();
               }}
-              className="font-sans text-sm tracking-[0.16em] uppercase text-e26-text hover:text-e26-gold-deep transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
+              className="font-sans text-sm uppercase tracking-[0.16em] text-e26-text transition-colors duration-300 hover:text-e26-gold-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
             >
               Đóng
             </button>
           </div>
 
-          <nav
-            aria-label="Điều hướng trang"
-            onClick={(e) => e.stopPropagation()}
-            className="flex-1 flex flex-col items-start justify-center gap-8 md:gap-10 pb-16 w-fit"
-          >
-            <div className="flex flex-col gap-4 md:gap-5">
-              {PRODUCT_LINKS.map((link, i) => (
-                <Link
-                  key={link.href}
-                  ref={i === 0 ? firstLinkRef : undefined}
-                  href={link.href}
-                  tabIndex={open ? 0 : -1}
-                  onClick={() => setOpen(false)}
-                  className="font-serif font-normal text-[32px] md:text-[44px] leading-tight text-e26-text hover:text-e26-gold-deep transition-colors duration-300 min-h-11 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
+          {homeIa ? (
+            <nav
+              aria-label="Điều hướng trang"
+              onClick={(e) => e.stopPropagation()}
+              className="relative z-10 flex-1 overflow-y-auto pb-12 pt-10 md:flex md:items-center md:overflow-visible md:pb-16 md:pt-6"
+            >
+              <div className="grid w-full gap-12 md:grid-cols-[1.08fr_0.92fr] md:gap-24 lg:gap-32">
+                <div className="border-l border-[#E0C068]/45 pl-5 md:pl-8">
+                  <Link
+                    ref={firstLinkRef}
+                    href="/coaching"
+                    tabIndex={open ? 0 : -1}
+                    onClick={closeMenu}
+                    className="group relative inline-block font-serif text-[38px] font-medium leading-[1.03] tracking-[-0.018em] text-e26-text md:text-[56px] lg:text-[62px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
+                  >
+                    ESSENCE Coaching
+                    <span className="absolute -bottom-2 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform duration-300 group-hover:scale-x-100" aria-hidden="true" />
+                  </Link>
 
-            <div className="w-16 h-px bg-e26-border" aria-hidden="true" />
+                  <div className="mt-7 flex flex-col gap-3 md:mt-9 md:gap-4">
+                    {HOME_COACHING_CHILDREN.map((link) => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        tabIndex={open ? 0 : -1}
+                        onClick={closeMenu}
+                        className="group flex w-fit items-center gap-3 font-sans text-[15px] leading-[1.5] text-e26-text-2 transition-colors duration-300 hover:text-e26-text md:text-[16px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
+                      >
+                        <span className="h-px w-5 bg-[color-mix(in_srgb,var(--essence-black-2026)_22%,transparent)] transition-all duration-300 group-hover:w-8 group-hover:bg-[#E0C068]" aria-hidden="true" />
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
 
-            <div className="flex flex-col gap-4 md:gap-5">
-              {TRUST_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  tabIndex={open ? 0 : -1}
-                  onClick={() => setOpen(false)}
-                  className="font-serif font-normal text-[32px] md:text-[44px] leading-tight text-e26-text hover:text-e26-gold-deep transition-colors duration-300 min-h-11 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          </nav>
+                <div className="grid content-start gap-5 border-t border-[color-mix(in_srgb,var(--essence-black-2026)_12%,transparent)] pt-8 md:border-t-0 md:pt-0">
+                  {HOME_PRIMARY_LINKS.map((link, index) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      tabIndex={open ? 0 : -1}
+                      onClick={closeMenu}
+                      className={`group relative w-fit font-serif leading-[1.08] tracking-[-0.012em] text-e26-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream ${
+                        index === 0 ? "text-[34px] font-medium md:text-[48px]" : "text-[28px] font-normal md:text-[38px]"
+                      }`}
+                    >
+                      {link.label}
+                      <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform duration-300 group-hover:scale-x-100" aria-hidden="true" />
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </nav>
+          ) : (
+            <nav
+              aria-label="Điều hướng trang"
+              onClick={(e) => e.stopPropagation()}
+              className="flex w-fit flex-1 flex-col items-start justify-center gap-8 pb-16 md:gap-10"
+            >
+              <div className="flex flex-col gap-4 md:gap-5">
+                {PRODUCT_LINKS.map((link, i) => (
+                  <Link
+                    key={link.href}
+                    ref={i === 0 ? firstLinkRef : undefined}
+                    href={link.href}
+                    tabIndex={open ? 0 : -1}
+                    onClick={closeMenu}
+                    className="min-h-11 font-serif text-[32px] font-normal leading-tight text-e26-text transition-colors duration-300 hover:text-e26-gold-deep md:text-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+
+              <div className="h-px w-16 bg-e26-border" aria-hidden="true" />
+
+              <div className="flex flex-col gap-4 md:gap-5">
+                {TRUST_LINKS.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    tabIndex={open ? 0 : -1}
+                    onClick={closeMenu}
+                    className="min-h-11 font-serif text-[32px] font-normal leading-tight text-e26-text transition-colors duration-300 hover:text-e26-gold-deep md:text-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </nav>
+          )}
         </div>
       </div>
     </header>
