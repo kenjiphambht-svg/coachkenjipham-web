@@ -128,7 +128,7 @@ function authorityGuardForFixture(fixtureId?: string): CareAuthorityGuard | unde
   };
 }
 
-function safeError(error: unknown): string {
+export function safeP09ProviderError(error: unknown): string {
   if (!(error instanceof Error)) return 'CARE_TEST_UNKNOWN_ERROR';
   if (
     error.message.startsWith('CARE_MODEL_') ||
@@ -137,6 +137,8 @@ function safeError(error: unknown): string {
   ) {
     return error.message.slice(0, 180);
   }
+  if (error instanceof SyntaxError) return 'CARE_TEST_PROVIDER_RESPONSE_PARSE_ERROR';
+  if (error instanceof TypeError) return 'CARE_TEST_PROVIDER_RUNTIME_TYPE_ERROR';
   return 'CARE_TEST_PROVIDER_ERROR';
 }
 
@@ -273,11 +275,10 @@ async function p09ReviewGithubOidcAuthorized(req: NextApiRequest): Promise<boole
 
 function p09ModelSecret(provider: CareModelProvider, env: P09ReviewRunnerEnv): string {
   const common = env.CARE_P09_REVIEW_MODEL_API_KEY || env.CARE_MODEL_API_KEY || '';
-  if (common) return common;
-  if (provider === 'openai_compatible_chat') return env.OPENROUTER_API_KEY || '';
-  if (provider === 'openai_responses') return env.OPENAI_API_KEY || '';
-  if (provider === 'anthropic_messages') return env.ANTHROPIC_API_KEY || '';
-  if (provider === 'google_gemini') return env.GEMINI_API_KEY || env.GOOGLE_API_KEY || '';
+  if (provider === 'google_gemini') return env.GEMINI_API_KEY || env.GOOGLE_API_KEY || common;
+  if (provider === 'openai_compatible_chat') return env.OPENROUTER_API_KEY || common;
+  if (provider === 'openai_responses') return env.OPENAI_API_KEY || common;
+  if (provider === 'anthropic_messages') return env.ANTHROPIC_API_KEY || common;
   return '';
 }
 
@@ -389,17 +390,19 @@ function p09RunnerSelfTest() {
   const configuredToken = process.env.CARE_AI_TEST_ACCESS_TOKEN || '';
   let modelSecretAvailable = false;
   let modelConfigReady = false;
+  let approvedGeminiConfig = false;
   try {
     const config = resolveP09ReviewModelConfig();
     modelSecretAvailable = Boolean(config.apiKey);
     modelConfigReady = Boolean(config.provider && config.model);
+    approvedGeminiConfig = config.provider === 'google_gemini' && config.model === 'gemini-2.5-flash';
   } catch (error) {
     if (!(error instanceof Error) || error.message !== 'CARE_P09_REVIEW_MODEL_SECRET_MISSING') {
       return {
         passed: false,
         mode: 'CLOUDFLARE_P09_SYNTHETIC_REVIEW_RUNNER_SELF_TEST',
         runnerRevision: P09_RUNNER_REVISION,
-        error: safeError(error),
+        error: safeP09ProviderError(error),
         runnerEnabled: p09ReviewRunnerEnabled(),
         accessTokenAuthorizerReady: careTestAccessAuthorized(configuredToken),
         accessTokenRuntimeOnly: true,
@@ -407,6 +410,7 @@ function p09RunnerSelfTest() {
         callerAuthMode: 'GITHUB_OIDC_REPO_BOUND',
         modelConfigReady: false,
         modelSecretAvailable: false,
+        approvedGeminiConfig: false,
         providerInvoked: false,
         secretExposed: false,
       } as const;
@@ -416,7 +420,7 @@ function p09RunnerSelfTest() {
   const runnerEnabled = p09ReviewRunnerEnabled();
   const accessTokenAuthorizerReady = Boolean(configuredToken) && careTestAccessAuthorized(configuredToken);
   return {
-    passed: runnerEnabled && accessTokenAuthorizerReady && modelConfigReady && modelSecretAvailable,
+    passed: runnerEnabled && accessTokenAuthorizerReady && modelConfigReady && modelSecretAvailable && approvedGeminiConfig,
     mode: 'CLOUDFLARE_P09_SYNTHETIC_REVIEW_RUNNER_SELF_TEST',
     runnerRevision: P09_RUNNER_REVISION,
     runnerEnabled,
@@ -426,6 +430,7 @@ function p09RunnerSelfTest() {
     callerAuthMode: 'GITHUB_OIDC_REPO_BOUND',
     modelConfigReady,
     modelSecretAvailable,
+    approvedGeminiConfig,
     providerInvoked: false,
     secretExposed: false,
     productionActionExecuted: false,
@@ -455,10 +460,13 @@ async function runP09Review(req: NextApiRequest, res: NextApiResponse) {
   try {
     const input = parseP09ReviewRunnerInput(p09RunnerRawInput(req));
     const config = resolveP09ReviewModelConfig();
+    if (config.provider !== 'google_gemini' || config.model !== 'gemini-2.5-flash') {
+      return res.status(503).json({ error: 'CARE_P09_REVIEW_GEMINI_CONFIG_REQUIRED' });
+    }
     const decision = await runCareModel({ config, channel: input.channel, turns: input.turns });
     return res.status(200).json(p09ReviewResponse(input, decision));
   } catch (error) {
-    const code = safeError(error);
+    const code = safeP09ProviderError(error);
     if (code === 'CARE_P09_REVIEW_MODEL_SECRET_MISSING') return res.status(503).json({ error: code });
     if (code.startsWith('CARE_P09_REVIEW_')) return res.status(400).json({ error: code });
     return res.status(502).json({ error: code });
@@ -578,6 +586,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       paymentBookingDeleteQuoteExecuted: false,
     });
   } catch (error) {
-    return res.status(502).json({ error: safeError(error) });
+    return res.status(502).json({ error: safeP09ProviderError(error) });
   }
 }
