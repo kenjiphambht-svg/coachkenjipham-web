@@ -51,7 +51,6 @@ jobs:
           done
           cat > p04-brand-surface.spec.cjs <<'JS'
           const { test, expect } = require('@playwright/test');
-          const fs = require('node:fs');
           const out = '/tmp/p04-brand-surface-evidence';
           const base = 'http://127.0.0.1:3000';
 
@@ -88,19 +87,35 @@ jobs:
             }
           });
 
-          test('shared menu interaction remains unchanged', async ({ page }) => {
-            await page.setViewportSize({ width: 390, height: 844 });
-            await page.goto(base + '/', { waitUntil: 'networkidle' });
-            const menu = page.getByRole('button', { name: 'Menu' });
-            await menu.click();
-            await expect(menu).toHaveAttribute('aria-expanded', 'true');
-            const panel = page.locator('#site-menu-panel');
-            await expect(panel).toHaveAttribute('aria-hidden', 'false');
-            const firstLink = panel.locator('a[href="/ban-sac-cua-ban"]').first();
-            await expect(firstLink).toBeFocused();
-            await page.keyboard.press('Escape');
-            await expect(menu).toBeFocused();
-            await expect(menu).toHaveAttribute('aria-expanded', 'false');
+          test('Home menu follows Founder-locked IA and interaction', async ({ browser }) => {
+            const modes = [
+              ['desktop', { width: 1440, height: 1000 }],
+              ['mobile', { width: 390, height: 844 }],
+            ];
+
+            for (const [mode, viewport] of modes) {
+              const page = await browser.newPage({ viewport });
+              await page.goto(base + '/', { waitUntil: 'networkidle' });
+              const menu = page.getByRole('button', { name: 'Menu' });
+              await menu.click();
+              await expect(menu).toHaveAttribute('aria-expanded', 'true');
+              const panel = page.locator('#site-menu-panel');
+              await expect(panel).toHaveAttribute('aria-hidden', 'false');
+              await expect(panel.locator('a[href="/coaching"]').first()).toBeFocused();
+              await expect(panel.locator('a[href="/ban-sac-cua-ban"]')).toHaveCount(1);
+              await expect(panel.locator('a[href="/ban-sac-cua-con"]')).toHaveCount(1);
+              await expect(panel.locator('a[href="/phuong-phap"]')).toHaveCount(1);
+              await expect(panel.locator('a[href="/advisory"]')).toHaveCount(1);
+              await expect(panel.locator('a[href="/khoi-dau"]')).toHaveCount(1);
+              await expect(panel.locator('a[href="/ve-kenji"]')).toHaveCount(1);
+              await expect(panel.locator('a[href="/#goc-doc"]')).toHaveCount(1);
+              await expect(panel.locator('a[href="/lien-he"]')).toHaveCount(1);
+              await panel.screenshot({ path: `${out}/home-menu-open-${mode}.png` });
+              await page.keyboard.press('Escape');
+              await expect(menu).toBeFocused();
+              await expect(menu).toHaveAttribute('aria-expanded', 'false');
+              await page.close();
+            }
           });
 
           test('Advisory trust bridge remains bounded', async ({ page }) => {
@@ -115,7 +130,7 @@ jobs:
           npx playwright test p04-brand-surface.spec.cjs --workers=1 --reporter=line
           rm p04-brand-surface.spec.cjs
           kill "$(cat /tmp/p04-next.pid)" || true
-          test "$(find /tmp/p04-brand-surface-evidence -name '*.png' | wc -l)" -eq 10
+          test "$(find /tmp/p04-brand-surface-evidence -name '*.png' | wc -l)" -eq 12
 
       - uses: actions/upload-artifact@v4
         with:
