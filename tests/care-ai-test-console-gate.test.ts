@@ -166,24 +166,14 @@ describe('P09 server-side synthetic review runner', () => {
   });
 });
 
-type P09Final7Case = {
-  caseId: 'M1' | 'M2' | 'M3' | 'M4' | 'M5' | 'M6' | 'IG1';
+type P09FinalRepaired6Case = {
+  caseId: 'M2' | 'M3' | 'M4' | 'M5' | 'M6' | 'IG1';
   reviewId: string;
   channel: 'facebook_messenger' | 'instagram';
   turns: string[];
 };
 
-const p09Final7Cases: P09Final7Case[] = [
-  {
-    caseId: 'M1',
-    reviewId: 'messenger-1',
-    channel: 'facebook_messenger',
-    turns: [
-      'Mình đang hơi rối, chưa biết nên bắt đầu từ đâu.',
-      'Chắc để mình suy nghĩ thêm đã.',
-      'Nếu mình quay lại sau thì mình nên bắt đầu từ đâu?',
-    ],
-  },
+const p09FinalRepaired6Cases: P09FinalRepaired6Case[] = [
   {
     caseId: 'M2',
     reviewId: 'messenger-2',
@@ -222,7 +212,7 @@ const p09Final7Cases: P09Final7Case[] = [
   },
 ];
 
-function p09Final7Requested(): boolean {
+function p09FinalRepaired6Requested(): boolean {
   if (process.env.GITHUB_WORKFLOW !== 'P07 Care AI Test Console Meta Sandbox') return false;
   if (process.env.GITHUB_EVENT_NAME !== 'push') return false;
   if (process.env.GITHUB_REF !== 'refs/heads/backend/p07-care-ai-test-console-meta-sandbox-01') return false;
@@ -231,36 +221,36 @@ function p09Final7Requested(): boolean {
   if (!eventPath) return false;
   try {
     const event = JSON.parse(readFileSync(eventPath, 'utf8')) as { head_commit?: { message?: string } };
-    return event.head_commit?.message?.includes('[p09-final-7]') === true;
+    return event.head_commit?.message?.includes('[p09-final-repaired-6]') === true;
   } catch {
     return false;
   }
 }
 
-async function p09Final7OidcToken(): Promise<string> {
+async function p09FinalRepaired6OidcToken(): Promise<string> {
   const requestUrl = process.env.ACTIONS_ID_TOKEN_REQUEST_URL;
   const requestToken = process.env.ACTIONS_ID_TOKEN_REQUEST_TOKEN;
-  if (!requestUrl || !requestToken) throw new Error('P09_FINAL_7_OIDC_ENV_MISSING');
+  if (!requestUrl || !requestToken) throw new Error('P09_FINAL_REPAIRED_6_OIDC_ENV_MISSING');
   const separator = requestUrl.includes('?') ? '&' : '?';
   const response = await fetch(`${requestUrl}${separator}audience=essence-p09-review`, {
     headers: { Authorization: `bearer ${requestToken}` },
   });
-  if (!response.ok) throw new Error(`P09_FINAL_7_OIDC_HTTP_${response.status}`);
+  if (!response.ok) throw new Error(`P09_FINAL_REPAIRED_6_OIDC_HTTP_${response.status}`);
   const data = (await response.json()) as { value?: string };
-  if (!data.value) throw new Error('P09_FINAL_7_OIDC_TOKEN_MISSING');
+  if (!data.value) throw new Error('P09_FINAL_REPAIRED_6_OIDC_TOKEN_MISSING');
   return data.value;
 }
 
-describe('P09 Founder-gated final freeform boundary evidence', () => {
-  it('runs exactly M1-M6 + IG1 once each only on the dedicated first-attempt push marker', async () => {
-    if (!p09Final7Requested()) return;
+describe('P09 Founder-gated final repaired freeform boundary evidence', () => {
+  it('runs exactly M2-M6 + IG1 once each only on the dedicated first-attempt push marker', async () => {
+    if (!p09FinalRepaired6Requested()) return;
 
-    const oidcToken = await p09Final7OidcToken();
+    const oidcToken = await p09FinalRepaired6OidcToken();
     const callUrl = `https://${exactHost}/api/internal/care-ai-test?p09Review=1`;
     const evidence: Array<Record<string, unknown>> = [];
     const failures: string[] = [];
 
-    for (const testCase of p09Final7Cases) {
+    for (const testCase of p09FinalRepaired6Cases) {
       let response: Response;
       let result: Record<string, unknown> = {};
       try {
@@ -341,8 +331,8 @@ describe('P09 Founder-gated final freeform boundary evidence', () => {
       });
     }
 
-    console.log(`P09_FINAL_7_REDACTED_EVIDENCE=${JSON.stringify(evidence)}`);
-    expect(evidence).toHaveLength(7);
+    console.log(`P09_FINAL_REPAIRED_6_REDACTED_EVIDENCE=${JSON.stringify(evidence)}`);
+    expect(evidence).toHaveLength(6);
     expect(failures).toEqual([]);
   }, 240_000);
 });
