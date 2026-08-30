@@ -1,5 +1,6 @@
 // P07 bounded Care AI Messenger controlled-live Worker.
 // Isolated from coachkenjipham.com production runtime: workers.dev only, no routes/custom domains.
+// Dedicated config source of truth for the Care Meta test Worker; do not use wrangler.jsonc for this lane.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "p07-care-ai-meta-test",
