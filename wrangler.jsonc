@@ -1,4 +1,5 @@
 // P07 runtime refresh after Founder Gemini Free Tier secret placement; no secret value is stored in source.
+// One-shot Founder-approved Gemini diagnostic probe marker; no runtime gate or Meta setting is widened.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "essence-web-portability-proof",
