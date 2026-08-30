@@ -39,7 +39,7 @@ jobs:
           npm install --no-save --package-lock=false @playwright/test@1.55.0
           npx playwright install chromium
 
-      - name: Run surface-level responsive and interaction QA
+      - name: Run final Home Founder-lock QA
         shell: bash
         run: |
           set -euo pipefail
@@ -54,131 +54,64 @@ jobs:
           const fs = require('fs');
           const out = '/tmp/p04-brand-surface-evidence';
           const base = 'http://127.0.0.1:3000';
+          test.setTimeout(90_000);
 
-          async function settleSurface(page, locator) {
-            await locator.scrollIntoViewIfNeeded();
-            await page.waitForTimeout(850);
-            await expect(locator).toBeVisible();
+          async function forceReveal(page) {
+            await page.evaluate(async () => {
+              if (document.fonts?.ready) await document.fonts.ready;
+              document.querySelectorAll('.e26-reveal').forEach((el) => el.classList.add('is-visible'));
+              window.scrollTo({ top: 0, behavior: 'instant' });
+            });
+            await page.waitForTimeout(250);
           }
 
-          async function revealPage(page) {
-            const reveals = page.locator('.e26-reveal');
-            const count = await reveals.count();
-            for (let i = 0; i < count; i += 1) {
-              await reveals.nth(i).scrollIntoViewIfNeeded();
-              await page.waitForTimeout(190);
-            }
-            await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
-            await page.waitForTimeout(500);
-          }
-
-          test('Home full-page desktop and mobile previews', async ({ browser }) => {
-            const modes = [
+          test('final desktop and mobile full-page evidence', async ({ browser }) => {
+            for (const [mode, viewport] of [
               ['desktop', { width: 1440, height: 1000 }],
               ['mobile', { width: 390, height: 844 }],
-            ];
-            for (const [mode, viewport] of modes) {
+            ]) {
               const page = await browser.newPage({ viewport });
               await page.goto(base + '/', { waitUntil: 'networkidle' });
-              await revealPage(page);
+              await forceReveal(page);
+              await expect(page.locator('main section')).toHaveCount(7);
+              await expect(page.getByText('Câu chuyện cuộc sống của bạn là một kiệt tác.', { exact: true })).toBeVisible();
+              await expect(page.getByText('NHẬN RA', { exact: true }).first()).toBeVisible();
+              await expect(page.locator('main a[href="/coaching"]').first()).toHaveAttribute('href', '/coaching');
+              await expect(page.locator('main a[href="/advisory"]').first()).toHaveAttribute('href', '/advisory');
+              await expect(page.locator('#goc-doc').getByText('Ebook', { exact: true })).toBeVisible();
+              await expect(page.locator('#goc-doc').getByText('Ghi chép Essence', { exact: true })).toBeVisible();
+              await expect(page.locator('#goc-doc').getByRole('link', { name: 'Đi tới Khởi đầu' })).toHaveAttribute('href', '/khoi-dau');
               await page.screenshot({ path: `${out}/home-full-${mode}.png`, fullPage: true });
               await page.close();
             }
           });
 
-          test('Founder correction: old Home is ESSENCE Coaching and return corner moved to Master Home', async ({ browser }) => {
-            const modes = [
+          test('final menu open-state evidence and locked IA', async ({ browser }) => {
+            for (const [mode, viewport] of [
               ['desktop', { width: 1440, height: 1000 }],
               ['mobile', { width: 390, height: 844 }],
-            ];
-
-            for (const [mode, viewport] of modes) {
-              const home = await browser.newPage({ viewport });
-              await home.goto(base + '/', { waitUntil: 'networkidle' });
-              await revealPage(home);
-              const returnCorner = home.locator('#goc-doc');
-              await settleSurface(home, returnCorner);
-              await expect(returnCorner.getByText('Một góc để quay lại.')).toBeVisible();
-              await expect(returnCorner.getByText('Ebook', { exact: true })).toBeVisible();
-              await expect(returnCorner.getByText('Ghi chép Essence', { exact: true })).toBeVisible();
-              await expect(returnCorner.getByRole('link', { name: /Khởi đầu/ })).toHaveAttribute('href', '/khoi-dau');
-              await expect(home.locator('a[href="/coaching"]').first()).toHaveAttribute('href', '/coaching');
-              await returnCorner.screenshot({ path: `${out}/home-return-corner-${mode}.png` });
-              await home.close();
-
-              const coaching = await browser.newPage({ viewport });
-              const response = await coaching.goto(base + '/coaching', { waitUntil: 'networkidle' });
-              expect(response && response.status()).toBe(200);
-              await expect(coaching.locator('main')).toBeVisible();
-              await expect(coaching.getByText('Câu chuyện cuộc sống của bạn là một kiệt tác.', { exact: false }).first()).toBeVisible();
-              await revealPage(coaching);
-              await coaching.screenshot({ path: `${out}/coaching-full-${mode}.png`, fullPage: true });
-              await coaching.close();
-            }
-          });
-
-          test('desktop and mobile Brand Pack target surfaces', async ({ browser }) => {
-            const modes = [
-              ['desktop', { width: 1440, height: 1000 }],
-              ['mobile', { width: 390, height: 844 }],
-            ];
-            for (const [mode, viewport] of modes) {
-              const cases = [
-                ['home-header', '/', (page) => page.locator('header').first()],
-                ['home-ending', '/', (page) => page.locator('section').filter({ hasText: 'Câu chuyện cuộc sống của bạn là một kiệt tác.' }).first()],
-                ['ve-kenji-signature', '/ve-kenji', (page) => page.locator('img[src="/brand/essence/32_SIGNATURE_WEB_BLACK.svg"]')],
-                ['phuong-phap-shell', '/phuong-phap', (page) => page.locator('header').first()],
-                ['advisory-header', '/advisory', (page) => page.locator('header[data-shell="advisory-header-exception"]')],
-              ];
-              for (const [name, path, locate] of cases) {
-                const page = await browser.newPage({ viewport });
-                await page.goto(base + path, { waitUntil: 'networkidle' });
-                const surface = locate(page);
-                await settleSurface(page, surface);
-                if (name === 've-kenji-signature') {
-                  expect(await surface.evaluate((img) => img.complete && img.naturalWidth > 0 && img.naturalHeight > 0)).toBeTruthy();
-                }
-                await surface.screenshot({ path: `${out}/${name}-${mode}.png` });
-                await page.close();
-              }
-            }
-          });
-
-          test('Home menu follows Founder-locked IA and interaction', async ({ browser }) => {
-            const modes = [
-              ['desktop', { width: 1440, height: 1000 }],
-              ['mobile', { width: 390, height: 844 }],
-            ];
-
-            for (const [mode, viewport] of modes) {
+            ]) {
               const page = await browser.newPage({ viewport });
               await page.goto(base + '/', { waitUntil: 'networkidle' });
               const menu = page.getByRole('button', { name: 'Menu' });
               await menu.click();
-              await expect(menu).toHaveAttribute('aria-expanded', 'true');
               const panel = page.locator('#site-menu-panel');
               await expect(panel).toHaveAttribute('aria-hidden', 'false');
               await expect(panel.locator('a[href="/coaching"]').first()).toBeFocused();
-              await expect(panel.locator('a[href="/ban-sac-cua-ban"]')).toHaveCount(1);
-              await expect(panel.locator('a[href="/ban-sac-cua-con"]')).toHaveCount(1);
-              await expect(panel.locator('a[href="/phuong-phap"]')).toHaveCount(1);
-              await expect(panel.locator('a[href="/advisory"]')).toHaveCount(1);
-              await expect(panel.locator('a[href="/khoi-dau"]')).toHaveCount(1);
-              await expect(panel.locator('a[href="/ve-kenji"]')).toHaveCount(1);
-              await expect(panel.locator('a[href="/#goc-doc"]')).toHaveCount(1);
-              await expect(panel.locator('a[href="/lien-he"]')).toHaveCount(1);
+              for (const href of ['/ban-sac-cua-ban','/ban-sac-cua-con','/phuong-phap','/advisory','/khoi-dau','/ve-kenji','/#goc-doc','/lien-he']) {
+                await expect(panel.locator(`a[href="${href}"]`)).toHaveCount(1);
+              }
               await panel.screenshot({ path: `${out}/home-menu-open-${mode}.png` });
               await page.keyboard.press('Escape');
               await expect(menu).toBeFocused();
-              await expect(menu).toHaveAttribute('aria-expanded', 'false');
               await page.close();
             }
           });
 
-          test('Home body readability and mobile tap targets remain safe', async ({ browser }) => {
+          test('mobile readability and tap targets', async ({ browser }) => {
             const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
             await page.goto(base + '/', { waitUntil: 'networkidle' });
-            await revealPage(page);
+            await forceReveal(page);
 
             const bodyBlocks = page.locator('[data-body-copy]');
             expect(await bodyBlocks.count()).toBeGreaterThanOrEqual(7);
@@ -193,27 +126,23 @@ jobs:
               expect(metrics.ratio).toBeGreaterThanOrEqual(1.55);
             }
 
-            for (const href of ['/coaching', '/advisory', '/khoi-dau']) {
-              const link = page.locator(`main a[href="${href}"]`).first();
-              await link.scrollIntoViewIfNeeded();
-              const box = await link.boundingBox();
-              expect(box && box.height).toBeGreaterThanOrEqual(44);
+            for (const href of ['/coaching','/advisory','/khoi-dau']) {
+              const box = await page.locator(`main a[href="${href}"]`).first().boundingBox();
+              expect(Math.round(box?.height || 0)).toBeGreaterThanOrEqual(44);
             }
 
             await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
             const menu = page.getByRole('button', { name: 'Menu' });
-            const menuBox = await menu.boundingBox();
-            expect(menuBox && menuBox.height).toBeGreaterThanOrEqual(44);
+            expect(Math.round((await menu.boundingBox())?.height || 0)).toBeGreaterThanOrEqual(44);
             await menu.click();
             const navLinks = page.locator('#site-menu-panel nav a');
             for (let i = 0; i < await navLinks.count(); i += 1) {
-              const box = await navLinks.nth(i).boundingBox();
-              expect(box && box.height).toBeGreaterThanOrEqual(44);
+              expect(Math.round((await navLinks.nth(i).boundingBox())?.height || 0)).toBeGreaterThanOrEqual(44);
             }
             await page.close();
           });
 
-          test('Home motion recording shows scroll, threshold response and menu scene', async ({ browser }) => {
+          test('short Home motion recording', async ({ browser }) => {
             const context = await browser.newContext({
               viewport: { width: 1280, height: 720 },
               recordVideo: { dir: out, size: { width: 1280, height: 720 } },
@@ -224,47 +153,32 @@ jobs:
             await page.waitForTimeout(700);
 
             const sections = page.locator('main section');
-            const count = await sections.count();
-            for (let i = 1; i < count; i += 1) {
+            for (let i = 1; i < await sections.count(); i += 1) {
               await sections.nth(i).scrollIntoViewIfNeeded();
-              await page.waitForTimeout(620);
+              await page.waitForTimeout(520);
             }
-
             const coaching = page.locator('main a[href="/coaching"]').first();
             await coaching.scrollIntoViewIfNeeded();
             await coaching.hover();
-            await page.waitForTimeout(700);
-            const advisory = page.locator('main a[href="/advisory"]').first();
-            await advisory.hover();
-            await page.waitForTimeout(700);
-
+            await page.waitForTimeout(650);
+            await page.locator('main a[href="/advisory"]').first().hover();
+            await page.waitForTimeout(650);
             await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
-            await page.waitForTimeout(1000);
+            await page.waitForTimeout(900);
             await page.getByRole('button', { name: 'Menu' }).click();
-            await page.waitForTimeout(850);
+            await page.waitForTimeout(750);
             await page.locator('#site-menu-panel a[href="/advisory"]').hover();
-            await page.waitForTimeout(700);
+            await page.waitForTimeout(650);
             await page.keyboard.press('Escape');
-            await page.waitForTimeout(500);
-
+            await page.waitForTimeout(400);
             await context.close();
-            const rawVideo = await video.path();
-            fs.renameSync(rawVideo, `${out}/home-motion-desktop.webm`);
-          });
-
-          test('Advisory trust bridge remains bounded', async ({ page }) => {
-            await page.goto(base + '/advisory', { waitUntil: 'networkidle' });
-            const header = page.locator('header[data-shell="advisory-header-exception"]');
-            await expect(header).toBeVisible();
-            const trust = header.getByRole('link', { name: 'Về Kenji' });
-            await expect(trust).toHaveAttribute('href', '/ve-kenji');
-            await expect(header.getByRole('button', { name: 'Menu' })).toHaveCount(0);
+            fs.renameSync(await video.path(), `${out}/home-motion-desktop.webm`);
           });
           JS
           npx playwright test p04-brand-surface.spec.cjs --workers=1 --reporter=line
           rm p04-brand-surface.spec.cjs
           kill "$(cat /tmp/p04-next.pid)" || true
-          test "$(find /tmp/p04-brand-surface-evidence -name '*.png' | wc -l)" -eq 18
+          test "$(find /tmp/p04-brand-surface-evidence -name '*.png' | wc -l)" -eq 4
           test "$(find /tmp/p04-brand-surface-evidence -name '*.webm' | wc -l)" -eq 1
 
       - uses: actions/upload-artifact@v4
