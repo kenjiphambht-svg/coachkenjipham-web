@@ -340,6 +340,7 @@ function childSensitiveDecision(decision: CareModelDecision): CareModelDecision 
 function mixedB2bB2cDecision(decision: CareModelDecision): CareModelDecision {
   return {
     ...decision,
+    family: 'UNKNOWN',
     truthStatus: 'UNKNOWN',
     nextBestCare: 'HUMAN_HANDOFF',
     commercialReadiness: 'HANDOFF',
