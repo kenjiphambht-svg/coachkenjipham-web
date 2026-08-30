@@ -369,6 +369,114 @@ jobs:
           fi
           echo 'PASS: P09 server-side synthetic review runner is exact-version runtime-ready; access/model secrets remain Cloudflare-runtime-only; repo-bound GitHub OIDC is the caller boundary.'
 
+      - name: Prepare and self-test redacted P09 Voice review evidence builder
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > p09-review-evidence-builder.cjs <<'NODE'
+          const fs = require('fs');
+
+          const sameKeys = (value, expected) =>
+            value !== null &&
+            typeof value === 'object' &&
+            !Array.isArray(value) &&
+            Object.keys(value).sort().join('\n') === [...expected].sort().join('\n');
+
+          const credentialPatterns = [
+            /(?<![A-Za-z0-9_-])sk-[A-Za-z0-9_-]{12,}/,
+            /(?<![A-Za-z0-9_-])AIza[0-9A-Za-z_-]{20,}/,
+            /\bBearer\s+[A-Za-z0-9._~+\/-]{12,}/i,
+            /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/,
+          ];
+
+          function buildEvidence(source) {
+            const decision = source?.semanticDecision || {};
+            const evaluation = source?.evaluation || {};
+            return {
+              modelReply: source?.modelReply,
+              semanticDecision: {
+                family: decision.family,
+                truthStatus: decision.truthStatus,
+                nextBestCare: decision.nextBestCare,
+                commercialReadiness: decision.commercialReadiness,
+                memoryDecision: decision.memoryDecision,
+                handoffRequired: decision.handoffRequired,
+              },
+              evaluation: {
+                mode: evaluation.mode,
+                autoVerdict: evaluation.autoVerdict,
+                note: evaluation.note,
+              },
+            };
+          }
+
+          function assertEvidence(evidence) {
+            if (!sameKeys(evidence, ['modelReply', 'semanticDecision', 'evaluation'])) throw new Error('P09_EVIDENCE_TOP_LEVEL_FIELDS_INVALID');
+            if (!sameKeys(evidence.semanticDecision, ['family', 'truthStatus', 'nextBestCare', 'commercialReadiness', 'memoryDecision', 'handoffRequired'])) throw new Error('P09_EVIDENCE_DECISION_FIELDS_INVALID');
+            if (!sameKeys(evidence.evaluation, ['mode', 'autoVerdict', 'note'])) throw new Error('P09_EVIDENCE_EVALUATION_FIELDS_INVALID');
+            if (typeof evidence.modelReply !== 'string' || !evidence.modelReply.trim() || evidence.modelReply.length > 1600) throw new Error('P09_EVIDENCE_REPLY_INVALID');
+            for (const key of ['family', 'truthStatus', 'nextBestCare', 'commercialReadiness', 'memoryDecision']) {
+              if (typeof evidence.semanticDecision[key] !== 'string') throw new Error('P09_EVIDENCE_DECISION_VALUE_INVALID');
+            }
+            if (typeof evidence.semanticDecision.handoffRequired !== 'boolean') throw new Error('P09_EVIDENCE_HANDOFF_VALUE_INVALID');
+            if (evidence.evaluation.mode !== 'P09_FREEFORM_BOUNDARY_REVIEW') throw new Error('P09_EVIDENCE_MODE_INVALID');
+            if (evidence.evaluation.autoVerdict !== 'P09_REVIEW_REQUIRED') throw new Error('P09_EVIDENCE_VERDICT_INVALID');
+            if (typeof evidence.evaluation.note !== 'string' || evidence.evaluation.note.length > 500) throw new Error('P09_EVIDENCE_NOTE_INVALID');
+            const serialized = JSON.stringify(evidence);
+            if (serialized.length > 4096) throw new Error('P09_EVIDENCE_TOO_LARGE');
+            if (credentialPatterns.some((pattern) => pattern.test(serialized))) throw new Error('P09_EVIDENCE_CREDENTIAL_PATTERN');
+            return serialized;
+          }
+
+          function writeEvidence(inputPath, outputPath) {
+            const source = JSON.parse(fs.readFileSync(inputPath, 'utf8'));
+            const evidence = buildEvidence(source);
+            assertEvidence(evidence);
+            fs.writeFileSync(outputPath, `${JSON.stringify(evidence, null, 2)}\n`, { mode: 0o600 });
+          }
+
+          if (process.argv[2] === '--self-test') {
+            const syntheticSource = {
+              reviewId: 'website-1',
+              channel: 'website',
+              turns: ['FORBIDDEN_INPUT_SHOULD_NOT_SURVIVE'],
+              provider: 'FORBIDDEN_PROVIDER_SHOULD_NOT_SURVIVE',
+              apiKey: 'FORBIDDEN_SECRET_SHOULD_NOT_SURVIVE',
+              modelReply: 'Mình hiểu bạn đang hơi rối. Bạn có thể bắt đầu bằng một điều nhỏ nhất đang cần được làm rõ ngay lúc này.',
+              semanticDecision: {
+                family: 'UNKNOWN',
+                truthStatus: 'UNKNOWN',
+                nextBestCare: 'ASK',
+                commercialReadiness: 'EXPLORE',
+                memoryDecision: 'DO_NOT_WRITE',
+                handoffRequired: false,
+              },
+              evaluation: {
+                mode: 'P09_FREEFORM_BOUNDARY_REVIEW',
+                autoVerdict: 'P09_REVIEW_REQUIRED',
+                note: 'Synthetic self-test only.',
+              },
+            };
+            const evidence = buildEvidence(syntheticSource);
+            const serialized = assertEvidence(evidence);
+            for (const forbidden of ['FORBIDDEN_INPUT_SHOULD_NOT_SURVIVE', 'FORBIDDEN_PROVIDER_SHOULD_NOT_SURVIVE', 'FORBIDDEN_SECRET_SHOULD_NOT_SURVIVE']) {
+              if (serialized.includes(forbidden)) throw new Error('P09_EVIDENCE_FORBIDDEN_SOURCE_FIELD_SURVIVED');
+            }
+            let credentialRejected = false;
+            try {
+              assertEvidence({ ...evidence, modelReply: `Bearer ${'R'.repeat(32)}` });
+            } catch {
+              credentialRejected = true;
+            }
+            if (!credentialRejected) throw new Error('P09_EVIDENCE_CREDENTIAL_SELF_TEST_FAILED');
+            console.log('PASS: redacted P09 Voice evidence builder keeps only approved review fields and rejects credential-like output.');
+          } else {
+            if (process.argv.length !== 4) throw new Error('P09_EVIDENCE_USAGE_INVALID');
+            writeEvidence(process.argv[2], process.argv[3]);
+          }
+          NODE
+          node p09-review-evidence-builder.cjs --self-test
+
       - name: Execute one bounded P09 model call through repo-bound GitHub OIDC
         if: github.event_name == 'push' && contains(github.event.head_commit.message, '[provider-probe]')
         shell: bash
@@ -446,6 +554,24 @@ jobs:
             exit 1
           fi
           echo 'PASS: one bounded synthetic Website model call executed on Cloudflare through repo/branch/workflow-bound GitHub OIDC; access token and model secret never left Cloudflare; response contract is redacted and action-free.'
+
+      - name: Build redacted P09 Voice review evidence
+        if: github.event_name == 'push' && contains(github.event.head_commit.message, '[provider-probe]')
+        shell: bash
+        run: |
+          set -euo pipefail
+          node p09-review-evidence-builder.cjs p09-live-probe.json p09-voice-review-evidence.json
+          test -s p09-voice-review-evidence.json
+          echo 'PASS: P09 review evidence contains only redacted reply + semantic/evaluation fields; raw provider response is not uploaded.'
+
+      - name: Upload redacted P09 Voice review evidence
+        if: github.event_name == 'push' && contains(github.event.head_commit.message, '[provider-probe]')
+        uses: actions/upload-artifact@v4
+        with:
+          name: p09-voice-review-evidence-${{ github.sha }}
+          path: p09-voice-review-evidence.json
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Assert provider and real Meta credentials are not exported to CI
         shell: bash
