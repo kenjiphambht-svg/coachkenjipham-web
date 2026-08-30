@@ -256,7 +256,7 @@ export default function VillaPage() {
                   alt=""
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-contain object-[82%_26%] p-12 opacity-22 transition-transform duration-700 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 md:p-16"
+                  className="object-contain object-[82%_26%] p-12 opacity-[0.12] transition-transform duration-700 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 md:p-16"
                   aria-hidden="true"
                 />
                 <div
