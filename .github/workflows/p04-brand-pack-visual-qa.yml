@@ -83,12 +83,22 @@ jobs:
               await page.goto(base + '/', { waitUntil: 'networkidle' });
               await prepareFullPage(page);
               await expect(page.locator('main section')).toHaveCount(7);
-              await expect(page.getByText('Câu chuyện cuộc sống của bạn là một kiệt tác.', { exact: true })).toBeVisible();
+              for (const line of [
+                'Có những điều bạn biết rất rõ.',
+                'Điều gì đang chọn thay bạn?',
+                'Trí tuệ không phải biết nhiều hơn.',
+                'Câu chuyện cuộc sống của bạn là một kiệt tác.',
+                '“Điều gì ở đây thật sự đáng để được xây?”',
+                'Bạn không cần biết hết để bắt đầu.',
+              ]) {
+                await expect(page.getByText(line, { exact: true }).first()).toBeVisible();
+              }
               await expect(page.getByText('NHẬN RA', { exact: true }).first()).toBeVisible();
               await expect(page.locator('main a[href="/coaching"]').first()).toHaveAttribute('href', '/coaching');
               await expect(page.locator('main a[href="/advisory"]').first()).toHaveAttribute('href', '/advisory');
-              await expect(page.locator('#goc-doc').getByText('Ebook', { exact: true })).toBeVisible();
-              await expect(page.locator('#goc-doc').getByText('Ghi chép ESSENCE', { exact: true })).toBeVisible();
+              await expect(page.locator('#goc-doc').getByText('Khởi đầu', { exact: true }).first()).toBeVisible();
+              await expect(page.locator('#goc-doc').getByText('Góc đọc', { exact: false }).first()).toBeVisible();
+              await expect(page.locator('#goc-doc').getByText('Ebook', { exact: false }).first()).toBeVisible();
               await expect(page.locator('#goc-doc').getByRole('link', { name: 'Đi tới Khởi đầu' })).toHaveAttribute('href', '/khoi-dau');
               await page.screenshot({ path: `${out}/home-full-${mode}.png`, fullPage: true });
               await page.close();
