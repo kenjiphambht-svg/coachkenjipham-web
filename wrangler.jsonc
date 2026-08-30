@@ -1,5 +1,5 @@
 // P07 runtime refresh after Founder Gemini Free Tier secret placement; no secret value is stored in source.
-// One-shot Founder-approved Gemini diagnostic probe marker; no runtime gate or Meta setting is widened.
+// Founder-approved bounded switch to Gemini 3.5 Flash-Lite; provider family, secret path and Meta gates remain unchanged.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "essence-web-portability-proof",
@@ -17,7 +17,7 @@
     "CARE_AI_TEST_REVIEW_EXPIRES_AT": "2026-09-05T23:59:59+07:00",
     "CARE_P09_REVIEW_RUNNER_ENABLED": "true",
     "CARE_P09_REVIEW_MODEL_PROVIDER": "google_gemini",
-    "CARE_P09_REVIEW_MODEL_NAME": "gemini-2.5-flash",
+    "CARE_P09_REVIEW_MODEL_NAME": "gemini-3.5-flash-lite",
     "CARE_MODEL_ALLOWED_COMPATIBLE_HOSTS": "",
     "CARE_META_SANDBOX_ENABLED": "false",
     "CARE_META_LIVE_TEST_ENABLED": "false",

@@ -395,7 +395,7 @@ function p09RunnerSelfTest() {
     const config = resolveP09ReviewModelConfig();
     modelSecretAvailable = Boolean(config.apiKey);
     modelConfigReady = Boolean(config.provider && config.model);
-    approvedGeminiConfig = config.provider === 'google_gemini' && config.model === 'gemini-2.5-flash';
+    approvedGeminiConfig = config.provider === 'google_gemini' && config.model === 'gemini-3.5-flash-lite';
   } catch (error) {
     if (!(error instanceof Error) || error.message !== 'CARE_P09_REVIEW_MODEL_SECRET_MISSING') {
       return {
@@ -460,7 +460,7 @@ async function runP09Review(req: NextApiRequest, res: NextApiResponse) {
   try {
     const input = parseP09ReviewRunnerInput(p09RunnerRawInput(req));
     const config = resolveP09ReviewModelConfig();
-    if (config.provider !== 'google_gemini' || config.model !== 'gemini-2.5-flash') {
+    if (config.provider !== 'google_gemini' || config.model !== 'gemini-3.5-flash-lite') {
       return res.status(503).json({ error: 'CARE_P09_REVIEW_GEMINI_CONFIG_REQUIRED' });
     }
     const decision = await runCareModel({ config, channel: input.channel, turns: input.turns });
