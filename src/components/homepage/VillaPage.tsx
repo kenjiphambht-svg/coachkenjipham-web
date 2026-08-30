@@ -10,7 +10,7 @@ import { useHomeReveal } from "@/components/homepage/useHomeReveal";
 const CANONICAL_URL = "https://coachkenjipham.com/";
 
 const softLink =
-  "group inline-flex items-center gap-2 font-sans text-[13px] font-medium uppercase tracking-[0.12em] text-e26-text transition-opacity hover:opacity-60";
+  "group relative inline-flex items-center gap-2 font-sans text-[13px] font-medium uppercase tracking-[0.12em] text-e26-text transition-opacity hover:opacity-70";
 
 export default function VillaPage() {
   useHomeReveal();
@@ -36,7 +36,7 @@ export default function VillaPage() {
       </Head>
 
       <GrainOverlay />
-      <HomeHeader />
+      <HomeHeader homeIa />
 
       <main className="bg-e26-ivory text-e26-text">
         {/* 01 — Recognition / BIẾT → LÀM */}
@@ -94,14 +94,22 @@ export default function VillaPage() {
         </section>
 
         {/* 02 — ESSENCE / Reframe */}
-        <section className="bg-e26-white px-6 py-24 md:px-10 md:py-36">
-          <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-[0.72fr_1.28fr] md:gap-24">
-            <h2 className="e26-reveal max-w-[390px] font-serif text-[34px] font-medium leading-[1.16] tracking-[-0.014em] md:text-[48px]">
-              ESSENCE không bắt đầu bằng việc nói bạn nên làm gì.
+        <section className="relative overflow-hidden bg-e26-white px-6 py-24 md:px-10 md:py-36">
+          <div
+            className="pointer-events-none absolute inset-y-0 right-0 hidden w-[42%] md:block"
+            style={{
+              background:
+                "linear-gradient(112deg, transparent, color-mix(in srgb, var(--essence-cream-2026) 52%, transparent))",
+            }}
+            aria-hidden="true"
+          />
+          <div className="relative mx-auto grid max-w-6xl gap-12 md:grid-cols-[0.72fr_1.28fr] md:gap-24">
+            <h2 className="e26-reveal max-w-[410px] font-serif text-[34px] font-medium leading-[1.16] tracking-[-0.014em] md:text-[48px]">
+              Ở khoảng đó, ESSENCE không bắt đầu bằng việc nói bạn nên làm gì.
             </h2>
             <div className="e26-reveal max-w-[660px] space-y-7 font-sans text-[17px] font-normal leading-[1.85] md:mt-16 md:border-l md:border-[color-mix(in_srgb,var(--essence-black-2026)_10%,transparent)] md:pl-12 md:text-[18px]">
               <p>
-                ESSENCE làm việc ở khoảng giữa điều đã được nhìn ra và điều thật sự đi vào đời sống hoặc công việc: NHẬN RA → LỰA CHỌN → HIỆN THỰC.
+                Điều được nhìn ra cần đi tiếp vào đời sống hoặc công việc: NHẬN RA → LỰA CHỌN → HIỆN THỰC.
               </p>
               <p>
                 Ở cấp độ cá nhân, <strong className="font-medium">Bản sắc</strong> là phần bạn ngày càng nhận ra trung thực hơn qua những gì đã sống — cả điều dễ đón nhận lẫn những phần bạn từng né tránh, chưa hiểu hoặc chưa muốn nhận.
@@ -114,8 +122,12 @@ export default function VillaPage() {
         </section>
 
         {/* 03 — Từ Bản sắc đến Hiện thực */}
-        <section className="border-y border-[#E0C068]/20 bg-[color-mix(in_srgb,var(--essence-white-2026)_48%,var(--essence-ivory-2026))] px-6 py-24 md:px-10 md:py-36">
-          <div className="mx-auto max-w-6xl">
+        <section className="relative overflow-hidden border-y border-[#E0C068]/20 bg-[color-mix(in_srgb,var(--essence-white-2026)_48%,var(--essence-ivory-2026))] px-6 py-24 md:px-10 md:py-36">
+          <div
+            className="pointer-events-none absolute -left-[10%] top-[22%] h-[48%] w-[42%] rounded-full bg-[color-mix(in_srgb,var(--essence-white-2026)_58%,transparent)] blur-3xl"
+            aria-hidden="true"
+          />
+          <div className="relative mx-auto max-w-6xl">
             <div className="e26-reveal max-w-[780px]">
               <h2 className="max-w-[700px] font-serif text-[40px] font-medium leading-[1.06] tracking-[-0.016em] md:text-[60px]">
                 TỪ BẢN SẮC ĐẾN HIỆN THỰC.
@@ -126,8 +138,8 @@ export default function VillaPage() {
             </div>
 
             <div className="e26-reveal mt-14 grid gap-10 md:mt-20 md:grid-cols-[0.72fr_1.28fr] md:gap-24">
-              <p className="max-w-[390px] font-serif text-[27px] font-medium leading-[1.42] tracking-[-0.01em] md:text-[33px]">
-                Một điều được nhìn ra chỉ thật sự có ý nghĩa khi nó bắt đầu có mặt trong thực tế.
+              <p className="max-w-[400px] font-serif text-[27px] font-medium leading-[1.42] tracking-[-0.01em] md:text-[33px]">
+                Và một lựa chọn chỉ thật sự có ý nghĩa khi nó bắt đầu có mặt trong thực tế.
               </p>
 
               <div className="max-w-[680px] space-y-8 font-sans text-[17px] font-normal leading-[1.85] md:text-[18px]">
@@ -140,7 +152,7 @@ export default function VillaPage() {
                 <p>
                   Với <strong className="font-medium">nhân hiệu</strong>, điều đó có thể là cách bạn hiện diện rõ hơn từ điều bạn chọn đứng về — thay vì dựng một hình ảnh trước rồi cố sống cho giống nó.
                 </p>
-                <p className="max-w-[600px] text-e26-text-2">Hiện thực cho phản hồi để điều đã chọn tiếp tục được kiểm chứng và điều chỉnh.</p>
+                <p className="max-w-[600px] text-e26-text-2">Khi đi vào hiện thực, điều bạn chọn mới có thứ để nhìn lại và điều chỉnh.</p>
               </div>
             </div>
           </div>
@@ -178,32 +190,94 @@ export default function VillaPage() {
             alt=""
             fill
             sizes="100vw"
-            className="object-cover object-center opacity-45"
+            className="object-cover object-center opacity-35"
             aria-hidden="true"
           />
-          <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_82%,transparent)]" aria-hidden="true" />
+          <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_86%,transparent)]" aria-hidden="true" />
+          <div
+            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#E0C068]/25 to-transparent"
+            aria-hidden="true"
+          />
 
           <div className="relative z-10 mx-auto max-w-6xl">
             <h2 className="e26-reveal max-w-[780px] font-serif text-[40px] font-medium leading-[1.08] tracking-[-0.016em] md:text-[58px]">
               HAI BỐI CẢNH. CÙNG MỘT BẢN SẮC
             </h2>
 
-            <div className="mt-14 grid gap-12 md:mt-20 md:grid-cols-2 md:gap-20">
-              <article className="e26-reveal border-t border-[color-mix(in_srgb,var(--essence-black-2026)_18%,transparent)] pt-8 md:pt-10">
-                <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-e26-text-2">ESSENCE COACHING</p>
-                <p className="mt-7 max-w-[470px] font-serif text-[28px] font-normal leading-[1.38] tracking-[-0.01em] md:text-[34px]">
-                  Khi điều cần nhìn rõ nằm trong đời sống của bạn — lựa chọn, mối quan hệ, vai trò, gia đình hay cách bạn đang sống với bản thân.
-                </p>
-                <Link className={`${softLink} mt-9`} href="/coaching">ESSENCE Coaching <span className="text-[#E0C068]" aria-hidden="true">→</span></Link>
-              </article>
+            <div className="mt-14 grid gap-8 md:mt-20 md:grid-cols-2 md:gap-10">
+              <Link
+                href="/coaching"
+                aria-label="Đi tới ESSENCE Coaching"
+                className="group e26-reveal relative min-h-[430px] overflow-hidden border-t border-[color-mix(in_srgb,var(--essence-black-2026)_18%,transparent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory md:min-h-[500px]"
+              >
+                <Image
+                  src="/images/home/kitchen-morning.webp"
+                  alt=""
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover object-center opacity-70 transition-transform duration-700 ease-out group-hover:scale-[1.025]"
+                  aria-hidden="true"
+                />
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(to bottom, color-mix(in srgb, var(--essence-ivory-2026) 34%, transparent), color-mix(in srgb, var(--essence-ivory-2026) 90%, transparent) 62%, var(--essence-ivory-2026) 100%)",
+                  }}
+                  aria-hidden="true"
+                />
+                <div className="relative z-10 flex h-full min-h-[430px] flex-col justify-end px-6 py-8 md:min-h-[500px] md:px-9 md:py-10">
+                  <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-e26-text-2">ESSENCE COACHING</p>
+                  <p className="mt-5 max-w-[470px] font-serif text-[28px] font-normal leading-[1.38] tracking-[-0.01em] md:text-[34px]">
+                    Khi điều cần nhìn rõ nằm trong đời sống của bạn — lựa chọn, mối quan hệ, vai trò, gia đình hay cách bạn đang sống với bản thân.
+                  </p>
+                  <span className={`${softLink} mt-8 w-fit`}>
+                    ESSENCE Coaching <span className="text-[#E0C068] transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">→</span>
+                    <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform duration-300 group-hover:scale-x-100" aria-hidden="true" />
+                  </span>
+                </div>
+              </Link>
 
-              <article className="e26-reveal border-t border-[color-mix(in_srgb,var(--essence-black-2026)_18%,transparent)] pt-8 md:mt-16 md:pt-10">
-                <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-e26-text-2">ESSENCE ADVISORY</p>
-                <p className="mt-7 max-w-[470px] font-serif text-[28px] font-normal leading-[1.38] tracking-[-0.01em] md:text-[34px]">
-                  Khi điều cần nhìn rõ nằm trong công việc hoặc doanh nghiệp — một bài toán quan trọng, quyết định có hệ quả, cách vận hành hay thay đổi cần được đưa vào thực tế.
-                </p>
-                <Link className={`${softLink} mt-9`} href="/advisory">ESSENCE Advisory <span className="text-[#E0C068]" aria-hidden="true">→</span></Link>
-              </article>
+              <Link
+                href="/advisory"
+                aria-label="Đi tới ESSENCE Advisory"
+                className="group e26-reveal relative min-h-[430px] overflow-hidden border-t border-[color-mix(in_srgb,var(--essence-black-2026)_18%,transparent)] bg-[color-mix(in_srgb,var(--essence-white-2026)_68%,var(--essence-ivory-2026))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory md:mt-14 md:min-h-[500px]"
+              >
+                <div
+                  className="absolute inset-0 opacity-80"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, color-mix(in srgb, var(--essence-white-2026) 76%, transparent), transparent 58%), repeating-linear-gradient(0deg, transparent 0 46px, color-mix(in srgb, var(--essence-black-2026) 5%, transparent) 47px 48px)",
+                  }}
+                  aria-hidden="true"
+                />
+                <Image
+                  src="/images/advisory/advisory-essence-operating-loop-selected-v03.webp"
+                  alt=""
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-contain object-[82%_26%] p-12 opacity-22 transition-transform duration-700 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 md:p-16"
+                  aria-hidden="true"
+                />
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(to bottom, transparent 18%, color-mix(in srgb, var(--essence-ivory-2026) 50%, transparent) 54%, var(--essence-ivory-2026) 100%)",
+                  }}
+                  aria-hidden="true"
+                />
+                <div className="relative z-10 flex h-full min-h-[430px] flex-col justify-end px-6 py-8 md:min-h-[500px] md:px-9 md:py-10">
+                  <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-e26-text-2">ESSENCE ADVISORY</p>
+                  <p className="mt-5 max-w-[470px] font-serif text-[28px] font-normal leading-[1.38] tracking-[-0.01em] md:text-[34px]">
+                    Khi điều cần nhìn rõ nằm trong công việc hoặc doanh nghiệp — một bài toán quan trọng, quyết định có hệ quả, cách vận hành hay thay đổi cần được đưa vào thực tế.
+                  </p>
+                  <span className={`${softLink} mt-8 w-fit`}>
+                    ESSENCE Advisory <span className="text-[#E0C068] transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">→</span>
+                    <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform duration-300 group-hover:scale-x-100" aria-hidden="true" />
+                  </span>
+                </div>
+              </Link>
             </div>
 
             <div className="e26-reveal mt-14 max-w-[800px] space-y-3 font-sans text-[16px] font-normal leading-[1.8] text-e26-text-2 md:ml-auto md:mt-20 md:text-[17px]">
@@ -234,7 +308,7 @@ export default function VillaPage() {
 
           <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-14 md:grid-cols-[0.7fr_1.3fr] md:gap-24">
             <div className="e26-reveal relative mx-auto aspect-[4/5] w-full max-w-[370px] overflow-hidden bg-e26-cream-deep md:-translate-y-5">
-              <Image src="/images/home/kenji-portrait.webp" alt="Kenji Phạm — Founder, ESSENCE" fill sizes="(max-width: 768px) 84vw, 30vw" className="object-cover" />
+              <Image src="/images/home/kenji-portrait.webp" alt="Kenji Phạm — Founder, ESSENCE" fill sizes="(max-width: 768px) 84vw, 30vw" className="object-cover transition-transform duration-700 ease-out hover:scale-[1.012]" />
             </div>
 
             <div className="e26-reveal max-w-[690px] md:pt-8">
@@ -255,9 +329,17 @@ export default function VillaPage() {
           </div>
         </section>
 
-        {/* 07 — Open paths + trust + return */}
-        <section className="bg-e26-ivory px-6 py-24 md:px-10 md:py-40">
-          <div className="mx-auto max-w-6xl">
+        {/* 07 — Open paths + trust */}
+        <section className="relative overflow-hidden bg-e26-ivory px-6 py-24 md:px-10 md:py-40">
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(circle at 18% 24%, color-mix(in srgb, var(--essence-white-2026) 68%, transparent), transparent 33%), linear-gradient(110deg, transparent 58%, color-mix(in srgb, var(--essence-cream-2026) 42%, transparent))",
+            }}
+            aria-hidden="true"
+          />
+          <div className="relative mx-auto max-w-6xl">
             <div className="e26-reveal grid gap-14 md:grid-cols-[1.14fr_0.86fr] md:gap-24">
               <div className="max-w-[660px]">
                 <h2 className="font-serif text-[40px] font-medium leading-[1.1] tracking-[-0.014em] md:text-[58px]">Nếu chưa rõ nên bắt đầu từ đâu.</h2>
@@ -267,9 +349,12 @@ export default function VillaPage() {
                 <p className="mt-6 max-w-[590px] font-serif text-[29px] font-normal leading-[1.38] tracking-[-0.01em] md:text-[35px]">
                   Khởi đầu là nơi để điều còn mơ hồ bắt đầu có hình — trước khi bạn tự chọn bước tiếp theo.
                 </p>
-                <Link className={`${softLink} mt-9`} href="/khoi-dau">Khởi đầu <span className="text-[#E0C068]" aria-hidden="true">→</span></Link>
+                <Link className={`${softLink} mt-9`} href="/khoi-dau">
+                  Khởi đầu <span className="text-[#E0C068]" aria-hidden="true">→</span>
+                  <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform duration-300 group-hover:scale-x-100" aria-hidden="true" />
+                </Link>
 
-                <div className="mt-14 max-w-[520px] border-t border-[color-mix(in_srgb,var(--essence-black-2026)_12%,transparent)] pt-7">
+                <div id="goc-doc" className="mt-14 max-w-[520px] scroll-mt-28 border-t border-[color-mix(in_srgb,var(--essence-black-2026)_12%,transparent)] pt-7">
                   <p className="font-sans text-[15px] leading-[1.7] text-e26-text-2">Nếu bạn muốn hiểu thêm trước, Góc đọc vẫn là một lối đi hợp lệ.</p>
                   <p className="mt-3 font-sans text-[12px] font-medium uppercase tracking-[0.12em] text-e26-text-2">Góc đọc</p>
                 </div>
@@ -285,20 +370,11 @@ export default function VillaPage() {
                 </div>
               </aside>
             </div>
-
-            <div className="e26-reveal mt-24 border-t border-[color-mix(in_srgb,var(--essence-black-2026)_14%,transparent)] pt-12 md:mt-32 md:grid md:grid-cols-[1.15fr_0.85fr] md:gap-24 md:pt-14">
-              <p className="max-w-[780px] font-serif text-[29px] font-medium leading-[1.38] tracking-[-0.01em] md:text-[40px]">
-                Nếu đã rõ, bạn có thể đi thẳng tới nơi phù hợp. Nếu chưa rõ, Khởi đầu là một nơi để bắt đầu.
-              </p>
-              <p className="mt-8 self-end font-sans text-[16px] font-normal leading-[1.8] text-e26-text-2 md:mt-0 md:text-[17px]">
-                Nếu hôm nay chưa phải lúc, bạn có thể quay lại khi thấy phù hợp.
-              </p>
-            </div>
           </div>
         </section>
       </main>
 
-      <HomeFooter />
+      <HomeFooter homeIa />
     </>
   );
 }
