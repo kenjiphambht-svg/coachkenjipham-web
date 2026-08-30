@@ -51,6 +51,7 @@ jobs:
           done
           cat > p04-brand-surface.spec.cjs <<'JS'
           const { test, expect } = require('@playwright/test');
+          const fs = require('fs');
           const out = '/tmp/p04-brand-surface-evidence';
           const base = 'http://127.0.0.1:3000';
 
@@ -173,6 +174,83 @@ jobs:
             }
           });
 
+          test('Home body readability and mobile tap targets remain safe', async ({ browser }) => {
+            const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+            await page.goto(base + '/', { waitUntil: 'networkidle' });
+            await revealPage(page);
+
+            const bodyBlocks = page.locator('[data-body-copy]');
+            expect(await bodyBlocks.count()).toBeGreaterThanOrEqual(7);
+            for (let i = 0; i < await bodyBlocks.count(); i += 1) {
+              const metrics = await bodyBlocks.nth(i).evaluate((el) => {
+                const style = getComputedStyle(el);
+                const fontSize = parseFloat(style.fontSize);
+                const lineHeight = parseFloat(style.lineHeight);
+                return { fontSize, ratio: lineHeight / fontSize };
+              });
+              expect(metrics.fontSize).toBeGreaterThanOrEqual(16);
+              expect(metrics.ratio).toBeGreaterThanOrEqual(1.55);
+            }
+
+            for (const href of ['/coaching', '/advisory', '/khoi-dau']) {
+              const link = page.locator(`main a[href="${href}"]`).first();
+              await link.scrollIntoViewIfNeeded();
+              const box = await link.boundingBox();
+              expect(box && box.height).toBeGreaterThanOrEqual(44);
+            }
+
+            await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+            const menu = page.getByRole('button', { name: 'Menu' });
+            const menuBox = await menu.boundingBox();
+            expect(menuBox && menuBox.height).toBeGreaterThanOrEqual(44);
+            await menu.click();
+            const navLinks = page.locator('#site-menu-panel nav a');
+            for (let i = 0; i < await navLinks.count(); i += 1) {
+              const box = await navLinks.nth(i).boundingBox();
+              expect(box && box.height).toBeGreaterThanOrEqual(44);
+            }
+            await page.close();
+          });
+
+          test('Home motion recording shows scroll, threshold response and menu scene', async ({ browser }) => {
+            const context = await browser.newContext({
+              viewport: { width: 1280, height: 720 },
+              recordVideo: { dir: out, size: { width: 1280, height: 720 } },
+            });
+            const page = await context.newPage();
+            const video = page.video();
+            await page.goto(base + '/', { waitUntil: 'networkidle' });
+            await page.waitForTimeout(700);
+
+            const sections = page.locator('main section');
+            const count = await sections.count();
+            for (let i = 1; i < count; i += 1) {
+              await sections.nth(i).scrollIntoViewIfNeeded();
+              await page.waitForTimeout(620);
+            }
+
+            const coaching = page.locator('main a[href="/coaching"]').first();
+            await coaching.scrollIntoViewIfNeeded();
+            await coaching.hover();
+            await page.waitForTimeout(700);
+            const advisory = page.locator('main a[href="/advisory"]').first();
+            await advisory.hover();
+            await page.waitForTimeout(700);
+
+            await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
+            await page.waitForTimeout(1000);
+            await page.getByRole('button', { name: 'Menu' }).click();
+            await page.waitForTimeout(850);
+            await page.locator('#site-menu-panel a[href="/advisory"]').hover();
+            await page.waitForTimeout(700);
+            await page.keyboard.press('Escape');
+            await page.waitForTimeout(500);
+
+            await context.close();
+            const rawVideo = await video.path();
+            fs.renameSync(rawVideo, `${out}/home-motion-desktop.webm`);
+          });
+
           test('Advisory trust bridge remains bounded', async ({ page }) => {
             await page.goto(base + '/advisory', { waitUntil: 'networkidle' });
             const header = page.locator('header[data-shell="advisory-header-exception"]');
@@ -186,9 +264,10 @@ jobs:
           rm p04-brand-surface.spec.cjs
           kill "$(cat /tmp/p04-next.pid)" || true
           test "$(find /tmp/p04-brand-surface-evidence -name '*.png' | wc -l)" -eq 18
+          test "$(find /tmp/p04-brand-surface-evidence -name '*.webm' | wc -l)" -eq 1
 
       - uses: actions/upload-artifact@v4
         with:
           name: p04-brand-pack-surface-qa-v2
-          path: /tmp/p04-brand-surface-evidence/*.png
+          path: /tmp/p04-brand-surface-evidence/*
           if-no-files-found: error
