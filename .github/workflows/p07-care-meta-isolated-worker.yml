@@ -1,0 +1,82 @@
+name: P07 Care Meta Isolated Worker
+
+on:
+  push:
+    branches:
+      - backend/p07-care-ai-test-console-meta-sandbox-01
+
+permissions:
+  contents: read
+
+jobs:
+  isolated-worker-config:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Assert isolated Worker contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs = require('fs');
+          const raw = fs.readFileSync('wrangler.care-meta.jsonc', 'utf8')
+            .replace(/^\s*\/\/.*$/gm, '');
+          const cfg = JSON.parse(raw);
+          if (cfg.name !== 'p07-care-ai-meta-test') throw new Error('CARE_WORKER_NAME_INVALID');
+          if (cfg.workers_dev !== true || cfg.preview_urls !== true) throw new Error('CARE_WORKERS_DEV_REQUIRED');
+          if (cfg.routes || cfg.route) throw new Error('CARE_CUSTOM_ROUTE_FORBIDDEN');
+          if (cfg.vars?.CARE_META_SANDBOX_ENABLED !== 'true') throw new Error('CARE_SANDBOX_MUST_BE_ON');
+          if (cfg.vars?.CARE_META_LIVE_TEST_ENABLED !== 'false') throw new Error('CARE_LIVE_MUST_BE_OFF');
+          if (cfg.vars?.CARE_META_OUTBOUND_ENABLED !== 'false') throw new Error('CARE_OUTBOUND_MUST_BE_OFF');
+          if (cfg.vars?.CARE_META_MESSENGER_SEND_ENDPOINT !== 'https://graph.facebook.com/v26.0/102524972270814/messages') throw new Error('CARE_META_ENDPOINT_INVALID');
+          const d1 = cfg.d1_databases?.find((item) => item.binding === 'CARE_META_IDEMPOTENCY_DB');
+          if (!d1) throw new Error('CARE_D1_BINDING_MISSING');
+          if (d1.database_name !== 'care-meta-idempotency') throw new Error('CARE_D1_NAME_INVALID');
+          if (d1.database_id !== '09d17d94-2325-4afb-9500-ddac0c31e275') throw new Error('CARE_D1_ID_INVALID');
+          const self = cfg.services?.find((item) => item.binding === 'WORKER_SELF_REFERENCE');
+          if (!self || self.service !== 'p07-care-ai-meta-test') throw new Error('CARE_SELF_REFERENCE_INVALID');
+          console.log('PASS: isolated Care Worker contract has no production route and Stage A remains fail-closed.');
+          NODE
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run Care Meta tests
+        run: npx vitest run tests/care-ai-meta-sandbox.test.ts tests/care-ai-provider-neutral.test.ts
+
+      - name: Build Cloudflare OpenNext bundle
+        env:
+          CARE_META_SANDBOX_ENABLED: 'true'
+          CARE_META_LIVE_TEST_ENABLED: 'false'
+          CARE_META_OUTBOUND_ENABLED: 'false'
+        run: npm run cf:build
+
+      - name: Wrangler dry-run isolated Worker only
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf wrangler-care-dry-run
+          npx wrangler deploy --dry-run --config wrangler.care-meta.jsonc --outdir wrangler-care-dry-run
+          test -f wrangler-care-dry-run/worker.js
+          echo 'PASS: isolated Care Worker package accepted by Wrangler without deployment.'
+
+      - name: Assert no provider or Meta secrets in CI
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "${GEMINI_API_KEY:-}"
+          test -z "${CARE_META_VERIFY_TOKEN:-}"
+          test -z "${CARE_META_APP_SECRET:-}"
+          test -z "${CARE_META_MESSENGER_ACCESS_TOKEN:-}"
+          echo 'PASS: isolated config QA exports no live provider/Meta credentials.'
