@@ -1,4 +1,4 @@
-// P07 runtime refresh after secure P09 model-secret placement; no secret value is stored in source.
+// P07 runtime refresh after Founder Gemini Free Tier secret placement; no secret value is stored in source.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "essence-web-portability-proof",
@@ -15,10 +15,9 @@
     "CARE_AI_TEST_REVIEW_HOST": "backend-p07-care-ai-test-con-01b5-essence-web-portability-proof.kenjipham-bht.workers.dev",
     "CARE_AI_TEST_REVIEW_EXPIRES_AT": "2026-09-05T23:59:59+07:00",
     "CARE_P09_REVIEW_RUNNER_ENABLED": "true",
-    "CARE_P09_REVIEW_MODEL_PROVIDER": "openai_compatible_chat",
-    "CARE_P09_REVIEW_MODEL_NAME": "openai/gpt-4.1-mini",
-    "CARE_P09_REVIEW_MODEL_BASE_URL": "https://openrouter.ai/api/v1/chat/completions",
-    "CARE_MODEL_ALLOWED_COMPATIBLE_HOSTS": "openrouter.ai",
+    "CARE_P09_REVIEW_MODEL_PROVIDER": "google_gemini",
+    "CARE_P09_REVIEW_MODEL_NAME": "gemini-2.5-flash",
+    "CARE_MODEL_ALLOWED_COMPATIBLE_HOSTS": "",
     "CARE_META_SANDBOX_ENABLED": "false",
     "CARE_META_LIVE_TEST_ENABLED": "false",
     "CARE_META_OUTBOUND_ENABLED": "false"
