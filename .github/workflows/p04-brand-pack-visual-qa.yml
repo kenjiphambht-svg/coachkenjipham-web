@@ -62,11 +62,11 @@ jobs:
           }
 
           async function revealPage(page) {
-            const sections = page.locator('main section');
-            const count = await sections.count();
+            const reveals = page.locator('.e26-reveal');
+            const count = await reveals.count();
             for (let i = 0; i < count; i += 1) {
-              await sections.nth(i).scrollIntoViewIfNeeded();
-              await page.waitForTimeout(420);
+              await reveals.nth(i).scrollIntoViewIfNeeded();
+              await page.waitForTimeout(190);
             }
             await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
             await page.waitForTimeout(500);
@@ -95,6 +95,7 @@ jobs:
             for (const [mode, viewport] of modes) {
               const home = await browser.newPage({ viewport });
               await home.goto(base + '/', { waitUntil: 'networkidle' });
+              await revealPage(home);
               const returnCorner = home.locator('#goc-doc');
               await settleSurface(home, returnCorner);
               await expect(returnCorner.getByText('Một góc để quay lại.')).toBeVisible();
