@@ -60,7 +60,7 @@ jobs:
             await expect(locator).toBeVisible();
           }
 
-          async function revealHome(page) {
+          async function revealPage(page) {
             const sections = page.locator('main section');
             const count = await sections.count();
             for (let i = 0; i < count; i += 1) {
@@ -79,9 +79,39 @@ jobs:
             for (const [mode, viewport] of modes) {
               const page = await browser.newPage({ viewport });
               await page.goto(base + '/', { waitUntil: 'networkidle' });
-              await revealHome(page);
+              await revealPage(page);
               await page.screenshot({ path: `${out}/home-full-${mode}.png`, fullPage: true });
               await page.close();
+            }
+          });
+
+          test('Founder correction: old Home is ESSENCE Coaching and return corner moved to Master Home', async ({ browser }) => {
+            const modes = [
+              ['desktop', { width: 1440, height: 1000 }],
+              ['mobile', { width: 390, height: 844 }],
+            ];
+
+            for (const [mode, viewport] of modes) {
+              const home = await browser.newPage({ viewport });
+              await home.goto(base + '/', { waitUntil: 'networkidle' });
+              const returnCorner = home.locator('#goc-doc');
+              await settleSurface(home, returnCorner);
+              await expect(returnCorner.getByText('Một góc để quay lại.')).toBeVisible();
+              await expect(returnCorner.getByText('Ebook', { exact: true })).toBeVisible();
+              await expect(returnCorner.getByText('Ghi chép Essence', { exact: true })).toBeVisible();
+              await expect(returnCorner.getByRole('link', { name: /Khởi đầu/ })).toHaveAttribute('href', '/khoi-dau');
+              await expect(home.locator('a[href="/coaching"]').first()).toHaveAttribute('href', '/coaching');
+              await returnCorner.screenshot({ path: `${out}/home-return-corner-${mode}.png` });
+              await home.close();
+
+              const coaching = await browser.newPage({ viewport });
+              const response = await coaching.goto(base + '/coaching', { waitUntil: 'networkidle' });
+              expect(response && response.status()).toBe(200);
+              await expect(coaching.locator('main')).toBeVisible();
+              await expect(coaching.getByText('Câu chuyện cuộc sống của bạn là một kiệt tác.', { exact: false }).first()).toBeVisible();
+              await revealPage(coaching);
+              await coaching.screenshot({ path: `${out}/coaching-full-${mode}.png`, fullPage: true });
+              await coaching.close();
             }
           });
 
@@ -155,7 +185,7 @@ jobs:
           npx playwright test p04-brand-surface.spec.cjs --workers=1 --reporter=line
           rm p04-brand-surface.spec.cjs
           kill "$(cat /tmp/p04-next.pid)" || true
-          test "$(find /tmp/p04-brand-surface-evidence -name '*.png' | wc -l)" -eq 14
+          test "$(find /tmp/p04-brand-surface-evidence -name '*.png' | wc -l)" -eq 18
 
       - uses: actions/upload-artifact@v4
         with:
