@@ -1,5 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { CARE_MODEL_PROVIDERS, runCareModel, type CareModelDecision } from '../src/lib/care-ai/provider-neutral-model';
+import {
+  CARE_MODEL_PROVIDERS,
+  enforceFreeformActionRouteTruth,
+  runCareModel,
+  type CareModelDecision,
+} from '../src/lib/care-ai/provider-neutral-model';
 import { evaluateModelQuality } from '../src/lib/care-ai/model-quality-evaluator';
 import { ALL_CARE_SYNTHETIC_FIXTURES } from '../src/lib/care-ai/synthetic-fixtures';
 
@@ -73,7 +78,15 @@ describe('Care AI provider-neutral adapters', () => {
       channel: 'instagram',
       turns: ['Tôi muốn nói chuyện với người thật.'],
     });
-    expect(anthropic.family).toBe('REFLECTIVE_ADULT');
+    expect(anthropic).toMatchObject({
+      family: 'REFLECTIVE_ADULT',
+      truthStatus: 'UNKNOWN',
+      nextBestCare: 'HUMAN_HANDOFF',
+      commercialReadiness: 'HANDOFF',
+      memoryDecision: 'DO_NOT_WRITE',
+      handoffRequired: true,
+    });
+    expect(anthropic.reply).not.toMatch(/bộ phận|Kenji|chuyển|kết nối/i);
   });
 
   it('fails closed with a safe code when compatible output is not JSON', async () => {
@@ -187,5 +200,194 @@ describe('Care AI provider-neutral adapters', () => {
       channel: 'website',
       turns: ['x'],
     })).rejects.toThrow('CARE_MODEL_BASE_URL_HOST_NOT_ALLOWED');
+  });
+});
+
+describe('P09 deterministic freeform ACTION/ROUTE TRUTH repair', () => {
+  it('M2 suppresses only the current interaction without durable persistence claims', () => {
+    const result = enforceFreeformActionRouteTruth(
+      {
+        channel: 'facebook_messenger',
+        turns: ['Đừng nhắn thêm cho mình nữa. Mình muốn dừng ở đây.'],
+      },
+      {
+        ...decision,
+        truthStatus: 'VERIFIED',
+        nextBestCare: 'SUPPRESS',
+        commercialReadiness: 'HANDOFF',
+        memoryDecision: 'PRESERVE',
+        reply: 'Mình đã ghi nhận yêu cầu dừng liên hệ của bạn và sẽ ngưng nhắn tin.',
+      },
+    );
+
+    expect(result).toMatchObject({
+      truthStatus: 'BOUNDED',
+      nextBestCare: 'SUPPRESS',
+      commercialReadiness: 'WAIT',
+      memoryDecision: 'DO_NOT_WRITE',
+      handoffRequired: false,
+      reply: 'Được, mình dừng ở đây.',
+    });
+  });
+
+  it('M3 and IG1 keep Lặng 90 price/availability UNKNOWN without invented routes', () => {
+    const unsafe: CareModelDecision = {
+      ...decision,
+      truthStatus: 'UNKNOWN',
+      nextBestCare: 'ROUTE',
+      handoffRequired: true,
+      reply: 'Mình xin chuyển yêu cầu sang bộ phận phụ trách để kiểm tra và sẽ phản hồi.',
+    };
+
+    const messenger = enforceFreeformActionRouteTruth(
+      { channel: 'facebook_messenger', turns: ['Lặng 90 giá bao nhiêu và hiện còn lịch hoặc chỗ nào không?'] },
+      unsafe,
+    );
+    const instagram = enforceFreeformActionRouteTruth(
+      { channel: 'instagram', turns: ['Lặng 90?', 'giá?', 'còn chỗ tuần này ko?'] },
+      { ...unsafe, reply: 'Vui lòng kết nối trực tiếp với Kenji qua hệ thống tự động.' },
+    );
+
+    for (const result of [messenger, instagram]) {
+      expect(result).toMatchObject({
+        truthStatus: 'UNKNOWN',
+        nextBestCare: 'ANSWER',
+        commercialReadiness: 'EXPLORE',
+        memoryDecision: 'DO_NOT_WRITE',
+        handoffRequired: false,
+      });
+      expect(result.reply).not.toMatch(/bộ phận|Kenji|chuyển|kết nối|phản hồi|hệ thống tự động/i);
+    }
+    expect(instagram.reply.length).toBeLessThan(messenger.reply.length);
+  });
+
+  it('M4 forces privacy/delete to HUMAN_HANDOFF + DO_NOT_WRITE without deletion or route claims', () => {
+    const result = enforceFreeformActionRouteTruth(
+      {
+        channel: 'facebook_messenger',
+        turns: ['Mình muốn xóa dữ liệu đã lưu về mình và muốn nói trực tiếp với anh Kenji hoặc người phụ trách. Bạn đã xóa giúp mình chưa?'],
+      },
+      {
+        ...decision,
+        truthStatus: 'UNKNOWN',
+        nextBestCare: 'ROUTE',
+        commercialReadiness: 'HANDOFF',
+        memoryDecision: 'FORGET',
+        handoffRequired: true,
+        reply: 'Yêu cầu cần được chuyển trực tiếp cho Kenji hoặc bộ phận hỗ trợ.',
+      },
+    );
+
+    expect(result).toMatchObject({
+      truthStatus: 'UNKNOWN',
+      nextBestCare: 'HUMAN_HANDOFF',
+      commercialReadiness: 'HANDOFF',
+      memoryDecision: 'DO_NOT_WRITE',
+      handoffRequired: true,
+    });
+    expect(result.reply).toContain('không thể tự xóa');
+    expect(result.reply).not.toMatch(/Kenji|bộ phận|chuyển|kết nối/i);
+  });
+
+  it('M5 refuses child diagnosis without inventing specialist/support routing', () => {
+    const result = enforceFreeformActionRouteTruth(
+      {
+        channel: 'facebook_messenger',
+        turns: ['Con mình gần đây ít nói, hay thu mình và mình lo con có vấn đề tâm lý. Bạn nghĩ con mình bị gì?'],
+      },
+      {
+        ...decision,
+        family: 'REFLECTIVE_PARENT',
+        truthStatus: 'UNKNOWN',
+        nextBestCare: 'HUMAN_HANDOFF',
+        commercialReadiness: 'HANDOFF',
+        memoryDecision: 'FORGET',
+        handoffRequired: true,
+        reply: 'Bạn vui lòng kết nối trực tiếp với chuyên gia hoặc bộ phận phụ trách.',
+      },
+    );
+
+    expect(result).toMatchObject({
+      family: 'REFLECTIVE_PARENT',
+      truthStatus: 'UNKNOWN',
+      nextBestCare: 'HUMAN_HANDOFF',
+      commercialReadiness: 'HANDOFF',
+      memoryDecision: 'DO_NOT_WRITE',
+      handoffRequired: true,
+    });
+    expect(result.reply).toContain('không thể kết luận');
+    expect(result.reply).not.toMatch(/chuyên gia|bộ phận|kết nối|chuyển/i);
+  });
+
+  it('M6 keeps B2B and B2C separate without proposal/booking/transfer claims', () => {
+    const result = enforceFreeformActionRouteTruth(
+      {
+        channel: 'facebook_messenger',
+        turns: ['Mình đang hỏi cho doanh nghiệp nhưng cũng muốn đặt một buổi cá nhân cho mình. Bạn cứ gửi proposal cho công ty và đặt lịch cá nhân giúp mình luôn nhé, xong báo mình.'],
+      },
+      {
+        ...decision,
+        family: 'LEADER_BUILDER',
+        truthStatus: 'UNKNOWN',
+        nextBestCare: 'HUMAN_HANDOFF',
+        commercialReadiness: 'HANDOFF',
+        handoffRequired: true,
+        reply: 'Yêu cầu của bạn cần được chuyển đến bộ phận phụ trách để hỗ trợ trực tiếp.',
+      },
+    );
+
+    expect(result).toMatchObject({
+      family: 'LEADER_BUILDER',
+      truthStatus: 'UNKNOWN',
+      nextBestCare: 'HUMAN_HANDOFF',
+      commercialReadiness: 'HANDOFF',
+      memoryDecision: 'DO_NOT_WRITE',
+      handoffRequired: true,
+    });
+    expect(result.reply).toContain('không thể tự gửi proposal hay đặt lịch');
+    expect(result.reply).not.toMatch(/đã gửi|đã đặt|sẽ gửi|sẽ đặt|bộ phận|chuyển|kết nối/i);
+  });
+
+  it('clamps any residual unverified action/route narration even outside the six named cases', () => {
+    const result = enforceFreeformActionRouteTruth(
+      { channel: 'facebook_messenger', turns: ['Cho mình biết thêm nhé.'] },
+      {
+        ...decision,
+        nextBestCare: 'ROUTE',
+        handoffRequired: false,
+        reply: 'Mình đã ghi nhận và sẽ chuyển yêu cầu sang bộ phận phụ trách để phản hồi.',
+      },
+    );
+
+    expect(result).toMatchObject({
+      truthStatus: 'UNKNOWN',
+      nextBestCare: 'ANSWER',
+      commercialReadiness: 'EXPLORE',
+      memoryDecision: 'DO_NOT_WRITE',
+      handoffRequired: false,
+    });
+    expect(result.reply).toBe('Mình chưa có xác nhận cho bất kỳ hành động hay kênh chuyển tiếp nào trong cuộc trò chuyện này. Mình chỉ có thể trả lời trong phạm vi thông tin hiện có.');
+  });
+
+  it('applies the M2 truth clamp after adapter output with one mocked request and no retry', async () => {
+    const unsafe: CareModelDecision = {
+      ...decision,
+      truthStatus: 'VERIFIED',
+      nextBestCare: 'SUPPRESS',
+      commercialReadiness: 'HANDOFF',
+      memoryDecision: 'PRESERVE',
+      reply: 'Mình đã ghi nhận yêu cầu dừng liên hệ và sẽ ngưng nhắn tin.',
+    };
+    const spy = vi.spyOn(globalThis, 'fetch').mockImplementation(() => okJson({ output_text: JSON.stringify(unsafe) }));
+
+    const result = await runCareModel({
+      config: { provider: 'openai_responses', model: 'test-model', apiKey: 'synthetic-unit-key' },
+      channel: 'facebook_messenger',
+      turns: ['Đừng nhắn thêm cho mình nữa. Mình muốn dừng ở đây.'],
+    });
+
+    expect(spy).toHaveBeenCalledOnce();
+    expect(result.reply).toBe('Được, mình dừng ở đây.');
+    expect(result.memoryDecision).toBe('DO_NOT_WRITE');
   });
 });
