@@ -1,16 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { CareChannel } from '../../../lib/care-ai/contracts';
 import {
+  createD1MetaIdempotencyStore,
   parseMetaWebhook,
   sendMetaText,
+  type MetaD1Database,
+  type MetaIdempotencyStore,
   verifyMetaPayloadSignature,
   verifyMetaWebhook,
 } from '../../../lib/care-ai/meta-channel';
 import { runCareModel, type CareModelProvider } from '../../../lib/care-ai/provider-neutral-model';
 
 export const config = { api: { bodyParser: false } };
-
-const processedMessageIds = new Set<string>();
 
 function sandboxEnabled(): boolean {
   return process.env.CARE_META_SANDBOX_ENABLED === 'true';
@@ -33,6 +34,27 @@ function allowedTestSenderIds(): Set<string> {
   );
 }
 
+function idempotencyTtlSeconds(): number {
+  const value = Number(process.env.CARE_META_IDEMPOTENCY_TTL_SECONDS || '');
+  if (!Number.isInteger(value) || value < 300 || value > 604800) {
+    throw new Error('CARE_META_IDEMPOTENCY_TTL_INVALID');
+  }
+  return value;
+}
+
+async function metaIdempotencyStore(): Promise<MetaIdempotencyStore> {
+  try {
+    const { getCloudflareContext } = await import('@opennextjs/cloudflare');
+    const { env } = await getCloudflareContext({ async: true });
+    const db = (env as unknown as { CARE_META_IDEMPOTENCY_DB?: MetaD1Database }).CARE_META_IDEMPOTENCY_DB;
+    if (!db) throw new Error('CARE_META_IDEMPOTENCY_STORE_MISSING');
+    return createD1MetaIdempotencyStore(db);
+  } catch (error) {
+    if (error instanceof Error && error.message.startsWith('CARE_META_IDEMPOTENCY_')) throw error;
+    throw new Error('CARE_META_IDEMPOTENCY_STORE_UNAVAILABLE');
+  }
+}
+
 function allowedCompatibleHosts(): string[] {
   return (process.env.CARE_MODEL_ALLOWED_COMPATIBLE_HOSTS || '')
     .split(',')
@@ -50,17 +72,19 @@ function headerValue(value: string | string[] | undefined): string | undefined {
   return Array.isArray(value) ? value[0] : value;
 }
 
-function metaSendConfig(channel: CareChannel): { sendEndpoint: string; accessToken: string } {
+function metaSendConfig(channel: CareChannel, expectedPageId?: string): { sendEndpoint: string; accessToken: string; expectedPageId?: string } {
   if (channel === 'facebook_messenger') {
     return {
       sendEndpoint: process.env.CARE_META_MESSENGER_SEND_ENDPOINT || '',
       accessToken: process.env.CARE_META_MESSENGER_ACCESS_TOKEN || '',
+      expectedPageId,
     };
   }
   if (channel === 'instagram') {
     return {
       sendEndpoint: process.env.CARE_META_INSTAGRAM_SEND_ENDPOINT || '',
       accessToken: process.env.CARE_META_INSTAGRAM_ACCESS_TOKEN || '',
+      expectedPageId,
     };
   }
   throw new Error('CARE_META_CHANNEL_NOT_SENDABLE');
@@ -121,7 +145,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         channels: messages.map((message) => message.channel),
         modelCalled: false,
         outboundSent: false,
-        note: 'Signed Meta sandbox receipt only. Model/outbound remain behind explicit live-test gates.',
+        note: 'Signed Meta receipt only. Model/outbound remain behind explicit controlled-live gates.',
       });
     }
 
@@ -134,36 +158,58 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       channel: CareChannel;
       duplicate: boolean;
       blockedByAllowlist: boolean;
+      blockedByChannelGate: boolean;
       modelCalled: boolean;
       outboundSent: boolean;
       messageId?: string;
       replyPreview?: string;
     }> = [];
+    let storePromise: Promise<MetaIdempotencyStore> | undefined;
 
     for (const message of messages) {
+      if (message.channel !== 'facebook_messenger') {
+        outputs.push({
+          channel: message.channel,
+          duplicate: false,
+          blockedByAllowlist: false,
+          blockedByChannelGate: true,
+          modelCalled: false,
+          outboundSent: false,
+        });
+        continue;
+      }
+
       if (!allowedSenders.has(message.externalSenderId)) {
         outputs.push({
           channel: message.channel,
           duplicate: false,
           blockedByAllowlist: true,
+          blockedByChannelGate: false,
           modelCalled: false,
           outboundSent: false,
         });
         continue;
       }
 
-      const messageId = message.externalMessageId;
-      if (messageId && processedMessageIds.has(messageId)) {
+      const messageId = message.externalMessageId?.trim();
+      if (!messageId) throw new Error('CARE_META_MESSAGE_ID_REQUIRED');
+      storePromise ||= metaIdempotencyStore();
+      const firstSeen = await (await storePromise).claim({
+        channel: message.channel,
+        externalMessageId: messageId,
+        ttlSeconds: idempotencyTtlSeconds(),
+      });
+      if (!firstSeen) {
         outputs.push({
           channel: message.channel,
           duplicate: true,
           blockedByAllowlist: false,
+          blockedByChannelGate: false,
           modelCalled: false,
           outboundSent: false,
         });
         continue;
       }
-      if (messageId) processedMessageIds.add(messageId);
 
       const decision = await runCareModel({
         config: modelConfig(),
@@ -176,6 +222,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           channel: message.channel,
           duplicate: false,
           blockedByAllowlist: false,
+          blockedByChannelGate: false,
           modelCalled: true,
           outboundSent: false,
           replyPreview: decision.reply,
@@ -183,8 +230,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         continue;
       }
 
+      const pageId = message.externalRecipientId?.trim();
+      if (!pageId) throw new Error('CARE_META_PAGE_ID_REQUIRED');
       const sent = await sendMetaText({
-        config: metaSendConfig(message.channel),
+        config: metaSendConfig(message.channel, pageId),
         recipientId: message.externalSenderId,
         text: decision.reply,
       });
@@ -192,6 +241,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         channel: message.channel,
         duplicate: false,
         blockedByAllowlist: false,
+        blockedByChannelGate: false,
         modelCalled: true,
         outboundSent: true,
         messageId: sent.messageId,
@@ -202,9 +252,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       accepted: true,
       liveTest: true,
       outboundGateEnabled: outboundEnabled(),
-      guardMode: 'MODEL_ONLY_FREEFORM_TEST',
+      guardMode: 'MESSENGER_PAGE_CONTROLLED_LIVE_TEXT_REPLY_ONLY',
       processed: outputs,
-      note: 'TEST SENDER ALLOWLIST ONLY. Process-local dedupe is not Production reliability evidence.',
+      note: 'Messenger/Page text-only, inbound-triggered RESPONSE replies only. Persistent idempotency is required; Instagram and proactive follow-up remain closed.',
     });
   } catch (error) {
     return res.status(502).json({ error: safeError(error) });
