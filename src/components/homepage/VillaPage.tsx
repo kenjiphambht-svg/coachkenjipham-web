@@ -60,16 +60,16 @@ export default function VillaPage() {
 
           <div className="mx-auto w-full max-w-6xl">
             <div className="e26-reveal max-w-[720px] md:translate-y-2">
-              <h1 className="max-w-[700px] font-serif text-[46px] font-medium leading-[1.03] tracking-[-0.02em] md:text-[70px] lg:text-[80px]">Có những điều bạn biết rất rõ.</h1>
+              <h1 className="max-w-[700px] font-serif text-[46px] font-medium leading-[1.03] tracking-[-0.02em] md:text-[70px] lg:text-[80px]">Có những điều bạn đã biết từ lâu.</h1>
               <div data-body-copy className="mt-10 max-w-[560px] space-y-3 font-sans text-[17px] font-normal leading-[1.78] md:mt-12 md:text-[19px]">
-                <p>Biết một cuộc nói chuyện đã đến lúc phải diễn ra.</p>
-                <p>Biết một việc nên dừng.</p>
-                <p>Biết một quyết định không thể để lâu hơn nữa.</p>
+                <p>Một cuộc nói chuyện cần diễn ra.</p>
+                <p>Một việc cần dừng.</p>
+                <p>Một quyết định không thể để lâu hơn.</p>
               </div>
-              <p className="mt-11 max-w-[610px] font-serif text-[29px] font-normal leading-[1.32] tracking-[-0.012em] md:mt-14 md:text-[37px]">Nhưng từ <em>biết</em> đến thật sự sống và làm khác đi vẫn còn một khoảng.</p>
+              <p className="mt-11 max-w-[610px] font-serif text-[29px] font-normal leading-[1.32] tracking-[-0.012em] md:mt-14 md:text-[37px]">Nhưng <em>biết</em> chưa luôn có nghĩa là <em>sống khác đi</em>.</p>
               <div className="mt-10 flex items-center gap-4">
                 <span className="h-px w-10 bg-[#E0C068]" aria-hidden="true" />
-                <p className="font-sans text-[15px] font-medium leading-[1.7]">ESSENCE bắt đầu từ khoảng đó.</p>
+                <p className="font-sans text-[15px] font-medium leading-[1.7]">ESSENCE bắt đầu ở khoảng đó.</p>
               </div>
             </div>
           </div>
@@ -83,10 +83,11 @@ export default function VillaPage() {
             aria-hidden="true"
           />
           <div className="relative mx-auto grid max-w-6xl gap-12 md:grid-cols-[0.78fr_1.22fr] md:gap-24">
-            <h2 className="e26-reveal max-w-[430px] font-serif text-[36px] font-medium leading-[1.12] tracking-[-0.016em] md:text-[50px]">Ở khoảng đó, ESSENCE không nói bạn nên làm gì.</h2>
+            <h2 className="e26-reveal max-w-[430px] font-serif text-[36px] font-medium leading-[1.12] tracking-[-0.016em] md:text-[50px]">ESSENCE không nói bạn nên làm gì.</h2>
             <div data-body-copy className="e26-reveal max-w-[620px] space-y-7 font-sans text-[17px] font-normal leading-[1.82] md:mt-14 md:border-l md:border-[color-mix(in_srgb,var(--essence-black-2026)_10%,transparent)] md:pl-12 md:text-[18px]">
-              <p>Ở cấp độ cá nhân, <strong className="font-medium">Bản sắc</strong> là phần bạn ngày càng nhận ra trung thực hơn qua những gì đã sống — cả điều dễ đón nhận lẫn điều từng né tránh hoặc chưa hiểu.</p>
-              <p className="max-w-[560px] font-serif text-[29px] font-medium leading-[1.34] tracking-[-0.012em] md:text-[34px]">Không phải để đóng bạn vào một định nghĩa. <br className="hidden md:block" />Là để bạn có thêm quyền chọn.</p>
+              <p className="max-w-[590px] font-serif text-[31px] font-medium leading-[1.28] tracking-[-0.014em] md:text-[38px]">Bản sắc không phải một câu trả lời cuối cùng về bạn.</p>
+              <p>Đó là phần bạn ngày càng nhận ra trung thực hơn qua những gì đã sống — cả điều dễ đón nhận lẫn điều từng né tránh.</p>
+              <p className="max-w-[560px] font-serif text-[29px] font-medium leading-[1.34] tracking-[-0.012em] md:text-[34px]">Không phải để định nghĩa bạn. <br className="hidden md:block" />Để bạn có thêm quyền chọn.</p>
             </div>
           </div>
         </section>
@@ -118,13 +119,13 @@ export default function VillaPage() {
                 <p className="border-t border-[color-mix(in_srgb,var(--essence-black-2026)_12%,transparent)] py-5">Một ranh giới được nói ra.</p>
               </div>
               <div className="space-y-0 md:col-span-4 md:col-start-5 md:translate-y-8">
-                <p className="border-t border-[color-mix(in_srgb,var(--essence-black-2026)_12%,transparent)] py-5">Một quyết định trong doanh nghiệp có người thực sự sở hữu.</p>
+                <p className="border-t border-[color-mix(in_srgb,var(--essence-black-2026)_12%,transparent)] py-5">Một quyết định có người thật sự đứng tên.</p>
               </div>
               <div className="space-y-0 md:col-span-4 md:col-start-9 md:translate-y-16">
-                <p className="border-t border-[color-mix(in_srgb,var(--essence-black-2026)_12%,transparent)] py-5">Một cách làm mới được thử thay vì tiếp tục nằm trong cuộc họp.</p>
+                <p className="border-t border-[color-mix(in_srgb,var(--essence-black-2026)_12%,transparent)] py-5">Một cách làm mới được thử.</p>
               </div>
 
-              <p className="md:col-span-7 md:col-start-4 md:mt-24">Với <strong className="font-medium">nhân hiệu</strong>, điều đó có thể là cách bạn hiện diện từ điều bạn chọn đứng về — thay vì dựng một hình ảnh trước rồi cố sống cho giống nó.</p>
+              <p className="md:col-span-7 md:col-start-4 md:mt-24">Với <strong className="font-medium">nhân hiệu</strong>, đó có thể là lúc cách bạn xuất hiện bắt đầu đi sau điều bạn thật sự chọn đứng về — thay vì đi trước nó.</p>
             </div>
           </div>
         </section>
@@ -145,9 +146,7 @@ export default function VillaPage() {
           <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#E0C068]/25 to-transparent" aria-hidden="true" />
 
           <div className="relative z-10 mx-auto max-w-6xl">
-            <h2 className="e26-reveal max-w-[860px] font-serif text-[42px] font-medium leading-[1.04] tracking-[-0.019em] md:text-[66px]">HAI BỐI CẢNH. CÙNG MỘT BẢN SẮC</h2>
-
-            <div className="relative mt-16 md:mt-28 md:grid md:min-h-[650px] md:grid-cols-12">
+            <div className="relative md:grid md:min-h-[650px] md:grid-cols-12">
               <div className="pointer-events-none absolute left-[55%] top-[10%] hidden h-[76%] w-px bg-[#E0C068]/30 md:block" aria-hidden="true" />
               <div className="pointer-events-none absolute left-[48%] top-[53%] hidden h-px w-[17%] bg-[#E0C068]/52 md:block" aria-hidden="true" />
 
@@ -162,7 +161,13 @@ export default function VillaPage() {
                 </div>
                 <div className="relative z-10 flex min-h-[460px] flex-col justify-end px-6 py-9 md:min-h-[590px] md:px-10 md:py-12">
                   <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-e26-text-2">ESSENCE COACHING</p>
-                  <p className="mt-5 max-w-[480px] font-serif text-[31px] font-normal leading-[1.31] tracking-[-0.012em] md:text-[40px]">Khi điều cần nhìn rõ nằm trong đời sống của bạn — lựa chọn, mối quan hệ, vai trò, gia đình.</p>
+                  <p className="mt-5 max-w-[480px] font-serif text-[31px] font-normal leading-[1.31] tracking-[-0.012em] md:text-[40px]">Khi điều cần nhìn rõ nằm trong <strong className="font-medium">cách bạn đang sống</strong>.</p>
+                  <div data-body-copy className="mt-7 space-y-1 font-sans text-[16px] leading-[1.7] text-e26-text md:text-[17px]">
+                    <p>Một lựa chọn.</p>
+                    <p>Một mối quan hệ.</p>
+                    <p>Một vai trò.</p>
+                    <p>Một điều đã đến lúc phải khác đi.</p>
+                  </div>
                   <span className={`${softLink} mt-8 w-fit`}>ESSENCE Coaching <span className={`text-[#E0C068] transition-transform group-hover:translate-x-1 ${thresholdMotion}`} aria-hidden="true">→</span><span className={`absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform group-hover:scale-x-100 ${thresholdMotion}`} aria-hidden="true" /></span>
                 </div>
               </Link>
@@ -177,13 +182,21 @@ export default function VillaPage() {
                 <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 20%, color-mix(in srgb, var(--essence-ivory-2026) 56%, transparent) 62%, var(--essence-ivory-2026) 100%)" }} aria-hidden="true" />
                 <div className="relative z-10 flex min-h-[390px] flex-col justify-end px-6 py-9 md:min-h-[470px] md:px-8 md:py-12">
                   <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-e26-text-2">ESSENCE ADVISORY</p>
-                  <p className="mt-5 max-w-[430px] font-serif text-[31px] font-normal leading-[1.31] tracking-[-0.012em] md:text-[38px]">Khi điều cần nhìn rõ nằm trong công việc hoặc doanh nghiệp — quyết định, vận hành hay thay đổi cần đi vào thực tế.</p>
+                  <p className="mt-5 max-w-[430px] font-serif text-[31px] font-normal leading-[1.31] tracking-[-0.012em] md:text-[38px]">Khi điều cần nhìn rõ nằm trong <strong className="font-medium">cách doanh nghiệp đang quyết định và vận hành</strong>.</p>
+                  <div data-body-copy className="mt-7 space-y-1 font-sans text-[16px] leading-[1.7] text-e26-text md:text-[17px]">
+                    <p>Một bài toán quan trọng.</p>
+                    <p>Một quyết định có hệ quả.</p>
+                    <p>Một thay đổi cần đi vào thực tế.</p>
+                  </div>
                   <span className={`${softLink} mt-8 w-fit`}>ESSENCE Advisory <span className={`text-[#E0C068] transition-transform group-hover:translate-x-1 ${thresholdMotion}`} aria-hidden="true">→</span><span className={`absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform group-hover:scale-x-100 ${thresholdMotion}`} aria-hidden="true" /></span>
                 </div>
               </Link>
             </div>
 
-            <p data-body-copy className="e26-reveal mt-16 max-w-[820px] font-sans text-[16px] font-normal leading-[1.78] text-e26-text-2 md:ml-auto md:mt-20 md:text-[17px]">Ở cá nhân, Bản sắc đi qua vai trò và điều bạn chọn đứng về; ở doanh nghiệp, qua cách tổ chức quyết định, vận hành và thể hiện — không phải một nhãn tâm lý.</p>
+            <div data-body-copy className="e26-reveal mt-16 max-w-[820px] space-y-3 font-sans text-[16px] font-normal leading-[1.78] text-e26-text-2 md:ml-auto md:mt-20 md:text-[17px]">
+              <p>Ở cá nhân, Bản sắc đi vào cách bạn sống.</p>
+              <p>Ở doanh nghiệp, nó đi vào điều tổ chức chọn đứng về — và cách lựa chọn ấy được thực hiện.</p>
+            </div>
           </div>
         </section>
 
@@ -193,18 +206,20 @@ export default function VillaPage() {
           <div className="absolute inset-0" style={{ background: "linear-gradient(90deg, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent), color-mix(in srgb, var(--essence-cream-2026) 84%, transparent) 58%, color-mix(in srgb, var(--essence-ivory-2026) 96%, transparent))" }} aria-hidden="true" />
 
           <div className="relative z-10 mx-auto grid max-w-6xl items-start gap-16 md:grid-cols-[0.68fr_1.32fr] md:gap-24">
-            <div className="e26-reveal relative mx-auto aspect-[4/5] w-full max-w-[350px] overflow-hidden bg-e26-cream-deep md:mt-32">
+            <div className="e26-reveal relative mx-auto aspect-[4/5] w-full max-w-[350px] overflow-hidden bg-e26-cream-deep md:mt-20">
               <Image src="/images/home/kenji-portrait.webp" alt="Kenji Phạm — Founder, ESSENCE" fill sizes="(max-width: 768px) 84vw, 29vw" className={`object-cover transition-transform hover:scale-[1.01] ${thresholdMotion}`} />
             </div>
 
-            <div className="e26-reveal max-w-[760px]">
-              <h2 className="max-w-[620px] font-serif text-[36px] font-medium leading-[1.1] tracking-[-0.014em] md:text-[46px]">VÌ SAO CẢ HAI CÙNG LÀ BẢN SẮC?</h2>
-              <div data-body-copy className="mt-10 max-w-[590px] space-y-6 font-sans text-[17px] font-normal leading-[1.82] md:text-[18px]">
-                <p>Trước ESSENCE, tôi từng làm nhiều công việc liên quan đến hình ảnh, định vị và cách một người xuất hiện trước công chúng.</p>
-                <p>Tôi nhận ra một khoảng lệch: hình ảnh có thể được xây rất nhanh, trong khi điều người đứng phía sau thật sự muốn đứng về chưa chắc đã rõ.</p>
+            <div className="e26-reveal max-w-[760px] md:pt-12">
+              <div data-body-copy className="max-w-[590px] space-y-6 font-sans text-[17px] font-normal leading-[1.82] md:text-[18px]">
+                <p>Trước ESSENCE, tôi từng làm nhiều việc liên quan đến hình ảnh, định vị và cách một người xuất hiện trước công chúng.</p>
+                <p>Rồi tôi nhận ra một khoảng lệch:</p>
               </div>
 
+              <p className="mt-8 max-w-[680px] font-serif text-[34px] font-medium leading-[1.2] tracking-[-0.015em] md:text-[46px]">hình ảnh có thể được xây nhanh hơn điều thật sự đứng phía sau nó.</p>
+
               <div className="mt-16 border-t border-[#E0C068]/58 pt-9 md:mt-20 md:pt-12">
+                <p className="mb-7 font-sans text-[12px] font-medium uppercase tracking-[0.13em] text-e26-text-2">Từ đó, một câu hỏi ở lại với tôi:</p>
                 <p className="max-w-[760px] font-serif text-[44px] font-medium leading-[1.08] tracking-[-0.02em] md:text-[66px]">“Điều gì ở đây thật sự đáng để được xây?”</p>
               </div>
 
@@ -218,7 +233,7 @@ export default function VillaPage() {
           </div>
         </section>
 
-        {/* 07 — open exploration → trust */}
+        {/* 07 — open exploration */}
         <section className="relative overflow-hidden bg-e26-ivory px-6 py-28 md:px-10 md:py-48">
           <Image src="/images/home/ghi-chep-essence-v4.webp" alt="" fill sizes="100vw" className="object-cover object-center opacity-[0.18]" aria-hidden="true" />
           <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_80%,transparent)]" aria-hidden="true" />
@@ -226,16 +241,6 @@ export default function VillaPage() {
 
           <div className="relative mx-auto max-w-6xl">
             <NotesTeaser />
-
-            <div className="e26-reveal mt-28 border-t border-[#E0C068]/45 pt-12 md:mt-40 md:grid md:grid-cols-[0.58fr_1.42fr] md:gap-20 md:pt-16">
-              <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-e26-text">ĐIỀU ESSENCE CAM KẾT GIỮ</p>
-              <div data-body-copy className="mt-9 grid gap-x-14 gap-y-0 font-sans text-[18px] font-medium leading-[1.7] text-e26-text md:mt-0 md:grid-cols-2 md:text-[20px]">
-                <p className="border-t border-[color-mix(in_srgb,var(--essence-black-2026)_12%,transparent)] py-5">ESSENCE giữ quyền lựa chọn ở bạn.</p>
-                <p className="border-t border-[color-mix(in_srgb,var(--essence-black-2026)_12%,transparent)] py-5">Không dùng một chiếc nhãn để định nghĩa bạn.</p>
-                <p className="border-t border-[color-mix(in_srgb,var(--essence-black-2026)_12%,transparent)] py-5">Giữ điều được nhận ra kết nối với lựa chọn và thực tế.</p>
-                <p className="border-y border-[color-mix(in_srgb,var(--essence-black-2026)_12%,transparent)] py-5 md:border-b-0">Và chỉ hứa những điều ESSENCE có thể chịu trách nhiệm.</p>
-              </div>
-            </div>
           </div>
         </section>
       </main>
