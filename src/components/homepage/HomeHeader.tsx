@@ -113,22 +113,17 @@ export default function HomeHeader({ homeIa = false }: HomeHeaderProps) {
         className={`fixed inset-0 z-50 overflow-hidden bg-e26-cream transition-all ${thresholdMotion} ${open ? "pointer-events-auto translate-y-0 opacity-100" : "pointer-events-none -translate-y-3 opacity-0"}`}
       >
         {homeIa && (
-          <>
-            <div
-              className="pointer-events-none absolute inset-0"
-              style={{
-                background:
-                  "radial-gradient(circle at 84% 16%, color-mix(in srgb, var(--essence-white-2026) 92%, transparent), transparent 31%), radial-gradient(circle at 18% 88%, color-mix(in srgb, var(--essence-ivory-2026) 70%, transparent), transparent 34%), linear-gradient(118deg, color-mix(in srgb, var(--essence-ivory-2026) 70%, transparent), transparent 56%)",
-              }}
-              aria-hidden="true"
-            />
-            <div className={`pointer-events-none absolute left-0 top-[76px] h-px w-full origin-left bg-gradient-to-r from-[#E0C068]/65 via-[#E0C068]/22 to-transparent transition-transform ${open ? "scale-x-100" : "scale-x-0"} ${thresholdMotion}`} aria-hidden="true" />
-            <div className="pointer-events-none absolute bottom-0 right-[13%] h-[62%] w-px bg-[#E0C068]/18" aria-hidden="true" />
-            <div className="pointer-events-none absolute bottom-[18%] right-[9%] h-px w-[18%] bg-[#E0C068]/16" aria-hidden="true" />
-          </>
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(circle at 78% 18%, color-mix(in srgb, var(--essence-white-2026) 74%, transparent), transparent 32%), linear-gradient(118deg, color-mix(in srgb, var(--essence-ivory-2026) 54%, transparent), transparent 58%)",
+            }}
+            aria-hidden="true"
+          />
         )}
 
-        <div className="relative mx-auto flex h-full max-w-[1180px] flex-col px-6 md:px-10">
+        <div className="relative mx-auto flex h-full max-w-[1120px] flex-col px-6 md:px-10">
           <div className="flex items-center justify-between py-1">
             <Link href="/" aria-label="Về trang chủ" tabIndex={open ? 0 : -1} onClick={(e) => e.stopPropagation()} className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream">
               <HeaderLogo />
@@ -148,68 +143,60 @@ export default function HomeHeader({ homeIa = false }: HomeHeaderProps) {
           </div>
 
           {homeIa ? (
-            <nav aria-label="Điều hướng trang" onClick={(e) => e.stopPropagation()} className="relative z-10 flex-1 overflow-y-auto pb-12 pt-10 md:flex md:items-center md:overflow-visible md:pb-14 md:pt-6">
-              <div className="w-full">
-                <div className="grid gap-10 md:grid-cols-2 md:gap-16 lg:gap-24">
-                  <div className={`relative border-l border-[#E0C068]/45 pl-5 transition-transform md:pl-9 ${open ? "translate-y-0" : "translate-y-3"} ${thresholdMotion}`}>
-                    <span className="absolute -left-px top-0 h-16 w-px bg-[#E0C068]" aria-hidden="true" />
+            <nav aria-label="Điều hướng trang" onClick={(e) => e.stopPropagation()} className="relative z-10 flex flex-1 overflow-y-auto pb-10 pt-6 md:items-center md:overflow-visible md:pb-12 md:pt-4">
+              <div className="w-full md:grid md:grid-cols-12 md:gap-8">
+                <div className={`md:col-span-6 md:col-start-5 lg:col-span-5 lg:col-start-5 transition-transform ${open ? "translate-y-0" : "translate-y-3"} ${thresholdMotion}`}>
+                  <div>
                     <Link
                       ref={firstLinkRef}
                       href="/coaching"
                       tabIndex={open ? 0 : -1}
                       onClick={closeMenu}
-                      className="group relative inline-flex min-h-11 items-center font-serif text-[38px] font-medium leading-[1.03] tracking-[-0.018em] text-e26-text md:text-[52px] lg:text-[58px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
+                      className="group relative inline-flex min-h-11 items-center font-serif text-[34px] font-normal leading-[1.06] tracking-[-0.016em] text-e26-text md:text-[40px] lg:text-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
                     >
                       ESSENCE Coaching
-                      <span className={`absolute -bottom-2 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform group-hover:scale-x-100 ${thresholdMotion}`} aria-hidden="true" />
+                      <span className={`absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform group-hover:scale-x-100 ${thresholdMotion}`} aria-hidden="true" />
                     </Link>
 
-                    <div className="mt-6 flex flex-col gap-1 md:mt-8 md:gap-2">
+                    <div className="mt-3 flex flex-col items-start md:mt-4">
                       {HOME_COACHING_CHILDREN.map((link) => (
                         <Link
                           key={link.href}
                           href={link.href}
                           tabIndex={open ? 0 : -1}
                           onClick={closeMenu}
-                          className={`group flex min-h-11 w-fit items-center gap-3 font-sans text-[15px] leading-[1.5] text-e26-text-2 transition-colors hover:text-e26-text md:text-[16px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream ${thresholdMotion}`}
+                          className={`group flex min-h-11 w-fit items-center font-sans text-[14px] leading-[1.5] text-e26-text-2 transition-colors hover:text-e26-text md:text-[15px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream ${thresholdMotion}`}
                         >
-                          <span className={`h-px w-5 bg-[color-mix(in_srgb,var(--essence-black-2026)_22%,transparent)] transition-all group-hover:w-8 group-hover:bg-[#E0C068] ${thresholdMotion}`} aria-hidden="true" />
+                          <span className="mr-3 text-[10px] text-[#E0C068]" aria-hidden="true">—</span>
                           {link.label}
                         </Link>
                       ))}
                     </div>
                   </div>
 
-                  <div className={`relative border-l border-[#E0C068]/45 pl-5 transition-transform md:pl-9 ${open ? "translate-y-0" : "translate-y-3"} ${thresholdMotion}`}>
-                    <span className="absolute -left-px top-0 h-16 w-px bg-[#E0C068]" aria-hidden="true" />
+                  <div className="mt-5 md:mt-7">
                     <Link
                       href="/advisory"
                       tabIndex={open ? 0 : -1}
                       onClick={closeMenu}
-                      className="group relative inline-flex min-h-11 items-center font-serif text-[38px] font-medium leading-[1.03] tracking-[-0.018em] text-e26-text md:text-[52px] lg:text-[58px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
+                      className="group relative inline-flex min-h-11 items-center font-serif text-[34px] font-normal leading-[1.06] tracking-[-0.016em] text-e26-text md:text-[40px] lg:text-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
                     >
                       ESSENCE Advisory
-                      <span className={`absolute -bottom-2 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform group-hover:scale-x-100 ${thresholdMotion}`} aria-hidden="true" />
+                      <span className={`absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform group-hover:scale-x-100 ${thresholdMotion}`} aria-hidden="true" />
                     </Link>
                   </div>
-                </div>
 
-                <div className={`mt-10 border-t border-[color-mix(in_srgb,var(--essence-black-2026)_13%,transparent)] pt-7 transition-transform md:mt-12 md:pt-8 ${open ? "translate-y-0" : "translate-y-5"} ${thresholdMotion}`}>
-                  <div className="mb-4 flex items-center gap-4 md:mb-5">
-                    <span className="h-px w-8 bg-[#E0C068]/70" aria-hidden="true" />
-                    <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.18em] text-e26-text-2">ESSENCE</span>
-                  </div>
-                  <div className="grid gap-x-10 gap-y-1 sm:grid-cols-2 md:grid-cols-4">
+                  <div className="mt-10 flex flex-col items-start md:mt-12">
                     {HOME_SHARED_LINKS.map((link) => (
                       <Link
                         key={link.href}
                         href={link.href}
                         tabIndex={open ? 0 : -1}
                         onClick={closeMenu}
-                        className={`group relative flex min-h-11 w-fit items-center font-serif text-[27px] font-normal leading-[1.12] tracking-[-0.01em] text-e26-text md:text-[30px] lg:text-[32px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream`}
+                        className={`group relative flex min-h-11 w-fit items-center font-serif text-[27px] font-normal leading-[1.08] tracking-[-0.012em] text-e26-text md:text-[30px] lg:text-[32px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream`}
                       >
                         {link.label}
-                        <span className={`absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform group-hover:scale-x-100 ${thresholdMotion}`} aria-hidden="true" />
+                        <span className={`absolute bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform group-hover:scale-x-100 ${thresholdMotion}`} aria-hidden="true" />
                       </Link>
                     ))}
                   </div>
