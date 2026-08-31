@@ -128,15 +128,21 @@ export default function VillaPage() {
               </div>
             </div>
 
-            <div className="e26-reveal relative mt-20 border-y border-[color-mix(in_srgb,var(--essence-black-2026)_12%,transparent)] py-10 md:mt-28 md:min-h-[300px] md:py-14">
+            <div className="e26-reveal relative mt-20 border-y border-[color-mix(in_srgb,var(--essence-black-2026)_12%,transparent)] py-10 md:mt-28 md:min-h-[260px] md:py-14">
               <span className="absolute left-0 top-0 h-px w-[24%] bg-[#E0C068]/76" aria-hidden="true" />
-              <p aria-label="NHẬN RA → LỰA CHỌN → HIỆN THỰC" className="relative grid gap-8 md:grid-cols-3 md:gap-10">
-                <span aria-hidden="true" className="font-serif text-[42px] font-medium leading-none tracking-[-0.02em] md:text-[58px]">NHẬN RA</span>
-                <span aria-hidden="true" className="font-serif text-[50px] font-medium leading-none tracking-[-0.022em] md:translate-y-14 md:text-[70px]">LỰA CHỌN</span>
-                <span aria-hidden="true" className="font-serif text-[58px] font-medium leading-none tracking-[-0.026em] md:translate-y-28 md:text-[86px]">HIỆN THỰC</span>
+              <p aria-label="NHẬN RA → LỰA CHỌN → HIỆN THỰC" className="relative grid gap-8 md:grid-cols-[0.86fr_1fr_1.14fr] md:gap-8">
+                <span data-home-flow-anchor aria-hidden="true" className="whitespace-nowrap font-serif text-[36px] font-medium leading-none tracking-[-0.02em] md:text-[52px]">NHẬN RA</span>
+                <span data-home-flow-anchor aria-hidden="true" className="whitespace-nowrap font-serif text-[42px] font-medium leading-none tracking-[-0.022em] md:translate-y-10 md:text-[58px]">LỰA CHỌN</span>
+                <span data-home-flow-anchor aria-hidden="true" className="whitespace-nowrap font-serif text-[48px] font-medium leading-none tracking-[-0.026em] md:translate-y-20 md:text-[64px]">HIỆN THỰC</span>
               </p>
-              <span className="pointer-events-none absolute left-[31%] top-[31%] hidden text-[22px] text-[#E0C068] md:block" aria-hidden="true">→</span>
-              <span className="pointer-events-none absolute left-[65%] top-[50%] hidden text-[22px] text-[#E0C068] md:block" aria-hidden="true">→</span>
+              <span data-flow-arrow className="pointer-events-none absolute left-[28.5%] top-[31%] hidden items-center md:flex" aria-hidden="true">
+                <span className="h-px w-14 bg-[#E0C068]" />
+                <span className="-ml-1 h-2.5 w-2.5 rotate-45 border-r border-t border-[#E0C068]" />
+              </span>
+              <span data-flow-arrow className="pointer-events-none absolute left-[63%] top-[49%] hidden items-center md:flex" aria-hidden="true">
+                <span className="h-px w-14 bg-[#E0C068]" />
+                <span className="-ml-1 h-2.5 w-2.5 rotate-45 border-r border-t border-[#E0C068]" />
+              </span>
             </div>
           </div>
         </section>
@@ -219,7 +225,7 @@ export default function VillaPage() {
 
               <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4">
                 <div className="border-l border-[#E0C068]/72 pl-4">
-                  <p className="font-serif text-[21px] leading-[1.4]">Kenji Phạm <span className="font-sans text-[12px] uppercase tracking-[0.13em] text-[#E0C068]">— Founder, ESSENCE</span></p>
+                  <p data-founder-attribution className="font-serif text-[21px] leading-[1.4] text-e26-text">Kenji Phạm <span className="font-sans text-[12px] uppercase tracking-[0.13em] text-e26-text">— Founder, ESSENCE</span></p>
                 </div>
                 <Link className={softLink} href="/ve-kenji">Về Kenji <span className="text-[#E0C068]" aria-hidden="true">→</span></Link>
               </div>
