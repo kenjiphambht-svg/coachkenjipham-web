@@ -94,6 +94,16 @@ jobs:
                 await expect(page.getByText(line, { exact: true }).first()).toBeVisible();
               }
               await expect(page.getByText('NHẬN RA', { exact: true }).first()).toBeVisible();
+              for (const removed of [
+                'Và tự do bắt đầu từ đó.',
+                'Một ranh giới được nói ra.',
+                'Một quyết định có người đứng tên.',
+                'Một cách làm mới thật sự được thử.',
+                'Một cách bạn xuất hiện bắt đầu đi sau điều mình chọn đứng về.',
+              ]) {
+                await expect(page.getByText(removed, { exact: true })).toHaveCount(0);
+              }
+              await expect(page.getByText('Trước ESSENCE, tôi làm nhiều việc với nhân hiệu, hình ảnh và cách một người xuất hiện.', { exact: true }).first()).toBeVisible();
               await expect(page.locator('main a[href="/coaching"]').first()).toHaveAttribute('href', '/coaching');
               await expect(page.locator('main a[href="/advisory"]').first()).toHaveAttribute('href', '/advisory');
               await expect(page.locator('#goc-doc').getByText('Khởi đầu', { exact: true }).first()).toBeVisible();
