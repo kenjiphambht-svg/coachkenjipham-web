@@ -31,8 +31,17 @@ const thresholdMotion = "duration-[420ms] ease-out motion-reduce:transition-none
 
 function HeaderLogo() {
   return (
-    <span className="flex items-center py-1">
-      <img src="/brand/essence/02_MASTER_LIGHT.svg" alt="ESSENCE" className="block h-auto w-[180px] md:w-[210px]" />
+    <span className="flex flex-col items-center py-1">
+      <img
+        src="/brand/logo/kenji-signature-2026.svg"
+        alt="Kenji Phạm"
+        className="block h-[52px] w-auto md:h-[60px]"
+      />
+      <img
+        src="/brand/logo/essence-wordmark-minimal-2026.svg"
+        alt="Essence Coaching"
+        className="-mt-1 block h-[22px] w-auto md:h-[26px]"
+      />
     </span>
   );
 }
