@@ -70,6 +70,43 @@ describe('Care AI Meta sandbox adapters', () => {
     expect(JSON.parse(String(init?.body))).toMatchObject({ messaging_type: 'RESPONSE' });
   });
 
+  it('emits only safe numeric diagnostics when Meta Send API rejects outbound', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          error: {
+            message: 'Sensitive upstream message mentioning PSID-SECRET and TOKEN-SECRET',
+            type: 'OAuthException',
+            code: 190,
+            error_subcode: 463,
+            fbtrace_id: 'TRACE-SECRET',
+          },
+        }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } },
+      ),
+    );
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+
+    await expect(
+      sendMetaText({
+        config: {
+          sendEndpoint: 'https://graph.facebook.com/v22.0/PAGE-1/messages',
+          accessToken: 'TOKEN-SECRET',
+          expectedPageId: 'PAGE-1',
+        },
+        recipientId: 'PSID-SECRET',
+        text: 'PRIVATE-MESSAGE',
+      }),
+    ).rejects.toThrow('CARE_META_SEND_HTTP_400_CODE_190_SUBCODE_463');
+
+    expect(errorSpy).toHaveBeenCalledWith('CARE_META_SEND_FAILURE', { status: 400, code: '190', subcode: '463' });
+    const serializedLogs = JSON.stringify(errorSpy.mock.calls);
+    expect(serializedLogs).not.toContain('PSID-SECRET');
+    expect(serializedLogs).not.toContain('TOKEN-SECRET');
+    expect(serializedLogs).not.toContain('PRIVATE-MESSAGE');
+    expect(serializedLogs).not.toContain('TRACE-SECRET');
+  });
+
   it('rejects arbitrary HTTPS hosts, non-send paths and Page mismatches before any outbound fetch', async () => {
     const spy = vi.spyOn(globalThis, 'fetch');
     expect(() => assertOfficialMetaSendEndpoint('https://meta.example/v22.0/PAGE-1/messages', 'PAGE-1')).toThrow('CARE_META_SEND_ENDPOINT_NOT_OFFICIAL');
