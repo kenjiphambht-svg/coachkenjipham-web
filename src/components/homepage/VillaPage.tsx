@@ -105,7 +105,6 @@ export default function VillaPage() {
                 <p data-body-copy className="mt-8 max-w-[500px] font-sans text-[17px] leading-[1.78] md:text-[18px]">
                   Là phần bạn ngày càng nhìn ra trung thực hơn — để có thêm quyền lựa chọn.
                 </p>
-                <p className="mt-10 max-w-[520px] font-serif text-[30px] font-medium leading-[1.2] tracking-[-0.014em] md:text-[40px]">Và tự do bắt đầu từ đó.</p>
               </div>
             </div>
           </div>
@@ -138,13 +137,6 @@ export default function VillaPage() {
               </p>
               <span className="pointer-events-none absolute left-[31%] top-[31%] hidden text-[22px] text-[#E0C068] md:block" aria-hidden="true">→</span>
               <span className="pointer-events-none absolute left-[65%] top-[50%] hidden text-[22px] text-[#E0C068] md:block" aria-hidden="true">→</span>
-            </div>
-
-            <div data-body-copy className="e26-reveal mt-14 grid gap-6 font-sans text-[17px] leading-[1.72] md:mt-28 md:grid-cols-12 md:text-[18px]">
-              <p className="border-t border-[color-mix(in_srgb,var(--essence-black-2026)_11%,transparent)] pt-5 md:col-span-3">Một ranh giới được nói ra.</p>
-              <p className="border-t border-[color-mix(in_srgb,var(--essence-black-2026)_11%,transparent)] pt-5 md:col-span-3 md:col-start-5 md:translate-y-8">Một quyết định có người đứng tên.</p>
-              <p className="border-t border-[color-mix(in_srgb,var(--essence-black-2026)_11%,transparent)] pt-5 md:col-span-3 md:col-start-9 md:translate-y-16">Một cách làm mới thật sự được thử.</p>
-              <p className="md:col-span-6 md:col-start-6 md:mt-20">Một cách bạn xuất hiện bắt đầu đi sau điều mình chọn đứng về.</p>
             </div>
           </div>
         </section>
@@ -213,7 +205,7 @@ export default function VillaPage() {
 
             <div className="e26-reveal md:col-span-8 md:col-start-5 md:pt-8">
               <p data-body-copy className="max-w-[590px] font-sans text-[17px] leading-[1.78] md:text-[18px]">
-                Trước ESSENCE, tôi từng làm nhiều việc liên quan đến nhân hiệu, hình ảnh và cách một người xuất hiện trước công chúng.
+                Trước ESSENCE, tôi làm nhiều việc với nhân hiệu, hình ảnh và cách một người xuất hiện.
               </p>
 
               <p className="mt-10 max-w-[720px] font-serif text-[34px] font-medium leading-[1.16] tracking-[-0.016em] md:text-[48px]">
