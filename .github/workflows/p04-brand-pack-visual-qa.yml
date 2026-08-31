@@ -115,6 +115,46 @@ jobs:
             }
           });
 
+          test('desktop restrained display treatment', async ({ browser }) => {
+            const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+            await page.goto(base + '/', { waitUntil: 'networkidle' });
+            await prepareFullPage(page);
+
+            const anchors = page.locator('[data-home-flow-anchor]');
+            await expect(anchors).toHaveCount(3);
+            for (let i = 0; i < 3; i += 1) {
+              const metrics = await anchors.nth(i).evaluate((el) => {
+                const style = getComputedStyle(el);
+                return { whiteSpace: style.whiteSpace, fontSize: parseFloat(style.fontSize), height: el.getBoundingClientRect().height };
+              });
+              expect(metrics.whiteSpace).toBe('nowrap');
+              expect(metrics.fontSize).toBeLessThanOrEqual(64);
+              expect(metrics.height).toBeLessThan(metrics.fontSize * 1.35);
+            }
+
+            const startHeadline = await page.locator('[data-start-headline]').evaluate((el) => {
+              const style = getComputedStyle(el);
+              return { whiteSpace: style.whiteSpace, fontSize: parseFloat(style.fontSize), height: el.getBoundingClientRect().height };
+            });
+            expect(startHeadline.whiteSpace).toBe('nowrap');
+            expect(startHeadline.fontSize).toBeLessThanOrEqual(72);
+            expect(startHeadline.height).toBeLessThan(startHeadline.fontSize * 1.35);
+
+            const attribution = page.locator('[data-founder-attribution]');
+            const attributionColors = await attribution.evaluate((el) => ({
+              parent: getComputedStyle(el).color,
+              child: getComputedStyle(el.querySelector('span')).color,
+            }));
+            expect(attributionColors.child).toBe(attributionColors.parent);
+
+            const flowArrowWidths = await page.locator('[data-flow-arrow] > span:first-child').evaluateAll((els) => els.map((el) => el.getBoundingClientRect().width));
+            expect(flowArrowWidths.length).toBe(2);
+            for (const width of flowArrowWidths) expect(width).toBeGreaterThanOrEqual(56);
+            const thresholdArrowWidth = await page.locator('[data-threshold-arrow] > span:first-child').evaluate((el) => el.getBoundingClientRect().width);
+            expect(thresholdArrowWidth).toBeGreaterThanOrEqual(96);
+            await page.close();
+          });
+
           test('final menu open-state evidence and locked IA', async ({ browser }) => {
             for (const [mode, viewport] of [
               ['desktop', { width: 1440, height: 1000 }],
