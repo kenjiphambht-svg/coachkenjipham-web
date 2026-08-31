@@ -33,14 +33,14 @@ function HeaderLogo() {
   return (
     <span className="flex flex-col items-center py-1">
       <img
-        src="/brand/logo/kenji-signature-2026.svg"
+        src="/brand/essence/32_SIGNATURE_WEB_BLACK.svg"
         alt="Kenji Phạm"
-        className="block h-[52px] w-auto md:h-[60px]"
+        className="block h-[66px] w-auto md:h-[78px]"
       />
       <img
         src="/brand/logo/essence-wordmark-minimal-2026.svg"
         alt="Essence Coaching"
-        className="-mt-1 block h-[22px] w-auto md:h-[26px]"
+        className="-mt-2 block h-[22px] w-auto md:-mt-3 md:h-[26px]"
       />
     </span>
   );
