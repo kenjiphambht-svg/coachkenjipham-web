@@ -137,6 +137,32 @@ export function assertOfficialMetaSendEndpoint(raw: string, expectedPageId?: str
   return endpoint.toString();
 }
 
+function safeMetaErrorNumber(value: unknown): string | undefined {
+  if (typeof value === 'number' && Number.isInteger(value) && value >= 0) return String(value);
+  if (typeof value === 'string' && /^\d{1,10}$/.test(value)) return value;
+  return undefined;
+}
+
+async function metaSendFailure(response: Response): Promise<Error> {
+  let code: string | undefined;
+  let subcode: string | undefined;
+  try {
+    const payload = (await response.json()) as { error?: { code?: unknown; error_subcode?: unknown } };
+    code = safeMetaErrorNumber(payload.error?.code);
+    subcode = safeMetaErrorNumber(payload.error?.error_subcode);
+  } catch {
+    // Upstream error body is intentionally ignored unless it contains safe numeric diagnostics.
+  }
+
+  const diagnostic = { status: response.status, code: code ?? null, subcode: subcode ?? null };
+  console.error('CARE_META_SEND_FAILURE', diagnostic);
+
+  let errorCode = `CARE_META_SEND_HTTP_${response.status}`;
+  if (code) errorCode += `_CODE_${code}`;
+  if (subcode) errorCode += `_SUBCODE_${subcode}`;
+  return new Error(errorCode);
+}
+
 export async function sendMetaText(args: {
   config: MetaSendConfig;
   recipientId: string;
@@ -154,7 +180,7 @@ export async function sendMetaText(args: {
     },
     body: JSON.stringify(formatMetaTextSendPayload(args.recipientId, args.text)),
   });
-  if (!response.ok) throw new Error(`CARE_META_SEND_HTTP_${response.status}`);
+  if (!response.ok) throw await metaSendFailure(response);
   const payload = (await response.json()) as { recipient_id?: string; message_id?: string };
   return { recipientId: payload.recipient_id, messageId: payload.message_id };
 }
