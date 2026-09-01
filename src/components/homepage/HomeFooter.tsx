@@ -8,7 +8,7 @@ export default function HomeFooter(_props: HomeFooterProps) {
   return (
     <footer id="lien-he" className="relative scroll-mt-10 overflow-hidden bg-e26-black px-6 py-16 md:py-20">
       <div className="relative mx-auto max-w-4xl text-center">
-        <p className="mx-auto max-w-[760px] font-serif text-[30px] font-normal leading-[1.12] tracking-[-0.012em] text-e26-text-dark md:text-[40px]">
+        <p className="mx-auto max-w-[760px] font-serif text-lg font-normal italic leading-[1.4] text-e26-text-dark md:text-xl">
           Câu chuyện cuộc sống của bạn là một kiệt tác.
         </p>
 
@@ -30,10 +30,10 @@ export default function HomeFooter(_props: HomeFooterProps) {
         </nav>
 
         <div className="mx-auto mt-10 max-w-4xl border-t border-e26-border-dark pt-8 md:mt-12">
-          <p className="mb-1 font-sans text-xs uppercase tracking-[0.24em] text-e26-text-dark-2">
+          <p className="mb-1 font-sans text-xs font-medium uppercase tracking-[0.24em] text-e26-text-dark">
             Kenji Phạm
           </p>
-          <p className="mb-6 font-sans text-sm text-e26-text-dark-2">Sài Gòn · 2026</p>
+          <p className="mb-6 font-sans text-sm font-medium text-e26-text-dark">Sài Gòn · 2026</p>
 
           <p className="font-sans text-sm text-e26-text-dark-2">
             <a
