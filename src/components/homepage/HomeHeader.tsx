@@ -7,10 +7,9 @@ const PRODUCT_LINKS = [
 ];
 
 const TRUST_LINKS = [
+  { href: "/khoi-dau", label: "Khởi đầu" },
   { href: "/ve-kenji", label: "Về Kenji" },
-  { href: "/phuong-phap", label: "Phương pháp" },
-  { href: "/dieu-essence-khong-hua", label: "Điều Essence không hứa" },
-  { href: "/#mot-goc-de-quay-lai", label: "Một góc để quay lại" },
+  { href: "/#goc-doc", label: "Góc đọc" },
   { href: "/lien-he", label: "Liên hệ" },
 ];
 
