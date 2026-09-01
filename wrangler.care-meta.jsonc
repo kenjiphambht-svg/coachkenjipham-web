@@ -11,6 +11,10 @@
     "global_fetch_strictly_public"
   ],
   "keep_vars": true,
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
   "vars": {
     "CLOUDFLARE_PORTABILITY_PROOF": "1",
     "CARE_AI_TEST_RUNTIME_SURFACE": "cloudflare-preview",
