@@ -32,7 +32,15 @@ jobs:
           if (cfg.routes || cfg.route) throw new Error('CARE_CUSTOM_ROUTE_FORBIDDEN');
           if (cfg.keep_vars !== true) throw new Error('CARE_KEEP_VARS_REQUIRED');
           if (cfg.vars?.CARE_META_SANDBOX_ENABLED !== 'true') throw new Error('CARE_SANDBOX_MUST_BE_ON');
-          for (const key of ['CARE_META_LIVE_TEST_ENABLED', 'CARE_META_OUTBOUND_ENABLED', 'CARE_META_TEST_SENDER_IDS', 'CARE_META_CUSTOMER_MODE_ENABLED']) {
+          for (const key of [
+            'CARE_META_LIVE_TEST_ENABLED',
+            'CARE_META_OUTBOUND_ENABLED',
+            'CARE_META_TEST_SENDER_IDS',
+            'CARE_META_CUSTOMER_MODE_ENABLED',
+            'CARE_META_INSTAGRAM_ENABLED',
+            'CARE_META_INSTAGRAM_OUTBOUND_ENABLED',
+            'CARE_META_INSTAGRAM_SEND_ENDPOINT',
+          ]) {
             if (Object.prototype.hasOwnProperty.call(cfg.vars || {}, key)) throw new Error(`CARE_MUTABLE_RUNTIME_VAR_MUST_NOT_BE_IN_SOURCE_${key}`);
           }
           if (cfg.vars?.CARE_META_MESSENGER_SEND_ENDPOINT !== 'https://graph.facebook.com/v26.0/102524972270814/messages') throw new Error('CARE_META_ENDPOINT_INVALID');
@@ -45,7 +53,7 @@ jobs:
           const migration = fs.readFileSync('cloudflare/d1/20260901_p07_care_meta_customer_guard.sql', 'utf8');
           if (!/CREATE TABLE IF NOT EXISTS care_meta_customer_rate_limits/i.test(migration)) throw new Error('CARE_CUSTOMER_GUARD_MIGRATION_MISSING');
           if (!/scope_key TEXT PRIMARY KEY/i.test(migration)) throw new Error('CARE_CUSTOMER_GUARD_HASH_KEY_MISSING');
-          console.log('PASS: isolated Care Worker has no production route, preserves dashboard runtime gates, and ships a fail-closed customer guard contract.');
+          console.log('PASS: isolated Care Worker has no production route, preserves dashboard runtime gates, and ships Messenger + Instagram guarded customer support contracts.');
           NODE
 
       - name: Setup Node
@@ -66,6 +74,8 @@ jobs:
           CARE_META_LIVE_TEST_ENABLED: 'false'
           CARE_META_OUTBOUND_ENABLED: 'false'
           CARE_META_CUSTOMER_MODE_ENABLED: 'false'
+          CARE_META_INSTAGRAM_ENABLED: 'false'
+          CARE_META_INSTAGRAM_OUTBOUND_ENABLED: 'false'
         run: npm run cf:build
 
       - name: Wrangler dry-run isolated Worker only
@@ -86,4 +96,5 @@ jobs:
           test -z "${CARE_META_VERIFY_TOKEN:-}"
           test -z "${CARE_META_APP_SECRET:-}"
           test -z "${CARE_META_MESSENGER_ACCESS_TOKEN:-}"
+          test -z "${CARE_META_INSTAGRAM_ACCESS_TOKEN:-}"
           echo 'PASS: isolated config QA exports no live provider/Meta credentials.'

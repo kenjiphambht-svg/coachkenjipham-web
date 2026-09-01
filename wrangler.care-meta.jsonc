@@ -1,6 +1,6 @@
-// P07 isolated Care AI Messenger Worker.
+// P07 isolated Care AI Meta messaging Worker (Messenger + Instagram).
 // Isolated from coachkenjipham.com production runtime: workers.dev only, no routes/custom domains.
-// Dashboard-managed operational vars (live/outbound/customer gates and sender allowlists) must survive Git deploys.
+// Dashboard-managed operational vars (live/outbound/customer/channel gates, Instagram endpoint and sender allowlists) must survive Git deploys.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "p07-care-ai-meta-test",

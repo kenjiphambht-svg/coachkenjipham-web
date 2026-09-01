@@ -15,7 +15,7 @@ interface MetaMessagingEvent {
   sender?: { id?: string };
   recipient?: { id?: string };
   timestamp?: number;
-  message?: { text?: string; mid?: string };
+  message?: { text?: string; mid?: string; is_echo?: boolean; is_self?: boolean };
 }
 
 interface MetaWebhookPayload {
@@ -23,10 +23,13 @@ interface MetaWebhookPayload {
   entry?: Array<{ messaging?: MetaMessagingEvent[] }>;
 }
 
+type MetaSendChannel = Extract<CareChannel, 'facebook_messenger' | 'instagram'>;
+
 export interface MetaSendConfig {
+  channel: MetaSendChannel;
   sendEndpoint: string;
   accessToken: string;
-  expectedPageId?: string;
+  expectedAccountId?: string;
 }
 
 export interface MetaIdempotencyStore {
@@ -56,11 +59,13 @@ export interface MetaD1Database {
   prepare(sql: string): MetaD1PreparedStatement;
 }
 
-const META_SEND_HOST = 'graph.facebook.com';
+const META_MESSENGER_SEND_HOST = 'graph.facebook.com';
+const META_INSTAGRAM_SEND_HOST = 'graph.instagram.com';
 const META_DELIVERY_CLAIM_TABLE = 'care_meta_delivery_claims';
 const META_CUSTOMER_RATE_LIMIT_TABLE = 'care_meta_customer_rate_limits';
 
 function textFromEvent(event: MetaMessagingEvent): string | undefined {
+  if (event.message?.is_echo || event.message?.is_self) return undefined;
   if (event.message?.text?.trim()) return event.message.text.trim();
   return undefined;
 }
@@ -114,24 +119,33 @@ export function syntheticChannelInbound(channel: CareChannel, text: string): Car
   };
 }
 
-export function formatMetaTextSendPayload(recipientId: string, text: string) {
-  return {
+export function formatMetaTextSendPayload(channel: MetaSendChannel, recipientId: string, text: string) {
+  const payload = {
     recipient: { id: recipientId },
-    messaging_type: 'RESPONSE',
     message: { text },
+  };
+  if (channel === 'instagram') return payload;
+  return {
+    ...payload,
+    messaging_type: 'RESPONSE',
   };
 }
 
-export function assertOfficialMetaSendEndpoint(raw: string, expectedPageId?: string): string {
+export function assertOfficialMetaSendEndpoint(
+  raw: string,
+  channel: MetaSendChannel,
+  expectedAccountId?: string,
+): string {
   let endpoint: URL;
   try {
     endpoint = new URL(raw);
   } catch {
     throw new Error('CARE_META_SEND_ENDPOINT_INVALID');
   }
+  const expectedHost = channel === 'instagram' ? META_INSTAGRAM_SEND_HOST : META_MESSENGER_SEND_HOST;
   if (
     endpoint.protocol !== 'https:' ||
-    endpoint.hostname.toLowerCase() !== META_SEND_HOST ||
+    endpoint.hostname.toLowerCase() !== expectedHost ||
     endpoint.port ||
     endpoint.username ||
     endpoint.password ||
@@ -142,8 +156,12 @@ export function assertOfficialMetaSendEndpoint(raw: string, expectedPageId?: str
   }
   const match = endpoint.pathname.match(/^\/v\d+\.\d+\/([^/]+)\/messages\/?$/);
   if (!match) throw new Error('CARE_META_SEND_ENDPOINT_PATH_INVALID');
-  const pageId = decodeURIComponent(match[1]);
-  if (expectedPageId && pageId !== expectedPageId) throw new Error('CARE_META_SEND_ENDPOINT_PAGE_MISMATCH');
+  const accountId = decodeURIComponent(match[1]);
+  if (expectedAccountId && accountId !== expectedAccountId) {
+    throw new Error(
+      channel === 'instagram' ? 'CARE_META_SEND_ENDPOINT_INSTAGRAM_ACCOUNT_MISMATCH' : 'CARE_META_SEND_ENDPOINT_PAGE_MISMATCH',
+    );
+  }
   return endpoint.toString();
 }
 
@@ -180,7 +198,11 @@ export async function sendMetaText(args: {
 }): Promise<{ recipientId?: string; messageId?: string }> {
   if (!args.config.sendEndpoint) throw new Error('CARE_META_SEND_ENDPOINT_REQUIRED');
   if (!args.config.accessToken) throw new Error('CARE_META_ACCESS_TOKEN_REQUIRED');
-  const endpoint = assertOfficialMetaSendEndpoint(args.config.sendEndpoint, args.config.expectedPageId);
+  const endpoint = assertOfficialMetaSendEndpoint(
+    args.config.sendEndpoint,
+    args.config.channel,
+    args.config.expectedAccountId,
+  );
   const response = await fetch(endpoint, {
     method: 'POST',
     redirect: 'manual',
@@ -188,7 +210,7 @@ export async function sendMetaText(args: {
       Authorization: `Bearer ${args.config.accessToken}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(formatMetaTextSendPayload(args.recipientId, args.text)),
+    body: JSON.stringify(formatMetaTextSendPayload(args.config.channel, args.recipientId, args.text)),
   });
   if (!response.ok) throw await metaSendFailure(response);
   const payload = (await response.json()) as { recipient_id?: string; message_id?: string };

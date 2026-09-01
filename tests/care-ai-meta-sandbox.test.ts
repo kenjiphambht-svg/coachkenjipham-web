@@ -28,7 +28,22 @@ describe('Care AI Meta sandbox adapters', () => {
       object: 'instagram',
       entry: [{ messaging: [{ sender: { id: 'IGSID-1' }, recipient: { id: 'IG-1' }, timestamp: 456, message: { mid: 'ig-m-1', text: 'Cho mình hỏi thêm' } }] }],
     });
-    expect(parsed[0]).toMatchObject({ channel: 'instagram', externalSenderId: 'IGSID-1', externalMessageId: 'ig-m-1', text: 'Cho mình hỏi thêm' });
+    expect(parsed[0]).toMatchObject({ channel: 'instagram', externalSenderId: 'IGSID-1', externalRecipientId: 'IG-1', externalMessageId: 'ig-m-1', text: 'Cho mình hỏi thêm' });
+  });
+
+  it('filters Meta echo/self messages so outbound replies cannot recurse back into Care', () => {
+    expect(
+      parseMetaWebhook({
+        object: 'page',
+        entry: [{ messaging: [{ sender: { id: 'PAGE-1' }, recipient: { id: 'PSID-1' }, message: { mid: 'echo-1', text: 'Bot reply', is_echo: true } }] }],
+      }),
+    ).toEqual([]);
+    expect(
+      parseMetaWebhook({
+        object: 'instagram',
+        entry: [{ messaging: [{ sender: { id: 'IG-1' }, recipient: { id: 'IGSID-1' }, message: { mid: 'self-1', text: 'Bot reply', is_self: true } }] }],
+      }),
+    ).toEqual([]);
   });
 
   it('keeps the controlled-live inbound parser text-only', () => {
@@ -45,19 +60,23 @@ describe('Care AI Meta sandbox adapters', () => {
     expect(syntheticChannelInbound('instagram', 'C').externalSenderId).toBe('synthetic-igsid');
   });
 
-  it('formats Meta Send API text payload as an inbound RESPONSE reply', () => {
-    expect(formatMetaTextSendPayload('RECIPIENT', 'Hello')).toEqual({
+  it('formats Messenger as RESPONSE and Instagram as native Instagram Login text payload', () => {
+    expect(formatMetaTextSendPayload('facebook_messenger', 'RECIPIENT', 'Hello')).toEqual({
       recipient: { id: 'RECIPIENT' },
       messaging_type: 'RESPONSE',
       message: { text: 'Hello' },
     });
+    expect(formatMetaTextSendPayload('instagram', 'IGSID', 'Hello IG')).toEqual({
+      recipient: { id: 'IGSID' },
+      message: { text: 'Hello IG' },
+    });
   });
 
-  it('pins outbound to the official Meta Graph send endpoint and the inbound Page', async () => {
+  it('pins Messenger outbound to graph.facebook.com and the inbound Page', async () => {
     const spy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify({ recipient_id: 'R', message_id: 'M' }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
-    const endpoint = 'https://graph.facebook.com/v22.0/PAGE-1/messages';
+    const endpoint = 'https://graph.facebook.com/v26.0/PAGE-1/messages';
     const result = await sendMetaText({
-      config: { sendEndpoint: endpoint, accessToken: 'meta-secret', expectedPageId: 'PAGE-1' },
+      config: { channel: 'facebook_messenger', sendEndpoint: endpoint, accessToken: 'meta-secret', expectedAccountId: 'PAGE-1' },
       recipientId: 'RECIPIENT',
       text: 'Hello',
     });
@@ -68,6 +87,23 @@ describe('Care AI Meta sandbox adapters', () => {
     expect((init?.headers as Record<string, string>).Authorization).toBe('Bearer meta-secret');
     expect(String(init?.body)).not.toContain('meta-secret');
     expect(JSON.parse(String(init?.body))).toMatchObject({ messaging_type: 'RESPONSE' });
+  });
+
+  it('pins Instagram outbound to graph.instagram.com and the inbound Instagram professional account', async () => {
+    const spy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify({ recipient_id: 'IGSID-1', message_id: 'IG-M-2' }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
+    const endpoint = 'https://graph.instagram.com/v26.0/IG-1/messages';
+    const result = await sendMetaText({
+      config: { channel: 'instagram', sendEndpoint: endpoint, accessToken: 'ig-secret', expectedAccountId: 'IG-1' },
+      recipientId: 'IGSID-1',
+      text: 'Hello IG',
+    });
+    expect(result).toEqual({ recipientId: 'IGSID-1', messageId: 'IG-M-2' });
+    const [url, init] = spy.mock.calls[0];
+    expect(url).toBe(endpoint);
+    expect(init?.redirect).toBe('manual');
+    expect((init?.headers as Record<string, string>).Authorization).toBe('Bearer ig-secret');
+    expect(String(init?.body)).not.toContain('ig-secret');
+    expect(JSON.parse(String(init?.body))).toEqual({ recipient: { id: 'IGSID-1' }, message: { text: 'Hello IG' } });
   });
 
   it('emits only safe numeric diagnostics when Meta Send API rejects outbound', async () => {
@@ -90,9 +126,10 @@ describe('Care AI Meta sandbox adapters', () => {
     await expect(
       sendMetaText({
         config: {
-          sendEndpoint: 'https://graph.facebook.com/v22.0/PAGE-1/messages',
+          channel: 'facebook_messenger',
+          sendEndpoint: 'https://graph.facebook.com/v26.0/PAGE-1/messages',
           accessToken: 'TOKEN-SECRET',
-          expectedPageId: 'PAGE-1',
+          expectedAccountId: 'PAGE-1',
         },
         recipientId: 'PSID-SECRET',
         text: 'PRIVATE-MESSAGE',
@@ -107,12 +144,14 @@ describe('Care AI Meta sandbox adapters', () => {
     expect(serializedLogs).not.toContain('TRACE-SECRET');
   });
 
-  it('rejects arbitrary HTTPS hosts, non-send paths and Page mismatches before any outbound fetch', async () => {
+  it('rejects arbitrary hosts, cross-channel Graph hosts, non-send paths and account mismatches before fetch', async () => {
     const spy = vi.spyOn(globalThis, 'fetch');
-    expect(() => assertOfficialMetaSendEndpoint('https://meta.example/v22.0/PAGE-1/messages', 'PAGE-1')).toThrow('CARE_META_SEND_ENDPOINT_NOT_OFFICIAL');
-    expect(() => assertOfficialMetaSendEndpoint('https://graph.facebook.com/v22.0/PAGE-1/feed', 'PAGE-1')).toThrow('CARE_META_SEND_ENDPOINT_PATH_INVALID');
-    expect(() => assertOfficialMetaSendEndpoint('https://graph.facebook.com/v22.0/PAGE-2/messages', 'PAGE-1')).toThrow('CARE_META_SEND_ENDPOINT_PAGE_MISMATCH');
-    expect(() => assertOfficialMetaSendEndpoint('https://graph.facebook.com/v22.0/PAGE-1/messages?access_token=x', 'PAGE-1')).toThrow('CARE_META_SEND_ENDPOINT_NOT_OFFICIAL');
+    expect(() => assertOfficialMetaSendEndpoint('https://meta.example/v26.0/PAGE-1/messages', 'facebook_messenger', 'PAGE-1')).toThrow('CARE_META_SEND_ENDPOINT_NOT_OFFICIAL');
+    expect(() => assertOfficialMetaSendEndpoint('https://graph.facebook.com/v26.0/PAGE-1/feed', 'facebook_messenger', 'PAGE-1')).toThrow('CARE_META_SEND_ENDPOINT_PATH_INVALID');
+    expect(() => assertOfficialMetaSendEndpoint('https://graph.facebook.com/v26.0/PAGE-2/messages', 'facebook_messenger', 'PAGE-1')).toThrow('CARE_META_SEND_ENDPOINT_PAGE_MISMATCH');
+    expect(() => assertOfficialMetaSendEndpoint('https://graph.facebook.com/v26.0/PAGE-1/messages?access_token=x', 'facebook_messenger', 'PAGE-1')).toThrow('CARE_META_SEND_ENDPOINT_NOT_OFFICIAL');
+    expect(() => assertOfficialMetaSendEndpoint('https://graph.facebook.com/v26.0/IG-1/messages', 'instagram', 'IG-1')).toThrow('CARE_META_SEND_ENDPOINT_NOT_OFFICIAL');
+    expect(() => assertOfficialMetaSendEndpoint('https://graph.instagram.com/v26.0/IG-2/messages', 'instagram', 'IG-1')).toThrow('CARE_META_SEND_ENDPOINT_INSTAGRAM_ACCOUNT_MISMATCH');
     expect(spy).not.toHaveBeenCalled();
   });
 

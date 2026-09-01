@@ -31,6 +31,26 @@ function customerModeEnabled(): boolean {
   return liveTestEnabled() && process.env.CARE_META_CUSTOMER_MODE_ENABLED === 'true';
 }
 
+function instagramEnabled(): boolean {
+  return liveTestEnabled() && process.env.CARE_META_INSTAGRAM_ENABLED === 'true';
+}
+
+function instagramOutboundEnabled(): boolean {
+  return outboundEnabled() && instagramEnabled() && process.env.CARE_META_INSTAGRAM_OUTBOUND_ENABLED === 'true';
+}
+
+function channelEnabled(channel: CareChannel): boolean {
+  if (channel === 'facebook_messenger') return true;
+  if (channel === 'instagram') return instagramEnabled();
+  return false;
+}
+
+function channelOutboundEnabled(channel: CareChannel): boolean {
+  if (channel === 'facebook_messenger') return outboundEnabled();
+  if (channel === 'instagram') return instagramOutboundEnabled();
+  return false;
+}
+
 function allowedTestSenderIds(): Set<string> {
   return new Set(
     (process.env.CARE_META_TEST_SENDER_IDS || '')
@@ -93,19 +113,29 @@ function headerValue(value: string | string[] | undefined): string | undefined {
   return Array.isArray(value) ? value[0] : value;
 }
 
-function metaSendConfig(channel: CareChannel, expectedPageId?: string): { sendEndpoint: string; accessToken: string; expectedPageId?: string } {
+function metaSendConfig(
+  channel: CareChannel,
+  expectedAccountId?: string,
+): {
+  channel: 'facebook_messenger' | 'instagram';
+  sendEndpoint: string;
+  accessToken: string;
+  expectedAccountId?: string;
+} {
   if (channel === 'facebook_messenger') {
     return {
+      channel,
       sendEndpoint: process.env.CARE_META_MESSENGER_SEND_ENDPOINT || '',
       accessToken: process.env.CARE_META_MESSENGER_ACCESS_TOKEN || '',
-      expectedPageId,
+      expectedAccountId,
     };
   }
   if (channel === 'instagram') {
     return {
+      channel,
       sendEndpoint: process.env.CARE_META_INSTAGRAM_SEND_ENDPOINT || '',
       accessToken: process.env.CARE_META_INSTAGRAM_ACCESS_TOKEN || '',
-      expectedPageId,
+      expectedAccountId,
     };
   }
   throw new Error('CARE_META_CHANNEL_NOT_SENDABLE');
@@ -130,25 +160,26 @@ function safeError(error: unknown): string {
 async function claimCustomerCapacity(args: {
   store: MetaCustomerGuardStore;
   senderId: string;
-  pageId: string;
+  accountId: string;
+  channel: CareChannel;
 }): Promise<boolean> {
   const limits = customerGuardConfig();
   const sender = await args.store.claim({
-    scope: `sender:${args.pageId}:${args.senderId}`,
+    scope: `sender:${args.channel}:${args.accountId}:${args.senderId}`,
     limit: limits.senderLimit,
     windowSeconds: limits.senderWindowSeconds,
   });
   if (!sender.allowed) return false;
 
   const global = await args.store.claim({
-    scope: `global:${args.pageId}:hour`,
+    scope: `global:${args.channel}:${args.accountId}:hour`,
     limit: limits.globalLimit,
     windowSeconds: limits.globalWindowSeconds,
   });
   if (!global.allowed) return false;
 
   const daily = await args.store.claim({
-    scope: `global:${args.pageId}:day`,
+    scope: `global:${args.channel}:${args.accountId}:day`,
     limit: limits.dailyLimit,
     windowSeconds: limits.dailyWindowSeconds,
   });
@@ -225,7 +256,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const allowlisted = allowedSenders.has(message.externalSenderId);
       const customerRequest = !allowlisted && customerEnabled;
 
-      if (message.channel !== 'facebook_messenger') {
+      if (!channelEnabled(message.channel)) {
         outputs.push({
           channel: message.channel,
           duplicate: false,
@@ -294,15 +325,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         continue;
       }
 
-      const pageId = message.externalRecipientId?.trim();
-      if (!pageId) throw new Error('CARE_META_PAGE_ID_REQUIRED');
+      const accountId = message.externalRecipientId?.trim();
+      if (!accountId) throw new Error('CARE_META_ACCOUNT_ID_REQUIRED');
 
       if (customerRequest) {
         customerStorePromise ||= dbPromise.then((db) => createD1MetaCustomerGuardStore(db));
         const capacityAvailable = await claimCustomerCapacity({
           store: await customerStorePromise,
           senderId: message.externalSenderId,
-          pageId,
+          accountId,
+          channel: message.channel,
         });
         if (!capacityAvailable) {
           outputs.push({
@@ -326,7 +358,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         turns: [message.text],
       });
 
-      if (!outboundEnabled()) {
+      if (!channelOutboundEnabled(message.channel)) {
         outputs.push({
           channel: message.channel,
           duplicate: false,
@@ -343,7 +375,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       const sent = await sendMetaText({
-        config: metaSendConfig(message.channel, pageId),
+        config: metaSendConfig(message.channel, accountId),
         recipientId: message.externalSenderId,
         text: decision.reply,
       });
@@ -361,16 +393,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     }
 
+    const igEnabled = instagramEnabled();
+    const igOutboundEnabled = instagramOutboundEnabled();
     return res.status(200).json({
       accepted: true,
       liveTest: true,
       customerModeEnabled: customerEnabled,
       outboundGateEnabled: outboundEnabled(),
-      guardMode: customerEnabled ? 'MESSENGER_PAGE_CUSTOMER_TEXT_REPLY_GUARDED' : 'MESSENGER_PAGE_CONTROLLED_LIVE_TEXT_REPLY_ONLY',
+      instagramEnabled: igEnabled,
+      instagramOutboundEnabled: igOutboundEnabled,
+      guardMode: customerEnabled ? 'META_CUSTOMER_TEXT_REPLY_GUARDED' : 'META_CONTROLLED_LIVE_TEXT_REPLY_ONLY',
       processed: outputs,
       note: customerEnabled
-        ? 'Messenger customer replies are inbound-triggered only and protected by persistent idempotency, text bounds, per-sender rate limits and global model-call budgets. Instagram and proactive follow-up remain closed.'
-        : 'Messenger/Page text-only, inbound-triggered RESPONSE replies only. Persistent idempotency is required; Instagram and proactive follow-up remain closed.',
+        ? `Messenger${igEnabled ? ' + Instagram' : ''} customer replies are inbound-triggered only and protected by persistent idempotency, echo/self filtering, text bounds, per-sender rate limits and channel-scoped global model-call budgets. Proactive follow-up remains closed.`
+        : `Messenger${igEnabled ? ' + Instagram' : ''} text-only, inbound-triggered replies only. Persistent idempotency and echo/self filtering are required; proactive follow-up remains closed.`,
     });
   } catch (error) {
     return res.status(502).json({ error: safeError(error) });
