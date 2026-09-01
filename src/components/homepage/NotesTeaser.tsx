@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const thresholdMotion = "duration-[420ms] ease-out motion-reduce:transition-none motion-reduce:duration-0";
@@ -27,9 +28,44 @@ export default function NotesTeaser() {
         </Link>
       </div>
 
-      <div className="e26-reveal mt-12 grid gap-5 md:mt-16 md:grid-cols-12 md:gap-8">
-        <p data-body-copy className="font-sans text-[16px] font-medium leading-[1.7] uppercase tracking-[0.08em] text-e26-text md:col-span-3 md:text-[17px]">⟶ Góc đọc</p>
-        <p data-body-copy className="font-sans text-[16px] font-medium leading-[1.7] uppercase tracking-[0.08em] text-e26-text-2 md:col-span-3 md:col-start-10 md:text-right md:text-[17px]">⟶ Ebook</p>
+      <div className="e26-reveal mt-16 grid gap-14 md:mt-24 md:grid-cols-12 md:items-end md:gap-8">
+        <article className="relative md:col-span-5">
+          <div className="absolute left-4 top-4 h-full w-full border border-[color-mix(in_srgb,var(--essence-black-2026)_10%,transparent)] bg-[color-mix(in_srgb,var(--essence-white-2026)_72%,var(--essence-ivory-2026))]" aria-hidden="true" />
+          <div className="relative min-h-[270px] overflow-hidden bg-e26-cream md:min-h-[330px]">
+            <Image
+              src="/images/home/ghi-chep-essence-v4.webp"
+              alt=""
+              fill
+              sizes="(max-width: 768px) 100vw, 42vw"
+              className="object-cover object-center opacity-72 saturate-[0.72]"
+              aria-hidden="true"
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--essence-ivory-2026)_20%,transparent),color-mix(in_srgb,var(--essence-ivory-2026)_82%,transparent)_78%)]" aria-hidden="true" />
+            <div className="absolute bottom-0 left-0 w-[78%] bg-e26-ivory px-6 py-5 md:w-[68%] md:px-7 md:py-6">
+              <p className="font-serif text-[34px] font-medium leading-none tracking-[-0.018em] text-e26-text md:text-[42px]">Góc đọc</p>
+            </div>
+          </div>
+        </article>
+
+        <article className="relative md:col-span-4 md:col-start-9 md:-translate-y-5">
+          <div className="absolute -left-4 -top-4 h-full w-full bg-[color-mix(in_srgb,var(--essence-cream-2026)_78%,var(--essence-white-2026))]" aria-hidden="true" />
+          <div className="absolute -right-3 top-5 h-[88%] w-[88%] border border-[#E0C068]/28" aria-hidden="true" />
+          <div className="relative min-h-[300px] overflow-hidden bg-e26-white md:min-h-[360px]">
+            <Image
+              src="/images/home/ban-sac-cua-ban-quiet-pause.webp"
+              alt=""
+              fill
+              sizes="(max-width: 768px) 100vw, 34vw"
+              className="object-cover object-center opacity-62 saturate-[0.66]"
+              aria-hidden="true"
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--essence-white-2026)_12%,transparent),color-mix(in_srgb,var(--essence-ivory-2026)_90%,transparent)_72%)]" aria-hidden="true" />
+            <div className="absolute inset-x-0 bottom-0 px-6 pb-7 pt-12 md:px-8 md:pb-8">
+              <p className="font-sans text-[12px] font-medium uppercase tracking-[0.16em] text-e26-text-2">Ebook</p>
+              <p className="mt-2 max-w-[330px] font-serif text-[31px] font-medium leading-[1.02] tracking-[-0.018em] text-e26-text md:text-[38px]">Bản Sắc Nhân Hiệu</p>
+            </div>
+          </div>
+        </article>
       </div>
     </div>
   );
