@@ -113,8 +113,10 @@ export default function HomeHeader({ homeIa = false }: HomeHeaderProps) {
           onClick={() => setOpen(true)}
           aria-expanded={open}
           aria-controls="site-menu-panel"
-          className={`min-h-11 min-w-11 font-sans text-sm uppercase tracking-[0.16em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory ${
-            overlayHero ? "text-e26-text hover:text-e26-gold-deep" : "text-e26-text hover:text-e26-gold-deep"
+          className={`inline-flex min-h-11 min-w-11 items-center justify-center font-sans uppercase tracking-[0.16em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory ${
+            overlayHero
+              ? "min-h-[52px] min-w-[108px] rounded-full border border-white/50 bg-[rgba(248,244,235,0.88)] px-5 text-[15px] font-medium text-e26-text shadow-[0_8px_26px_rgba(0,0,0,0.14)] backdrop-blur-md hover:bg-[rgba(248,244,235,0.97)] md:mr-[7vw] md:min-h-[54px] md:min-w-[116px] md:text-[16px]"
+              : "text-sm text-e26-text hover:text-e26-gold-deep"
           } ${thresholdMotion}`}
         >
           Menu
