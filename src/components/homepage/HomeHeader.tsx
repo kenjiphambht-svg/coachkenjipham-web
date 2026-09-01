@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
+import heroScene01Final from "@/components/homepage/generated/heroScene01Final";
 
 const PRODUCT_LINKS = [
   { href: "/ban-sac-cua-ban", label: "Bản Sắc Của Bạn" },
@@ -105,8 +106,22 @@ export default function HomeHeader({ homeIa = false }: HomeHeaderProps) {
     >
       {overlayHero && (
         <style>{`
+          main > section:first-of-type > div:first-child {
+            background-image: url("${heroScene01Final}");
+            background-size: cover;
+            background-position: 64% center;
+            background-repeat: no-repeat;
+          }
+          main > section:first-of-type > div:first-child > img {
+            opacity: 0;
+          }
           main > section:first-of-type .e26-reveal > div:last-child > p {
             font-size: 15.4px;
+          }
+          @media (min-width: 768px) {
+            main > section:first-of-type > div:first-child {
+              background-position: center;
+            }
           }
         `}</style>
       )}
