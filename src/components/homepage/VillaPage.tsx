@@ -120,40 +120,36 @@ export default function VillaPage() {
         </section>
 
         {/* 02 — freedom / identity recognition */}
-        <section className="relative overflow-hidden bg-e26-white px-6 py-28 md:px-10 md:py-44">
-          <div className="pointer-events-none absolute -right-[12%] top-[4%] h-[70%] w-[54%] rounded-full bg-[color-mix(in_srgb,var(--essence-cream-2026)_58%,transparent)] blur-3xl" aria-hidden="true" />
-          <div className="pointer-events-none absolute left-[8%] top-[42%] hidden h-[36%] w-px bg-gradient-to-b from-transparent via-[#E0C068]/28 to-transparent md:block" aria-hidden="true" />
+        <section className="relative overflow-hidden bg-e26-white px-6 py-28 md:px-10 md:py-48">
+          <div className="pointer-events-none absolute left-1/2 top-[8%] h-[54%] w-[76%] -translate-x-1/2 rounded-full bg-[color-mix(in_srgb,var(--essence-cream-2026)_48%,transparent)] blur-3xl" aria-hidden="true" />
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#E0C068]/18 to-transparent" aria-hidden="true" />
 
-          <div className="relative mx-auto max-w-7xl">
-            <h2 className="e26-reveal max-w-[980px] font-serif text-[50px] font-medium leading-[0.98] tracking-[-0.026em] md:text-[84px] lg:text-[98px]">
-              Điều gì đang<br className="hidden md:block" /> chọn thay bạn?
+          <div className="relative mx-auto max-w-6xl text-center">
+            <h2 className="e26-reveal mx-auto max-w-[1060px] font-serif text-[52px] font-medium leading-[0.96] tracking-[-0.028em] md:text-[88px] lg:text-[104px]">
+              Điều gì đang chọn thay bạn?
             </h2>
 
-            <div className="e26-reveal mt-16 grid gap-12 md:mt-24 md:grid-cols-12 md:gap-8">
-              <div data-body-copy className="space-y-3 font-sans text-[17px] leading-[1.76] md:col-span-4 md:col-start-2 md:text-[18px]">
-                <p>Một phản xạ từng giúp bạn an toàn.</p>
-                <p>Một cách sống đã thành quen.</p>
-              </div>
+            <div data-body-copy className="e26-reveal mx-auto mt-14 max-w-[620px] space-y-2 font-sans text-[17px] leading-[1.76] md:mt-20 md:text-[19px] md:leading-[1.72]">
+              <p>Một phản xạ từng giúp bạn an toàn.</p>
+              <p>Một cách sống đã thành quen.</p>
+            </div>
 
-              <p data-body-copy className="max-w-[650px] font-sans text-[18px] leading-[1.78] md:col-span-6 md:col-start-7 md:-mt-3 md:text-[20px] md:leading-[1.72]">
-                <span className="font-medium tracking-[0.035em]">ESSENCE</span> giúp bạn nhìn rõ điều đang dẫn nhịp lựa chọn của mình — để nhận ra điều gì đã thành quen, và điều gì thật sự thuộc về bạn.
+            <p data-body-copy className="e26-reveal mx-auto mt-16 max-w-[760px] font-sans text-[18px] leading-[1.78] md:mt-24 md:text-[21px] md:leading-[1.7]">
+              <span className="font-medium tracking-[0.035em]">ESSENCE</span> giúp bạn nhìn rõ điều đang dẫn nhịp lựa chọn của mình — để nhận ra điều gì đã thành quen, và điều gì thật sự thuộc về bạn.
+            </p>
+
+            <div className="e26-reveal mx-auto mt-16 md:mt-24">
+              <span className="mx-auto block h-px w-14 bg-[#E0C068]" aria-hidden="true" />
+              <p className="mx-auto mt-8 max-w-[900px] font-serif text-[38px] font-medium leading-[1.08] tracking-[-0.02em] md:mt-10 md:text-[62px] lg:text-[72px]">
+                Bản sắc không phải một chiếc nhãn.
               </p>
             </div>
 
-            <div className="e26-reveal mt-20 grid gap-8 border-t border-[color-mix(in_srgb,var(--essence-black-2026)_10%,transparent)] pt-12 md:mt-28 md:grid-cols-12 md:gap-8 md:pt-16">
-              <div className="md:col-span-5 md:col-start-2">
-                <span className="mb-7 block h-px w-14 bg-[#E0C068]" aria-hidden="true" />
-                <p className="max-w-[560px] font-serif text-[34px] font-medium leading-[1.12] tracking-[-0.017em] md:text-[48px] md:leading-[1.08]">
-                  Bản sắc không phải một chiếc nhãn.
-                </p>
-              </div>
+            <p data-body-copy className="e26-reveal mx-auto mt-9 max-w-[660px] font-sans text-[17px] leading-[1.78] md:mt-12 md:text-[19px] md:leading-[1.74]">
+              Đó là con người thật của bạn, được nhận ra dần qua chính đời sống mình đang sống.
+            </p>
 
-              <p data-body-copy className="max-w-[500px] font-sans text-[17px] leading-[1.78] md:col-span-5 md:col-start-7 md:pt-10 md:text-[18px]">
-                Đó là con người thật của bạn, được nhận ra dần qua chính đời sống mình đang sống.
-              </p>
-            </div>
-
-            <p className="e26-reveal mt-20 max-w-[760px] font-serif text-[31px] font-medium leading-[1.14] tracking-[-0.016em] md:ml-[32%] md:mt-28 md:text-[46px] md:leading-[1.1]">
+            <p className="e26-reveal mx-auto mt-20 max-w-[860px] font-serif text-[31px] font-medium leading-[1.13] tracking-[-0.017em] md:mt-28 md:text-[50px] md:leading-[1.08]">
               Càng hiểu rõ mình, bạn càng có thêm quyền lựa chọn.
             </p>
           </div>
