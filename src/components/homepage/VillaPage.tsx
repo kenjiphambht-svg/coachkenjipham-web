@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { SEO } from "@/components/SEO";
 import GrainOverlay from "@/components/homepage/GrainOverlay";
 import HomeHeader from "@/components/homepage/HomeHeader";
@@ -15,6 +16,15 @@ const softLink =
 
 export default function VillaPage() {
   useHomeReveal();
+  const [heroReady, setHeroReady] = useState(false);
+
+  const revealDecodedHero = async (image: HTMLImageElement) => {
+    try {
+      await image.decode();
+    } finally {
+      if (image.complete && image.naturalWidth === 3200) setHeroReady(true);
+    }
+  };
 
   return (
     <>
@@ -30,6 +40,8 @@ export default function VillaPage() {
       <Head>
         <meta name="robots" content="noindex" />
         <link rel="canonical" href={CANONICAL_URL} />
+        <link rel="preload" as="image" href="/images/home/home-scene-01-first-paint.webp" type="image/webp" />
+        <link rel="preload" as="image" href="/images/home/home-scene-01-master.webp" type="image/webp" fetchPriority="high" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
         <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
         <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
@@ -44,9 +56,24 @@ export default function VillaPage() {
         <section className="relative isolate min-h-[94svh] overflow-hidden px-6 pb-24 pt-32 text-e26-ivory md:flex md:min-h-[100svh] md:items-center md:px-10 md:pb-36 md:pt-40">
           <div className="absolute inset-0 -z-30" aria-hidden="true">
             <img
+              src="/images/home/home-scene-01-first-paint.webp"
+              alt=""
+              width="160"
+              height="90"
+              loading="eager"
+              decoding="sync"
+              className="absolute inset-0 h-full w-full object-cover object-[64%_center] md:object-center"
+            />
+            <img
               src="/images/home/home-scene-01-master.webp"
               alt=""
-              className="h-full w-full object-cover object-[64%_center] md:object-center"
+              width="3200"
+              height="1801"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+              onLoad={(event) => void revealDecodedHero(event.currentTarget)}
+              className={`relative z-10 h-full w-full object-cover object-[64%_center] md:object-center ${heroReady ? "opacity-100" : "opacity-0"}`}
             />
           </div>
           <div className="absolute inset-0 -z-20 bg-[color-mix(in_srgb,var(--essence-black-2026)_48%,transparent)] md:hidden" aria-hidden="true" />
