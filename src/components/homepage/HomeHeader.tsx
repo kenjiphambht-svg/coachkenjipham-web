@@ -29,13 +29,13 @@ const HOME_SHARED_LINKS = [
 
 const thresholdMotion = "duration-[420ms] ease-out motion-reduce:transition-none motion-reduce:duration-0";
 
-function HeaderLogo() {
+function HeaderLogo({ heroOverlay = false }: { heroOverlay?: boolean }) {
   return (
     <span className="flex flex-col items-center py-1">
       <img
         src="/brand/essence/32_SIGNATURE_WEB_BLACK.svg"
         alt="Kenji Phạm"
-        className="block h-[66px] w-auto md:h-[78px]"
+        className={`block h-[66px] w-auto md:h-[78px] ${heroOverlay ? "brightness-0 invert" : ""}`}
       />
       <img
         src="/brand/essence/essence-wordmark-only-light.svg"
@@ -105,7 +105,7 @@ export default function HomeHeader({ homeIa = false }: HomeHeaderProps) {
     >
       <div className="mx-auto flex max-w-[1120px] items-center justify-between py-1">
         <Link href="/" aria-label="Về trang chủ" className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory">
-          <HeaderLogo />
+          <HeaderLogo heroOverlay={overlayHero} />
         </Link>
         <button
           ref={menuButtonRef}
@@ -114,9 +114,7 @@ export default function HomeHeader({ homeIa = false }: HomeHeaderProps) {
           aria-expanded={open}
           aria-controls="site-menu-panel"
           className={`min-h-11 min-w-11 font-sans text-sm uppercase tracking-[0.16em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory ${
-            overlayHero
-              ? "text-e26-text hover:text-e26-gold-deep md:text-e26-ivory md:hover:text-e26-gold"
-              : "text-e26-text hover:text-e26-gold-deep"
+            overlayHero ? "text-e26-text hover:text-e26-gold-deep" : "text-e26-text hover:text-e26-gold-deep"
           } ${thresholdMotion}`}
         >
           Menu
