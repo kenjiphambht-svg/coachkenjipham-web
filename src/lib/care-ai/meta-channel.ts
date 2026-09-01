@@ -38,6 +38,15 @@ export interface MetaIdempotencyStore {
   }): Promise<boolean>;
 }
 
+export interface MetaCustomerGuardStore {
+  claim(args: {
+    scope: string;
+    limit: number;
+    windowSeconds: number;
+    nowMs?: number;
+  }): Promise<{ allowed: boolean; count?: number }>;
+}
+
 export interface MetaD1PreparedStatement {
   bind(...values: unknown[]): MetaD1PreparedStatement;
   first<T = Record<string, unknown>>(): Promise<T | null>;
@@ -49,6 +58,7 @@ export interface MetaD1Database {
 
 const META_SEND_HOST = 'graph.facebook.com';
 const META_DELIVERY_CLAIM_TABLE = 'care_meta_delivery_claims';
+const META_CUSTOMER_RATE_LIMIT_TABLE = 'care_meta_customer_rate_limits';
 
 function textFromEvent(event: MetaMessagingEvent): string | undefined {
   if (event.message?.text?.trim()) return event.message.text.trim();
@@ -189,6 +199,10 @@ function deliveryClaimKey(channel: CareChannel, externalMessageId: string): stri
   return createHash('sha256').update(`${channel}\u0000${externalMessageId}`, 'utf8').digest('hex');
 }
 
+function customerScopeKey(scope: string): string {
+  return createHash('sha256').update(`care-meta-customer\u0000${scope}`, 'utf8').digest('hex');
+}
+
 export function createD1MetaIdempotencyStore(db: MetaD1Database): MetaIdempotencyStore {
   return {
     async claim({ channel, externalMessageId, ttlSeconds, nowMs = Date.now() }) {
@@ -209,6 +223,36 @@ export function createD1MetaIdempotencyStore(db: MetaD1Database): MetaIdempotenc
         .bind(claimKey, expiresAtMs, nowMs)
         .first<{ claim_key: string }>();
       return result?.claim_key === claimKey;
+    },
+  };
+}
+
+export function createD1MetaCustomerGuardStore(db: MetaD1Database): MetaCustomerGuardStore {
+  return {
+    async claim({ scope, limit, windowSeconds, nowMs = Date.now() }) {
+      if (!scope.trim()) throw new Error('CARE_META_CUSTOMER_RATE_SCOPE_REQUIRED');
+      if (!Number.isInteger(limit) || limit < 1 || limit > 10000) {
+        throw new Error('CARE_META_CUSTOMER_RATE_LIMIT_INVALID');
+      }
+      if (!Number.isInteger(windowSeconds) || windowSeconds < 10 || windowSeconds > 86400) {
+        throw new Error('CARE_META_CUSTOMER_RATE_WINDOW_INVALID');
+      }
+      const scopeKey = customerScopeKey(scope);
+      const expiresAtMs = nowMs + windowSeconds * 1000;
+      const result = await db
+        .prepare(
+          `INSERT INTO ${META_CUSTOMER_RATE_LIMIT_TABLE} (scope_key, window_started_ms, count, expires_at_ms)\n` +
+            `VALUES (?1, ?2, 1, ?3)\n` +
+            `ON CONFLICT(scope_key) DO UPDATE SET\n` +
+            `window_started_ms = CASE WHEN ${META_CUSTOMER_RATE_LIMIT_TABLE}.expires_at_ms <= ?2 THEN ?2 ELSE ${META_CUSTOMER_RATE_LIMIT_TABLE}.window_started_ms END,\n` +
+            `count = CASE WHEN ${META_CUSTOMER_RATE_LIMIT_TABLE}.expires_at_ms <= ?2 THEN 1 ELSE ${META_CUSTOMER_RATE_LIMIT_TABLE}.count + 1 END,\n` +
+            `expires_at_ms = CASE WHEN ${META_CUSTOMER_RATE_LIMIT_TABLE}.expires_at_ms <= ?2 THEN ?3 ELSE ${META_CUSTOMER_RATE_LIMIT_TABLE}.expires_at_ms END\n` +
+            `WHERE ${META_CUSTOMER_RATE_LIMIT_TABLE}.expires_at_ms <= ?2 OR ${META_CUSTOMER_RATE_LIMIT_TABLE}.count < ?4\n` +
+            `RETURNING count`,
+        )
+        .bind(scopeKey, nowMs, expiresAtMs, limit)
+        .first<{ count: number }>();
+      return result ? { allowed: true, count: result.count } : { allowed: false };
     },
   };
 }
