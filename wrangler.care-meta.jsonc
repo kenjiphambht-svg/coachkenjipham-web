@@ -1,7 +1,6 @@
-// P07 bounded Care AI Messenger controlled-live Worker.
+// P07 isolated Care AI Messenger Worker.
 // Isolated from coachkenjipham.com production runtime: workers.dev only, no routes/custom domains.
-// Dedicated config source of truth for the Care Meta test Worker; do not use wrangler.jsonc for this lane.
-// Cloudflare first-build trigger: isolated worker only; no runtime semantics changed.
+// Dashboard-managed operational vars (live/outbound/customer gates and sender allowlists) must survive Git deploys.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "p07-care-ai-meta-test",
@@ -11,6 +10,7 @@
     "nodejs_compat",
     "global_fetch_strictly_public"
   ],
+  "keep_vars": true,
   "vars": {
     "CLOUDFLARE_PORTABILITY_PROOF": "1",
     "CARE_AI_TEST_RUNTIME_SURFACE": "cloudflare-preview",
@@ -24,10 +24,7 @@
     "CARE_MODEL_NAME": "gemini-3.5-flash-lite",
     "CARE_MODEL_ALLOWED_COMPATIBLE_HOSTS": "",
     "CARE_META_SANDBOX_ENABLED": "true",
-    "CARE_META_LIVE_TEST_ENABLED": "false",
-    "CARE_META_OUTBOUND_ENABLED": "false",
     "CARE_META_MESSENGER_SEND_ENDPOINT": "https://graph.facebook.com/v26.0/102524972270814/messages",
-    "CARE_META_TEST_SENDER_IDS": "",
     "CARE_META_IDEMPOTENCY_TTL_SECONDS": "86400"
   },
   "d1_databases": [
