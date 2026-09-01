@@ -119,7 +119,7 @@ export default function VillaPage() {
           </div>
         </section>
 
-        {/* 02 — freedom / what chooses for you */}
+        {/* 02 — freedom / identity recognition */}
         <section className="relative overflow-hidden bg-e26-white px-6 py-28 md:px-10 md:py-44">
           <div className="pointer-events-none absolute -right-[12%] top-[4%] h-[70%] w-[54%] rounded-full bg-[color-mix(in_srgb,var(--essence-cream-2026)_58%,transparent)] blur-3xl" aria-hidden="true" />
           <div className="pointer-events-none absolute left-[8%] top-[42%] hidden h-[36%] w-px bg-gradient-to-b from-transparent via-[#E0C068]/28 to-transparent md:block" aria-hidden="true" />
