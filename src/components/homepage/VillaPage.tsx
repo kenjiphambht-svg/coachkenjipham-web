@@ -122,6 +122,8 @@ export default function VillaPage() {
         {/* 02 — freedom / what chooses for you */}
         <section className="relative overflow-hidden bg-e26-white px-6 py-28 md:px-10 md:py-44">
           <div className="pointer-events-none absolute -right-[12%] top-[4%] h-[70%] w-[54%] rounded-full bg-[color-mix(in_srgb,var(--essence-cream-2026)_58%,transparent)] blur-3xl" aria-hidden="true" />
+          <div className="pointer-events-none absolute left-[8%] top-[42%] hidden h-[36%] w-px bg-gradient-to-b from-transparent via-[#E0C068]/28 to-transparent md:block" aria-hidden="true" />
+
           <div className="relative mx-auto max-w-7xl">
             <h2 className="e26-reveal max-w-[980px] font-serif text-[50px] font-medium leading-[0.98] tracking-[-0.026em] md:text-[84px] lg:text-[98px]">
               Điều gì đang<br className="hidden md:block" /> chọn thay bạn?
@@ -130,20 +132,30 @@ export default function VillaPage() {
             <div className="e26-reveal mt-16 grid gap-12 md:mt-24 md:grid-cols-12 md:gap-8">
               <div data-body-copy className="space-y-3 font-sans text-[17px] leading-[1.76] md:col-span-4 md:col-start-2 md:text-[18px]">
                 <p>Một phản xạ từng giúp bạn an toàn.</p>
-                <p>Một vai đã quá quen.</p>
-                <p className="pt-4 font-medium">Nhưng không nhất thiết phải tiếp tục quyết định ngày mai.</p>
+                <p>Một cách sống đã thành quen.</p>
               </div>
 
-              <div className="relative md:col-span-6 md:col-start-7 md:-mt-12">
-                <span className="absolute -left-7 top-0 hidden h-full w-px bg-[#E0C068]/62 md:block" aria-hidden="true" />
-                <p className="max-w-[620px] font-serif text-[32px] font-medium leading-[1.18] tracking-[-0.015em] md:text-[46px]">
-                  Bản sắc không phải một câu trả lời cuối cùng về bạn.
-                </p>
-                <p data-body-copy className="mt-8 max-w-[500px] font-sans text-[17px] leading-[1.78] md:text-[18px]">
-                  Là phần bạn ngày càng nhìn ra trung thực hơn — để có thêm quyền lựa chọn.
+              <p data-body-copy className="max-w-[650px] font-sans text-[18px] leading-[1.78] md:col-span-6 md:col-start-7 md:-mt-3 md:text-[20px] md:leading-[1.72]">
+                <span className="font-medium tracking-[0.035em]">ESSENCE</span> giúp bạn nhìn rõ điều đang dẫn nhịp lựa chọn của mình — để nhận ra điều gì đã thành quen, và điều gì thật sự thuộc về bạn.
+              </p>
+            </div>
+
+            <div className="e26-reveal mt-20 grid gap-8 border-t border-[color-mix(in_srgb,var(--essence-black-2026)_10%,transparent)] pt-12 md:mt-28 md:grid-cols-12 md:gap-8 md:pt-16">
+              <div className="md:col-span-5 md:col-start-2">
+                <span className="mb-7 block h-px w-14 bg-[#E0C068]" aria-hidden="true" />
+                <p className="max-w-[560px] font-serif text-[34px] font-medium leading-[1.12] tracking-[-0.017em] md:text-[48px] md:leading-[1.08]">
+                  Bản sắc không phải một chiếc nhãn.
                 </p>
               </div>
+
+              <p data-body-copy className="max-w-[500px] font-sans text-[17px] leading-[1.78] md:col-span-5 md:col-start-7 md:pt-10 md:text-[18px]">
+                Đó là con người thật của bạn, được nhận ra dần qua chính đời sống mình đang sống.
+              </p>
             </div>
+
+            <p className="e26-reveal mt-20 max-w-[760px] font-serif text-[31px] font-medium leading-[1.14] tracking-[-0.016em] md:ml-[32%] md:mt-28 md:text-[46px] md:leading-[1.1]">
+              Càng hiểu rõ mình, bạn càng có thêm quyền lựa chọn.
+            </p>
           </div>
         </section>
 
