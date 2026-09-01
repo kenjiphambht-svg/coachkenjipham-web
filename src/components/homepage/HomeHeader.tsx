@@ -93,7 +93,13 @@ export default function HomeHeader({ homeIa = false }: HomeHeaderProps) {
   const closeMenu = () => setOpen(false);
 
   return (
-    <header className="relative z-50 border-b border-e26-border bg-e26-ivory px-6">
+    <header
+      className={
+        homeIa
+          ? "absolute inset-x-0 top-0 z-50 bg-transparent px-6"
+          : "relative z-50 border-b border-e26-border bg-e26-ivory px-6"
+      }
+    >
       <div className="mx-auto flex max-w-[1120px] items-center justify-between py-1">
         <Link href="/" aria-label="Về trang chủ" className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory">
           <HeaderLogo />
@@ -104,7 +110,11 @@ export default function HomeHeader({ homeIa = false }: HomeHeaderProps) {
           onClick={() => setOpen(true)}
           aria-expanded={open}
           aria-controls="site-menu-panel"
-          className={`min-h-11 min-w-11 font-sans text-sm uppercase tracking-[0.16em] text-e26-text transition-colors hover:text-e26-gold-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory ${thresholdMotion}`}
+          className={`min-h-11 min-w-11 font-sans text-sm uppercase tracking-[0.16em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory ${
+            homeIa
+              ? "text-e26-text hover:text-e26-gold-deep md:text-e26-ivory md:hover:text-e26-gold"
+              : "text-e26-text hover:text-e26-gold-deep"
+          } ${thresholdMotion}`}
         >
           Menu
         </button>
@@ -201,7 +211,7 @@ export default function HomeHeader({ homeIa = false }: HomeHeaderProps) {
                         href={link.href}
                         tabIndex={open ? 0 : -1}
                         onClick={closeMenu}
-                        className={`group relative flex min-h-11 w-fit items-center font-serif text-[27px] font-normal leading-[1.08] tracking-[-0.012em] text-e26-text md:text-[30px] lg:text-[32px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream`}
+                        className="group relative flex min-h-11 w-fit items-center font-serif text-[27px] font-normal leading-[1.08] tracking-[-0.012em] text-e26-text md:text-[30px] lg:text-[32px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
                       >
                         {link.label}
                         <span className={`absolute bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform group-hover:scale-x-100 ${thresholdMotion}`} aria-hidden="true" />
