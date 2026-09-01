@@ -9,7 +9,6 @@ import TwoStates from "@/components/homepage/TwoStates";
 import WhatIsEssence from "@/components/homepage/WhatIsEssence";
 import AnDinhAnThinh from "@/components/homepage/AnDinhAnThinh";
 import ImageBridge from "@/components/homepage/ImageBridge";
-import NotPromised from "@/components/homepage/NotPromised";
 import SignatureEnding from "@/components/homepage/SignatureEnding";
 import HomeFooter from "@/components/homepage/HomeFooter";
 import { useHomeReveal } from "@/components/homepage/useHomeReveal";
@@ -49,7 +48,6 @@ export default function CoachingPage() {
         <WhatIsEssence />
         <AnDinhAnThinh />
         <ImageBridge />
-        <NotPromised />
         <SignatureEnding />
       </main>
       <HomeFooter homeIa />
