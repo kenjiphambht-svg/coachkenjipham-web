@@ -1,6 +1,6 @@
 -- P07 Care AI Messenger customer-mode rate/cost guard.
 -- Apply only to the isolated D1 database `care-meta-idempotency`.
--- Stores only hashed scope keys and numeric counters; no PSID, message text, token, or reply text.
+-- Stores only hashed scope keys and numeric counters; no raw external identifiers, content, or credentials.
 CREATE TABLE IF NOT EXISTS care_meta_customer_rate_limits (
   scope_key TEXT PRIMARY KEY,
   window_started_ms INTEGER NOT NULL,
