@@ -103,6 +103,14 @@ export default function HomeHeader({ homeIa = false }: HomeHeaderProps) {
           : "relative z-50 border-b border-e26-border bg-e26-ivory px-6"
       }
     >
+      {overlayHero && (
+        <style>{`
+          main > section:first-of-type .e26-reveal > div:last-child > p {
+            font-size: 15.4px;
+          }
+        `}</style>
+      )}
+
       <div className="mx-auto flex max-w-[1120px] items-center justify-between py-1">
         <Link href="/" aria-label="Về trang chủ" className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory">
           <HeaderLogo heroOverlay={overlayHero} />
@@ -113,9 +121,9 @@ export default function HomeHeader({ homeIa = false }: HomeHeaderProps) {
           onClick={() => setOpen(true)}
           aria-expanded={open}
           aria-controls="site-menu-panel"
-          className={`inline-flex min-h-11 min-w-11 items-center justify-center font-sans uppercase tracking-[0.16em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory ${
+          className={`inline-flex min-h-11 min-w-11 items-center justify-center font-sans uppercase tracking-[0.16em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory ${
             overlayHero
-              ? "min-h-[52px] min-w-[108px] rounded-full border border-white/50 bg-[rgba(248,244,235,0.88)] px-5 text-[15px] font-medium text-e26-text shadow-[0_8px_26px_rgba(0,0,0,0.14)] backdrop-blur-md hover:bg-[rgba(248,244,235,0.97)] md:mr-[7vw] md:min-h-[54px] md:min-w-[116px] md:text-[16px]"
+              ? "min-h-[52px] min-w-[100px] px-3 text-[16px] font-medium text-e26-text hover:text-e26-gold-deep md:mr-[9vw] md:min-h-[54px] md:min-w-[108px] md:text-[17px]"
               : "text-sm text-e26-text hover:text-e26-gold-deep"
           } ${thresholdMotion}`}
         >
