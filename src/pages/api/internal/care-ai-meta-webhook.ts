@@ -1,9 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { CareChannel } from '../../../lib/care-ai/contracts';
 import {
+  createD1MetaCustomerGuardStore,
   createD1MetaIdempotencyStore,
   parseMetaWebhook,
   sendMetaText,
+  type MetaCustomerGuardStore,
   type MetaD1Database,
   type MetaIdempotencyStore,
   verifyMetaPayloadSignature,
@@ -25,6 +27,10 @@ function outboundEnabled(): boolean {
   return liveTestEnabled() && process.env.CARE_META_OUTBOUND_ENABLED === 'true';
 }
 
+function customerModeEnabled(): boolean {
+  return liveTestEnabled() && process.env.CARE_META_CUSTOMER_MODE_ENABLED === 'true';
+}
+
 function allowedTestSenderIds(): Set<string> {
   return new Set(
     (process.env.CARE_META_TEST_SENDER_IDS || '')
@@ -34,23 +40,38 @@ function allowedTestSenderIds(): Set<string> {
   );
 }
 
-function idempotencyTtlSeconds(): number {
-  const value = Number(process.env.CARE_META_IDEMPOTENCY_TTL_SECONDS || '');
-  if (!Number.isInteger(value) || value < 300 || value > 604800) {
-    throw new Error('CARE_META_IDEMPOTENCY_TTL_INVALID');
-  }
+function boundedIntegerEnv(name: string, fallback: number, min: number, max: number): number {
+  const raw = process.env[name];
+  const value = raw ? Number(raw) : fallback;
+  if (!Number.isInteger(value) || value < min || value > max) throw new Error(`${name}_INVALID`);
   return value;
 }
 
-async function metaIdempotencyStore(): Promise<MetaIdempotencyStore> {
+function idempotencyTtlSeconds(): number {
+  return boundedIntegerEnv('CARE_META_IDEMPOTENCY_TTL_SECONDS', 86400, 300, 604800);
+}
+
+function customerGuardConfig() {
+  return {
+    maxTextChars: boundedIntegerEnv('CARE_META_CUSTOMER_MAX_TEXT_CHARS', 2000, 1, 8000),
+    senderLimit: boundedIntegerEnv('CARE_META_CUSTOMER_SENDER_MAX_MESSAGES', 12, 1, 100),
+    senderWindowSeconds: boundedIntegerEnv('CARE_META_CUSTOMER_SENDER_WINDOW_SECONDS', 600, 10, 86400),
+    globalLimit: boundedIntegerEnv('CARE_META_CUSTOMER_GLOBAL_MAX_MESSAGES', 120, 1, 10000),
+    globalWindowSeconds: boundedIntegerEnv('CARE_META_CUSTOMER_GLOBAL_WINDOW_SECONDS', 3600, 10, 86400),
+    dailyLimit: boundedIntegerEnv('CARE_META_CUSTOMER_DAILY_MAX_MESSAGES', 500, 1, 10000),
+    dailyWindowSeconds: boundedIntegerEnv('CARE_META_CUSTOMER_DAILY_WINDOW_SECONDS', 86400, 10, 86400),
+  };
+}
+
+async function metaD1Database(): Promise<MetaD1Database> {
   try {
     const { getCloudflareContext } = await import('@opennextjs/cloudflare');
     const { env } = await getCloudflareContext({ async: true });
     const db = (env as unknown as { CARE_META_IDEMPOTENCY_DB?: MetaD1Database }).CARE_META_IDEMPOTENCY_DB;
     if (!db) throw new Error('CARE_META_IDEMPOTENCY_STORE_MISSING');
-    return createD1MetaIdempotencyStore(db);
+    return db;
   } catch (error) {
-    if (error instanceof Error && error.message.startsWith('CARE_META_IDEMPOTENCY_')) throw error;
+    if (error instanceof Error && error.message.startsWith('CARE_META_')) throw error;
     throw new Error('CARE_META_IDEMPOTENCY_STORE_UNAVAILABLE');
   }
 }
@@ -106,6 +127,34 @@ function safeError(error: unknown): string {
   return 'CARE_META_TEST_BRIDGE_ERROR';
 }
 
+async function claimCustomerCapacity(args: {
+  store: MetaCustomerGuardStore;
+  senderId: string;
+  pageId: string;
+}): Promise<boolean> {
+  const limits = customerGuardConfig();
+  const sender = await args.store.claim({
+    scope: `sender:${args.pageId}:${args.senderId}`,
+    limit: limits.senderLimit,
+    windowSeconds: limits.senderWindowSeconds,
+  });
+  if (!sender.allowed) return false;
+
+  const global = await args.store.claim({
+    scope: `global:${args.pageId}:hour`,
+    limit: limits.globalLimit,
+    windowSeconds: limits.globalWindowSeconds,
+  });
+  if (!global.allowed) return false;
+
+  const daily = await args.store.claim({
+    scope: `global:${args.pageId}:day`,
+    limit: limits.dailyLimit,
+    windowSeconds: limits.dailyWindowSeconds,
+  });
+  return daily.allowed;
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   res.setHeader('Cache-Control', 'no-store');
   if (!sandboxEnabled()) return res.status(404).json({ error: 'CARE_META_SANDBOX_DISABLED' });
@@ -145,46 +194,76 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         channels: messages.map((message) => message.channel),
         modelCalled: false,
         outboundSent: false,
-        note: 'Signed Meta receipt only. Model/outbound remain behind explicit controlled-live gates.',
+        note: 'Signed Meta receipt only. Model/outbound remain behind explicit live-processing gates.',
       });
     }
 
     const allowedSenders = allowedTestSenderIds();
-    if (!allowedSenders.size) {
+    const customerEnabled = customerModeEnabled();
+    if (!allowedSenders.size && !customerEnabled) {
       return res.status(503).json({ error: 'CARE_META_TEST_SENDER_ALLOWLIST_MISSING' });
     }
 
     const outputs: Array<{
       channel: CareChannel;
       duplicate: boolean;
+      customerMode: boolean;
       blockedByAllowlist: boolean;
       blockedByChannelGate: boolean;
+      blockedByAbuseGuard: boolean;
+      blockedByRateLimit: boolean;
       modelCalled: boolean;
       outboundSent: boolean;
       messageId?: string;
       replyPreview?: string;
     }> = [];
-    let storePromise: Promise<MetaIdempotencyStore> | undefined;
+    let dbPromise: Promise<MetaD1Database> | undefined;
+    let idempotencyStorePromise: Promise<MetaIdempotencyStore> | undefined;
+    let customerStorePromise: Promise<MetaCustomerGuardStore> | undefined;
 
     for (const message of messages) {
+      const allowlisted = allowedSenders.has(message.externalSenderId);
+      const customerRequest = !allowlisted && customerEnabled;
+
       if (message.channel !== 'facebook_messenger') {
         outputs.push({
           channel: message.channel,
           duplicate: false,
+          customerMode: false,
           blockedByAllowlist: false,
           blockedByChannelGate: true,
+          blockedByAbuseGuard: false,
+          blockedByRateLimit: false,
           modelCalled: false,
           outboundSent: false,
         });
         continue;
       }
 
-      if (!allowedSenders.has(message.externalSenderId)) {
+      if (!allowlisted && !customerEnabled) {
         outputs.push({
           channel: message.channel,
           duplicate: false,
+          customerMode: false,
           blockedByAllowlist: true,
           blockedByChannelGate: false,
+          blockedByAbuseGuard: false,
+          blockedByRateLimit: false,
+          modelCalled: false,
+          outboundSent: false,
+        });
+        continue;
+      }
+
+      if (customerRequest && message.text.length > customerGuardConfig().maxTextChars) {
+        outputs.push({
+          channel: message.channel,
+          duplicate: false,
+          customerMode: true,
+          blockedByAllowlist: false,
+          blockedByChannelGate: false,
+          blockedByAbuseGuard: true,
+          blockedByRateLimit: false,
           modelCalled: false,
           outboundSent: false,
         });
@@ -193,8 +272,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const messageId = message.externalMessageId?.trim();
       if (!messageId) throw new Error('CARE_META_MESSAGE_ID_REQUIRED');
-      storePromise ||= metaIdempotencyStore();
-      const firstSeen = await (await storePromise).claim({
+      dbPromise ||= metaD1Database();
+      idempotencyStorePromise ||= dbPromise.then((db) => createD1MetaIdempotencyStore(db));
+      const firstSeen = await (await idempotencyStorePromise).claim({
         channel: message.channel,
         externalMessageId: messageId,
         ttlSeconds: idempotencyTtlSeconds(),
@@ -203,12 +283,41 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         outputs.push({
           channel: message.channel,
           duplicate: true,
+          customerMode: customerRequest,
           blockedByAllowlist: false,
           blockedByChannelGate: false,
+          blockedByAbuseGuard: false,
+          blockedByRateLimit: false,
           modelCalled: false,
           outboundSent: false,
         });
         continue;
+      }
+
+      const pageId = message.externalRecipientId?.trim();
+      if (!pageId) throw new Error('CARE_META_PAGE_ID_REQUIRED');
+
+      if (customerRequest) {
+        customerStorePromise ||= dbPromise.then((db) => createD1MetaCustomerGuardStore(db));
+        const capacityAvailable = await claimCustomerCapacity({
+          store: await customerStorePromise,
+          senderId: message.externalSenderId,
+          pageId,
+        });
+        if (!capacityAvailable) {
+          outputs.push({
+            channel: message.channel,
+            duplicate: false,
+            customerMode: true,
+            blockedByAllowlist: false,
+            blockedByChannelGate: false,
+            blockedByAbuseGuard: false,
+            blockedByRateLimit: true,
+            modelCalled: false,
+            outboundSent: false,
+          });
+          continue;
+        }
       }
 
       const decision = await runCareModel({
@@ -221,8 +330,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         outputs.push({
           channel: message.channel,
           duplicate: false,
+          customerMode: customerRequest,
           blockedByAllowlist: false,
           blockedByChannelGate: false,
+          blockedByAbuseGuard: false,
+          blockedByRateLimit: false,
           modelCalled: true,
           outboundSent: false,
           replyPreview: decision.reply,
@@ -230,8 +342,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         continue;
       }
 
-      const pageId = message.externalRecipientId?.trim();
-      if (!pageId) throw new Error('CARE_META_PAGE_ID_REQUIRED');
       const sent = await sendMetaText({
         config: metaSendConfig(message.channel, pageId),
         recipientId: message.externalSenderId,
@@ -240,8 +350,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       outputs.push({
         channel: message.channel,
         duplicate: false,
+        customerMode: customerRequest,
         blockedByAllowlist: false,
         blockedByChannelGate: false,
+        blockedByAbuseGuard: false,
+        blockedByRateLimit: false,
         modelCalled: true,
         outboundSent: true,
         messageId: sent.messageId,
@@ -251,10 +364,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(200).json({
       accepted: true,
       liveTest: true,
+      customerModeEnabled: customerEnabled,
       outboundGateEnabled: outboundEnabled(),
-      guardMode: 'MESSENGER_PAGE_CONTROLLED_LIVE_TEXT_REPLY_ONLY',
+      guardMode: customerEnabled ? 'MESSENGER_PAGE_CUSTOMER_TEXT_REPLY_GUARDED' : 'MESSENGER_PAGE_CONTROLLED_LIVE_TEXT_REPLY_ONLY',
       processed: outputs,
-      note: 'Messenger/Page text-only, inbound-triggered RESPONSE replies only. Persistent idempotency is required; Instagram and proactive follow-up remain closed.',
+      note: customerEnabled
+        ? 'Messenger customer replies are inbound-triggered only and protected by persistent idempotency, text bounds, per-sender rate limits and global model-call budgets. Instagram and proactive follow-up remain closed.'
+        : 'Messenger/Page text-only, inbound-triggered RESPONSE replies only. Persistent idempotency is required; Instagram and proactive follow-up remain closed.',
     });
   } catch (error) {
     return res.status(502).json({ error: safeError(error) });
