@@ -40,7 +40,7 @@ function HeaderLogo() {
       <img
         src="/brand/essence/essence-wordmark-only-light.svg"
         alt="Essence"
-        className="-mt-2 block h-[28px] w-auto md:-mt-3 md:h-[32px]"
+        className="relative -left-2 -mt-1 block h-[31px] w-auto md:-left-3 md:-mt-1.5 md:h-[35px]"
       />
     </span>
   );
@@ -145,7 +145,7 @@ export default function HomeHeader({ homeIa = false }: HomeHeaderProps) {
                 closeMenu();
                 menuButtonRef.current?.focus();
               }}
-              className={`min-h-11 min-w-11 font-sans text-sm uppercase tracking-[0.16em] text-e26-text transition-colors hover:text-e26-gold-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-e26-cream ${thresholdMotion}`}
+              className={`min-h-11 min-w-11 font-sans text-sm uppercase tracking-[0.16em] text-e26-text transition-colors hover:text-e26-gold-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream ${thresholdMotion}`}
             >
               Đóng
             </button>
