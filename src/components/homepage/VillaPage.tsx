@@ -41,24 +41,28 @@ export default function VillaPage() {
 
       <main className="bg-e26-ivory text-e26-text">
         {/* 01 — freedom / recognition */}
-        <section className="relative isolate min-h-[94svh] overflow-hidden px-6 pb-24 pt-28 md:flex md:min-h-[100svh] md:items-center md:px-10 md:pb-36 md:pt-36">
-          <div className="absolute inset-0 -z-20 md:hidden">
-            <Image src="/images/home/window-first-light-mobile.webp" alt="" fill priority sizes="100vw" className="object-cover object-center opacity-90" />
+        <section className="relative isolate min-h-[94svh] overflow-hidden px-6 pb-24 pt-32 text-e26-ivory md:flex md:min-h-[100svh] md:items-center md:px-10 md:pb-36 md:pt-40">
+          <div className="absolute inset-0 -z-30" aria-hidden="true">
+            <img
+              src="/images/home/hero-master-threshold-selected.svg"
+              alt=""
+              className="h-full w-full object-cover object-[64%_center] md:object-center"
+            />
           </div>
-          <div className="absolute inset-0 -z-20 hidden md:block">
-            <Image src="/images/home/window-first-light.webp" alt="" fill priority sizes="100vw" className="object-cover object-center opacity-90" />
-          </div>
+          <div className="absolute inset-0 -z-20 bg-[color-mix(in_srgb,var(--essence-black-2026)_48%,transparent)] md:hidden" aria-hidden="true" />
           <div
-            className="absolute inset-0 -z-10"
+            className="absolute inset-0 -z-20 hidden md:block"
             style={{
               background:
-                "linear-gradient(90deg, color-mix(in srgb, var(--essence-ivory-2026) 96%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 91%, transparent) 44%, color-mix(in srgb, var(--essence-ivory-2026) 54%, transparent) 76%, color-mix(in srgb, var(--essence-ivory-2026) 24%, transparent) 100%)",
+                "linear-gradient(90deg, color-mix(in srgb, var(--essence-black-2026) 68%, transparent) 0%, color-mix(in srgb, var(--essence-black-2026) 58%, transparent) 42%, color-mix(in srgb, var(--essence-black-2026) 30%, transparent) 58%, color-mix(in srgb, var(--essence-black-2026) 8%, transparent) 76%, transparent 100%)",
             }}
             aria-hidden="true"
           />
+          <div className="pointer-events-none absolute inset-y-0 left-0 -z-10 w-[16%] bg-gradient-to-r from-black/28 to-transparent backdrop-blur-[1px]" aria-hidden="true" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[28%] bg-gradient-to-t from-black/18 to-transparent" aria-hidden="true" />
 
-          <div className="mx-auto w-full max-w-7xl">
-            <div className="e26-reveal relative">
+          <div className="relative z-10 mx-auto w-full max-w-7xl">
+            <div className="e26-reveal relative" style={{ textShadow: "0 3px 28px rgba(0,0,0,0.24)" }}>
               <h1 className="max-w-[1080px] font-serif text-[52px] font-medium leading-[0.98] tracking-[-0.028em] md:text-[88px] lg:text-[108px]">
                 Có những điều bạn<br className="hidden md:block" /> biết rất rõ.
               </h1>
