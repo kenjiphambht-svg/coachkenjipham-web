@@ -43,6 +43,10 @@ export default function HomeFooter(_props: HomeFooterProps) {
               hello@kenjipham.com
             </a>
           </p>
+
+          <p className="mt-5 font-sans text-[11px] leading-[1.5] tracking-[0.07em] text-e26-text-dark-2">
+            © 2026 Kenji Phạm. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
