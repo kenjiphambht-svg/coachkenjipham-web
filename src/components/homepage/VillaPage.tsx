@@ -44,7 +44,7 @@ export default function VillaPage() {
         <section className="relative isolate min-h-[94svh] overflow-hidden px-6 pb-24 pt-32 text-e26-ivory md:flex md:min-h-[100svh] md:items-center md:px-10 md:pb-36 md:pt-40">
           <div className="absolute inset-0 -z-30" aria-hidden="true">
             <img
-              src="/images/home/hero-master-threshold-selected-v2.svg"
+              src="/images/home/home-scene-01-master.webp"
               alt=""
               className="h-full w-full object-cover object-[64%_center] md:object-center"
             />

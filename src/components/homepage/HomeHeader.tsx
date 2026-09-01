@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import heroScene01Final from "@/components/homepage/generated/heroScene01Final";
 
 const PRODUCT_LINKS = [
   { href: "/ban-sac-cua-ban", label: "Bản Sắc Của Bạn" },
@@ -58,20 +57,6 @@ export default function HomeHeader({ homeIa = false }: HomeHeaderProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
   const overlayHero = homeIa && router.pathname === "/";
-
-  useEffect(() => {
-    if (!overlayHero) return;
-
-    const heroImage = document.querySelector<HTMLImageElement>("main > section:first-of-type > div:first-child > img");
-    if (!heroImage) return;
-
-    const previousSrc = heroImage.getAttribute("src");
-    heroImage.src = heroScene01Final;
-
-    return () => {
-      if (previousSrc) heroImage.setAttribute("src", previousSrc);
-    };
-  }, [overlayHero]);
 
   useEffect(() => {
     if (!open) return;
