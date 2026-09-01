@@ -53,7 +53,7 @@ export default function VillaPage() {
 
       <main className="bg-e26-ivory text-e26-text">
         {/* 01 — freedom / recognition */}
-        <section className="relative isolate min-h-[94svh] overflow-hidden px-6 pb-24 pt-32 text-e26-ivory md:flex md:min-h-[100svh] md:items-center md:px-10 md:pb-36 md:pt-40">
+        <section className="relative isolate min-h-[100svh] overflow-hidden px-6 pb-20 pt-32 text-e26-ivory md:flex md:items-center md:px-10 md:pb-36 md:pt-40">
           <div className="absolute inset-0 -z-30" aria-hidden="true">
             <img
               src="/images/home/home-scene-01-first-paint.webp"
@@ -90,24 +90,23 @@ export default function VillaPage() {
 
           <div className="relative z-10 mx-auto w-full max-w-7xl">
             <div className="e26-reveal relative" style={{ textShadow: "0 3px 28px rgba(0,0,0,0.24)" }}>
-              <h1 className="max-w-[1080px] font-serif text-[52px] font-medium leading-[0.98] tracking-[-0.028em] md:text-[88px] lg:text-[108px]">
+              <h1 className="max-w-[292px] font-serif text-[46px] font-medium leading-[0.98] tracking-[-0.028em] md:max-w-[1080px] md:text-[88px] lg:text-[108px]">
                 Có những điều bạn<br className="hidden md:block" /> biết rất rõ.
               </h1>
 
-              <div data-body-copy className="mt-10 max-w-[420px] space-y-2 font-sans text-[17px] font-normal leading-[1.72] md:ml-[7%] md:mt-14 md:text-[18px]">
+              <div data-body-copy className="mt-9 max-w-[286px] space-y-2 font-sans text-[16px] font-normal leading-[1.68] md:ml-[7%] md:mt-14 md:max-w-[420px] md:text-[18px] md:leading-[1.72]">
                 <p>Một cuộc nói chuyện cần diễn ra.</p>
                 <p>Một việc cần dừng.</p>
                 <p>Một quyết định không thể để lâu hơn.</p>
                 <p className="pt-4 font-medium">Nhưng biết rồi vẫn chưa chắc làm được.</p>
               </div>
 
-              <p className="mt-14 max-w-[760px] font-serif text-[34px] font-medium leading-[1.12] tracking-[-0.018em] md:ml-[34%] md:mt-20 md:text-[52px] lg:text-[58px]">
-                Có một thứ khác vẫn đang chọn trước khi bạn kịp chọn.
+              <p className="mt-10 max-w-[302px] font-serif text-[29px] font-medium leading-[1.1] tracking-[-0.018em] md:ml-[34%] md:mt-20 md:max-w-[760px] md:text-[52px] md:leading-[1.12] lg:text-[58px]">
+                Từ điều bạn biết đến điều bạn thực sự chọn, vẫn còn một khoảng cách.
               </p>
 
-              <div className="mt-10 flex items-center gap-4 md:ml-[34%] md:mt-12">
-                <span className="h-px w-14 bg-[#E0C068]" aria-hidden="true" />
-                <p className="font-sans text-[14px] font-medium leading-[1.7] tracking-[0.01em]">ESSENCE bắt đầu từ khoảng đó.</p>
+              <div className="mt-8 md:ml-[34%] md:mt-12" aria-hidden="true">
+                <span className="block h-px w-14 bg-[#E0C068]" />
               </div>
             </div>
           </div>
