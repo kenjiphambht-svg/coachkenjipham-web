@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 
 const PRODUCT_LINKS = [
@@ -50,10 +51,12 @@ type HomeHeaderProps = {
 };
 
 export default function HomeHeader({ homeIa = false }: HomeHeaderProps) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
+  const overlayHero = homeIa && router.pathname === "/";
 
   useEffect(() => {
     if (!open) return;
@@ -95,7 +98,7 @@ export default function HomeHeader({ homeIa = false }: HomeHeaderProps) {
   return (
     <header
       className={
-        homeIa
+        overlayHero
           ? "absolute inset-x-0 top-0 z-50 bg-transparent px-6"
           : "relative z-50 border-b border-e26-border bg-e26-ivory px-6"
       }
@@ -111,7 +114,7 @@ export default function HomeHeader({ homeIa = false }: HomeHeaderProps) {
           aria-expanded={open}
           aria-controls="site-menu-panel"
           className={`min-h-11 min-w-11 font-sans text-sm uppercase tracking-[0.16em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory ${
-            homeIa
+            overlayHero
               ? "text-e26-text hover:text-e26-gold-deep md:text-e26-ivory md:hover:text-e26-gold"
               : "text-e26-text hover:text-e26-gold-deep"
           } ${thresholdMotion}`}
