@@ -60,6 +60,20 @@ export default function HomeHeader({ homeIa = false }: HomeHeaderProps) {
   const overlayHero = homeIa && router.pathname === "/";
 
   useEffect(() => {
+    if (!overlayHero) return;
+
+    const heroImage = document.querySelector<HTMLImageElement>("main > section:first-of-type > div:first-child > img");
+    if (!heroImage) return;
+
+    const previousSrc = heroImage.getAttribute("src");
+    heroImage.src = heroScene01Final;
+
+    return () => {
+      if (previousSrc) heroImage.setAttribute("src", previousSrc);
+    };
+  }, [overlayHero]);
+
+  useEffect(() => {
     if (!open) return;
 
     function onKeyDown(e: KeyboardEvent) {
@@ -106,22 +120,8 @@ export default function HomeHeader({ homeIa = false }: HomeHeaderProps) {
     >
       {overlayHero && (
         <style>{`
-          main > section:first-of-type > div:first-child {
-            background-image: url("${heroScene01Final}");
-            background-size: cover;
-            background-position: 64% center;
-            background-repeat: no-repeat;
-          }
-          main > section:first-of-type > div:first-child > img {
-            opacity: 0;
-          }
           main > section:first-of-type .e26-reveal > div:last-child > p {
             font-size: 15.4px;
-          }
-          @media (min-width: 768px) {
-            main > section:first-of-type > div:first-child {
-              background-position: center;
-            }
           }
         `}</style>
       )}
