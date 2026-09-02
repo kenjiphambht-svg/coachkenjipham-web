@@ -120,37 +120,52 @@ export default function VillaPage() {
         </section>
 
         {/* 02 — freedom / identity recognition */}
-        <section className="relative overflow-hidden bg-e26-white px-6 py-28 md:px-10 md:py-48">
-          <div className="pointer-events-none absolute left-1/2 top-[8%] h-[54%] w-[76%] -translate-x-1/2 rounded-full bg-[color-mix(in_srgb,var(--essence-cream-2026)_48%,transparent)] blur-3xl" aria-hidden="true" />
+        <section className="relative overflow-hidden bg-e26-white px-6 py-32 md:px-10 md:py-56">
           <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#E0C068]/18 to-transparent" aria-hidden="true" />
 
           <div className="relative mx-auto max-w-6xl text-center">
-            <h2 className="e26-reveal mx-auto max-w-[1060px] font-serif text-[52px] font-medium leading-[0.96] tracking-[-0.028em] md:text-[88px] lg:text-[104px]">
-              Điều gì đang chọn thay bạn?
+            <span className="e26-reveal mx-auto mb-14 block h-px w-16 bg-[#E0C068] md:mb-20" aria-hidden="true" />
+
+            <h2 className="e26-reveal mx-auto max-w-[1120px] font-serif">
+              <span className="sr-only">Điều gì đang chọn thay bạn?</span>
+              <span aria-hidden="true" className="block">
+                <span className="block text-[45px] font-normal italic leading-[1.02] tracking-[-0.02em] md:text-[72px]">Điều gì đang</span>
+                <span className="-my-1 block text-[82px] font-medium uppercase leading-[0.84] tracking-[-0.045em] md:-my-2 md:text-[156px] lg:text-[176px]">chọn</span>
+                <span className="block text-[48px] font-normal italic leading-[1.02] tracking-[-0.02em] md:text-[76px]">thay bạn?</span>
+              </span>
             </h2>
 
-            <div data-body-copy className="e26-reveal mx-auto mt-14 max-w-[620px] space-y-2 font-sans text-[17px] leading-[1.76] md:mt-20 md:text-[19px] md:leading-[1.72]">
+            <div data-body-copy className="e26-reveal mx-auto mt-14 max-w-[620px] space-y-2 font-sans text-[16px] leading-[1.78] md:mt-20 md:text-[18px] md:leading-[1.74]">
               <p>Một phản xạ từng giúp bạn an toàn.</p>
               <p>Một cách sống đã thành quen.</p>
             </div>
 
-            <p data-body-copy className="e26-reveal mx-auto mt-16 max-w-[760px] font-sans text-[18px] leading-[1.78] md:mt-24 md:text-[21px] md:leading-[1.7]">
-              <span className="font-medium tracking-[0.035em]">ESSENCE</span> giúp bạn nhìn rõ điều đang dẫn nhịp lựa chọn của mình — để nhận ra điều gì đã thành quen, và điều gì thật sự thuộc về bạn.
+            <p data-body-copy className="e26-reveal mx-auto mt-16 max-w-[770px] font-sans text-[17px] leading-[1.82] md:mt-24 md:text-[20px] md:leading-[1.74]">
+              <span className="font-medium tracking-[0.05em]">ESSENCE</span> giúp bạn nhìn rõ điều đang dẫn nhịp lựa chọn của mình — để nhận ra điều gì đã thành quen, và điều gì thật sự thuộc về bạn.
             </p>
 
-            <div className="e26-reveal mx-auto mt-16 md:mt-24">
-              <span className="mx-auto block h-px w-14 bg-[#E0C068]" aria-hidden="true" />
-              <p className="mx-auto mt-8 max-w-[900px] font-serif text-[38px] font-medium leading-[1.08] tracking-[-0.02em] md:mt-10 md:text-[62px] lg:text-[72px]">
-                Bản sắc không phải một chiếc nhãn.
+            <div className="e26-reveal mx-auto mt-24 md:mt-36">
+              <span className="mx-auto block h-px w-16 bg-[#E0C068]" aria-hidden="true" />
+              <p className="mx-auto mt-10 max-w-[1080px] font-serif md:mt-14">
+                <span className="sr-only">Bản sắc không phải một chiếc nhãn.</span>
+                <span aria-hidden="true" className="block">
+                  <span className="block text-[42px] font-normal italic leading-[1.02] tracking-[-0.02em] md:text-[68px]">Bản sắc</span>
+                  <span className="-my-1 block text-[52px] font-medium uppercase leading-[0.9] tracking-[-0.04em] md:-my-2 md:text-[96px] lg:text-[108px]">không phải</span>
+                  <span className="block text-[42px] font-normal italic leading-[1.02] tracking-[-0.02em] md:text-[66px]">một chiếc nhãn.</span>
+                </span>
               </p>
             </div>
 
-            <p data-body-copy className="e26-reveal mx-auto mt-9 max-w-[660px] font-sans text-[17px] leading-[1.78] md:mt-12 md:text-[19px] md:leading-[1.74]">
+            <p data-body-copy className="e26-reveal mx-auto mt-10 max-w-[660px] font-sans text-[16px] leading-[1.82] md:mt-14 md:text-[18px] md:leading-[1.76]">
               Đó là con người thật của bạn, được nhận ra dần qua chính đời sống mình đang sống.
             </p>
 
-            <p className="e26-reveal mx-auto mt-20 max-w-[860px] font-serif text-[31px] font-medium leading-[1.13] tracking-[-0.017em] md:mt-28 md:text-[50px] md:leading-[1.08]">
-              Càng hiểu rõ mình, bạn càng có thêm quyền lựa chọn.
+            <p className="e26-reveal mx-auto mt-24 max-w-[920px] font-serif md:mt-36">
+              <span className="sr-only">Càng hiểu rõ mình, bạn càng có thêm quyền lựa chọn.</span>
+              <span aria-hidden="true" className="block">
+                <span className="block text-[32px] font-normal italic leading-[1.08] tracking-[-0.016em] md:text-[44px]">Càng hiểu rõ mình,</span>
+                <span className="mt-2 block text-[41px] font-medium leading-[1.06] tracking-[-0.022em] md:mt-3 md:text-[60px] lg:text-[66px]">bạn càng có thêm quyền lựa chọn.</span>
+              </span>
             </p>
           </div>
         </section>
@@ -237,7 +252,7 @@ export default function VillaPage() {
                   <h2 className="font-serif text-[42px] font-medium leading-[0.98] tracking-[-0.022em] md:text-[58px]">ESSENCE<br />Advisory</h2>
                   <p data-body-copy className="mt-8 max-w-[430px] font-sans text-[17px] leading-[1.72] md:text-[18px]">Khi điều cần được làm rõ nằm trong công việc hoặc doanh nghiệp.</p>
                   <p className="mt-5 max-w-[390px] font-serif text-[27px] leading-[1.18] tracking-[-0.012em] md:text-[32px]">Một điều cần được đưa vào vận hành.</p>
-                  <span className={`${softLink} mt-9 w-fit`}>ESSENCE Advisory <span className={`text-[#E0C068] transition-transform group-hover:translate-x-1 ${thresholdMotion}`} aria-hidden="true">→</span></span>
+                  <span className={`${softLink} mt-9 w-fit`}>ESSENCE Advisory <span className="text-[#E0C068]" aria-hidden="true">→</span></span>
                 </div>
               </Link>
             </div>
