@@ -6,6 +6,20 @@ import {
   deriveCareChannelIdentity,
   hashCareExternalMessageId,
 } from '../src/lib/care-ai/conversation-context';
+import {
+  enforceFreeformActionRouteTruth,
+  type CareModelDecision,
+} from '../src/lib/care-ai/provider-neutral-model';
+
+const normalDecision: CareModelDecision = {
+  family: 'REFLECTIVE_ADULT',
+  truthStatus: 'BOUNDED',
+  nextBestCare: 'ANSWER',
+  commercialReadiness: 'EXPLORE',
+  memoryDecision: 'DO_NOT_WRITE',
+  handoffRequired: false,
+  reply: 'Essence có thể giúp bạn nhìn rõ điều đang cần làm rõ trước.',
+};
 
 describe('P07 Care conversation context', () => {
   const secret = 'synthetic-only-context-hmac-secret-000000000000';
@@ -76,6 +90,43 @@ describe('P07 Care conversation context', () => {
       'Care: Essence giúp bạn nhìn rõ hơn điều đang diễn ra.',
       'Customer: Vậy nó giúp gì cho anh?',
     ]);
+  });
+
+  it('scopes current-action guards to the newest turn instead of stale history', () => {
+    const result = enforceFreeformActionRouteTruth(
+      {
+        channel: 'facebook_messenger',
+        turns: [
+          'Customer: Anh muốn nói với Kenji.',
+          'Care: Mình chưa có kênh chuyển tiếp đã xác minh.',
+          'Customer: Vậy Essence giúp gì được cho anh?',
+        ],
+      },
+      normalDecision,
+    );
+
+    expect(result).toEqual(normalDecision);
+  });
+
+  it('still enforces a current-turn human request in multi-turn context', () => {
+    const result = enforceFreeformActionRouteTruth(
+      {
+        channel: 'facebook_messenger',
+        turns: [
+          'Customer: Essence là gì?',
+          'Care: Essence giúp bạn nhìn rõ điều đang diễn ra.',
+          'Customer: Anh muốn nói với Kenji.',
+        ],
+      },
+      normalDecision,
+    );
+
+    expect(result).toMatchObject({
+      nextBestCare: 'HUMAN_HANDOFF',
+      commercialReadiness: 'HANDOFF',
+      memoryDecision: 'DO_NOT_WRITE',
+      handoffRequired: true,
+    });
   });
 
   it('trims oldest turns first while always retaining the current inbound', () => {
