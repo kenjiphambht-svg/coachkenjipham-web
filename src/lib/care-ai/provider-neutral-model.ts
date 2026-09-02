@@ -13,6 +13,32 @@ export type CareModelProvider =
   | 'anthropic_messages'
   | 'google_gemini';
 
+export type CareModelFailureClassification =
+  | 'AUTH'
+  | 'PERMISSION'
+  | 'NOT_FOUND'
+  | 'BAD_REQUEST'
+  | 'RATE_LIMIT'
+  | 'QUOTA'
+  | 'RATE_OR_QUOTA'
+  | 'TRANSIENT'
+  | 'TIMEOUT'
+  | 'TRANSPORT'
+  | 'INVALID_RESPONSE'
+  | 'CONFIG'
+  | 'UNKNOWN';
+
+export interface CareModelFailureDiagnostic {
+  provider: CareModelProvider;
+  model: string;
+  httpStatus: number | null;
+  providerCode: string | null;
+  classification: CareModelFailureClassification;
+  retryable: boolean;
+  attempts: number;
+  safeErrorCode: string;
+}
+
 export interface CareAuthorityGuard {
   family: CareFamily;
   truthStatus: TruthStatus;
@@ -28,6 +54,7 @@ export interface CareModelConfig {
   apiKey: string;
   baseUrl?: string;
   allowedCompatibleHosts?: string[];
+  timeoutMs?: number;
 }
 
 export interface CareModelDecision {
@@ -107,6 +134,20 @@ const VALID_TRUTH = new Set(['VERIFIED', 'BOUNDED', 'UNKNOWN', 'ROUTE_ONLY', 'SA
 const VALID_NBC = new Set(['ANSWER', 'ASK', 'EDUCATE', 'WAIT', 'NURTURE', 'ROUTE', 'ROUTE_OUT', 'NO_FIT', 'SUPPRESS', 'HUMAN_HANDOFF']);
 const VALID_COMMERCIAL = new Set(['EXPLORE', 'NEED_RECOGNIZED', 'FIT_UNCLEAR', 'FIT_CONFIRMED', 'VALUE_UNDERSTOOD', 'OBJECTION_OPEN', 'READY_FOR_ALLOWED_NEXT_STEP', 'WAIT', 'NURTURE', 'ROUTE_OUT', 'NO_FIT', 'HANDOFF']);
 const VALID_MEMORY = new Set(['PRESERVE', 'UPDATE', 'FORGET', 'DO_NOT_WRITE']);
+const CARE_MODEL_DEFAULT_TIMEOUT_MS = 12000;
+const CARE_MODEL_MAX_ATTEMPTS = 2;
+const CARE_MODEL_RETRY_BASE_MS = 250;
+const CARE_MODEL_RETRY_MAX_MS = 750;
+
+class CareModelUpstreamError extends Error {
+  readonly diagnostic: CareModelFailureDiagnostic;
+
+  constructor(message: string, diagnostic: CareModelFailureDiagnostic) {
+    super(message);
+    this.name = 'CareModelUpstreamError';
+    this.diagnostic = diagnostic;
+  }
+}
 
 function conversationText(channel: CareChannel, turns: string[]): string {
   return [`Channel: ${channel}`, ...turns.map((turn, index) => `User turn ${index + 1}: ${turn}`)].join('\n\n');
@@ -414,6 +455,20 @@ function finalizeDecision(request: CareModelRequest, decision: CareModelDecision
   return enforceFreeformActionRouteTruth(request, enforceAuthorityGuard(decision, request.authorityGuard));
 }
 
+export function careModelFailureDecision(channel: CareChannel): CareModelDecision {
+  return {
+    family: 'UNKNOWN',
+    truthStatus: 'UNKNOWN',
+    nextBestCare: 'WAIT',
+    commercialReadiness: 'WAIT',
+    memoryDecision: 'DO_NOT_WRITE',
+    handoffRequired: false,
+    reply: channel === 'instagram'
+      ? 'Hiện tại mình chưa thể xử lý câu này ngay. Bạn thử lại sau một chút nhé.'
+      : 'Hiện tại mình chưa thể xử lý câu hỏi này ngay. Bạn thử lại sau một chút nhé.',
+  };
+}
+
 function isPrivateIpv4(hostname: string): boolean {
   const parts = hostname.split('.').map(Number);
   if (parts.length !== 4 || parts.some((part) => !Number.isInteger(part) || part < 0 || part > 255)) return false;
@@ -446,20 +501,168 @@ export function assertSafeCompatibleEndpoint(raw: string, allowedHosts: string[]
   return url.toString();
 }
 
-async function postJson(url: string, init: RequestInit): Promise<unknown> {
-  let response: Response;
-  try {
-    response = await fetch(url, { ...init, redirect: 'manual' });
-  } catch (error) {
-    if (error instanceof TypeError) throw new Error('CARE_MODEL_FETCH_TYPE_ERROR');
-    throw error;
+function safeProviderCode(value: unknown): string | undefined {
+  if (typeof value === 'number' && Number.isInteger(value) && value >= 0) return String(value);
+  if (typeof value !== 'string') return undefined;
+  const normalized = value.trim().toUpperCase();
+  if (!/^[A-Z0-9_:-]{1,80}$/.test(normalized)) return undefined;
+  return normalized;
+}
+
+function classifyProviderFailure(httpStatus: number, providerCode?: string): {
+  classification: CareModelFailureClassification;
+  retryable: boolean;
+} {
+  const code = providerCode || '';
+  if (httpStatus === 401) return { classification: 'AUTH', retryable: false };
+  if (httpStatus === 403) return { classification: 'PERMISSION', retryable: false };
+  if (httpStatus === 404) return { classification: 'NOT_FOUND', retryable: false };
+  if (httpStatus === 400 || httpStatus === 409 || httpStatus === 422) return { classification: 'BAD_REQUEST', retryable: false };
+  if (httpStatus === 429) {
+    if (/QUOTA_EXCEEDED/.test(code)) return { classification: 'QUOTA', retryable: false };
+    if (/RATE_LIMIT_EXCEEDED|TOO_MANY_REQUESTS/.test(code)) return { classification: 'RATE_LIMIT', retryable: true };
+    return { classification: 'RATE_OR_QUOTA', retryable: true };
   }
-  if (!response.ok) throw new Error(`CARE_MODEL_HTTP_${response.status}`);
+  if (httpStatus === 408 || httpStatus === 504) return { classification: 'TIMEOUT', retryable: true };
+  if ([500, 502, 503].includes(httpStatus)) return { classification: 'TRANSIENT', retryable: true };
+  return { classification: 'UNKNOWN', retryable: false };
+}
+
+function boundedTimeoutMs(value?: number): number {
+  const timeoutMs = value ?? CARE_MODEL_DEFAULT_TIMEOUT_MS;
+  if (!Number.isInteger(timeoutMs) || timeoutMs < 2000 || timeoutMs > 30000) {
+    throw new Error('CARE_MODEL_TIMEOUT_INVALID');
+  }
+  return timeoutMs;
+}
+
+function safeRetryAfterMs(response: Response): number | undefined {
+  const raw = response.headers.get('retry-after');
+  if (!raw || !/^\d+(?:\.\d+)?$/.test(raw.trim())) return undefined;
+  const milliseconds = Number(raw) * 1000;
+  if (!Number.isFinite(milliseconds) || milliseconds < 0) return undefined;
+  return Math.min(CARE_MODEL_RETRY_MAX_MS, Math.round(milliseconds));
+}
+
+function retryDelayMs(attempt: number, retryAfterMs?: number): number {
+  const exponential = CARE_MODEL_RETRY_BASE_MS * 2 ** Math.max(0, attempt - 1);
+  const jitter = Math.floor(Math.random() * 101);
+  return Math.min(CARE_MODEL_RETRY_MAX_MS, Math.max(retryAfterMs || 0, exponential + jitter));
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function providerHttpFailure(
+  request: CareModelRequest,
+  response: Response,
+  attempt: number,
+): Promise<CareModelUpstreamError> {
+  let providerCode: string | undefined;
   try {
-    return await response.json();
+    const payload = (await response.json()) as {
+      error?: { status?: unknown; code?: unknown; type?: unknown };
+    };
+    providerCode = safeProviderCode(payload.error?.status)
+      || safeProviderCode(payload.error?.code)
+      || safeProviderCode(payload.error?.type);
   } catch {
-    throw new Error('CARE_MODEL_RESPONSE_PARSE_ERROR');
+    // Never log raw provider error bodies. Only allowlisted machine codes are retained.
   }
+  const classified = classifyProviderFailure(response.status, providerCode);
+  return new CareModelUpstreamError(`CARE_MODEL_HTTP_${response.status}`, {
+    provider: request.config.provider,
+    model: request.config.model,
+    httpStatus: response.status,
+    providerCode: providerCode ?? null,
+    classification: classified.classification,
+    retryable: classified.retryable,
+    attempts: attempt,
+    safeErrorCode: `CARE_MODEL_HTTP_${response.status}`,
+  });
+}
+
+function transportFailure(request: CareModelRequest, classification: 'TRANSPORT' | 'TIMEOUT', attempt: number): CareModelUpstreamError {
+  const safeErrorCode = classification === 'TIMEOUT' ? 'CARE_MODEL_TIMEOUT' : 'CARE_MODEL_FETCH_TYPE_ERROR';
+  return new CareModelUpstreamError(safeErrorCode, {
+    provider: request.config.provider,
+    model: request.config.model,
+    httpStatus: null,
+    providerCode: null,
+    classification,
+    retryable: true,
+    attempts: attempt,
+    safeErrorCode,
+  });
+}
+
+export function safeCareModelFailureDiagnostic(
+  error: unknown,
+  config: Pick<CareModelConfig, 'provider' | 'model'>,
+): CareModelFailureDiagnostic {
+  if (error instanceof CareModelUpstreamError) return error.diagnostic;
+  const safeErrorCode = error instanceof Error && /^CARE_MODEL_[A-Z0-9_]+$/.test(error.message)
+    ? error.message.slice(0, 120)
+    : 'CARE_MODEL_UNKNOWN_ERROR';
+  let classification: CareModelFailureClassification = 'UNKNOWN';
+  if (/CREDENTIAL|PROVIDER_UNSUPPORTED|BASE_URL|TIMEOUT_INVALID|NAME_REQUIRED/.test(safeErrorCode)) classification = 'CONFIG';
+  else if (/INVALID_JSON|INVALID_DECISION|MISSING_|RESPONSE_PARSE/.test(safeErrorCode)) classification = 'INVALID_RESPONSE';
+  return {
+    provider: config.provider,
+    model: config.model,
+    httpStatus: null,
+    providerCode: null,
+    classification,
+    retryable: false,
+    attempts: 1,
+    safeErrorCode,
+  };
+}
+
+async function fetchAttempt(request: CareModelRequest, url: string, init: RequestInit, attempt: number): Promise<Response> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), boundedTimeoutMs(request.config.timeoutMs));
+  try {
+    return await fetch(url, { ...init, redirect: 'manual', signal: controller.signal });
+  } catch (error) {
+    const name = typeof error === 'object' && error && 'name' in error ? String((error as { name?: unknown }).name) : '';
+    if (name === 'AbortError') throw transportFailure(request, 'TIMEOUT', attempt);
+    if (error instanceof TypeError) throw transportFailure(request, 'TRANSPORT', attempt);
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function postJson(request: CareModelRequest, url: string, init: RequestInit): Promise<unknown> {
+  for (let attempt = 1; attempt <= CARE_MODEL_MAX_ATTEMPTS; attempt += 1) {
+    let response: Response;
+    try {
+      response = await fetchAttempt(request, url, init, attempt);
+    } catch (error) {
+      const diagnostic = safeCareModelFailureDiagnostic(error, request.config);
+      if (!diagnostic.retryable || attempt >= CARE_MODEL_MAX_ATTEMPTS) throw error;
+      console.warn('CARE_MODEL_PROVIDER_RETRY', diagnostic);
+      await sleep(retryDelayMs(attempt));
+      continue;
+    }
+
+    if (!response.ok) {
+      const failure = await providerHttpFailure(request, response, attempt);
+      if (!failure.diagnostic.retryable || attempt >= CARE_MODEL_MAX_ATTEMPTS) throw failure;
+      console.warn('CARE_MODEL_PROVIDER_RETRY', failure.diagnostic);
+      await sleep(retryDelayMs(attempt, safeRetryAfterMs(response)));
+      continue;
+    }
+
+    try {
+      return await response.json();
+    } catch {
+      throw new Error('CARE_MODEL_RESPONSE_PARSE_ERROR');
+    }
+  }
+  throw new Error('CARE_MODEL_RETRY_BUDGET_EXHAUSTED');
 }
 
 function requireText(value: unknown, code: string): string {
@@ -468,7 +671,7 @@ function requireText(value: unknown, code: string): string {
 }
 
 async function runOpenAIResponses(request: CareModelRequest): Promise<CareModelDecision> {
-  const payload = (await postJson('https://api.openai.com/v1/responses', {
+  const payload = (await postJson(request, 'https://api.openai.com/v1/responses', {
     method: 'POST',
     headers: { Authorization: `Bearer ${request.config.apiKey}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -498,7 +701,7 @@ async function runOpenAICompatible(request: CareModelRequest): Promise<CareModel
     requireText(request.config.baseUrl, 'CARE_MODEL_BASE_URL_REQUIRED'),
     request.config.allowedCompatibleHosts,
   );
-  const payload = (await postJson(endpoint, {
+  const payload = (await postJson(request, endpoint, {
     method: 'POST',
     headers: { Authorization: `Bearer ${request.config.apiKey}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -526,7 +729,7 @@ async function runOpenAICompatible(request: CareModelRequest): Promise<CareModel
 }
 
 async function runAnthropic(request: CareModelRequest): Promise<CareModelDecision> {
-  const payload = (await postJson('https://api.anthropic.com/v1/messages', {
+  const payload = (await postJson(request, 'https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
       'x-api-key': request.config.apiKey,
@@ -548,7 +751,7 @@ async function runGemini(request: CareModelRequest): Promise<CareModelDecision> 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(request.config.model)}:generateContent`;
   const apiKey = request.config.apiKey.trim();
   if (!apiKey || /[\u0000-\u001F\u007F]/.test(apiKey)) throw new Error('CARE_MODEL_CREDENTIAL_INVALID_FORMAT');
-  const payload = (await postJson(url, {
+  const payload = (await postJson(request, url, {
     method: 'POST',
     headers: { 'x-goog-api-key': apiKey, 'Content-Type': 'application/json' },
     body: JSON.stringify({
