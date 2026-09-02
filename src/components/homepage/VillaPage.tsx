@@ -171,7 +171,7 @@ export default function VillaPage() {
         </section>
 
         {/* 03 — wisdom / from recognition to reality */}
-        <section className="relative overflow-hidden px-6 pb-28 pt-16 md:px-10 md:pb-48 md:pt-24" style={{ background: "linear-gradient(to bottom, var(--essence-white-2026), color-mix(in srgb, var(--essence-white-2026) 60%, var(--essence-ivory-2026)))" }}>
+        <section className="relative z-20 overflow-hidden px-6 pb-28 pt-16 [clip-path:polygon(0_0,100%_0,100%_calc(100%_-_48px),68%_calc(100%_-_48px),68%_100%,0_100%)] md:px-10 md:pb-48 md:pt-24 md:[clip-path:polygon(0_0,100%_0,100%_calc(100%_-_96px),68%_calc(100%_-_96px),68%_100%,0_100%)]" style={{ background: "linear-gradient(to bottom, var(--essence-white-2026), color-mix(in srgb, var(--essence-white-2026) 60%, var(--essence-ivory-2026)))" }}>
 
           <div className="relative mx-auto max-w-7xl">
             <div className="mx-auto max-w-[980px] text-center">
@@ -205,11 +205,11 @@ export default function VillaPage() {
         </section>
 
         {/* 04 — Brand Signature / emotional peak */}
-        <section className="relative flex min-h-[78svh] items-center overflow-hidden bg-e26-black px-6 py-28 text-e26-ivory md:min-h-[92svh] md:px-10 md:py-40">
-          <Image src="/images/home/kiettac-villa-toi.webp" alt="" fill sizes="100vw" className="object-cover object-[58%_center] md:object-center" aria-hidden="true" />
+        <section className="relative -mt-28 flex min-h-[calc(78svh+112px)] items-center overflow-hidden bg-e26-black px-6 pb-28 pt-56 text-e26-ivory md:-mt-44 md:min-h-[calc(92svh+176px)] md:px-10 md:pb-40 md:pt-[336px]">
+          <Image src="/images/home/home-scene-04-selected.webp" alt="" fill sizes="100vw" className="object-cover object-[72%_center] md:object-center" aria-hidden="true" />
           <div
             className="absolute inset-0"
-            style={{ background: "linear-gradient(to bottom, color-mix(in srgb, var(--essence-black-2026) 80%, transparent) 0%, color-mix(in srgb, var(--essence-black-2026) 54%, transparent) 25%, color-mix(in srgb, var(--essence-black-2026) 42%, transparent) 58%, color-mix(in srgb, var(--essence-black-2026) 68%, transparent) 100%)" }}
+            style={{ background: "linear-gradient(90deg, color-mix(in srgb, var(--essence-black-2026) 48%, transparent) 0%, color-mix(in srgb, var(--essence-black-2026) 32%, transparent) 48%, color-mix(in srgb, var(--essence-black-2026) 12%, transparent) 76%, color-mix(in srgb, var(--essence-black-2026) 24%, transparent) 100%), linear-gradient(to bottom, color-mix(in srgb, var(--essence-black-2026) 24%, transparent) 0%, color-mix(in srgb, var(--essence-black-2026) 38%, transparent) 48%, color-mix(in srgb, var(--essence-black-2026) 44%, transparent) 64%, color-mix(in srgb, var(--essence-black-2026) 58%, transparent) 100%)" }}
             aria-hidden="true"
           />
           <div className="e26-reveal relative z-10 mx-auto w-full max-w-7xl">
