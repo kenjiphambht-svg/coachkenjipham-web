@@ -221,7 +221,7 @@ function includesAny(text: string, patterns: RegExp[]): boolean {
 }
 
 function userBoundaryText(turns: string[]): string {
-  return normalizedBoundaryText(turns.join(' '));
+  return normalizedBoundaryText(turns[turns.length - 1] ?? '');
 }
 
 function isStopContact(text: string): boolean {
