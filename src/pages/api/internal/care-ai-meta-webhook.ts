@@ -11,7 +11,12 @@ import {
   verifyMetaPayloadSignature,
   verifyMetaWebhook,
 } from '../../../lib/care-ai/meta-channel';
-import { runCareModel, type CareModelProvider } from '../../../lib/care-ai/provider-neutral-model';
+import {
+  careModelFailureDecision,
+  runCareModel,
+  safeCareModelFailureDiagnostic,
+  type CareModelProvider,
+} from '../../../lib/care-ai/provider-neutral-model';
 
 export const config = { api: { bodyParser: false } };
 
@@ -244,6 +249,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       blockedByAbuseGuard: boolean;
       blockedByRateLimit: boolean;
       modelCalled: boolean;
+      modelFallbackUsed?: boolean;
       outboundSent: boolean;
       messageId?: string;
       replyPreview?: string;
@@ -352,11 +358,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
       }
 
-      const decision = await runCareModel({
-        config: modelConfig(),
-        channel: message.channel,
-        turns: [message.text],
-      });
+      const currentModelConfig = modelConfig();
+      let modelFallbackUsed = false;
+      let decision;
+      try {
+        decision = await runCareModel({
+          config: currentModelConfig,
+          channel: message.channel,
+          turns: [message.text],
+        });
+      } catch (error) {
+        const diagnostic = safeCareModelFailureDiagnostic(error, currentModelConfig);
+        console.error('CARE_MODEL_PROVIDER_FAILURE', diagnostic);
+        decision = careModelFailureDecision(message.channel);
+        modelFallbackUsed = true;
+      }
 
       if (!channelOutboundEnabled(message.channel)) {
         outputs.push({
@@ -368,6 +384,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           blockedByAbuseGuard: false,
           blockedByRateLimit: false,
           modelCalled: true,
+          modelFallbackUsed,
           outboundSent: false,
           replyPreview: decision.reply,
         });
@@ -388,6 +405,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         blockedByAbuseGuard: false,
         blockedByRateLimit: false,
         modelCalled: true,
+        modelFallbackUsed,
         outboundSent: true,
         messageId: sent.messageId,
       });
@@ -405,8 +423,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       guardMode: customerEnabled ? 'META_CUSTOMER_TEXT_REPLY_GUARDED' : 'META_CONTROLLED_LIVE_TEXT_REPLY_ONLY',
       processed: outputs,
       note: customerEnabled
-        ? `Messenger${igEnabled ? ' + Instagram' : ''} customer replies are inbound-triggered only and protected by persistent idempotency, echo/self filtering, text bounds, per-sender rate limits and channel-scoped global model-call budgets. Proactive follow-up remains closed.`
-        : `Messenger${igEnabled ? ' + Instagram' : ''} text-only, inbound-triggered replies only. Persistent idempotency and echo/self filtering are required; proactive follow-up remains closed.`,
+        ? `Messenger${igEnabled ? ' + Instagram' : ''} customer replies are inbound-triggered only and protected by persistent idempotency, echo/self filtering, text bounds, per-sender limits, channel-scoped logical-request budgets and a bounded one-retry provider policy. Proactive follow-up remains closed.`
+        : `Messenger${igEnabled ? ' + Instagram' : ''} text-only, inbound-triggered replies only. Persistent idempotency, echo/self filtering and graceful provider degradation are required; proactive follow-up remains closed.`,
     });
   } catch (error) {
     return res.status(502).json({ error: safeError(error) });
