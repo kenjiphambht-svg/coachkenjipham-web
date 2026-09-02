@@ -206,11 +206,19 @@ export default function VillaPage() {
 
         {/* 04 — Brand Signature / emotional peak */}
         <section className="relative flex min-h-[78svh] items-center overflow-hidden bg-e26-black px-6 py-28 text-e26-ivory md:min-h-[92svh] md:px-10 md:py-40">
-          <Image src="/images/home/kiettac-villa-toi.webp" alt="" fill sizes="100vw" className="object-cover object-center opacity-55" aria-hidden="true" />
-          <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-black-2026)_76%,transparent)]" aria-hidden="true" />
+          <Image src="/images/home/kiettac-villa-toi.webp" alt="" fill sizes="100vw" className="object-cover object-[58%_center] md:object-center" aria-hidden="true" />
+          <div
+            className="absolute inset-0"
+            style={{ background: "linear-gradient(to bottom, color-mix(in srgb, var(--essence-black-2026) 80%, transparent) 0%, color-mix(in srgb, var(--essence-black-2026) 54%, transparent) 25%, color-mix(in srgb, var(--essence-black-2026) 42%, transparent) 58%, color-mix(in srgb, var(--essence-black-2026) 68%, transparent) 100%)" }}
+            aria-hidden="true"
+          />
           <div className="e26-reveal relative z-10 mx-auto w-full max-w-7xl">
             <p className="mx-auto max-w-[1180px] text-center font-serif text-[52px] font-normal leading-[0.98] tracking-[-0.026em] md:text-[88px] lg:text-[110px]">
-              Câu chuyện cuộc sống của bạn là một kiệt tác.
+              Câu chuyện cuộc sống của bạn là một{" "}
+              <span className="relative inline-block whitespace-nowrap">
+                kiệt tác
+                <i aria-hidden="true" className="gold-brush-line e26-reveal" />
+              </span>.
             </p>
           </div>
         </section>
