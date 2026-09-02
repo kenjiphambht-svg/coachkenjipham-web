@@ -120,30 +120,8 @@ export default function VillaPage() {
         </section>
 
         {/* 02 — freedom / identity recognition */}
-        <section className="relative isolate overflow-hidden bg-e26-white px-6 py-32 md:px-10 md:py-56">
-          {/* Founder-selected HomeS2.png — Drive 1uH6qEYM1_4vGI_c322KhJT5bU1jHU-b0. */}
-          <div
-            className="pointer-events-none absolute inset-x-0 top-0 -z-20 h-[82%] overflow-hidden md:h-[80%]"
-            style={{ WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 68%, rgba(0,0,0,0.82) 80%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 68%, rgba(0,0,0,0.82) 80%, transparent 100%)" }}
-            aria-hidden="true"
-          >
-            <Image
-              src="/images/home/home-scene-02-plaster-threshold.webp"
-              alt=""
-              fill
-              sizes="100vw"
-              className="object-cover object-[68%_center] opacity-[0.72] md:object-center md:opacity-[0.78]"
-            />
-          </div>
-          <div
-            className="pointer-events-none absolute inset-0 -z-10"
-            style={{
-              background:
-                "radial-gradient(ellipse 64% 44% at 50% 28%, color-mix(in srgb, var(--essence-white-2026) 92%, transparent) 0%, color-mix(in srgb, var(--essence-white-2026) 78%, transparent) 42%, transparent 76%), linear-gradient(to bottom, color-mix(in srgb, var(--essence-ivory-2026) 18%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 52%, transparent) 54%, var(--essence-ivory-2026) 78%, var(--essence-white-2026) 100%)",
-            }}
-            aria-hidden="true"
-          />
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#E0C068]/18 to-transparent" aria-hidden="true" />
+        <section className="relative z-10 bg-e26-white px-6 pb-16 pt-28 before:pointer-events-none before:absolute before:inset-x-4 before:-top-6 before:h-6 before:bg-e26-white md:px-10 md:pb-24 md:pt-44 md:before:inset-x-10 md:before:-top-12 md:before:h-12">
+          {/* A flat editorial plane lifts over the final empty edge of Scene 01. */}
 
           <div className="relative mx-auto max-w-6xl text-center">
             <span className="e26-reveal mx-auto mb-14 block h-px w-16 bg-[#E0C068] md:mb-20" aria-hidden="true" />
@@ -193,13 +171,11 @@ export default function VillaPage() {
         </section>
 
         {/* 03 — wisdom / from recognition to reality */}
-        <section className="relative overflow-hidden bg-[color-mix(in_srgb,var(--essence-white-2026)_42%,var(--essence-ivory-2026))] px-6 py-28 md:px-10 md:py-48">
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-[42%] bg-[radial-gradient(ellipse_at_top,color-mix(in_srgb,var(--essence-white-2026)_86%,transparent),transparent_70%)]" aria-hidden="true" />
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#E0C068]/28 to-transparent" aria-hidden="true" />
+        <section className="relative overflow-hidden px-6 pb-28 pt-16 md:px-10 md:pb-48 md:pt-24" style={{ background: "linear-gradient(to bottom, var(--essence-white-2026), color-mix(in srgb, var(--essence-white-2026) 60%, var(--essence-ivory-2026)))" }}>
 
           <div className="relative mx-auto max-w-7xl">
             <div className="mx-auto max-w-[980px] text-center">
-              <h2 className="e26-reveal mx-auto max-w-[900px] font-serif text-[48px] font-medium leading-[0.98] tracking-[-0.026em] md:text-[80px] lg:text-[94px]">
+              <h2 className="e26-reveal mx-auto max-w-[900px] font-serif text-[42px] font-medium leading-[1.08] tracking-[-0.02em] md:text-[64px] lg:text-[72px]">
                 Trí tuệ không phải<br className="hidden md:block" /> biết nhiều hơn.
               </h2>
 
@@ -210,18 +186,17 @@ export default function VillaPage() {
               </div>
             </div>
 
-            <div className="e26-reveal relative mt-20 border-y border-[color-mix(in_srgb,var(--essence-black-2026)_12%,transparent)] py-10 md:mt-28 md:min-h-[260px] md:py-14">
-              <span className="absolute left-0 top-0 h-px w-[24%] bg-[#E0C068]/76" aria-hidden="true" />
-              <p aria-label="NHẬN RA → LỰA CHỌN → HIỆN THỰC" className="relative grid gap-8 md:grid-cols-[0.86fr_1fr_1.14fr] md:gap-8">
-                <span data-home-flow-anchor aria-hidden="true" className="whitespace-nowrap font-serif text-[36px] font-medium leading-none tracking-[-0.02em] md:text-[52px]">NHẬN RA</span>
-                <span data-home-flow-anchor aria-hidden="true" className="whitespace-nowrap font-serif text-[42px] font-medium leading-none tracking-[-0.022em] md:translate-y-10 md:text-[58px]">LỰA CHỌN</span>
-                <span data-home-flow-anchor aria-hidden="true" className="whitespace-nowrap font-serif text-[48px] font-medium leading-none tracking-[-0.026em] md:translate-y-20 md:text-[64px]">HIỆN THỰC</span>
+            <div className="e26-reveal relative mt-20 py-6 md:mt-28 lg:min-h-[260px] lg:py-14">
+              <p aria-label="NHẬN RA → LỰA CHỌN → HIỆN THỰC" className="relative grid gap-10 text-center lg:grid-cols-[0.86fr_1fr_1.14fr] lg:gap-8 lg:text-left">
+                <span data-home-flow-anchor aria-hidden="true" className="whitespace-nowrap font-serif text-[36px] font-medium leading-none tracking-[-0.02em] lg:text-[52px]">NHẬN RA</span>
+                <span data-home-flow-anchor aria-hidden="true" className="whitespace-nowrap font-serif text-[42px] font-medium leading-none tracking-[-0.022em] lg:translate-y-10 lg:text-[58px]">LỰA CHỌN</span>
+                <span data-home-flow-anchor aria-hidden="true" className="whitespace-nowrap font-serif text-[48px] font-medium leading-none tracking-[-0.026em] lg:translate-y-20 lg:text-[64px]">HIỆN THỰC</span>
               </p>
-              <span data-flow-arrow className="pointer-events-none absolute left-[28.5%] top-[31%] hidden items-center md:flex" aria-hidden="true">
+              <span data-flow-arrow className="pointer-events-none absolute left-[28.5%] top-[31%] hidden items-center lg:flex" aria-hidden="true">
                 <span className="h-px w-14 bg-[#E0C068]" />
                 <span className="-ml-1 h-2.5 w-2.5 rotate-45 border-r border-t border-[#E0C068]" />
               </span>
-              <span data-flow-arrow className="pointer-events-none absolute left-[63%] top-[49%] hidden items-center md:flex" aria-hidden="true">
+              <span data-flow-arrow className="pointer-events-none absolute left-[63%] top-[49%] hidden items-center lg:flex" aria-hidden="true">
                 <span className="h-px w-14 bg-[#E0C068]" />
                 <span className="-ml-1 h-2.5 w-2.5 rotate-45 border-r border-t border-[#E0C068]" />
               </span>
