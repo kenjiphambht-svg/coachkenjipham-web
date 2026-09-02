@@ -149,9 +149,9 @@ export default function VillaPage() {
               <p className="mx-auto mt-10 max-w-[1080px] font-serif md:mt-14">
                 <span className="sr-only">Bản sắc không phải một chiếc nhãn.</span>
                 <span aria-hidden="true" className="block">
-                  <span className="block text-[42px] font-normal italic leading-[1.02] tracking-[-0.02em] md:text-[68px]">Bản sắc</span>
-                  <span className="-my-1 block text-[52px] font-medium uppercase leading-[0.9] tracking-[-0.04em] md:-my-2 md:text-[96px] lg:text-[108px]">không phải</span>
-                  <span className="block text-[42px] font-normal italic leading-[1.02] tracking-[-0.02em] md:text-[66px]">một chiếc nhãn.</span>
+                  <span className="block text-[78px] font-medium uppercase leading-[0.84] tracking-[-0.045em] md:text-[142px] lg:text-[160px]">Bản sắc</span>
+                  <span className="mt-3 block text-[32px] font-normal italic leading-[1.06] tracking-[-0.016em] md:mt-4 md:text-[48px]">không phải</span>
+                  <span className="mt-1 block text-[42px] font-normal leading-[1.02] tracking-[-0.02em] md:text-[66px] lg:text-[72px]">một chiếc nhãn.</span>
                 </span>
               </p>
             </div>
