@@ -171,7 +171,7 @@ export default function VillaPage() {
         </section>
 
         {/* 03 — wisdom / from recognition to reality */}
-        <section className="relative z-20 overflow-hidden px-6 pb-28 pt-16 [mask-image:linear-gradient(to_bottom,black_calc(100%_-_16px),transparent)] md:px-10 md:pb-48 md:pt-24 md:[mask-image:linear-gradient(to_bottom,black_calc(100%_-_24px),transparent)]" style={{ background: "linear-gradient(to bottom, var(--essence-white-2026), color-mix(in srgb, var(--essence-white-2026) 60%, var(--essence-ivory-2026)))" }}>
+        <section className="relative z-20 px-6 pb-28 pt-16 before:pointer-events-none before:absolute before:inset-x-4 before:-bottom-6 before:h-6 before:bg-[color-mix(in_srgb,var(--essence-white-2026)_60%,var(--essence-ivory-2026))] md:px-10 md:pb-48 md:pt-24 md:before:inset-x-10 md:before:-bottom-12 md:before:h-12" style={{ background: "linear-gradient(to bottom, var(--essence-white-2026), color-mix(in srgb, var(--essence-white-2026) 60%, var(--essence-ivory-2026)))" }}>
 
           <div className="relative mx-auto max-w-7xl">
             <div className="mx-auto max-w-[980px] text-center">
