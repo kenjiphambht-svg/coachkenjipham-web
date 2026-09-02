@@ -153,6 +153,7 @@ function modelConfig() {
     apiKey: process.env.CARE_MODEL_API_KEY || '',
     baseUrl: process.env.CARE_MODEL_BASE_URL || undefined,
     allowedCompatibleHosts: allowedCompatibleHosts(),
+    timeoutMs: boundedIntegerEnv('CARE_MODEL_TIMEOUT_MS', 12000, 2000, 30000),
   };
 }
 
@@ -359,6 +360,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       const currentModelConfig = modelConfig();
+      const modelStartedAtMs = Date.now();
       let modelFallbackUsed = false;
       let decision;
       try {
@@ -367,9 +369,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           channel: message.channel,
           turns: [message.text],
         });
+        console.info('CARE_MODEL_PROVIDER_SUCCESS', {
+          provider: currentModelConfig.provider,
+          model: currentModelConfig.model,
+          elapsedMs: Date.now() - modelStartedAtMs,
+          timeoutMs: currentModelConfig.timeoutMs,
+        });
       } catch (error) {
         const diagnostic = safeCareModelFailureDiagnostic(error, currentModelConfig);
-        console.error('CARE_MODEL_PROVIDER_FAILURE', diagnostic);
+        console.error('CARE_MODEL_PROVIDER_FAILURE', {
+          ...diagnostic,
+          elapsedMs: Date.now() - modelStartedAtMs,
+          timeoutMs: currentModelConfig.timeoutMs,
+        });
         decision = careModelFailureDecision(message.channel);
         modelFallbackUsed = true;
       }
