@@ -1,4 +1,4 @@
-export type CareChannel = 'website';
+export type CareChannel = 'website' | 'facebook_messenger' | 'instagram';
 
 export type CareFamily =
   | 'UNKNOWN'

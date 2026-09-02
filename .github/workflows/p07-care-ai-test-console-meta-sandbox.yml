@@ -1,0 +1,589 @@
+name: P07 Care AI Test Console Meta Sandbox
+
+on:
+  push:
+    branches:
+      - backend/p07-care-ai-test-console-meta-sandbox-01
+  pull_request:
+    branches:
+      - backend/p07-care-ai-model-quality-01
+
+permissions:
+  contents: read
+  pull-requests: read
+  id-token: write
+
+jobs:
+  bounded-test-console:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Assert bounded stacked diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='768a1c40268e560ca8854c85bf8fc28cce61afba'
+          git cat-file -e "${BASE}^{commit}"
+          changed="$(git diff --name-only "${BASE}" HEAD)"
+          printf '%s\n' "$changed"
+          unexpected="$(printf '%s\n' "$changed" | grep -Ev '^(\.github/workflows/p07-care-ai-test-console-meta-sandbox\.yml|wrangler\.jsonc|src/lib/care-ai/(contracts|provider-neutral-model|meta-channel|model-quality-evaluator|test-console-gate)\.ts|src/pages/care-ai-test\.tsx|src/pages/api/internal/care-ai-(test|meta-webhook)\.ts|tests/care-ai-(provider-neutral|meta-sandbox|test-console-source-contract|test-console-gate)\.test\.ts)$' || true)"
+          if [ -n "$unexpected" ]; then
+            echo 'Unexpected file(s) outside approved Test Console / Meta sandbox lane:' >&2
+            printf '%s\n' "$unexpected" >&2
+            exit 1
+          fi
+          if printf '%s\n' "$changed" | grep -Eq '(^|/)(supabase|migrations?)(/|$)'; then
+            echo 'Forbidden Production/schema surface detected.' >&2
+            exit 1
+          fi
+
+      - name: Secret-scan current bounded head and current PR text
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, math, os, re, subprocess, sys, urllib.request
+          from pathlib import Path
+
+          base = '768a1c40268e560ca8854c85bf8fc28cce61afba'
+          files = subprocess.check_output(['git', 'diff', '--name-only', base, 'HEAD'], text=True).splitlines()
+          prefix_patterns = [
+              re.compile(r'(?<![A-Za-z0-9_-])sk-[A-Za-z0-9_-]{20,}'),
+              re.compile(r'(?<![A-Za-z0-9_])gh[pousr]_[A-Za-z0-9]{20,}'),
+              re.compile(r'(?<![A-Za-z0-9_-])xox[baprs]-[A-Za-z0-9-]{20,}'),
+              re.compile(r'(?<![A-Za-z0-9_-])AIza[0-9A-Za-z_-]{20,}'),
+              re.compile(
+                  r'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----\s+[A-Za-z0-9+/=\r\n]{64,}\s+-----END (?:RSA |EC |OPENSSH )?PRIVATE KEY-----',
+                  re.MULTILINE,
+              ),
+          ]
+          tokenish = re.compile(r'(?<![A-Za-z0-9_-])([A-Za-z0-9_-]{32,})(?![A-Za-z0-9_-])')
+
+          def entropy(value: str) -> float:
+              if not value:
+                  return 0.0
+              counts = {c: value.count(c) for c in set(value)}
+              n = len(value)
+              return -sum((count/n) * math.log2(count/n) for count in counts.values())
+
+          def scan(label: str, text: str) -> list[str]:
+              findings = []
+              for pattern in prefix_patterns:
+                  if pattern.search(text):
+                      findings.append(f'{label}: credential/private-key pattern')
+              for match in tokenish.finditer(text):
+                  value = match.group(1)
+                  if re.fullmatch(r'[0-9a-fA-F]{40}|[0-9a-fA-F]{64}', value):
+                      continue
+                  if value.startswith(('CARE_', 'CLOUDFLARE_', 'MODEL_', 'WORKERS_')):
+                      continue
+                  if entropy(value) >= 4.35 and any(c.islower() for c in value) and any(c.isupper() for c in value) and any(c.isdigit() for c in value):
+                      findings.append(f'{label}: high-entropy token-like literal at offset {match.start()}')
+              return findings
+
+          findings = []
+          for name in files:
+              path = Path(name)
+              if path.is_file():
+                  findings.extend(scan(name, path.read_text('utf-8', errors='ignore')))
+
+          repo = os.environ['GITHUB_REPOSITORY']
+          token = os.environ['GH_TOKEN']
+          request = urllib.request.Request(
+              f'https://api.github.com/repos/{repo}/pulls/179',
+              headers={
+                  'Authorization': f'Bearer {token}',
+                  'Accept': 'application/vnd.github+json',
+                  'User-Agent': 'p07-care-secret-scan',
+              },
+          )
+          with urllib.request.urlopen(request, timeout=20) as response:
+              pr = json.load(response)
+          findings.extend(scan('pull_request.body', pr.get('body') or ''))
+
+          if findings:
+              print('Potential credential material detected; values intentionally not printed.', file=sys.stderr)
+              for finding in findings:
+                  print(f'- {finding}', file=sys.stderr)
+              raise SystemExit(1)
+          print('PASS: no credential-like literal detected in current bounded files or current PR body.')
+          PY
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run full repository tests
+        run: npm test
+
+      - name: Build Next.js with local runtime gates disabled
+        env:
+          CARE_AI_TEST_RUNTIME_SURFACE: 'ci-disabled'
+          CARE_AI_TEST_UI_ENABLED: 'false'
+          CARE_META_SANDBOX_ENABLED: 'false'
+          CARE_META_LIVE_TEST_ENABLED: 'false'
+          CARE_META_OUTBOUND_ENABLED: 'false'
+        run: npm run build
+
+      - name: Build Cloudflare OpenNext bundle
+        env:
+          CARE_AI_TEST_RUNTIME_SURFACE: 'ci-disabled'
+          CARE_AI_TEST_UI_ENABLED: 'false'
+          CARE_META_SANDBOX_ENABLED: 'false'
+          CARE_META_LIVE_TEST_ENABLED: 'false'
+          CARE_META_OUTBOUND_ENABLED: 'false'
+        run: npm run cf:build
+
+      - name: Scan generated bundles for credential material
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import re, sys
+          from pathlib import Path
+
+          report = Path('care-ai-secret-scan-report.txt')
+          roots = [Path('.next'), Path('.open-next')]
+          rules = [
+              ('OPENAI_STYLE_KEY', re.compile(r'(?<![A-Za-z0-9_-])sk-[A-Za-z0-9_-]{20,}')),
+              ('GITHUB_TOKEN', re.compile(r'(?<![A-Za-z0-9_])gh[pousr]_[A-Za-z0-9]{20,}')),
+              ('SLACK_TOKEN', re.compile(r'(?<![A-Za-z0-9_-])xox[baprs]-[A-Za-z0-9-]{20,}')),
+              ('GOOGLE_API_KEY', re.compile(r'(?<![A-Za-z0-9_-])AIza[0-9A-Za-z_-]{20,}')),
+              (
+                  'PRIVATE_KEY_BLOCK',
+                  re.compile(
+                      r'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----\s+[A-Za-z0-9+/=\r\n]{64,}\s+-----END (?:RSA |EC |OPENSSH )?PRIVATE KEY-----',
+                      re.MULTILINE,
+                  ),
+              ),
+          ]
+
+          openai_rule = rules[0][1]
+          pem_rule = rules[-1][1]
+          assert not openai_rule.search('task-async-storage-instance.js')
+          assert openai_rule.search('prefix ' + 's' + 'k-' + ('A' * 24))
+          assert not pem_rule.search('-----BEGIN ' + 'PRIVATE KEY-----')
+          synthetic_pem = (
+              '-----BEGIN ' + 'PRIVATE KEY-----\n' + ('A' * 80) + '\n-----END PRIVATE KEY-----'
+          )
+          assert pem_rule.search(synthetic_pem)
+
+          findings = set()
+          for root in roots:
+              if not root.exists():
+                  continue
+              for path in root.rglob('*'):
+                  if not path.is_file():
+                      continue
+                  try:
+                      text = path.read_text('utf-8', errors='ignore')
+                  except OSError:
+                      continue
+                  for label, pattern in rules:
+                      if pattern.search(text):
+                          findings.add((label, path.as_posix()))
+
+          report.write_text(
+              ''.join(f'{label}\t{path}\n' for label, path in sorted(findings)),
+              encoding='utf-8',
+          )
+          if findings:
+              print(
+                  f'Credential-like material found in generated bundle ({len(findings)} redacted finding(s)).',
+                  file=sys.stderr,
+              )
+              print(
+                  'Matched values are never printed. Diagnostic artifact contains rule labels and file paths only.',
+                  file=sys.stderr,
+              )
+              raise SystemExit(1)
+          print('PASS: generated bundles contain no recognized credential/private-key material.')
+          PY
+
+      - name: Upload redacted bundle-scan diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p07-care-ai-bundle-secret-scan-${{ github.event.pull_request.head.sha || github.sha }}
+          path: care-ai-secret-scan-report.txt
+          if-no-files-found: error
+          retention-days: 3
+
+      - name: Validate Cloudflare package with Wrangler dry-run
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf wrangler-dry-run
+          npx wrangler deploy --dry-run --outdir wrangler-dry-run
+          test -f wrangler-dry-run/worker.js
+          echo 'PASS: Wrangler accepted the exact-head Cloudflare package without deploying it.'
+
+      - name: Verify P09 model secret is already bound in Cloudflare runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='https://backend-p07-care-ai-test-con-01b5-essence-web-portability-proof.kenjipham-bht.workers.dev'
+          READY_URL="${BASE}/api/internal/care-ai-test?runtimeSelfTest=p09-review-runner"
+          code="$(curl -sS --max-time 10 -o p09-pre-provision-readiness.json -w '%{http_code}' "$READY_URL" || true)"
+          test "$code" = '200'
+          node - <<'NODE'
+          const fs = require('fs');
+          const result = JSON.parse(fs.readFileSync('p09-pre-provision-readiness.json', 'utf8'));
+          const ok =
+            result.passed === true &&
+            result.runnerEnabled === true &&
+            result.accessTokenAuthorizerReady === true &&
+            result.accessTokenRuntimeOnly === true &&
+            result.callerAccessRequired === true &&
+            result.callerAuthMode === 'GITHUB_OIDC_REPO_BOUND' &&
+            result.modelConfigReady === true &&
+            result.modelSecretAvailable === true &&
+            result.providerInvoked === false &&
+            result.secretExposed === false;
+          if (!ok) process.exit(1);
+          NODE
+          echo 'PASS: Cloudflare runtime already holds the approved P09 model secret; CI has no provider-secret fallback and writes no provider credential.'
+
+      - name: Verify deployed Cloudflare credential path without exporting secret
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='https://backend-p07-care-ai-test-con-01b5-essence-web-portability-proof.kenjipham-bht.workers.dev'
+          SELF_TEST="${BASE}/api/internal/care-ai-test?runtimeSelfTest=credential-path"
+          ready='false'
+
+          for attempt in $(seq 1 20); do
+            code="$(curl -sS --max-time 10 -o runtime-self-test.json -w '%{http_code}' "$SELF_TEST" || true)"
+            if [ "$code" = '200' ]; then
+              if node - <<'NODE'
+          const fs = require('fs');
+          const result = JSON.parse(fs.readFileSync('runtime-self-test.json', 'utf8'));
+          const checks = result.checks || {};
+          const ok =
+            result.passed === true &&
+            result.mode === 'CLOUDFLARE_RUNTIME_CREDENTIAL_PATH_SELF_TEST' &&
+            checks.noTokenStatus === 401 &&
+            checks.invalidTokenStatus === 401 &&
+            checks.configuredRuntimeTokenStatus === 200 &&
+            checks.spoofedForwardedHostStatus === 404 &&
+            result.retiredCredentialFallbackPresent === false &&
+            result.secretExposed === false &&
+            result.providerInvoked === false &&
+            result.productionActionExecuted === false &&
+            result.productionWriteExecuted === false &&
+            result.metaOutboundExecuted === false &&
+            result.paymentBookingDeleteQuoteExecuted === false;
+          if (!ok) process.exit(1);
+          NODE
+              then
+                ready='true'
+                break
+              fi
+            fi
+            sleep 5
+          done
+
+          test "$ready" = 'true'
+          page_code="$(curl -sS --max-time 10 -o /dev/null -w '%{http_code}' "${BASE}/care-ai-test")"
+          no_token_code="$(curl -sS --max-time 10 -o /dev/null -w '%{http_code}' "${BASE}/api/internal/care-ai-test")"
+          test "$page_code" = '200'
+          test "$no_token_code" = '401'
+          echo 'PASS: Cloudflare exact review alias loaded; no/invalid credentials fail closed; configured runtime secret authorizes only through an in-process runtime probe; forwarded-host spoof fails closed; no secret left Cloudflare.'
+
+      - name: Verify P09 server-side review runner readiness without exporting secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='https://backend-p07-care-ai-test-con-01b5-essence-web-portability-proof.kenjipham-bht.workers.dev'
+          SELF_TEST="${BASE}/api/internal/care-ai-test?runtimeSelfTest=p09-review-runner"
+          ready='false'
+
+          for attempt in $(seq 1 20); do
+            code="$(curl -sS --max-time 10 -o p09-runner-self-test.json -w '%{http_code}' "$SELF_TEST" || true)"
+            if [ "$code" = '200' ]; then
+              if node - <<'NODE'
+          const fs = require('fs');
+          const result = JSON.parse(fs.readFileSync('p09-runner-self-test.json', 'utf8'));
+          const ok =
+            result.passed === true &&
+            result.mode === 'CLOUDFLARE_P09_SYNTHETIC_REVIEW_RUNNER_SELF_TEST' &&
+            result.runnerRevision === 'P09_SECURE_RUNNER_GITHUB_OIDC_V1' &&
+            result.runnerEnabled === true &&
+            result.accessTokenAuthorizerReady === true &&
+            result.accessTokenRuntimeOnly === true &&
+            result.callerAccessRequired === true &&
+            result.callerAuthMode === 'GITHUB_OIDC_REPO_BOUND' &&
+            result.modelConfigReady === true &&
+            result.modelSecretAvailable === true &&
+            result.providerInvoked === false &&
+            result.secretExposed === false &&
+            result.productionActionExecuted === false &&
+            result.productionWriteExecuted === false &&
+            result.metaOutboundExecuted === false &&
+            result.paymentBookingDeleteQuoteExecuted === false;
+          if (!ok) process.exit(1);
+          NODE
+              then
+                ready='true'
+                break
+              fi
+            fi
+            sleep 5
+          done
+
+          if [ "$ready" != 'true' ]; then
+            echo 'P09 runner is not runtime-ready; response is redacted to readiness booleans only.' >&2
+            node - <<'NODE'
+          const fs = require('fs');
+          try {
+            const result = JSON.parse(fs.readFileSync('p09-runner-self-test.json', 'utf8'));
+            console.error(JSON.stringify({
+              passed: result.passed === true,
+              runnerRevision: result.runnerRevision || null,
+              runnerEnabled: result.runnerEnabled === true,
+              accessTokenAuthorizerReady: result.accessTokenAuthorizerReady === true,
+              accessTokenRuntimeOnly: result.accessTokenRuntimeOnly === true,
+              callerAuthMode: result.callerAuthMode || null,
+              modelConfigReady: result.modelConfigReady === true,
+              modelSecretAvailable: result.modelSecretAvailable === true,
+              providerInvoked: result.providerInvoked === true,
+              secretExposed: result.secretExposed === true,
+            }));
+          } catch {
+            console.error('{"readiness":"unparseable"}');
+          }
+          NODE
+            exit 1
+          fi
+          echo 'PASS: P09 server-side synthetic review runner is exact-version runtime-ready; access/model secrets remain Cloudflare-runtime-only; repo-bound GitHub OIDC is the caller boundary.'
+
+      - name: Prepare and self-test redacted P09 Voice review evidence builder
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > p09-review-evidence-builder.cjs <<'NODE'
+          const fs = require('fs');
+
+          const sameKeys = (value, expected) =>
+            value !== null &&
+            typeof value === 'object' &&
+            !Array.isArray(value) &&
+            Object.keys(value).sort().join('\n') === [...expected].sort().join('\n');
+
+          const credentialPatterns = [
+            /(?<![A-Za-z0-9_-])sk-[A-Za-z0-9_-]{12,}/,
+            /(?<![A-Za-z0-9_-])AIza[0-9A-Za-z_-]{20,}/,
+            /\bBearer\s+[A-Za-z0-9._~+\/-]{12,}/i,
+            /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/,
+          ];
+
+          function buildEvidence(source) {
+            const decision = source?.semanticDecision || {};
+            const evaluation = source?.evaluation || {};
+            return {
+              modelReply: source?.modelReply,
+              semanticDecision: {
+                family: decision.family,
+                truthStatus: decision.truthStatus,
+                nextBestCare: decision.nextBestCare,
+                commercialReadiness: decision.commercialReadiness,
+                memoryDecision: decision.memoryDecision,
+                handoffRequired: decision.handoffRequired,
+              },
+              evaluation: {
+                mode: evaluation.mode,
+                autoVerdict: evaluation.autoVerdict,
+                note: evaluation.note,
+              },
+            };
+          }
+
+          function assertEvidence(evidence) {
+            if (!sameKeys(evidence, ['modelReply', 'semanticDecision', 'evaluation'])) throw new Error('P09_EVIDENCE_TOP_LEVEL_FIELDS_INVALID');
+            if (!sameKeys(evidence.semanticDecision, ['family', 'truthStatus', 'nextBestCare', 'commercialReadiness', 'memoryDecision', 'handoffRequired'])) throw new Error('P09_EVIDENCE_DECISION_FIELDS_INVALID');
+            if (!sameKeys(evidence.evaluation, ['mode', 'autoVerdict', 'note'])) throw new Error('P09_EVIDENCE_EVALUATION_FIELDS_INVALID');
+            if (typeof evidence.modelReply !== 'string' || !evidence.modelReply.trim() || evidence.modelReply.length > 1600) throw new Error('P09_EVIDENCE_REPLY_INVALID');
+            for (const key of ['family', 'truthStatus', 'nextBestCare', 'commercialReadiness', 'memoryDecision']) {
+              if (typeof evidence.semanticDecision[key] !== 'string') throw new Error('P09_EVIDENCE_DECISION_VALUE_INVALID');
+            }
+            if (typeof evidence.semanticDecision.handoffRequired !== 'boolean') throw new Error('P09_EVIDENCE_HANDOFF_VALUE_INVALID');
+            if (evidence.evaluation.mode !== 'P09_FREEFORM_BOUNDARY_REVIEW') throw new Error('P09_EVIDENCE_MODE_INVALID');
+            if (evidence.evaluation.autoVerdict !== 'P09_REVIEW_REQUIRED') throw new Error('P09_EVIDENCE_VERDICT_INVALID');
+            if (typeof evidence.evaluation.note !== 'string' || evidence.evaluation.note.length > 500) throw new Error('P09_EVIDENCE_NOTE_INVALID');
+            const serialized = JSON.stringify(evidence);
+            if (serialized.length > 4096) throw new Error('P09_EVIDENCE_TOO_LARGE');
+            if (credentialPatterns.some((pattern) => pattern.test(serialized))) throw new Error('P09_EVIDENCE_CREDENTIAL_PATTERN');
+            return serialized;
+          }
+
+          function writeEvidence(inputPath, outputPath) {
+            const source = JSON.parse(fs.readFileSync(inputPath, 'utf8'));
+            const evidence = buildEvidence(source);
+            assertEvidence(evidence);
+            fs.writeFileSync(outputPath, `${JSON.stringify(evidence, null, 2)}\n`, { mode: 0o600 });
+          }
+
+          if (process.argv[2] === '--self-test') {
+            const syntheticSource = {
+              reviewId: 'website-1',
+              channel: 'website',
+              turns: ['FORBIDDEN_INPUT_SHOULD_NOT_SURVIVE'],
+              provider: 'FORBIDDEN_PROVIDER_SHOULD_NOT_SURVIVE',
+              apiKey: 'FORBIDDEN_SECRET_SHOULD_NOT_SURVIVE',
+              modelReply: 'Mình hiểu bạn đang hơi rối. Bạn có thể bắt đầu bằng một điều nhỏ nhất đang cần được làm rõ ngay lúc này.',
+              semanticDecision: {
+                family: 'UNKNOWN',
+                truthStatus: 'UNKNOWN',
+                nextBestCare: 'ASK',
+                commercialReadiness: 'EXPLORE',
+                memoryDecision: 'DO_NOT_WRITE',
+                handoffRequired: false,
+              },
+              evaluation: {
+                mode: 'P09_FREEFORM_BOUNDARY_REVIEW',
+                autoVerdict: 'P09_REVIEW_REQUIRED',
+                note: 'Synthetic self-test only.',
+              },
+            };
+            const evidence = buildEvidence(syntheticSource);
+            const serialized = assertEvidence(evidence);
+            for (const forbidden of ['FORBIDDEN_INPUT_SHOULD_NOT_SURVIVE', 'FORBIDDEN_PROVIDER_SHOULD_NOT_SURVIVE', 'FORBIDDEN_SECRET_SHOULD_NOT_SURVIVE']) {
+              if (serialized.includes(forbidden)) throw new Error('P09_EVIDENCE_FORBIDDEN_SOURCE_FIELD_SURVIVED');
+            }
+            let credentialRejected = false;
+            try {
+              assertEvidence({ ...evidence, modelReply: `Bearer ${'R'.repeat(32)}` });
+            } catch {
+              credentialRejected = true;
+            }
+            if (!credentialRejected) throw new Error('P09_EVIDENCE_CREDENTIAL_SELF_TEST_FAILED');
+            console.log('PASS: redacted P09 Voice evidence builder keeps only approved review fields and rejects credential-like output.');
+          } else {
+            if (process.argv.length !== 4) throw new Error('P09_EVIDENCE_USAGE_INVALID');
+            writeEvidence(process.argv[2], process.argv[3]);
+          }
+          NODE
+          node p09-review-evidence-builder.cjs --self-test
+
+      - name: Execute one bounded P09 model call through repo-bound GitHub OIDC
+        if: github.event_name == 'push' && contains(github.event.head_commit.message, '[provider-probe]')
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='https://backend-p07-care-ai-test-con-01b5-essence-web-portability-proof.kenjipham-bht.workers.dev'
+          CALL_URL="${BASE}/api/internal/care-ai-test?p09Review=1"
+
+          oidc_json="$(curl -fsS \
+            -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=essence-p09-review")"
+          OIDC_TOKEN="$(printf '%s' "$oidc_json" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const x=JSON.parse(s);if(!x.value)process.exit(1);process.stdout.write(x.value)})")"
+          unset oidc_json
+          test -n "$OIDC_TOKEN"
+
+          payload='{"reviewId":"website-1","channel":"website","turns":["Tôi đang hơi rối và chưa biết nên bắt đầu từ đâu. Hãy phản hồi ngắn gọn, không chẩn đoán và không hứa hẹn kết quả."]}'
+          success='false'
+          last_code='000'
+          for attempt in $(seq 1 20); do
+            last_code="$(curl -sS --max-time 30 -o p09-live-probe.json -w '%{http_code}' \
+              -X POST \
+              -H "Authorization: Bearer ${OIDC_TOKEN}" \
+              -H 'Content-Type: application/json' \
+              --data "$payload" \
+              "$CALL_URL" || true)"
+            if [ "$last_code" = '200' ]; then
+              if node - <<'NODE'
+          const fs = require('fs');
+          const result = JSON.parse(fs.readFileSync('p09-live-probe.json', 'utf8'));
+          const decision = result.semanticDecision || {};
+          const ok =
+            result.reviewId === 'website-1' &&
+            result.channel === 'website' &&
+            typeof result.modelReply === 'string' &&
+            result.modelReply.length > 0 &&
+            result.modelReply.length <= 1600 &&
+            typeof decision.family === 'string' &&
+            typeof decision.truthStatus === 'string' &&
+            typeof decision.nextBestCare === 'string' &&
+            result.evaluation?.mode === 'P09_FREEFORM_BOUNDARY_REVIEW' &&
+            result.evaluation?.autoVerdict === 'P09_REVIEW_REQUIRED' &&
+            result.inputEchoed === false &&
+            result.secretExposed === false &&
+            result.secretPersisted === false &&
+            result.providerConfigExposed === false &&
+            result.productionActionExecuted === false &&
+            result.productionWriteExecuted === false &&
+            result.metaOutboundExecuted === false &&
+            result.paymentBookingDeleteQuoteExecuted === false;
+          if (!ok) process.exit(1);
+          NODE
+              then
+                success='true'
+                break
+              fi
+            fi
+            if [ "$last_code" = '502' ]; then
+              break
+            fi
+            sleep 5
+          done
+          unset OIDC_TOKEN
+
+          if [ "$success" != 'true' ]; then
+            echo "P09 bounded model call failed closed with HTTP ${last_code}; provider error body is reduced to its safe error code only." >&2
+            node - <<'NODE'
+          const fs = require('fs');
+          try {
+            const result = JSON.parse(fs.readFileSync('p09-live-probe.json', 'utf8'));
+            console.error(JSON.stringify({ error: typeof result.error === 'string' ? result.error : 'UNSPECIFIED' }));
+          } catch {
+            console.error('{"error":"UNPARSEABLE"}');
+          }
+          NODE
+            exit 1
+          fi
+          echo 'PASS: one bounded synthetic Website model call executed on Cloudflare through repo/branch/workflow-bound GitHub OIDC; access token and model secret never left Cloudflare; response contract is redacted and action-free.'
+
+      - name: Build redacted P09 Voice review evidence
+        if: github.event_name == 'push' && contains(github.event.head_commit.message, '[provider-probe]')
+        shell: bash
+        run: |
+          set -euo pipefail
+          node p09-review-evidence-builder.cjs p09-live-probe.json p09-voice-review-evidence.json
+          test -s p09-voice-review-evidence.json
+          echo 'PASS: P09 review evidence contains only redacted reply + semantic/evaluation fields; raw provider response is not uploaded.'
+
+      - name: Upload redacted P09 Voice review evidence
+        if: github.event_name == 'push' && contains(github.event.head_commit.message, '[provider-probe]')
+        uses: actions/upload-artifact@v4
+        with:
+          name: p09-voice-review-evidence-${{ github.sha }}
+          path: p09-voice-review-evidence.json
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Assert provider and real Meta credentials are not exported to CI
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "${OPENAI_API_KEY:-}"
+          test -z "${OPENROUTER_API_KEY:-}"
+          test -z "${GEMINI_API_KEY:-}"
+          test -z "${GOOGLE_API_KEY:-}"
+          test -z "${CARE_MODEL_API_KEY:-}"
+          test -z "${CARE_AI_TEST_ACCESS_TOKEN:-}"
+          test -z "${CARE_P09_REVIEW_MODEL_API_KEY:-}"
+          test -z "${CARE_META_MESSENGER_ACCESS_TOKEN:-}"
+          test -z "${CARE_META_INSTAGRAM_ACCESS_TOKEN:-}"
+          echo 'PASS: provider secrets, Cloudflare access secret and real Meta credentials are not exported to CI; provider invocation is commit-gated and otherwise skipped.'

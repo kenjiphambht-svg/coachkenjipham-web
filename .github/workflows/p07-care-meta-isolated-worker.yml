@@ -1,0 +1,100 @@
+name: P07 Care Meta Isolated Worker
+
+on:
+  push:
+    branches:
+      - backend/p07-care-ai-test-console-meta-sandbox-01
+
+permissions:
+  contents: read
+
+jobs:
+  isolated-worker-config:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Assert isolated Worker contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs = require('fs');
+          const raw = fs.readFileSync('wrangler.care-meta.jsonc', 'utf8')
+            .replace(/^\s*\/\/.*$/gm, '');
+          const cfg = JSON.parse(raw);
+          if (cfg.name !== 'p07-care-ai-meta-test') throw new Error('CARE_WORKER_NAME_INVALID');
+          if (cfg.workers_dev !== true || cfg.preview_urls !== true) throw new Error('CARE_WORKERS_DEV_REQUIRED');
+          if (cfg.routes || cfg.route) throw new Error('CARE_CUSTOM_ROUTE_FORBIDDEN');
+          if (cfg.keep_vars !== true) throw new Error('CARE_KEEP_VARS_REQUIRED');
+          if (cfg.vars?.CARE_META_SANDBOX_ENABLED !== 'true') throw new Error('CARE_SANDBOX_MUST_BE_ON');
+          for (const key of [
+            'CARE_META_LIVE_TEST_ENABLED',
+            'CARE_META_OUTBOUND_ENABLED',
+            'CARE_META_TEST_SENDER_IDS',
+            'CARE_META_CUSTOMER_MODE_ENABLED',
+            'CARE_META_INSTAGRAM_ENABLED',
+            'CARE_META_INSTAGRAM_OUTBOUND_ENABLED',
+            'CARE_META_INSTAGRAM_SEND_ENDPOINT',
+          ]) {
+            if (Object.prototype.hasOwnProperty.call(cfg.vars || {}, key)) throw new Error(`CARE_MUTABLE_RUNTIME_VAR_MUST_NOT_BE_IN_SOURCE_${key}`);
+          }
+          if (cfg.vars?.CARE_META_MESSENGER_SEND_ENDPOINT !== 'https://graph.facebook.com/v26.0/102524972270814/messages') throw new Error('CARE_META_ENDPOINT_INVALID');
+          const d1 = cfg.d1_databases?.find((item) => item.binding === 'CARE_META_IDEMPOTENCY_DB');
+          if (!d1) throw new Error('CARE_D1_BINDING_MISSING');
+          if (d1.database_name !== 'care-meta-idempotency') throw new Error('CARE_D1_NAME_INVALID');
+          if (d1.database_id !== '09d17d94-2325-4afb-9500-ddac0c31e275') throw new Error('CARE_D1_ID_INVALID');
+          const self = cfg.services?.find((item) => item.binding === 'WORKER_SELF_REFERENCE');
+          if (!self || self.service !== 'p07-care-ai-meta-test') throw new Error('CARE_SELF_REFERENCE_INVALID');
+          const migration = fs.readFileSync('cloudflare/d1/20260901_p07_care_meta_customer_guard.sql', 'utf8');
+          if (!/CREATE TABLE IF NOT EXISTS care_meta_customer_rate_limits/i.test(migration)) throw new Error('CARE_CUSTOMER_GUARD_MIGRATION_MISSING');
+          if (!/scope_key TEXT PRIMARY KEY/i.test(migration)) throw new Error('CARE_CUSTOMER_GUARD_HASH_KEY_MISSING');
+          console.log('PASS: isolated Care Worker has no production route, preserves dashboard runtime gates, and ships Messenger + Instagram guarded customer support contracts.');
+          NODE
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run Care Meta tests
+        run: npx vitest run tests/care-ai-meta-sandbox.test.ts tests/care-ai-meta-customer-guard.test.ts tests/care-ai-provider-neutral.test.ts
+
+      - name: Build Cloudflare OpenNext bundle
+        env:
+          CARE_META_SANDBOX_ENABLED: 'true'
+          CARE_META_LIVE_TEST_ENABLED: 'false'
+          CARE_META_OUTBOUND_ENABLED: 'false'
+          CARE_META_CUSTOMER_MODE_ENABLED: 'false'
+          CARE_META_INSTAGRAM_ENABLED: 'false'
+          CARE_META_INSTAGRAM_OUTBOUND_ENABLED: 'false'
+        run: npm run cf:build
+
+      - name: Wrangler dry-run isolated Worker only
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf wrangler-care-dry-run
+          npx wrangler deploy --dry-run --config wrangler.care-meta.jsonc --outdir wrangler-care-dry-run
+          test -f wrangler-care-dry-run/worker.js
+          echo 'PASS: isolated Care Worker package accepted by Wrangler without deployment.'
+
+      - name: Assert no provider or Meta secrets in CI
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "${GEMINI_API_KEY:-}"
+          test -z "${CARE_MODEL_API_KEY:-}"
+          test -z "${CARE_META_VERIFY_TOKEN:-}"
+          test -z "${CARE_META_APP_SECRET:-}"
+          test -z "${CARE_META_MESSENGER_ACCESS_TOKEN:-}"
+          test -z "${CARE_META_INSTAGRAM_ACCESS_TOKEN:-}"
+          echo 'PASS: isolated config QA exports no live provider/Meta credentials.'
