@@ -14,15 +14,11 @@ type CareContextRpcError = {
   code?: string;
 };
 
-type CareContextRpcExecutor = {
+export type CareContextRpcClient = {
   rpc(
     functionName: string,
     args: Record<string, unknown>,
   ): PromiseLike<{ data: unknown; error: CareContextRpcError | null }>;
-};
-
-export type CareContextRpcClient = {
-  schema(schemaName: string): CareContextRpcExecutor;
 };
 
 function rpcErrorCode(prefix: string, error: CareContextRpcError): Error {
@@ -73,7 +69,7 @@ export class SupabaseCareConversationContextRepository implements CareConversati
       throw new Error('CARE_CONTEXT_MAX_MESSAGES_INVALID');
     }
 
-    const { data, error } = await this.client.schema('care').rpc('care_context_load_recent', {
+    const { data, error } = await this.client.rpc('care_context_load_recent', {
       p_channel: args.identity.channel,
       p_account_scope_hash: args.identity.accountScopeHash,
       p_external_subject_hash: args.identity.externalSubjectHash,
@@ -122,7 +118,7 @@ export class SupabaseCareConversationContextRepository implements CareConversati
     }
     if (!args.contextPolicyVersion.trim()) throw new Error('CARE_CONTEXT_POLICY_VERSION_REQUIRED');
 
-    const { data, error } = await this.client.schema('care').rpc('care_context_append_turn', {
+    const { data, error } = await this.client.rpc('care_context_append_turn', {
       p_channel: args.identity.channel,
       p_account_scope_hash: args.identity.accountScopeHash,
       p_external_subject_hash: args.identity.externalSubjectHash,
