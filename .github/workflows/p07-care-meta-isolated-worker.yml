@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - backend/p07-care-ai-test-console-meta-sandbox-01
+      - backend/p07-care-multiturn-context-01
 
 permissions:
   contents: read
@@ -40,6 +41,15 @@ jobs:
             'CARE_META_INSTAGRAM_ENABLED',
             'CARE_META_INSTAGRAM_OUTBOUND_ENABLED',
             'CARE_META_INSTAGRAM_SEND_ENDPOINT',
+            'CARE_META_CONVERSATION_CONTEXT_ENABLED',
+            'CARE_META_CONVERSATION_CONTEXT_TTL_SECONDS',
+            'CARE_META_CONVERSATION_IDLE_SECONDS',
+            'CARE_CONTEXT_RECENT_MESSAGES_MAX',
+            'CARE_CONTEXT_RECENT_CHARS_MAX',
+            'CARE_META_CONVERSATION_CONTEXT_POLICY_VERSION',
+            'CARE_META_CONTEXT_IDENTITY_HMAC_SECRET',
+            'SUPABASE_URL',
+            'SUPABASE_SERVICE_ROLE_KEY',
           ]) {
             if (Object.prototype.hasOwnProperty.call(cfg.vars || {}, key)) throw new Error(`CARE_MUTABLE_RUNTIME_VAR_MUST_NOT_BE_IN_SOURCE_${key}`);
           }
@@ -53,7 +63,7 @@ jobs:
           const migration = fs.readFileSync('cloudflare/d1/20260901_p07_care_meta_customer_guard.sql', 'utf8');
           if (!/CREATE TABLE IF NOT EXISTS care_meta_customer_rate_limits/i.test(migration)) throw new Error('CARE_CUSTOMER_GUARD_MIGRATION_MISSING');
           if (!/scope_key TEXT PRIMARY KEY/i.test(migration)) throw new Error('CARE_CUSTOMER_GUARD_HASH_KEY_MISSING');
-          console.log('PASS: isolated Care Worker has no production route, preserves dashboard runtime gates, and ships Messenger + Instagram guarded customer support contracts.');
+          console.log('PASS: isolated Care Worker preserves source/runtime isolation; Phase-A conversation context remains runtime-gated.');
           NODE
 
       - name: Setup Node
@@ -66,7 +76,13 @@ jobs:
         run: npm ci
 
       - name: Run Care Meta tests
-        run: npx vitest run tests/care-ai-meta-sandbox.test.ts tests/care-ai-meta-customer-guard.test.ts tests/care-ai-provider-neutral.test.ts
+        run: >
+          npx vitest run
+          tests/care-ai-meta-sandbox.test.ts
+          tests/care-ai-meta-customer-guard.test.ts
+          tests/care-ai-provider-neutral.test.ts
+          tests/care-ai-conversation-context.test.ts
+          tests/care-ai-conversation-context-sql.test.ts
 
       - name: Build Cloudflare OpenNext bundle
         env:
@@ -76,6 +92,7 @@ jobs:
           CARE_META_CUSTOMER_MODE_ENABLED: 'false'
           CARE_META_INSTAGRAM_ENABLED: 'false'
           CARE_META_INSTAGRAM_OUTBOUND_ENABLED: 'false'
+          CARE_META_CONVERSATION_CONTEXT_ENABLED: 'false'
         run: npm run cf:build
 
       - name: Wrangler dry-run isolated Worker only
@@ -87,7 +104,7 @@ jobs:
           test -f wrangler-care-dry-run/worker.js
           echo 'PASS: isolated Care Worker package accepted by Wrangler without deployment.'
 
-      - name: Assert no provider or Meta secrets in CI
+      - name: Assert no provider, Meta or customer-context secrets in CI
         shell: bash
         run: |
           set -euo pipefail
@@ -97,4 +114,6 @@ jobs:
           test -z "${CARE_META_APP_SECRET:-}"
           test -z "${CARE_META_MESSENGER_ACCESS_TOKEN:-}"
           test -z "${CARE_META_INSTAGRAM_ACCESS_TOKEN:-}"
-          echo 'PASS: isolated config QA exports no live provider/Meta credentials.'
+          test -z "${CARE_META_CONTEXT_IDENTITY_HMAC_SECRET:-}"
+          test -z "${SUPABASE_SERVICE_ROLE_KEY:-}"
+          echo 'PASS: isolated config QA exports no live provider/Meta/customer-context credentials.'
