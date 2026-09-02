@@ -221,6 +221,12 @@ function includesAny(text: string, patterns: RegExp[]): boolean {
 }
 
 function userBoundaryText(turns: string[]): string {
+  const roleTagged = turns.some((turn) => /^\s*(?:Customer|Care):/i.test(turn));
+  if (!roleTagged) return normalizedBoundaryText(turns.join(' '));
+
+  for (let index = turns.length - 1; index >= 0; index -= 1) {
+    if (/^\s*Customer:/i.test(turns[index])) return normalizedBoundaryText(turns[index]);
+  }
   return normalizedBoundaryText(turns[turns.length - 1] ?? '');
 }
 
