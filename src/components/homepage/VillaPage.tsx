@@ -120,7 +120,29 @@ export default function VillaPage() {
         </section>
 
         {/* 02 — freedom / identity recognition */}
-        <section className="relative overflow-hidden bg-e26-white px-6 py-32 md:px-10 md:py-56">
+        <section className="relative isolate overflow-hidden bg-e26-white px-6 py-32 md:px-10 md:py-56">
+          {/* Founder-selected HomeS2.png — Drive 1uH6qEYM1_4vGI_c322KhJT5bU1jHU-b0. */}
+          <div
+            className="pointer-events-none absolute inset-x-0 top-0 -z-20 h-[82%] overflow-hidden md:h-[80%]"
+            style={{ WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 68%, rgba(0,0,0,0.82) 80%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 68%, rgba(0,0,0,0.82) 80%, transparent 100%)" }}
+            aria-hidden="true"
+          >
+            <Image
+              src="/images/home/home-scene-02-plaster-threshold.webp"
+              alt=""
+              fill
+              sizes="100vw"
+              className="object-cover object-[68%_center] opacity-[0.72] md:object-center md:opacity-[0.78]"
+            />
+          </div>
+          <div
+            className="pointer-events-none absolute inset-0 -z-10"
+            style={{
+              background:
+                "radial-gradient(ellipse 64% 44% at 50% 28%, color-mix(in srgb, var(--essence-white-2026) 92%, transparent) 0%, color-mix(in srgb, var(--essence-white-2026) 78%, transparent) 42%, transparent 76%), linear-gradient(to bottom, color-mix(in srgb, var(--essence-ivory-2026) 18%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 52%, transparent) 54%, var(--essence-ivory-2026) 78%, var(--essence-white-2026) 100%)",
+            }}
+            aria-hidden="true"
+          />
           <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#E0C068]/18 to-transparent" aria-hidden="true" />
 
           <div className="relative mx-auto max-w-6xl text-center">
@@ -172,16 +194,16 @@ export default function VillaPage() {
 
         {/* 03 — wisdom / from recognition to reality */}
         <section className="relative overflow-hidden bg-[color-mix(in_srgb,var(--essence-white-2026)_42%,var(--essence-ivory-2026))] px-6 py-28 md:px-10 md:py-48">
-          <div className="pointer-events-none absolute -left-[16%] top-[7%] h-[42%] w-[48%] rounded-full bg-[color-mix(in_srgb,var(--essence-white-2026)_72%,transparent)] blur-3xl" aria-hidden="true" />
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-[42%] bg-[radial-gradient(ellipse_at_top,color-mix(in_srgb,var(--essence-white-2026)_86%,transparent),transparent_70%)]" aria-hidden="true" />
           <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#E0C068]/28 to-transparent" aria-hidden="true" />
 
           <div className="relative mx-auto max-w-7xl">
-            <div className="grid gap-12 md:grid-cols-12 md:gap-8">
-              <h2 className="e26-reveal max-w-[900px] font-serif text-[48px] font-medium leading-[0.98] tracking-[-0.026em] md:col-span-8 md:text-[80px] lg:text-[94px]">
+            <div className="mx-auto max-w-[980px] text-center">
+              <h2 className="e26-reveal mx-auto max-w-[900px] font-serif text-[48px] font-medium leading-[0.98] tracking-[-0.026em] md:text-[80px] lg:text-[94px]">
                 Trí tuệ không phải<br className="hidden md:block" /> biết nhiều hơn.
               </h2>
 
-              <div data-body-copy className="e26-reveal max-w-[420px] font-sans text-[17px] leading-[1.76] md:col-span-4 md:mt-20 md:text-[18px]">
+              <div data-body-copy className="e26-reveal mx-auto mt-12 max-w-[560px] font-sans text-[17px] leading-[1.76] md:mt-16 md:text-[18px]">
                 <p>Có lúc bạn đã hiểu đủ.</p>
                 <p className="mt-4">Điều còn thiếu là nhìn đủ rõ để biết:</p>
                 <p className="mt-7 font-medium">điều gì đáng giữ,<br />điều gì đã hết vai trò,<br />và điều gì bạn thực sự chọn.</p>
