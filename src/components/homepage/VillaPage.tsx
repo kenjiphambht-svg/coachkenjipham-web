@@ -252,7 +252,7 @@ export default function VillaPage() {
                   <h2 className="font-serif text-[42px] font-medium leading-[0.98] tracking-[-0.022em] md:text-[58px]">ESSENCE<br />Advisory</h2>
                   <p data-body-copy className="mt-8 max-w-[430px] font-sans text-[17px] leading-[1.72] md:text-[18px]">Khi điều cần được làm rõ nằm trong công việc hoặc doanh nghiệp.</p>
                   <p className="mt-5 max-w-[390px] font-serif text-[27px] leading-[1.18] tracking-[-0.012em] md:text-[32px]">Một điều cần được đưa vào vận hành.</p>
-                  <span className={`${softLink} mt-9 w-fit`}>ESSENCE Advisory <span className="text-[#E0C068]" aria-hidden="true">→</span></span>
+                  <span className={`${softLink} mt-9 w-fit`}>ESSENCE Advisory <span className={`text-[#E0C068] transition-transform group-hover:translate-x-1 ${thresholdMotion}`} aria-hidden="true">→</span></span>
                 </div>
               </Link>
             </div>
