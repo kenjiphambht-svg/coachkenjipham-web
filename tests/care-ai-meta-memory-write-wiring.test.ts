@@ -22,15 +22,19 @@ describe('P07 Meta durable-memory runtime wiring contract', () => {
     expect(handlerSource).not.toContain('sourceRef: message.externalMessageId');
   });
 
-  it('logs only safe write metadata and degrades memory failures without undoing outbound', () => {
-    const writeReadyStart = handlerSource.indexOf("console.info('CARE_MEMORY_WRITE_READY'");
+  it('logs only safe write metadata and degrades a write-attempt failure after outbound', () => {
+    const sendIndex = handlerSource.indexOf('const sent = await sendMetaText({');
+    const writeIndex = handlerSource.indexOf('const writeResult = await applyDeterministicCareMemoryWrite({');
+    const writeReadyStart = handlerSource.indexOf("console.info('CARE_MEMORY_WRITE_READY'", writeIndex);
     const writeReadyEnd = handlerSource.indexOf('});', writeReadyStart);
+    const postWriteDegradedIndex = handlerSource.indexOf(
+      "console.error('CARE_MEMORY_WRITE_DEGRADED', { safeErrorCode: memoryWriteReason });",
+      writeIndex,
+    );
     const writeLog = handlerSource.slice(writeReadyStart, writeReadyEnd + 3);
     expect(writeLog).not.toContain('message.text');
     expect(writeLog).not.toContain('currentCustomerText');
-    expect(handlerSource).toContain("console.error('CARE_MEMORY_WRITE_DEGRADED', { safeErrorCode: memoryWriteReason });");
-    expect(handlerSource.indexOf("console.error('CARE_MEMORY_WRITE_DEGRADED'")).toBeGreaterThan(
-      handlerSource.indexOf('const sent = await sendMetaText({'),
-    );
+    expect(postWriteDegradedIndex).toBeGreaterThan(writeIndex);
+    expect(postWriteDegradedIndex).toBeGreaterThan(sendIndex);
   });
 });
