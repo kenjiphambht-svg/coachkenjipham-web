@@ -246,24 +246,35 @@ export default function VillaPage() {
         </section>
 
         {/* 05 — creation / two contexts */}
-        <section className="relative overflow-hidden px-6 py-28 md:px-10 md:py-48">
-          <Image src="/images/home/two-paths-light-room.webp" alt="" fill sizes="100vw" className="object-cover object-center opacity-[0.12]" aria-hidden="true" />
-          <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_93%,transparent)]" aria-hidden="true" />
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#E0C068]/28 to-transparent" aria-hidden="true" />
+        <section className="relative z-10 bg-e26-ivory px-6 pb-32 pt-24 before:pointer-events-none before:absolute before:inset-x-4 before:-top-6 before:h-6 before:bg-e26-ivory md:px-10 md:pb-48 md:pt-32 md:before:inset-x-10 md:before:-top-12 md:before:h-12">
+          <Image src="/images/home/two-paths-light-room.webp" alt="" fill sizes="100vw" className="object-cover object-center opacity-[0.16]" aria-hidden="true" />
+          <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_84%,transparent)]" aria-hidden="true" />
+          <div className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(100deg, color-mix(in srgb, var(--essence-white-2026) 72%, transparent), transparent 46%, color-mix(in srgb, var(--essence-cream-2026) 28%, transparent))" }} aria-hidden="true" />
 
           <div className="relative z-10 mx-auto max-w-7xl">
-            <div className="relative md:grid md:min-h-[690px] md:grid-cols-12 md:gap-8">
+            <div className="e26-reveal mb-20 flex items-center justify-center gap-4 md:mb-24" aria-hidden="true">
+              <span className="h-px w-10 bg-[#E0C068]/70 md:w-24" />
+              <span className="font-sans text-[11px] font-medium uppercase tracking-[0.24em] text-e26-gold md:text-[12px]">One world</span>
+              <span className="flex items-center"><i className="h-1.5 w-1.5 rotate-45 border border-[#E0C068]/80" /><i className="h-px w-4 bg-[#E0C068]/70" /></span>
+              <span className="font-sans text-[11px] font-medium uppercase tracking-[0.24em] text-e26-gold md:text-[12px]">Two paths</span>
+              <span className="h-px w-10 bg-[#E0C068]/70 md:w-24" />
+            </div>
+            <div className="grid gap-24 md:grid-cols-12 md:gap-x-6 md:gap-y-0">
               <Link
                 href="/coaching"
                 aria-label="Đi tới ESSENCE Coaching"
-                className="group e26-reveal relative min-h-[500px] overflow-hidden bg-[color-mix(in_srgb,var(--essence-white-2026)_52%,transparent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory md:col-span-7 md:min-h-[650px]"
+                className="group e26-reveal relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-8 focus-visible:ring-offset-e26-ivory md:col-span-7 md:min-h-[760px]"
               >
-                <Image src="/images/home/kitchen-morning.webp" alt="" fill sizes="(max-width: 768px) 100vw, 58vw" className={`object-cover object-center opacity-48 transition-transform group-hover:scale-[1.012] ${thresholdMotion}`} aria-hidden="true" />
-                <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, color-mix(in srgb, var(--essence-ivory-2026) 18%, transparent), color-mix(in srgb, var(--essence-ivory-2026) 84%, transparent) 66%, var(--essence-ivory-2026) 100%)" }} aria-hidden="true" />
-                <div className="relative z-10 flex min-h-[500px] flex-col justify-end px-7 py-10 md:min-h-[650px] md:px-12 md:py-14">
-                  <h2 className="font-serif text-[46px] font-medium leading-[0.98] tracking-[-0.022em] md:text-[70px]">ESSENCE<br />Coaching</h2>
-                  <p data-body-copy className="mt-8 max-w-[470px] font-sans text-[17px] leading-[1.72] md:text-[18px]">Khi điều cần nhìn rõ nằm trong đời sống của bạn.</p>
-                  <p className="mt-5 max-w-[430px] font-serif text-[27px] leading-[1.18] tracking-[-0.012em] md:text-[34px]">Một điều đã đến lúc phải khác đi.</p>
+                <h2 className="relative z-20 font-serif text-[54px] font-normal leading-[0.86] tracking-[-0.035em] md:text-[82px] lg:text-[92px]">ESSENCE<br />Coaching</h2>
+                <div className="relative ml-12 mt-[-10px] aspect-[4/5] overflow-hidden md:ml-14 md:mt-[-18px] md:h-[610px] md:w-[78%] md:aspect-auto">
+                  <Image src="/images/home/kitchen-morning.webp" alt="" fill sizes="(max-width: 768px) 88vw, 44vw" className={`object-cover object-center transition-transform group-hover:scale-[1.012] ${thresholdMotion}`} aria-hidden="true" />
+                  <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_9%,transparent)]" aria-hidden="true" />
+                </div>
+                <div className="relative z-20 -mt-24 mr-8 bg-e26-ivory pb-2 pr-7 pt-8 md:absolute md:left-0 md:top-[300px] md:mt-0 md:w-[47%] md:px-0 md:pb-8 md:pr-10 md:pt-10">
+                  <span className="mb-7 flex items-center" aria-hidden="true"><i className="h-px w-16 bg-[#E0C068]/80" /><i className="h-1.5 w-1.5 rotate-45 border border-[#E0C068]/80" /></span>
+                  <p data-body-copy className="max-w-[390px] font-serif text-[24px] leading-[1.6] tracking-[-0.01em] md:text-[26px]">Khi điều cần nhìn rõ nằm trong đời sống của bạn.</p>
+                  <span className="my-7 block h-px w-16 bg-[#E0C068]/60" aria-hidden="true" />
+                  <p className="max-w-[360px] font-serif text-[25px] leading-[1.2] tracking-[-0.012em] md:text-[28px]">Một điều đã đến lúc phải khác đi.</p>
                   <span className={`${softLink} mt-9 w-fit`}>ESSENCE Coaching <span className={`text-[#E0C068] transition-transform group-hover:translate-x-1 ${thresholdMotion}`} aria-hidden="true">→</span></span>
                 </div>
               </Link>
@@ -271,14 +282,18 @@ export default function VillaPage() {
               <Link
                 href="/advisory"
                 aria-label="Đi tới ESSENCE Advisory"
-                className="group e26-reveal relative mt-10 min-h-[430px] overflow-hidden border-l border-[#E0C068]/42 bg-[color-mix(in_srgb,var(--essence-white-2026)_38%,transparent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory md:col-span-5 md:col-start-8 md:mt-28 md:min-h-[500px]"
+                className="group e26-reveal relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-8 focus-visible:ring-offset-e26-ivory md:col-span-5 md:col-start-8 md:mt-20 md:min-h-[690px]"
               >
-                <Image src="/images/advisory/advisory-essence-operating-loop-selected-v03.webp" alt="" fill sizes="(max-width: 768px) 100vw, 42vw" className={`object-contain object-[78%_20%] p-10 opacity-[0.065] transition-transform group-hover:translate-x-1 md:p-14 ${thresholdMotion}`} aria-hidden="true" />
-                <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, color-mix(in srgb, var(--essence-white-2026) 66%, transparent), transparent 56%), repeating-linear-gradient(0deg, transparent 0 58px, color-mix(in srgb, var(--essence-black-2026) 3%, transparent) 59px 60px)" }} aria-hidden="true" />
-                <div className="relative z-10 flex min-h-[430px] flex-col justify-end px-7 py-10 md:min-h-[500px] md:px-10 md:py-14">
-                  <h2 className="font-serif text-[42px] font-medium leading-[0.98] tracking-[-0.022em] md:text-[58px]">ESSENCE<br />Advisory</h2>
-                  <p data-body-copy className="mt-8 max-w-[430px] font-sans text-[17px] leading-[1.72] md:text-[18px]">Khi điều cần được làm rõ nằm trong công việc hoặc doanh nghiệp.</p>
-                  <p className="mt-5 max-w-[390px] font-serif text-[27px] leading-[1.18] tracking-[-0.012em] md:text-[32px]">Một điều cần được đưa vào vận hành.</p>
+                <h2 className="relative z-20 text-right font-serif text-[52px] font-normal leading-[0.86] tracking-[-0.035em] md:text-[70px] lg:text-[78px]">ESSENCE<br />Advisory</h2>
+                <div className="relative -ml-6 mr-10 mt-[-8px] aspect-[4/5] overflow-hidden md:-ml-8 md:mr-0 md:mt-[-14px] md:h-[530px] md:aspect-auto">
+                  <Image src="/images/home/haicua-hanhlang1.webp" alt="" fill sizes="(max-width: 768px) 90vw, 38vw" className={`object-cover object-[56%_center] transition-transform group-hover:scale-[1.012] ${thresholdMotion}`} aria-hidden="true" />
+                  <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_8%,transparent)]" aria-hidden="true" />
+                </div>
+                <div className="relative z-20 -mt-20 ml-10 bg-e26-white pb-2 pl-7 pt-8 md:absolute md:right-0 md:top-[265px] md:mt-0 md:w-[72%] md:px-9 md:pb-9 md:pt-9">
+                  <span className="mb-7 flex items-center" aria-hidden="true"><i className="h-px w-16 bg-[#E0C068]/80" /><i className="h-1.5 w-1.5 rotate-45 border border-[#E0C068]/80" /></span>
+                  <p data-body-copy className="max-w-[390px] font-serif text-[24px] leading-[1.6] tracking-[-0.01em] md:text-[26px]">Khi điều cần được làm rõ nằm trong công việc hoặc doanh nghiệp.</p>
+                  <span className="my-7 block h-px w-16 bg-[#E0C068]/60" aria-hidden="true" />
+                  <p className="max-w-[360px] font-serif text-[25px] leading-[1.2] tracking-[-0.012em] md:text-[27px]">Một điều cần được đưa vào vận hành.</p>
                   <span className={`${softLink} mt-9 w-fit`}>ESSENCE Advisory <span className={`text-[#E0C068] transition-transform group-hover:translate-x-1 ${thresholdMotion}`} aria-hidden="true">→</span></span>
                 </div>
               </Link>
