@@ -64,7 +64,7 @@ const META_MESSENGER_SEND_HOST = 'graph.facebook.com';
 const META_INSTAGRAM_SEND_HOST = 'graph.instagram.com';
 const META_DELIVERY_CLAIM_TABLE = 'care_meta_delivery_claims';
 const META_CUSTOMER_RATE_LIMIT_TABLE = 'care_meta_customer_rate_limits';
-const META_MESSENGER_TYPING_MIN_VISIBLE_MS = 180;
+const META_MESSENGER_TYPING_MIN_VISIBLE_MS = 2000;
 
 function textFromEvent(event: MetaMessagingEvent): string | undefined {
   if (event.message?.is_echo || event.message?.is_self) return undefined;
