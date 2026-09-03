@@ -77,11 +77,11 @@ export default function VillaPage() {
             />
           </div>
           <div
-            className="pointer-events-none absolute inset-0 -z-20"
+            className="pointer-events-none absolute inset-0 -z-20 [--veil-color:rgba(26,23,20,0.26)] [--veil-filter:none] md:[--veil-color:rgba(26,26,26,0.16)] md:[--veil-filter:saturate(0.05)]"
             style={{
-              background: "rgba(26,26,26,0.16)",
-              backdropFilter: "saturate(0.05)",
-              WebkitBackdropFilter: "saturate(0.05)",
+              background: "var(--veil-color)",
+              backdropFilter: "var(--veil-filter)",
+              WebkitBackdropFilter: "var(--veil-filter)",
               maskImage: "linear-gradient(90deg, black 0%, black 32%, rgba(0,0,0,0.86) 46%, rgba(0,0,0,0.28) 61%, transparent 74%)",
               WebkitMaskImage: "linear-gradient(90deg, black 0%, black 32%, rgba(0,0,0,0.86) 46%, rgba(0,0,0,0.28) 61%, transparent 74%)",
             }}
@@ -219,11 +219,11 @@ export default function VillaPage() {
         <section className="relative -mt-28 flex min-h-[calc(78svh+112px)] items-center overflow-hidden bg-e26-black px-6 pb-28 pt-56 text-e26-ivory md:-mt-44 md:min-h-[calc(92svh+176px)] md:px-10 md:pb-40 md:pt-[336px]">
           <Image src="/images/home/home-scene-04-selected.webp" alt="" fill sizes="100vw" className="object-cover object-[72%_center] md:object-center" aria-hidden="true" />
           <div
-            className="pointer-events-none absolute inset-0"
+            className="pointer-events-none absolute inset-0 [--veil-color:rgba(26,23,20,0.28)] [--veil-filter:none] md:[--veil-color:rgba(26,26,26,0.18)] md:[--veil-filter:saturate(0.05)]"
             style={{
-              background: "rgba(26,26,26,0.18)",
-              backdropFilter: "saturate(0.05)",
-              WebkitBackdropFilter: "saturate(0.05)",
+              background: "var(--veil-color)",
+              backdropFilter: "var(--veil-filter)",
+              WebkitBackdropFilter: "var(--veil-filter)",
               maskImage: "radial-gradient(ellipse 34% 54% at 70% 38%, transparent 0%, rgba(0,0,0,0.08) 30%, rgba(0,0,0,0.62) 66%, black 100%)",
               WebkitMaskImage: "radial-gradient(ellipse 34% 54% at 70% 38%, transparent 0%, rgba(0,0,0,0.08) 30%, rgba(0,0,0,0.62) 66%, black 100%)",
             }}
