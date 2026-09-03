@@ -198,25 +198,47 @@ describe('P07 deterministic durable-memory candidate selector / write service', 
     ]);
   });
 
-  it('never writes when the model memory decision is not UPDATE', async () => {
-    const updateMemory = vi.fn();
+  it('allows deterministic S1 facts to survive model PRESERVE while DO_NOT_WRITE and FORGET remain blockers', async () => {
+    const updateMemory = vi.fn().mockResolvedValue({ memoryId: '11111111-1111-4111-8111-111111111111' });
     const repository = { updateMemory } as unknown as CareRelationshipMemoryRepository;
-    const result = await applyDeterministicCareMemoryWrite({
+
+    const preserveResult = await applyDeterministicCareMemoryWrite({
       repository,
       identity,
       modelMemoryDecision: 'PRESERVE',
-      currentCustomerText: 'Em trả lời ngắn gọn thôi nhé.',
+      currentCustomerText: 'Anh muốn hiểu bản thân mình rõ hơn.',
       sourceRef: `meta-message:${'e'.repeat(64)}`,
       observedAtIso: '2026-09-03T12:00:00.000Z',
       config: careMemoryWriteConfigFromEnv(env),
     });
-    expect(result).toEqual({
-      eligible: false,
-      candidateCount: 0,
-      updatedCount: 0,
-      reason: 'MODEL_DECISION_NOT_UPDATE',
+    expect(preserveResult).toEqual({
+      eligible: true,
+      candidateCount: 1,
+      updatedCount: 1,
+      reason: 'UPDATED',
     });
-    expect(updateMemory).not.toHaveBeenCalled();
+    expect(updateMemory).toHaveBeenCalledTimes(1);
+    expect(updateMemory.mock.calls[0][0].candidate.valueJson).toEqual({ need: 'self_understanding' });
+
+    for (const modelMemoryDecision of ['DO_NOT_WRITE', 'FORGET'] as const) {
+      updateMemory.mockClear();
+      const blocked = await applyDeterministicCareMemoryWrite({
+        repository,
+        identity,
+        modelMemoryDecision,
+        currentCustomerText: 'Anh muốn hiểu bản thân mình rõ hơn.',
+        sourceRef: `meta-message:${'9'.repeat(64)}`,
+        observedAtIso: '2026-09-03T12:00:00.000Z',
+        config: careMemoryWriteConfigFromEnv(env),
+      });
+      expect(blocked).toEqual({
+        eligible: false,
+        candidateCount: 1,
+        updatedCount: 0,
+        reason: 'MODEL_DECISION_BLOCKED',
+      });
+      expect(updateMemory).not.toHaveBeenCalled();
+    }
   });
 
   it('never writes when UPDATE has no deterministic current-turn candidate', async () => {
@@ -235,7 +257,7 @@ describe('P07 deterministic durable-memory candidate selector / write service', 
     expect(updateMemory).not.toHaveBeenCalled();
   });
 
-  it('writes validated structured candidates only when both model decision and selector agree', async () => {
+  it('writes validated structured candidates when selector agrees and model has not explicitly blocked persistence', async () => {
     const updateMemory = vi.fn()
       .mockResolvedValueOnce({ memoryId: '22222222-2222-4222-8222-222222222222' })
       .mockResolvedValueOnce({ memoryId: '33333333-3333-4333-8333-333333333333' });
