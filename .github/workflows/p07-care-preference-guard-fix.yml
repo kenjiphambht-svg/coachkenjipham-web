@@ -1,0 +1,71 @@
+name: P07 Care Preference Guard Fix
+
+on:
+  push:
+    branches:
+      - backend/p07-care-preference-guard-fix-01
+
+permissions:
+  contents: read
+
+jobs:
+  preference-guard-regression:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run focused Care regression suite
+        run: >
+          npx vitest run
+          tests/care-ai-preference-guard-regression.test.ts
+          tests/care-ai-provider-neutral.test.ts
+          tests/care-ai-relationship-memory-write-runtime.test.ts
+          tests/care-ai-meta-memory-write-wiring.test.ts
+          tests/care-ai-conversation-context.test.ts
+
+      - name: Build Cloudflare OpenNext bundle with live gates disabled in CI
+        env:
+          CARE_META_SANDBOX_ENABLED: 'true'
+          CARE_META_LIVE_TEST_ENABLED: 'false'
+          CARE_META_OUTBOUND_ENABLED: 'false'
+          CARE_META_CUSTOMER_MODE_ENABLED: 'false'
+          CARE_META_INSTAGRAM_ENABLED: 'false'
+          CARE_META_INSTAGRAM_OUTBOUND_ENABLED: 'false'
+          CARE_META_CONVERSATION_CONTEXT_ENABLED: 'false'
+          CARE_META_DURABLE_MEMORY_READ_ENABLED: 'false'
+          CARE_META_DURABLE_MEMORY_WRITE_ENABLED: 'false'
+        run: npm run cf:build
+
+      - name: Wrangler dry-run isolated Worker only
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf wrangler-care-preference-fix-dry-run
+          npx wrangler deploy --dry-run --config wrangler.care-meta.jsonc --outdir wrangler-care-preference-fix-dry-run
+          test -f wrangler-care-preference-fix-dry-run/worker.js
+          echo 'PASS: preference guard fix package accepted without deployment.'
+
+      - name: Assert no live secrets in CI
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "${CARE_MODEL_API_KEY:-}"
+          test -z "${GEMINI_API_KEY:-}"
+          test -z "${CARE_META_APP_SECRET:-}"
+          test -z "${CARE_META_MESSENGER_ACCESS_TOKEN:-}"
+          test -z "${CARE_META_CONTEXT_IDENTITY_HMAC_SECRET:-}"
+          test -z "${SUPABASE_SERVICE_ROLE_KEY:-}"
+          echo 'PASS: no live provider/channel/customer-memory credentials exported.'
