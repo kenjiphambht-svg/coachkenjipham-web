@@ -35,6 +35,7 @@ jobs:
             'CARE_MEMORY_CHARS_MAX',
             'CARE_MEMORY_CONTRACT_VERSION',
             'CARE_MEMORY_READ_KEYS',
+            'CARE_MEMORY_WRITE_KEYS',
           ]) {
             if (Object.prototype.hasOwnProperty.call(cfg.vars || {}, key)) throw new Error(`CARE_MEMORY_RUNTIME_VAR_MUST_NOT_BE_IN_SOURCE_${key}`);
           }
@@ -60,6 +61,7 @@ jobs:
           tests/care-ai-conversation-context-sql.test.ts
           tests/care-ai-relationship-memory.test.ts
           tests/care-ai-relationship-memory-runtime.test.ts
+          tests/care-ai-relationship-memory-write-runtime.test.ts
           tests/care-ai-relationship-memory-sql.test.ts
 
       - name: Build Cloudflare OpenNext bundle with durable memory disabled
