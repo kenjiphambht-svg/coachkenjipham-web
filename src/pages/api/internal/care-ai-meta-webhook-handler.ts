@@ -28,10 +28,24 @@ import {
   safeCareModelFailureDiagnostic,
   type CareModelProvider,
 } from '../../../lib/care-ai/provider-neutral-model';
+import type { CareRelationshipMemoryRepository } from '../../../lib/care-ai/relationship-memory';
+import {
+  careMemoryReadConfigFromEnv,
+  loadCareMemoryRuntimeTurn,
+  safeCareMemoryError,
+} from '../../../lib/care-ai/relationship-memory-runtime';
+import {
+  applyDeterministicCareMemoryWrite,
+  careMemoryWriteConfigFromEnv,
+} from '../../../lib/care-ai/relationship-memory-write-runtime';
 import {
   createCareConversationContextRpcClient,
   SupabaseCareConversationContextRepository,
 } from '../../../lib/care-ai/supabase-conversation-context';
+import {
+  createCareRelationshipMemoryRpcClient,
+  SupabaseCareRelationshipMemoryRepository,
+} from '../../../lib/care-ai/supabase-relationship-memory';
 
 function sandboxEnabled(): boolean {
   return process.env.CARE_META_SANDBOX_ENABLED === 'true';
@@ -51,6 +65,22 @@ function customerModeEnabled(): boolean {
 
 function conversationContextEnabled(): boolean {
   return liveTestEnabled() && process.env.CARE_META_CONVERSATION_CONTEXT_ENABLED === 'true';
+}
+
+function durableMemoryReadRequested(): boolean {
+  return liveTestEnabled() && process.env.CARE_META_DURABLE_MEMORY_READ_ENABLED === 'true';
+}
+
+function durableMemoryReadEnabled(): boolean {
+  return durableMemoryReadRequested() && conversationContextEnabled();
+}
+
+function durableMemoryWriteRequested(): boolean {
+  return liveTestEnabled() && process.env.CARE_META_DURABLE_MEMORY_WRITE_ENABLED === 'true';
+}
+
+function durableMemoryWriteEnabled(): boolean {
+  return durableMemoryWriteRequested() && conversationContextEnabled();
 }
 
 function instagramEnabled(): boolean {
@@ -201,6 +231,7 @@ function safeError(error: unknown): string {
     error.message.startsWith('CARE_META_')
     || error.message.startsWith('CARE_MODEL_')
     || error.message.startsWith('CARE_CONTEXT_')
+    || error.message.startsWith('CARE_MEMORY_')
   ) {
     return error.message.slice(0, 120);
   }
@@ -371,6 +402,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       modelFallbackUsed?: boolean;
       contextEnabled?: boolean;
       contextLoadedTurns?: number;
+      memoryReadEnabled?: boolean;
+      memoryLoadedItems?: number;
+      memoryUsedItems?: number;
+      memoryWriteEnabled?: boolean;
+      memoryWriteEligible?: boolean;
+      memoryWriteCandidateCount?: number;
+      memoryWriteUpdatedCount?: number;
+      memoryWriteReason?: string;
       outboundSent: boolean;
       messageId?: string;
       replyPreview?: string;
@@ -380,6 +419,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     let idempotencyStorePromise: Promise<MetaIdempotencyStore> | undefined;
     let customerStorePromise: Promise<MetaCustomerGuardStore> | undefined;
     let conversationRepository: CareConversationContextRepository | undefined;
+    let relationshipMemoryRepository: CareRelationshipMemoryRepository | undefined;
 
     for (const message of messages) {
       const allowlisted = allowedSenders.has(message.externalSenderId);
@@ -482,8 +522,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       const contextOn = conversationContextEnabled();
+      const memoryReadOn = durableMemoryReadEnabled();
+      const memoryWriteOn = durableMemoryWriteEnabled();
       let contextIdentity: CareChannelIdentityRef | undefined;
       let contextLoadedTurns = 0;
+      let memoryLoadedItems = 0;
+      let memoryUsedItems = 0;
+      let memoryModelChars = 0;
+      let memoryWriteEligible = false;
+      let memoryWriteCandidateCount = 0;
+      let memoryWriteUpdatedCount = 0;
+      let memoryWriteReason: string | undefined;
       let modelTurns = [message.text];
       let contextConfig: ReturnType<typeof conversationContextConfig> | undefined;
 
@@ -520,6 +569,41 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
       }
 
+      if (durableMemoryReadRequested() && !contextOn) {
+        console.error('CARE_MEMORY_READ_DEGRADED', { safeErrorCode: 'CARE_MEMORY_CONTEXT_REQUIRED' });
+      }
+      if (durableMemoryWriteRequested() && !contextOn) {
+        console.error('CARE_MEMORY_WRITE_DEGRADED', { safeErrorCode: 'CARE_MEMORY_CONTEXT_REQUIRED' });
+      }
+
+      if (memoryReadOn && contextIdentity) {
+        try {
+          const memoryConfig = careMemoryReadConfigFromEnv(process.env);
+          relationshipMemoryRepository ||= new SupabaseCareRelationshipMemoryRepository(
+            createCareRelationshipMemoryRpcClient(),
+          );
+          const memory = await loadCareMemoryRuntimeTurn({
+            repository: relationshipMemoryRepository,
+            identity: contextIdentity,
+            config: memoryConfig,
+            nowIso: new Date().toISOString(),
+          });
+          memoryLoadedItems = memory.loadedItems;
+          memoryUsedItems = memory.usedItems;
+          memoryModelChars = memory.modelChars;
+          if (memory.modelTurn) modelTurns = [memory.modelTurn, ...modelTurns];
+          console.info('CARE_MEMORY_READ_READY', {
+            loadedItems: memory.loadedItems,
+            usedItems: memory.usedItems,
+            modelChars: memory.modelChars,
+            purposeScope: memoryConfig.purposeScope,
+            memoryContractVersion: memoryConfig.memoryContractVersion,
+          });
+        } catch (error) {
+          console.error('CARE_MEMORY_READ_DEGRADED', { safeErrorCode: safeCareMemoryError(error) });
+        }
+      }
+
       const currentModelConfig = modelConfig();
       const modelStartedAtMs = Date.now();
       let modelFallbackUsed = false;
@@ -537,6 +621,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           timeoutMs: currentModelConfig.timeoutMs,
           contextEnabled: contextOn,
           contextTurns: modelTurns.length,
+          memoryReadEnabled: memoryReadOn,
+          memoryItems: memoryUsedItems,
+          memoryChars: memoryModelChars,
         });
       } catch (error) {
         const diagnostic = safeCareModelFailureDiagnostic(error, currentModelConfig);
@@ -546,6 +633,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           timeoutMs: currentModelConfig.timeoutMs,
           contextEnabled: contextOn,
           contextTurns: modelTurns.length,
+          memoryReadEnabled: memoryReadOn,
+          memoryItems: memoryUsedItems,
+          memoryChars: memoryModelChars,
         });
         decision = careModelFailureDecision(message.channel);
         modelFallbackUsed = true;
@@ -564,6 +654,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           modelFallbackUsed,
           contextEnabled: contextOn,
           contextLoadedTurns,
+          memoryReadEnabled: memoryReadOn,
+          memoryLoadedItems,
+          memoryUsedItems,
+          memoryWriteEnabled: memoryWriteOn,
+          memoryWriteEligible,
+          memoryWriteCandidateCount,
+          memoryWriteUpdatedCount,
           outboundSent: false,
           replyPreview: decision.reply,
         });
@@ -580,6 +677,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         channel: message.channel,
         elapsedMs: Date.now() - sendStartedAtMs,
         contextEnabled: contextOn,
+        memoryReadEnabled: memoryReadOn,
+        memoryWriteEnabled: memoryWriteOn,
       });
 
       if (contextOn && contextIdentity && contextConfig && conversationRepository) {
@@ -595,6 +694,39 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
       }
 
+      if (memoryWriteOn && contextIdentity) {
+        try {
+          const writeConfig = careMemoryWriteConfigFromEnv(process.env);
+          relationshipMemoryRepository ||= new SupabaseCareRelationshipMemoryRepository(
+            createCareRelationshipMemoryRpcClient(),
+          );
+          const writeResult = await applyDeterministicCareMemoryWrite({
+            repository: relationshipMemoryRepository,
+            identity: contextIdentity,
+            modelMemoryDecision: decision.memoryDecision,
+            currentCustomerText: message.text,
+            sourceRef: `meta:${hashCareExternalMessageId(messageId)}`,
+            observedAtIso: new Date().toISOString(),
+            config: writeConfig,
+          });
+          memoryWriteEligible = writeResult.eligible;
+          memoryWriteCandidateCount = writeResult.candidateCount;
+          memoryWriteUpdatedCount = writeResult.updatedCount;
+          memoryWriteReason = writeResult.reason;
+          console.info('CARE_MEMORY_WRITE_READY', {
+            eligible: writeResult.eligible,
+            candidateCount: writeResult.candidateCount,
+            updatedCount: writeResult.updatedCount,
+            reason: writeResult.reason,
+            purposeScope: writeConfig.purposeScope,
+            memoryContractVersion: writeConfig.memoryContractVersion,
+          });
+        } catch (error) {
+          memoryWriteReason = safeCareMemoryError(error);
+          console.error('CARE_MEMORY_WRITE_DEGRADED', { safeErrorCode: memoryWriteReason });
+        }
+      }
+
       outputs.push({
         channel: message.channel,
         duplicate: false,
@@ -607,6 +739,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         modelFallbackUsed,
         contextEnabled: contextOn,
         contextLoadedTurns,
+        memoryReadEnabled: memoryReadOn,
+        memoryLoadedItems,
+        memoryUsedItems,
+        memoryWriteEnabled: memoryWriteOn,
+        memoryWriteEligible,
+        memoryWriteCandidateCount,
+        memoryWriteUpdatedCount,
+        memoryWriteReason,
         outboundSent: true,
         messageId: sent.messageId,
       });
@@ -615,6 +755,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const igEnabled = instagramEnabled();
     const igOutboundEnabled = instagramOutboundEnabled();
     const contextOn = conversationContextEnabled();
+    const memoryReadOn = durableMemoryReadEnabled();
+    const memoryWriteOn = durableMemoryWriteEnabled();
     return res.status(200).json({
       accepted: true,
       liveTest: true,
@@ -623,11 +765,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       instagramEnabled: igEnabled,
       instagramOutboundEnabled: igOutboundEnabled,
       conversationContextEnabled: contextOn,
+      durableMemoryReadEnabled: memoryReadOn,
+      durableMemoryWriteEnabled: memoryWriteOn,
       guardMode: customerEnabled ? 'META_CUSTOMER_TEXT_REPLY_GUARDED' : 'META_CONTROLLED_LIVE_TEXT_REPLY_ONLY',
       processed: outputs,
-      note: contextOn
-        ? `Messenger${igEnabled ? ' + Instagram' : ''} replies may use bounded recent-turn context only. Durable relationship memory remains disabled.`
-        : `Messenger${igEnabled ? ' + Instagram' : ''} text-only, inbound-triggered replies remain on the current single-turn path; conversation context is feature-gated off.`,
+      note: memoryReadOn && memoryWriteOn
+        ? `Messenger${igEnabled ? ' + Instagram' : ''} replies may use bounded recent-turn context plus allowlisted durable relationship-memory READ/WRITE. Writes happen only after successful outbound and only for deterministic allowed candidates.`
+        : memoryReadOn
+          ? `Messenger${igEnabled ? ' + Instagram' : ''} replies may use bounded recent-turn context plus allowlisted durable relationship-memory READ. Durable memory WRITE remains disabled.`
+          : contextOn
+            ? `Messenger${igEnabled ? ' + Instagram' : ''} replies may use bounded recent-turn context. Durable relationship-memory READ/WRITE remains disabled.`
+            : `Messenger${igEnabled ? ' + Instagram' : ''} text-only, inbound-triggered replies remain on the current single-turn path; conversation context and durable memory are feature-gated off.`,
     });
   } catch (error) {
     return res.status(502).json({ error: safeError(error) });
