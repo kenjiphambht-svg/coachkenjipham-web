@@ -245,56 +245,78 @@ export default function VillaPage() {
           </div>
         </section>
 
-        {/* 05 — creation / two contexts */}
-        <section className="relative z-10 bg-e26-ivory px-6 pb-32 pt-24 before:pointer-events-none before:absolute before:inset-x-4 before:-top-6 before:h-6 before:bg-e26-ivory md:px-10 md:pb-48 md:pt-32 md:before:inset-x-10 md:before:-top-12 md:before:h-12">
-          <Image src="/images/home/two-paths-light-room.webp" alt="" fill sizes="100vw" className="object-cover object-center opacity-[0.16]" aria-hidden="true" />
-          <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-ivory-2026)_84%,transparent)]" aria-hidden="true" />
-          <div className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(100deg, color-mix(in srgb, var(--essence-white-2026) 72%, transparent), transparent 46%, color-mix(in srgb, var(--essence-cream-2026) 28%, transparent))" }} aria-hidden="true" />
+        {/* 05 — one world / two paths */}
+        <section className="relative isolate z-10 overflow-hidden bg-e26-ivory px-6 pb-32 pt-24 before:pointer-events-none before:absolute before:inset-x-4 before:-top-6 before:h-6 before:bg-e26-ivory md:px-10 md:pb-44 md:pt-32 md:before:inset-x-10 md:before:-top-12 md:before:h-12">
+          <div
+            className="pointer-events-none absolute inset-0 -z-10"
+            style={{
+              background:
+                "radial-gradient(circle at 15% 20%, color-mix(in srgb, var(--essence-white-2026) 88%, transparent), transparent 34%), linear-gradient(106deg, var(--essence-ivory-2026) 0%, color-mix(in srgb, var(--essence-white-2026) 62%, var(--essence-ivory-2026)) 53%, color-mix(in srgb, var(--essence-cream-2026) 34%, var(--essence-ivory-2026)) 100%)",
+            }}
+            aria-hidden="true"
+          />
 
-          <div className="relative z-10 mx-auto max-w-7xl">
-            <div className="e26-reveal mb-20 flex items-center justify-center gap-4 md:mb-24" aria-hidden="true">
-              <span className="h-px w-10 bg-[#E0C068]/70 md:w-24" />
-              <span className="font-sans text-[11px] font-medium uppercase tracking-[0.24em] text-e26-gold md:text-[12px]">One world</span>
-              <span className="flex items-center"><i className="h-1.5 w-1.5 rotate-45 border border-[#E0C068]/80" /><i className="h-px w-4 bg-[#E0C068]/70" /></span>
-              <span className="font-sans text-[11px] font-medium uppercase tracking-[0.24em] text-e26-gold md:text-[12px]">Two paths</span>
-              <span className="h-px w-10 bg-[#E0C068]/70 md:w-24" />
+          <div className="mx-auto max-w-7xl">
+            <div className="e26-reveal mb-16 flex items-center justify-center gap-3 md:mb-20 md:gap-4 lg:mb-24" aria-hidden="true">
+              <span className="h-px w-8 bg-[#E0C068]/70 md:w-24" />
+              <span className="whitespace-nowrap font-sans text-[10px] font-medium uppercase tracking-[0.22em] text-e26-gold md:text-[12px] md:tracking-[0.24em]">One world</span>
+              <span className="flex items-center"><i className="h-1.5 w-1.5 rotate-45 border border-[#E0C068]/80" /><i className="h-px w-3 bg-[#E0C068]/70 md:w-4" /></span>
+              <span className="whitespace-nowrap font-sans text-[10px] font-medium uppercase tracking-[0.22em] text-e26-gold md:text-[12px] md:tracking-[0.24em]">Two paths</span>
+              <span className="h-px w-8 bg-[#E0C068]/70 md:w-24" />
             </div>
-            <div className="grid gap-24 md:grid-cols-12 md:gap-x-6 md:gap-y-0">
+
+            <div className="grid gap-28 md:gap-36 lg:relative lg:block lg:min-h-[830px]">
               <Link
                 href="/coaching"
                 aria-label="Đi tới ESSENCE Coaching"
-                className="group e26-reveal relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-8 focus-visible:ring-offset-e26-ivory md:col-span-7 md:min-h-[760px]"
+                className="group e26-reveal relative block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-8 focus-visible:ring-offset-e26-ivory lg:absolute lg:inset-y-0 lg:left-0 lg:w-[58%]"
               >
-                <h2 className="relative z-20 font-serif text-[54px] font-normal leading-[0.86] tracking-[-0.035em] md:text-[82px] lg:text-[92px]">ESSENCE<br />Coaching</h2>
-                <div className="relative ml-12 mt-[-10px] aspect-[4/5] overflow-hidden md:ml-14 md:mt-[-18px] md:h-[610px] md:w-[78%] md:aspect-auto">
-                  <Image src="/images/home/kitchen-morning.webp" alt="" fill sizes="(max-width: 768px) 88vw, 44vw" className={`object-cover object-center transition-transform group-hover:scale-[1.012] ${thresholdMotion}`} aria-hidden="true" />
-                  <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_9%,transparent)]" aria-hidden="true" />
+                <h2 className="relative z-20 font-serif text-[54px] font-normal leading-[0.86] tracking-[-0.035em] md:text-[76px] lg:text-[82px] xl:text-[92px]">
+                  ESSENCE<br />Coaching
+                </h2>
+                <div className="relative -mx-6 mt-[-8px] aspect-[4/3] overflow-hidden md:mx-0 md:ml-12 md:mt-[-16px] lg:absolute lg:left-[9%] lg:top-[82px] lg:m-0 lg:h-[650px] lg:w-[91%] lg:aspect-auto">
+                  <Image
+                    src="/images/home/home-scene-05-coaching.webp"
+                    alt=""
+                    fill
+                    sizes="(max-width: 1023px) 100vw, 54vw"
+                    className={`object-cover object-center transition-transform group-hover:scale-[1.012] ${thresholdMotion}`}
+                    aria-hidden="true"
+                  />
                 </div>
-                <div className="relative z-20 -mt-24 mr-8 bg-e26-ivory pb-2 pr-7 pt-8 md:absolute md:left-0 md:top-[300px] md:mt-0 md:w-[47%] md:px-0 md:pb-8 md:pr-10 md:pt-10">
-                  <span className="mb-7 flex items-center" aria-hidden="true"><i className="h-px w-16 bg-[#E0C068]/80" /><i className="h-1.5 w-1.5 rotate-45 border border-[#E0C068]/80" /></span>
-                  <p data-body-copy className="max-w-[390px] font-serif text-[24px] leading-[1.6] tracking-[-0.01em] md:text-[26px]">Khi điều cần nhìn rõ nằm trong đời sống của bạn.</p>
-                  <span className="my-7 block h-px w-16 bg-[#E0C068]/60" aria-hidden="true" />
-                  <p className="max-w-[360px] font-serif text-[25px] leading-[1.2] tracking-[-0.012em] md:text-[28px]">Một điều đã đến lúc phải khác đi.</p>
-                  <span className={`${softLink} mt-9 w-fit`}>ESSENCE Coaching <span className={`text-[#E0C068] transition-transform group-hover:translate-x-1 ${thresholdMotion}`} aria-hidden="true">→</span></span>
+                <div className="relative z-20 -mt-14 mr-7 bg-e26-ivory pb-1 pr-7 pt-8 md:-mt-20 md:mr-auto md:w-[54%] md:pb-7 md:pr-10 md:pt-10 lg:absolute lg:left-0 lg:top-[228px] lg:mt-0 lg:w-[45%]">
+                  <span className="mb-6 flex items-center" aria-hidden="true"><i className="h-px w-14 bg-[#E0C068]/80 md:w-16" /><i className="h-1.5 w-1.5 rotate-45 border border-[#E0C068]/80" /></span>
+                  <p data-body-copy className="max-w-[390px] font-serif text-[23px] leading-[1.6] tracking-[-0.01em] md:text-[26px]">Khi điều cần nhìn rõ nằm trong đời sống của bạn.</p>
+                  <span className="my-6 block h-px w-14 bg-[#E0C068]/60 md:my-7 md:w-16" aria-hidden="true" />
+                  <p className="max-w-[360px] font-serif text-[24px] leading-[1.22] tracking-[-0.012em] md:text-[28px]">Một điều đã đến lúc phải khác đi.</p>
+                  <span className={`${softLink} mt-8 w-fit`}>ESSENCE Coaching <span className={`text-[#E0C068] transition-transform group-hover:translate-x-1 ${thresholdMotion}`} aria-hidden="true">→</span></span>
                 </div>
               </Link>
 
               <Link
                 href="/advisory"
                 aria-label="Đi tới ESSENCE Advisory"
-                className="group e26-reveal relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-8 focus-visible:ring-offset-e26-ivory md:col-span-5 md:col-start-8 md:mt-20 md:min-h-[690px]"
+                className="group e26-reveal relative block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-8 focus-visible:ring-offset-e26-ivory lg:absolute lg:right-0 lg:top-7 lg:h-[760px] lg:w-[49%]"
               >
-                <h2 className="relative z-20 text-right font-serif text-[52px] font-normal leading-[0.86] tracking-[-0.035em] md:text-[70px] lg:text-[78px]">ESSENCE<br />Advisory</h2>
-                <div className="relative -ml-6 mr-10 mt-[-8px] aspect-[4/5] overflow-hidden md:-ml-8 md:mr-0 md:mt-[-14px] md:h-[530px] md:aspect-auto">
-                  <Image src="/images/home/haicua-hanhlang1.webp" alt="" fill sizes="(max-width: 768px) 90vw, 38vw" className={`object-cover object-[56%_center] transition-transform group-hover:scale-[1.012] ${thresholdMotion}`} aria-hidden="true" />
-                  <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--essence-cream-2026)_8%,transparent)]" aria-hidden="true" />
+                <h2 className="relative z-20 text-right font-serif text-[52px] font-normal leading-[0.86] tracking-[-0.035em] md:text-[70px] lg:text-[72px] xl:text-[80px]">
+                  ESSENCE<br />Advisory
+                </h2>
+                <div className="relative -mx-6 ml-3 mt-[-7px] aspect-[3/4] overflow-hidden md:mx-0 md:ml-[14%] md:mt-[-14px] md:w-[76%] lg:absolute lg:left-0 lg:top-[66px] lg:m-0 lg:h-[650px] lg:w-full lg:aspect-auto">
+                  <Image
+                    src="/images/home/home-scene-05-advisory.webp"
+                    alt=""
+                    fill
+                    sizes="(max-width: 767px) 96vw, (max-width: 1023px) 68vw, 46vw"
+                    className={`object-cover object-center transition-transform group-hover:scale-[1.012] ${thresholdMotion}`}
+                    aria-hidden="true"
+                  />
                 </div>
-                <div className="relative z-20 -mt-20 ml-10 bg-e26-white pb-2 pl-7 pt-8 md:absolute md:right-0 md:top-[265px] md:mt-0 md:w-[72%] md:px-9 md:pb-9 md:pt-9">
-                  <span className="mb-7 flex items-center" aria-hidden="true"><i className="h-px w-16 bg-[#E0C068]/80" /><i className="h-1.5 w-1.5 rotate-45 border border-[#E0C068]/80" /></span>
-                  <p data-body-copy className="max-w-[390px] font-serif text-[24px] leading-[1.6] tracking-[-0.01em] md:text-[26px]">Khi điều cần được làm rõ nằm trong công việc hoặc doanh nghiệp.</p>
-                  <span className="my-7 block h-px w-16 bg-[#E0C068]/60" aria-hidden="true" />
-                  <p className="max-w-[360px] font-serif text-[25px] leading-[1.2] tracking-[-0.012em] md:text-[27px]">Một điều cần được đưa vào vận hành.</p>
-                  <span className={`${softLink} mt-9 w-fit`}>ESSENCE Advisory <span className={`text-[#E0C068] transition-transform group-hover:translate-x-1 ${thresholdMotion}`} aria-hidden="true">→</span></span>
+                <div className="relative z-20 -mt-16 ml-auto w-[91%] bg-e26-white pb-1 pl-7 pt-8 md:-mt-24 md:w-[56%] md:px-9 md:pb-8 md:pt-10 lg:absolute lg:right-0 lg:top-[190px] lg:mt-0 lg:w-[61%]">
+                  <span className="mb-6 flex items-center" aria-hidden="true"><i className="h-px w-14 bg-[#E0C068]/80 md:w-16" /><i className="h-1.5 w-1.5 rotate-45 border border-[#E0C068]/80" /></span>
+                  <p data-body-copy className="max-w-[390px] font-serif text-[23px] leading-[1.6] tracking-[-0.01em] md:text-[26px]">Khi điều cần được làm rõ nằm trong công việc hoặc doanh nghiệp.</p>
+                  <span className="my-6 block h-px w-14 bg-[#E0C068]/60 md:my-7 md:w-16" aria-hidden="true" />
+                  <p className="max-w-[360px] font-serif text-[24px] leading-[1.22] tracking-[-0.012em] md:text-[27px]">Một điều cần được đưa vào vận hành.</p>
+                  <span className={`${softLink} mt-8 w-fit`}>ESSENCE Advisory <span className={`text-[#E0C068] transition-transform group-hover:translate-x-1 ${thresholdMotion}`} aria-hidden="true">→</span></span>
                 </div>
               </Link>
             </div>
