@@ -62,6 +62,7 @@ jobs:
           tests/care-ai-relationship-memory.test.ts
           tests/care-ai-relationship-memory-runtime.test.ts
           tests/care-ai-relationship-memory-write-runtime.test.ts
+          tests/care-ai-meta-memory-write-wiring.test.ts
           tests/care-ai-relationship-memory-sql.test.ts
 
       - name: Build Cloudflare OpenNext bundle with durable memory disabled
