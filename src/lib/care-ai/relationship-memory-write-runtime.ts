@@ -18,7 +18,7 @@ export interface CareMemoryWriteAttemptResult {
   candidateCount: number;
   updatedCount: number;
   reason:
-    | 'MODEL_DECISION_NOT_UPDATE'
+    | 'MODEL_DECISION_BLOCKED'
     | 'NO_DETERMINISTIC_CANDIDATE'
     | 'UPDATED';
 }
@@ -274,15 +274,6 @@ export async function applyDeterministicCareMemoryWrite(args: {
   observedAtIso: string;
   config: CareMemoryWriteRuntimeConfig;
 }): Promise<CareMemoryWriteAttemptResult> {
-  if (args.modelMemoryDecision !== 'UPDATE') {
-    return {
-      eligible: false,
-      candidateCount: 0,
-      updatedCount: 0,
-      reason: 'MODEL_DECISION_NOT_UPDATE',
-    };
-  }
-
   const candidates = selectDeterministicCareMemoryCandidates({
     currentCustomerText: args.currentCustomerText,
     sourceRef: args.sourceRef,
@@ -295,6 +286,15 @@ export async function applyDeterministicCareMemoryWrite(args: {
       candidateCount: 0,
       updatedCount: 0,
       reason: 'NO_DETERMINISTIC_CANDIDATE',
+    };
+  }
+
+  if (args.modelMemoryDecision === 'DO_NOT_WRITE' || args.modelMemoryDecision === 'FORGET') {
+    return {
+      eligible: false,
+      candidateCount: candidates.length,
+      updatedCount: 0,
+      reason: 'MODEL_DECISION_BLOCKED',
     };
   }
 
