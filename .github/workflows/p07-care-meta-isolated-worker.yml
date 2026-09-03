@@ -53,13 +53,14 @@ jobs:
           ]) {
             if (Object.prototype.hasOwnProperty.call(cfg.vars || {}, key)) throw new Error(`CARE_MUTABLE_RUNTIME_VAR_MUST_NOT_BE_IN_SOURCE_${key}`);
           }
+          const boundedMemoryKeys = 'self_stated_current_need,product_journey_explored,conversation_open_loop,explicit_preference,selected_next_step';
           const memory = {
             CARE_META_DURABLE_MEMORY_READ_ENABLED: 'true',
             CARE_META_DURABLE_MEMORY_WRITE_ENABLED: 'true',
             CARE_MEMORY_PURPOSE_SCOPE: 'PUBLIC_CARE',
             CARE_MEMORY_CONTRACT_VERSION: 'p09-memory-v0.3',
-            CARE_MEMORY_READ_KEYS: 'explicit_preference',
-            CARE_MEMORY_WRITE_KEYS: 'explicit_preference',
+            CARE_MEMORY_READ_KEYS: boundedMemoryKeys,
+            CARE_MEMORY_WRITE_KEYS: boundedMemoryKeys,
             CARE_MEMORY_ITEMS_MAX: '10',
             CARE_MEMORY_CHARS_MAX: '2500',
           };
@@ -76,7 +77,7 @@ jobs:
           const migration = fs.readFileSync('cloudflare/d1/20260901_p07_care_meta_customer_guard.sql', 'utf8');
           if (!/CREATE TABLE IF NOT EXISTS care_meta_customer_rate_limits/i.test(migration)) throw new Error('CARE_CUSTOMER_GUARD_MIGRATION_MISSING');
           if (!/scope_key TEXT PRIMARY KEY/i.test(migration)) throw new Error('CARE_CUSTOMER_GUARD_HASH_KEY_MISSING');
-          console.log('PASS: isolated Care Worker preserves source/runtime isolation and Founder-gated S1 memory release is exactly pinned.');
+          console.log('PASS: isolated Care Worker preserves source/runtime isolation and Founder-gated structured memory release is exactly pinned.');
           NODE
 
       - name: Setup Node
