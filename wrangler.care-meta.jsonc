@@ -1,6 +1,6 @@
 // P07 isolated Care AI Meta messaging Worker (Messenger + Instagram).
 // Isolated from coachkenjipham.com production runtime: workers.dev only, no routes/custom domains.
-// Founder-gated bounded S1 durable-memory release is source-pinned for auditability; secrets and channel/customer operational gates remain dashboard-managed and survive Git deploys via keep_vars.
+// Founder-gated bounded structured durable-memory release is source-pinned for auditability; secrets and channel/customer operational gates remain dashboard-managed and survive Git deploys via keep_vars.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "p07-care-ai-meta-test",
@@ -34,8 +34,8 @@
     "CARE_META_DURABLE_MEMORY_WRITE_ENABLED": "true",
     "CARE_MEMORY_PURPOSE_SCOPE": "PUBLIC_CARE",
     "CARE_MEMORY_CONTRACT_VERSION": "p09-memory-v0.3",
-    "CARE_MEMORY_READ_KEYS": "explicit_preference",
-    "CARE_MEMORY_WRITE_KEYS": "explicit_preference",
+    "CARE_MEMORY_READ_KEYS": "self_stated_current_need,product_journey_explored,conversation_open_loop,explicit_preference,selected_next_step",
+    "CARE_MEMORY_WRITE_KEYS": "self_stated_current_need,product_journey_explored,conversation_open_loop,explicit_preference,selected_next_step",
     "CARE_MEMORY_ITEMS_MAX": "10",
     "CARE_MEMORY_CHARS_MAX": "2500"
   },
