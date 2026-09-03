@@ -321,6 +321,20 @@ function isLang90PriceAvailability(text: string): boolean {
   ]);
 }
 
+function isExplicitConcisePreference(text: string): boolean {
+  const negative = includesAny(text, [
+    /\b(?:dung|khong)\b.{0,24}\b(?:ngan gon|suc tich)\b/,
+    /\b(?:do not|dont|don't|not)\b.{0,24}\b(?:short|brief|concise)\b/,
+  ]);
+  if (negative) return false;
+  return includesAny(text, [
+    /\b(?:tra loi|noi)\b.{0,18}\b(?:ngan gon|suc tich)\b/,
+    /\b(?:ngan gon|suc tich)\b.{0,12}\b(?:thoi|nhe|nha|giup)\b/,
+    /\b(?:keep|make)\b.{0,18}\b(?:answer|answers|reply|replies)\b.{0,12}\b(?:short|brief|concise)\b/,
+    /\b(?:short|brief|concise)\b.{0,12}\b(?:answer|answers|reply|replies)\b/,
+  ]);
+}
+
 function hasUnverifiedActionOrRouteClaim(reply: string): boolean {
   const text = normalizedBoundaryText(reply);
   return includesAny(text, [
@@ -423,6 +437,18 @@ function explicitHumanDecision(decision: CareModelDecision): CareModelDecision {
   };
 }
 
+function explicitConcisePreferenceDecision(decision: CareModelDecision): CareModelDecision {
+  return {
+    ...decision,
+    truthStatus: 'BOUNDED',
+    nextBestCare: 'ANSWER',
+    commercialReadiness: 'EXPLORE',
+    memoryDecision: 'UPDATE',
+    handoffRequired: false,
+    reply: 'Được, mình sẽ trả lời ngắn gọn hơn.',
+  };
+}
+
 function genericUnverifiedActionDecision(decision: CareModelDecision): CareModelDecision {
   const humanRequired = decision.nextBestCare === 'HUMAN_HANDOFF' || decision.handoffRequired;
   const suppressCurrent = decision.nextBestCare === 'SUPPRESS';
@@ -453,6 +479,7 @@ export function enforceFreeformActionRouteTruth(
   if (isMixedB2bB2c(text)) return mixedB2bB2cDecision(decision);
   if (isLang90PriceAvailability(text)) return lang90UnknownDecision(request, decision);
   if (isExplicitHumanRequest(text)) return explicitHumanDecision(decision);
+  if (isExplicitConcisePreference(text)) return explicitConcisePreferenceDecision(decision);
   if (hasUnverifiedActionOrRouteClaim(decision.reply)) return genericUnverifiedActionDecision(decision);
   return decision;
 }
