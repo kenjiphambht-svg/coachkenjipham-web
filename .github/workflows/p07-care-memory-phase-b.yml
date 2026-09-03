@@ -1,0 +1,94 @@
+name: P07 Care Memory Phase B
+
+on:
+  push:
+    branches:
+      - backend/p07-care-selective-memory-01
+
+permissions:
+  contents: read
+
+jobs:
+  memory-core:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Assert Step-3 runtime remains gated
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs = require('fs');
+          const raw = fs.readFileSync('wrangler.care-meta.jsonc', 'utf8').replace(/^\s*\/\/.*$/gm, '');
+          const cfg = JSON.parse(raw);
+          if (cfg.name !== 'p07-care-ai-meta-test') throw new Error('CARE_WORKER_NAME_INVALID');
+          for (const key of [
+            'CARE_META_DURABLE_MEMORY_READ_ENABLED',
+            'CARE_META_DURABLE_MEMORY_WRITE_ENABLED',
+            'CARE_MEMORY_PURPOSE_SCOPE',
+            'CARE_MEMORY_ITEMS_MAX',
+            'CARE_MEMORY_CHARS_MAX',
+            'CARE_MEMORY_CONTRACT_VERSION',
+          ]) {
+            if (Object.prototype.hasOwnProperty.call(cfg.vars || {}, key)) throw new Error(`CARE_MEMORY_RUNTIME_VAR_MUST_NOT_BE_IN_SOURCE_${key}`);
+          }
+          console.log('PASS: Phase-B durable memory has no source-level activation flag.');
+          NODE
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run Care + memory tests
+        run: >
+          npx vitest run
+          tests/care-ai-meta-sandbox.test.ts
+          tests/care-ai-meta-customer-guard.test.ts
+          tests/care-ai-provider-neutral.test.ts
+          tests/care-ai-conversation-context.test.ts
+          tests/care-ai-conversation-context-sql.test.ts
+          tests/care-ai-relationship-memory.test.ts
+          tests/care-ai-relationship-memory-sql.test.ts
+
+      - name: Build Cloudflare OpenNext bundle with durable memory disabled
+        env:
+          CARE_META_SANDBOX_ENABLED: 'true'
+          CARE_META_LIVE_TEST_ENABLED: 'false'
+          CARE_META_OUTBOUND_ENABLED: 'false'
+          CARE_META_CUSTOMER_MODE_ENABLED: 'false'
+          CARE_META_INSTAGRAM_ENABLED: 'false'
+          CARE_META_INSTAGRAM_OUTBOUND_ENABLED: 'false'
+          CARE_META_CONVERSATION_CONTEXT_ENABLED: 'false'
+          CARE_META_DURABLE_MEMORY_READ_ENABLED: 'false'
+          CARE_META_DURABLE_MEMORY_WRITE_ENABLED: 'false'
+        run: npm run cf:build
+
+      - name: Wrangler dry-run isolated Worker only
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf wrangler-care-memory-dry-run
+          npx wrangler deploy --dry-run --config wrangler.care-meta.jsonc --outdir wrangler-care-memory-dry-run
+          test -f wrangler-care-memory-dry-run/worker.js
+          echo 'PASS: isolated Care Worker package accepted without deployment.'
+
+      - name: Assert no live memory/provider/Meta secrets in CI
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "${SUPABASE_SERVICE_ROLE_KEY:-}"
+          test -z "${CARE_META_CONTEXT_IDENTITY_HMAC_SECRET:-}"
+          test -z "${CARE_MODEL_API_KEY:-}"
+          test -z "${CARE_META_APP_SECRET:-}"
+          test -z "${CARE_META_MESSENGER_ACCESS_TOKEN:-}"
+          echo 'PASS: Phase-B CI exports no live customer/provider/channel credentials.'
