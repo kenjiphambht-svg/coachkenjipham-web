@@ -24,6 +24,7 @@ interface MetaWebhookPayload {
 }
 
 type MetaSendChannel = Extract<CareChannel, 'facebook_messenger' | 'instagram'>;
+type MetaMessengerSenderAction = 'typing_on' | 'typing_off';
 
 export interface MetaSendConfig {
   channel: MetaSendChannel;
@@ -63,6 +64,7 @@ const META_MESSENGER_SEND_HOST = 'graph.facebook.com';
 const META_INSTAGRAM_SEND_HOST = 'graph.instagram.com';
 const META_DELIVERY_CLAIM_TABLE = 'care_meta_delivery_claims';
 const META_CUSTOMER_RATE_LIMIT_TABLE = 'care_meta_customer_rate_limits';
+const META_MESSENGER_TYPING_MIN_VISIBLE_MS = 180;
 
 function textFromEvent(event: MetaMessagingEvent): string | undefined {
   if (event.message?.is_echo || event.message?.is_self) return undefined;
@@ -131,6 +133,16 @@ export function formatMetaTextSendPayload(channel: MetaSendChannel, recipientId:
   };
 }
 
+export function formatMetaMessengerSenderActionPayload(
+  recipientId: string,
+  senderAction: MetaMessengerSenderAction,
+) {
+  return {
+    recipient: { id: recipientId },
+    sender_action: senderAction,
+  };
+}
+
 export function assertOfficialMetaSendEndpoint(
   raw: string,
   channel: MetaSendChannel,
@@ -147,8 +159,7 @@ export function assertOfficialMetaSendEndpoint(
     endpoint.protocol !== 'https:' ||
     endpoint.hostname.toLowerCase() !== expectedHost ||
     endpoint.port ||
-    endpoint.username ||
-    endpoint.password ||
+    endpoint.username || endpoint.password ||
     endpoint.search ||
     endpoint.hash
   ) {
@@ -191,6 +202,37 @@ async function metaSendFailure(response: Response): Promise<Error> {
   return new Error(errorCode);
 }
 
+function wait(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function sendMessengerSenderAction(args: {
+  endpoint: string;
+  accessToken: string;
+  recipientId: string;
+  senderAction: MetaMessengerSenderAction;
+}): Promise<boolean> {
+  try {
+    const response = await fetch(args.endpoint, {
+      method: 'POST',
+      redirect: 'manual',
+      headers: {
+        Authorization: `Bearer ${args.accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formatMetaMessengerSenderActionPayload(args.recipientId, args.senderAction)),
+    });
+    if (!response.ok) {
+      console.warn('CARE_META_TYPING_DEGRADED', { status: response.status, senderAction: args.senderAction });
+      return false;
+    }
+    return true;
+  } catch {
+    console.warn('CARE_META_TYPING_DEGRADED', { status: null, senderAction: args.senderAction });
+    return false;
+  }
+}
+
 export async function sendMetaText(args: {
   config: MetaSendConfig;
   recipientId: string;
@@ -203,18 +245,41 @@ export async function sendMetaText(args: {
     args.config.channel,
     args.config.expectedAccountId,
   );
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    redirect: 'manual',
-    headers: {
-      Authorization: `Bearer ${args.config.accessToken}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(formatMetaTextSendPayload(args.config.channel, args.recipientId, args.text)),
-  });
-  if (!response.ok) throw await metaSendFailure(response);
-  const payload = (await response.json()) as { recipient_id?: string; message_id?: string };
-  return { recipientId: payload.recipient_id, messageId: payload.message_id };
+
+  let typingOn = false;
+  if (args.config.channel === 'facebook_messenger') {
+    typingOn = await sendMessengerSenderAction({
+      endpoint,
+      accessToken: args.config.accessToken,
+      recipientId: args.recipientId,
+      senderAction: 'typing_on',
+    });
+    if (typingOn) await wait(META_MESSENGER_TYPING_MIN_VISIBLE_MS);
+  }
+
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      redirect: 'manual',
+      headers: {
+        Authorization: `Bearer ${args.config.accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formatMetaTextSendPayload(args.config.channel, args.recipientId, args.text)),
+    });
+    if (!response.ok) throw await metaSendFailure(response);
+    const payload = (await response.json()) as { recipient_id?: string; message_id?: string };
+    return { recipientId: payload.recipient_id, messageId: payload.message_id };
+  } finally {
+    if (typingOn) {
+      await sendMessengerSenderAction({
+        endpoint,
+        accessToken: args.config.accessToken,
+        recipientId: args.recipientId,
+        senderAction: 'typing_off',
+      });
+    }
+  }
 }
 
 function deliveryClaimKey(channel: CareChannel, externalMessageId: string): string {
