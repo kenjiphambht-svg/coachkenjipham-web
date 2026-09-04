@@ -246,18 +246,18 @@ export default function VillaPage() {
         </section>
 
         {/* 05 — bright editorial plane / two rectangular pathways */}
-        <section className="relative isolate z-30 -mt-16 overflow-hidden bg-e26-ivory px-6 pb-28 pt-16 md:-mt-24 md:bg-transparent md:px-10 md:pb-40 md:pt-20 xl:-mt-28 xl:pb-40 xl:pt-20">
+        <section className="relative isolate z-30 -mt-16 overflow-hidden bg-e26-ivory px-6 pb-20 pt-20 md:-mt-24 md:bg-transparent md:px-10 md:pb-28 md:pt-24 xl:-mt-28 xl:pb-28 xl:pt-24">
           <div className="pointer-events-none absolute inset-0 z-0 bg-e26-cream-deep" aria-hidden="true">
             <Image
               src="/images/home/home-scene-05-shared-environment.webp"
               alt=""
               fill
               sizes="100vw"
-              className="object-cover object-center opacity-[0.34]"
+              className="object-cover object-center opacity-[0.4]"
               style={{
-                filter: "saturate(0.76) contrast(0.76)",
-                maskImage: "linear-gradient(90deg, rgba(0,0,0,0.18), rgba(0,0,0,0.72) 28%, rgba(0,0,0,0.88) 58%, rgba(0,0,0,0.64) 82%, rgba(0,0,0,0.34))",
-                WebkitMaskImage: "linear-gradient(90deg, rgba(0,0,0,0.18), rgba(0,0,0,0.72) 28%, rgba(0,0,0,0.88) 58%, rgba(0,0,0,0.64) 82%, rgba(0,0,0,0.34))",
+                filter: "saturate(0.8) contrast(0.78)",
+                maskImage: "linear-gradient(90deg, rgba(0,0,0,0.18), rgba(0,0,0,0.5) 34%, rgba(0,0,0,0.7) 66%, rgba(0,0,0,0.88))",
+                WebkitMaskImage: "linear-gradient(90deg, rgba(0,0,0,0.18), rgba(0,0,0,0.5) 34%, rgba(0,0,0,0.7) 66%, rgba(0,0,0,0.88))",
               }}
               aria-hidden="true"
             />
@@ -265,12 +265,12 @@ export default function VillaPage() {
               className="absolute inset-0"
               style={{
                 background:
-                  "linear-gradient(90deg, color-mix(in srgb, var(--essence-ivory-2026) 88%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 64%, transparent) 38%, color-mix(in srgb, var(--essence-white-2026) 68%, transparent) 72%, color-mix(in srgb, var(--essence-ivory-2026) 78%, transparent) 100%), linear-gradient(to bottom, color-mix(in srgb, var(--essence-white-2026) 48%, transparent), color-mix(in srgb, var(--essence-ivory-2026) 70%, transparent))",
+                  "linear-gradient(90deg, color-mix(in srgb, var(--essence-ivory-2026) 84%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 58%, transparent) 38%, color-mix(in srgb, var(--essence-white-2026) 58%, transparent) 72%, color-mix(in srgb, var(--essence-ivory-2026) 38%, transparent) 100%), linear-gradient(to bottom, color-mix(in srgb, var(--essence-white-2026) 44%, transparent), color-mix(in srgb, var(--essence-ivory-2026) 58%, transparent))",
               }}
               aria-hidden="true"
             />
           </div>
-          <div className="pointer-events-none absolute inset-y-0 left-0 right-[5vw] z-[1] hidden bg-[color-mix(in_srgb,var(--essence-ivory-2026)_88%,transparent)] md:block" aria-hidden="true" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 right-[10vw] z-[1] hidden bg-[color-mix(in_srgb,var(--essence-ivory-2026)_82%,transparent)] md:block" aria-hidden="true" />
 
           <div className="relative z-10 mx-auto max-w-7xl">
             <div className="grid gap-12 md:gap-16 xl:relative xl:block xl:min-h-[720px]">
@@ -294,16 +294,16 @@ export default function VillaPage() {
                 </div>
                 <div className="relative z-30 -mt-7 w-[84%] pb-4 pr-7 pt-7 md:-mt-10 md:w-[50%] md:pb-7 md:pr-8 md:pt-8 xl:absolute xl:left-0 xl:top-[248px] xl:mt-0 xl:w-[38%] xl:p-0">
                   <span className="mb-6 flex items-center" aria-hidden="true"><i className="h-1.5 w-1.5 rotate-45 bg-[#E0C068]/85" /><i className="h-px w-24 bg-[#E0C068]/70" /></span>
-                  <p data-body-copy className="max-w-[310px] font-serif text-[21px] leading-[1.58] tracking-[-0.012em] md:text-[23px] xl:text-[24px]">Khi điều cần nhìn rõ nằm trong đời sống của bạn.</p>
+                  <p data-body-copy className="max-w-[310px] font-serif text-[22px] leading-[1.58] tracking-[-0.012em] md:text-[24px]">Khi điều cần nhìn rõ nằm trong đời sống của bạn.</p>
                   <span className="my-7 block h-px w-24 bg-[#E0C068]/65" aria-hidden="true" />
-                  <p className="max-w-[290px] font-serif text-[21px] leading-[1.5] tracking-[-0.012em] md:text-[23px] xl:text-[24px]">Một điều đã đến lúc phải khác đi.</p>
+                  <p className="max-w-[290px] font-serif text-[22px] leading-[1.5] tracking-[-0.012em] md:text-[24px]">Một điều đã đến lúc phải khác đi.</p>
                 </div>
               </Link>
 
               <Link
                 href="/advisory"
                 aria-label="Đi tới ESSENCE Advisory"
-                className="group e26-reveal relative block pb-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-8 focus-visible:ring-offset-e26-ivory xl:absolute xl:right-0 xl:top-[38px] xl:h-[668px] xl:w-[41%] xl:pb-0"
+                className="group e26-reveal relative block pb-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-8 focus-visible:ring-offset-e26-ivory xl:absolute xl:right-0 xl:top-[38px] xl:h-[668px] xl:w-[40%] xl:pb-0"
               >
                 <h2 className="relative z-30 text-right font-serif text-[56px] font-normal leading-[0.88] tracking-[-0.034em] md:text-[72px] xl:absolute xl:right-0 xl:top-0 xl:w-[68%] xl:text-left xl:text-[72px]">
                   ESSENCE<br />Advisory
@@ -318,11 +318,11 @@ export default function VillaPage() {
                     aria-hidden="true"
                   />
                 </div>
-                <div className="relative z-30 -mt-20 ml-auto w-[84%] bg-[color-mix(in_srgb,var(--essence-ivory-2026)_92%,transparent)] pb-6 pl-8 pr-4 pt-7 md:-mt-24 md:w-[54%] md:px-8 md:pb-8 md:pt-9 xl:absolute xl:right-0 xl:top-[220px] xl:mt-0 xl:w-[58%] xl:px-8 xl:py-7">
+                <div className="relative z-30 -mt-20 ml-auto w-[84%] bg-[color-mix(in_srgb,var(--essence-ivory-2026)_88%,transparent)] pb-6 pl-8 pr-4 pt-7 md:-mt-24 md:w-[54%] md:px-8 md:pb-8 md:pt-9 xl:absolute xl:right-0 xl:top-[220px] xl:mt-0 xl:w-[58%] xl:px-8 xl:py-7">
                   <span className="mb-6 flex items-center" aria-hidden="true"><i className="h-1.5 w-1.5 rotate-45 bg-[#E0C068]/85" /><i className="h-px w-24 bg-[#E0C068]/70" /></span>
-                  <p data-body-copy className="max-w-[310px] font-serif text-[21px] leading-[1.58] tracking-[-0.012em] md:text-[23px] xl:text-[23px]">Khi điều cần được làm rõ nằm trong công việc hoặc doanh nghiệp.</p>
+                  <p data-body-copy className="max-w-[310px] font-serif text-[22px] leading-[1.58] tracking-[-0.012em] md:text-[24px]">Khi điều cần được làm rõ nằm trong công việc hoặc doanh nghiệp.</p>
                   <span className="my-7 block h-px w-24 bg-[#E0C068]/65" aria-hidden="true" />
-                  <p className="max-w-[290px] font-serif text-[21px] leading-[1.5] tracking-[-0.012em] md:text-[23px] xl:text-[23px]">Một điều cần được đưa vào vận hành.</p>
+                  <p className="max-w-[290px] font-serif text-[22px] leading-[1.5] tracking-[-0.012em] md:text-[24px]">Một điều cần được đưa vào vận hành.</p>
                 </div>
               </Link>
             </div>
