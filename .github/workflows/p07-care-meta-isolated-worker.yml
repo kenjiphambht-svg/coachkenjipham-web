@@ -41,6 +41,8 @@ jobs:
             'CARE_META_INSTAGRAM_ENABLED',
             'CARE_META_INSTAGRAM_OUTBOUND_ENABLED',
             'CARE_META_INSTAGRAM_SEND_ENDPOINT',
+            'CARE_META_FACEBOOK_COMMENT_ENABLED',
+            'CARE_META_FACEBOOK_COMMENT_OUTBOUND_ENABLED',
             'CARE_META_CONVERSATION_CONTEXT_ENABLED',
             'CARE_META_CONVERSATION_CONTEXT_TTL_SECONDS',
             'CARE_META_CONVERSATION_IDLE_SECONDS',
@@ -77,7 +79,7 @@ jobs:
           const migration = fs.readFileSync('cloudflare/d1/20260901_p07_care_meta_customer_guard.sql', 'utf8');
           if (!/CREATE TABLE IF NOT EXISTS care_meta_customer_rate_limits/i.test(migration)) throw new Error('CARE_CUSTOMER_GUARD_MIGRATION_MISSING');
           if (!/scope_key TEXT PRIMARY KEY/i.test(migration)) throw new Error('CARE_CUSTOMER_GUARD_HASH_KEY_MISSING');
-          console.log('PASS: isolated Care Worker preserves source/runtime isolation and Founder-gated structured memory release is exactly pinned.');
+          console.log('PASS: isolated Care Worker preserves source/runtime isolation; comment gates remain dashboard-managed and structured memory release stays exactly pinned.');
           NODE
 
       - name: Setup Node
@@ -89,12 +91,15 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
 
-      - name: Run Care Meta + memory tests
+      - name: Run Care Meta + memory + comment tests
         run: >
           npx vitest run
           tests/care-ai-meta-sandbox.test.ts
           tests/care-ai-meta-customer-guard.test.ts
           tests/care-ai-provider-neutral.test.ts
+          tests/care-ai-runtime-knowledge.test.ts
+          tests/care-ai-facebook-comment.test.ts
+          tests/care-ai-facebook-comment-wiring.test.ts
           tests/care-ai-conversation-context.test.ts
           tests/care-ai-conversation-context-sql.test.ts
           tests/care-ai-relationship-memory.test.ts
@@ -111,6 +116,8 @@ jobs:
           CARE_META_CUSTOMER_MODE_ENABLED: 'false'
           CARE_META_INSTAGRAM_ENABLED: 'false'
           CARE_META_INSTAGRAM_OUTBOUND_ENABLED: 'false'
+          CARE_META_FACEBOOK_COMMENT_ENABLED: 'false'
+          CARE_META_FACEBOOK_COMMENT_OUTBOUND_ENABLED: 'false'
           CARE_META_CONVERSATION_CONTEXT_ENABLED: 'false'
         run: npm run cf:build
 
