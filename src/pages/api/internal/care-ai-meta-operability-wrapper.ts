@@ -137,8 +137,7 @@ export function careOperabilityStageForFailedRequest(errorCode: string): CareOpe
 }
 
 function observedResponse(res: NextApiResponse, captured: CapturedResponse): NextApiResponse {
-  let proxy: NextApiResponse;
-  proxy = new Proxy(res, {
+  const proxy = new Proxy(res, {
     get(target, property, receiver) {
       if (property === 'status') {
         return (code: number) => {
