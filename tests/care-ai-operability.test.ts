@@ -10,15 +10,14 @@ import {
 
 function fakeDb(firstResult: unknown) {
   const first = vi.fn(async () => firstResult);
-  const statement = {
-    bind: vi.fn(() => statement),
-    first,
-  } as unknown as MetaD1PreparedStatement;
+  let statement: MetaD1PreparedStatement;
+  const bind = vi.fn(() => statement);
+  statement = { bind, first } as unknown as MetaD1PreparedStatement;
   const prepare = vi.fn(() => statement);
   return {
     db: { prepare } as MetaD1Database,
     prepare,
-    statement,
+    bind,
     first,
   };
 }
@@ -59,7 +58,7 @@ describe('Care operability', () => {
     });
 
     expect(fake.prepare).toHaveBeenCalledTimes(1);
-    expect((fake.statement.bind as ReturnType<typeof vi.fn>).mock.calls[0]).toEqual([
+    expect(fake.bind.mock.calls[0]).toEqual([
       'a'.repeat(64),
       'facebook_messenger',
       1,
