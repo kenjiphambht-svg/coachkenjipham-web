@@ -294,6 +294,7 @@ export default function VillaPage() {
                     style={{ background: "linear-gradient(90deg, color-mix(in srgb, var(--essence-ivory-2026) 90%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 76%, transparent) 34%, color-mix(in srgb, var(--essence-ivory-2026) 24%, transparent) 62%, transparent 80%), linear-gradient(to top, color-mix(in srgb, var(--essence-ivory-2026) 58%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 30%, transparent) 28%, transparent 56%), linear-gradient(to bottom, color-mix(in srgb, var(--essence-white-2026) 10%, transparent) 42%, transparent 100%)" }}
                     aria-hidden="true"
                   />
+                  <div className="absolute inset-0 md:hidden" style={{ background: "linear-gradient(to top, color-mix(in srgb, var(--essence-ivory-2026) 26%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 24%, transparent) 40%, color-mix(in srgb, var(--essence-ivory-2026) 16%, transparent) 62%, transparent 84%)" }} aria-hidden="true" />
                   <div className="absolute inset-0 z-10 flex flex-col px-6 pb-8 pt-5 md:px-10 md:pb-10 md:pt-7 xl:px-12 xl:pb-12 xl:pt-8">
                     <h2 className="font-serif text-[60px] font-normal leading-[0.9] tracking-[-0.038em] md:text-[78px] xl:text-[90px]">Coaching</h2>
                     <div className="mt-auto max-w-[350px] xl:max-w-[390px]">
@@ -326,6 +327,7 @@ export default function VillaPage() {
                     style={{ background: "linear-gradient(270deg, color-mix(in srgb, var(--essence-ivory-2026) 88%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 74%, transparent) 38%, color-mix(in srgb, var(--essence-ivory-2026) 36%, transparent) 72%, color-mix(in srgb, var(--essence-ivory-2026) 12%, transparent) 92%, transparent 100%), linear-gradient(to top, color-mix(in srgb, var(--essence-ivory-2026) 64%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 34%, transparent) 30%, transparent 58%), linear-gradient(to bottom, color-mix(in srgb, var(--essence-white-2026) 8%, transparent) 38%, transparent 100%)" }}
                     aria-hidden="true"
                   />
+                  <div className="absolute inset-0 md:hidden" style={{ background: "linear-gradient(to top, color-mix(in srgb, var(--essence-ivory-2026) 24%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 22%, transparent) 40%, color-mix(in srgb, var(--essence-ivory-2026) 14%, transparent) 62%, transparent 84%)" }} aria-hidden="true" />
                   <div className="absolute inset-0 z-10 flex flex-col items-end px-6 pb-8 pt-5 md:px-10 md:pb-10 md:pt-7 xl:px-10 xl:pb-11 xl:pt-8">
                     <h2 className="w-[82%] text-left font-serif text-[58px] font-normal leading-[0.9] tracking-[-0.038em] md:w-[68%] md:text-[74px] xl:w-[74%] xl:text-[78px]">Advisory</h2>
                     <div className="mt-auto w-[82%] max-w-[360px] md:w-[68%] xl:w-[74%]">
