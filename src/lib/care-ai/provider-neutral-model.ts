@@ -416,15 +416,22 @@ function mixedB2bB2cDecision(decision: CareModelDecision): CareModelDecision {
   };
 }
 
-function lang90AvailabilityDecision(decision: CareModelDecision): CareModelDecision {
-  const salutation = detectCareSalutation([]);
+function lang90AvailabilityDecision(
+  request: Pick<CareModelRequest, 'channel' | 'turns'>,
+  decision: CareModelDecision,
+): CareModelDecision {
+  const salutation = detectCareSalutation(request.turns);
+  const suffix = salutation ? `, ${salutation}` : '';
   return {
     ...decision,
-    truthStatus: 'BOUNDED',
+    truthStatus: 'UNKNOWN',
     nextBestCare: 'ANSWER',
     commercialReadiness: 'EXPLORE',
+    memoryDecision: 'DO_NOT_WRITE',
     handoffRequired: false,
-    reply: `Lặng 90’ đang mở bán ở mức 10.000.000đ. Lịch/chỗ cụ thể cần được xác nhận khi chốt${salutation ? `, ${salutation}` : ''}.`,
+    reply: request.channel === 'instagram'
+      ? `Lặng 90’ đang mở bán 10.000.000đ; lịch/chỗ cụ thể cần xác nhận khi chốt${suffix}.`
+      : `Lặng 90’ đang mở bán ở mức 10.000.000đ. Lịch/chỗ cụ thể hiện tại chưa được runtime xác nhận và cần xác nhận khi chốt${suffix}.`,
   };
 }
 
@@ -486,6 +493,21 @@ function genericUnverifiedActionDecision(decision: CareModelDecision): CareModel
   };
 }
 
+function enforceSelfReferenceSalutation(
+  request: Pick<CareModelRequest, 'turns'>,
+  decision: CareModelDecision,
+): CareModelDecision {
+  const salutation = detectCareSalutation(request.turns);
+  if (!salutation) return decision;
+  const capital = salutation === 'anh' ? 'Anh' : 'Chị';
+  let reply = decision.reply;
+  reply = reply.replace(/(^|[.!?]\s+)Bạn(?=\s)/g, `$1${capital}`);
+  reply = reply.replace(/\bbạn (?=(?:đang|muốn|cần|có|sẽ|thấy|nghĩ|quan tâm|hỏi|nên)\b)/gi, `${salutation} `);
+  reply = reply.replace(/\b(giúp|cho|với) bạn\b/gi, (_match, verb: string) => `${verb} ${salutation}`);
+  if (reply === decision.reply) return decision;
+  return { ...decision, reply };
+}
+
 export function enforceFreeformActionRouteTruth(
   request: Pick<CareModelRequest, 'channel' | 'turns' | 'authorityGuard'>,
   decision: CareModelDecision,
@@ -500,7 +522,7 @@ export function enforceFreeformActionRouteTruth(
   if (isPrivacyDelete(text)) return privacyDeleteDecision(decision);
   if (isChildSensitive(text)) return childSensitiveDecision(decision);
   if (isMixedB2bB2c(text)) return mixedB2bB2cDecision(decision);
-  if (isLang90Availability(text)) return lang90AvailabilityDecision(decision);
+  if (isLang90Availability(text)) return lang90AvailabilityDecision(request, decision);
   if (isExplicitHumanRequest(text)) return explicitHumanDecision(decision);
   if (isExplicitConcisePreference(text)) return explicitConcisePreferenceDecision(decision);
   const productRepaired = knownProductTruthDecision(request, decision);
@@ -510,7 +532,8 @@ export function enforceFreeformActionRouteTruth(
 }
 
 function finalizeDecision(request: CareModelRequest, decision: CareModelDecision): CareModelDecision {
-  return enforceFreeformActionRouteTruth(request, enforceAuthorityGuard(decision, request.authorityGuard));
+  const bounded = enforceFreeformActionRouteTruth(request, enforceAuthorityGuard(decision, request.authorityGuard));
+  return enforceSelfReferenceSalutation(request, bounded);
 }
 
 export function careModelFailureDecision(channel: CareChannel): CareModelDecision {
