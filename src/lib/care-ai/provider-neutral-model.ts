@@ -6,6 +6,14 @@ import type {
   NextBestCare,
   TruthStatus,
 } from './contracts';
+import {
+  careRuntimeInstruction,
+  detectCareSalutation,
+  findRuntimeProduct,
+  replyLooksLikeUnknownProduct,
+  runtimeProductFallbackReply,
+  type CareConversationSurface,
+} from './runtime-knowledge';
 
 export type CareModelProvider =
   | 'openai_responses'
@@ -71,6 +79,7 @@ export interface CareModelRequest {
   config: CareModelConfig;
   channel: CareChannel;
   turns: string[];
+  surface?: CareConversationSurface;
   authorityGuard?: CareAuthorityGuard;
 }
 
@@ -98,8 +107,7 @@ Hard rules:
 - Child-sensitive concern => no diagnosis/fixed label and no invented specialist/support route.
 - Ambiguous identity must never auto-merge. Unconfirmed actions must never be described as completed, underway, queued or promised.
 - Never auto-cross-sell B2C/B2B. Mixed B2B + personal needs must remain separate; never claim proposal, booking, transfer or cross-sell action.
-- Lặng 90 current sale/booking/price/availability truth stays UNKNOWN unless separately verified. UNKNOWN must not be converted into a named person/team route.
-- Khám Phá/Giao Mùa product-specific current price/availability/close truth stays UNKNOWN unless separately verified.
+- Current Founder-approved Product × Offer × Sales × Care v0.7 truth is supplied below by runtime and may be quoted exactly. Never downgrade an approved ACTIVE SALE product or official price to “unverified”. Exact slot/capacity/turnaround still requires current human/runtime confirmation where the runtime truth says so.
 - B2B Entry/Core never autonomously promise proposal, ROI, quote, contract or start date.
 - Memory is compact factual continuity only; never preserve raw private/child story, diagnosis, hidden score or speculative intent as fact.
 - Voice is truth-first, precise and low-pressure. Do not open with generic service empathy such as “Chào bạn” or “Cảm ơn bạn đã chia sẻ”. Do not invent an unnamed support route. For Messenger/Instagram prefer 1–3 short sentences; say enough then stop.
@@ -159,7 +167,7 @@ function guardInstruction(guard?: CareAuthorityGuard): string {
 }
 
 function instructionsFor(request: CareModelRequest): string {
-  return `${CARE_MODEL_INSTRUCTIONS}${guardInstruction(request.authorityGuard)}`;
+  return `${CARE_MODEL_INSTRUCTIONS}${careRuntimeInstruction(request.turns, request.surface)}${guardInstruction(request.authorityGuard)}`;
 }
 
 function cleanJsonText(value: string): string {
@@ -307,12 +315,9 @@ function isMixedB2bB2c(text: string): boolean {
   return b2b && personal;
 }
 
-function isLang90PriceAvailability(text: string): boolean {
+function isLang90Availability(text: string): boolean {
   if (!/\blang 90\b/.test(text)) return false;
   return includesAny(text, [
-    /\bgia\b/,
-    /\bmuc phi\b/,
-    /\bbao nhieu\b/,
     /\blich\b/,
     /\bcon cho\b/,
     /\bcho trong\b/,
@@ -411,17 +416,15 @@ function mixedB2bB2cDecision(decision: CareModelDecision): CareModelDecision {
   };
 }
 
-function lang90UnknownDecision(request: Pick<CareModelRequest, 'channel'>, decision: CareModelDecision): CareModelDecision {
+function lang90AvailabilityDecision(decision: CareModelDecision): CareModelDecision {
+  const salutation = detectCareSalutation([]);
   return {
     ...decision,
-    truthStatus: 'UNKNOWN',
+    truthStatus: 'BOUNDED',
     nextBestCare: 'ANSWER',
     commercialReadiness: 'EXPLORE',
-    memoryDecision: 'DO_NOT_WRITE',
     handoffRequired: false,
-    reply: request.channel === 'instagram'
-      ? 'Mình chưa có dữ kiện đã xác minh về giá hay chỗ trống của Lặng 90, nên không thể khẳng định.'
-      : 'Mình chưa có dữ kiện đã xác minh về giá hoặc lịch còn trống của Lặng 90, nên không thể khẳng định ở đây.',
+    reply: `Lặng 90’ đang mở bán ở mức 10.000.000đ. Lịch/chỗ cụ thể cần được xác nhận khi chốt${salutation ? `, ${salutation}` : ''}.`,
   };
 }
 
@@ -446,6 +449,26 @@ function explicitConcisePreferenceDecision(decision: CareModelDecision): CareMod
     memoryDecision: 'UPDATE',
     handoffRequired: false,
     reply: 'Được, mình sẽ trả lời ngắn gọn hơn.',
+  };
+}
+
+function knownProductTruthDecision(
+  request: Pick<CareModelRequest, 'turns'>,
+  decision: CareModelDecision,
+): CareModelDecision {
+  const product = findRuntimeProduct(userBoundaryText(request.turns));
+  if (!product) return decision;
+  const wrongUnknown = decision.truthStatus === 'UNKNOWN'
+    || decision.truthStatus === 'SALE_NOT_ACTIVE_OR_NOT_VERIFIED'
+    || replyLooksLikeUnknownProduct(decision.reply);
+  if (!wrongUnknown) return decision;
+  return {
+    ...decision,
+    truthStatus: 'VERIFIED',
+    nextBestCare: 'ANSWER',
+    commercialReadiness: decision.commercialReadiness === 'HANDOFF' ? 'EXPLORE' : decision.commercialReadiness,
+    handoffRequired: false,
+    reply: runtimeProductFallbackReply(product, detectCareSalutation(request.turns)),
   };
 }
 
@@ -477,9 +500,11 @@ export function enforceFreeformActionRouteTruth(
   if (isPrivacyDelete(text)) return privacyDeleteDecision(decision);
   if (isChildSensitive(text)) return childSensitiveDecision(decision);
   if (isMixedB2bB2c(text)) return mixedB2bB2cDecision(decision);
-  if (isLang90PriceAvailability(text)) return lang90UnknownDecision(request, decision);
+  if (isLang90Availability(text)) return lang90AvailabilityDecision(decision);
   if (isExplicitHumanRequest(text)) return explicitHumanDecision(decision);
   if (isExplicitConcisePreference(text)) return explicitConcisePreferenceDecision(decision);
+  const productRepaired = knownProductTruthDecision(request, decision);
+  if (productRepaired !== decision) return productRepaired;
   if (hasUnverifiedActionOrRouteClaim(decision.reply)) return genericUnverifiedActionDecision(decision);
   return decision;
 }
