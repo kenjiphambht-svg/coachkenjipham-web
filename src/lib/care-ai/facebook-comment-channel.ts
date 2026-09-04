@@ -15,6 +15,9 @@ interface FacebookFeedChangeValue {
   item?: string;
   verb?: string;
   sender_id?: string | number;
+  from?: {
+    id?: string | number;
+  };
   comment_id?: string;
   post_id?: string;
   parent_id?: string;
@@ -41,6 +44,16 @@ function safeId(value: unknown): string | undefined {
   return trimmed;
 }
 
+function safeCommentParseDropDiagnostic(value: FacebookFeedChangeValue): void {
+  console.warn('CARE_META_COMMENT_PARSE_DROP', {
+    hasSenderId: Boolean(safeId(value.sender_id)),
+    hasFromId: Boolean(safeId(value.from?.id)),
+    hasCommentId: Boolean(safeId(value.comment_id)),
+    hasPostId: Boolean(safeId(value.post_id)),
+    hasMessage: typeof value.message === 'string' && Boolean(value.message.trim()),
+  });
+}
+
 export function parseFacebookPageFeedComments(payload: unknown): FacebookCommentInbound[] {
   if (!payload || typeof payload !== 'object') return [];
   const body = payload as FacebookFeedPayload;
@@ -54,11 +67,16 @@ export function parseFacebookPageFeedComments(payload: unknown): FacebookComment
       if (change.field !== 'feed') continue;
       const value = change.value || {};
       if (value.item !== 'comment' || value.verb !== 'add') continue;
-      const senderId = safeId(value.sender_id);
+      // Meta Page feed payloads have historically used sender_id, while newer examples
+      // also use from.id. Support both without persisting or logging profile/name data.
+      const senderId = safeId(value.sender_id) || safeId(value.from?.id);
       const commentId = safeId(value.comment_id);
       const postId = safeId(value.post_id);
       const message = typeof value.message === 'string' ? value.message.trim() : '';
-      if (!senderId || !commentId || !postId || !message) continue;
+      if (!senderId || !commentId || !postId || !message) {
+        safeCommentParseDropDiagnostic(value);
+        continue;
+      }
       if (senderId === pageId) continue; // Prevent Page-authored reply recursion.
       comments.push({
         pageId,
