@@ -1,5 +1,6 @@
 import { timingSafeEqual } from 'node:crypto';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { hydrateCareOperabilityProcessEnv } from '../../../lib/care-ai/care-operability-runtime-env';
 import type { MetaD1Database } from '../../../lib/care-ai/meta-channel';
 import {
   careOperabilityHealthDegraded,
@@ -55,12 +56,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-Content-Type-Options', 'nosniff');
 
-  if (!enabled()) return res.status(404).json({ status: 'disabled' });
-  if (req.method !== 'GET' && req.method !== 'HEAD') {
-    return res.status(405).json({ status: 'method_not_allowed' });
-  }
-
   try {
+    // OpenNext already exposes the authoritative Cloudflare request context. Mirror only
+    // the bounded operability runtime bindings into process.env before reading gates.
+    await hydrateCareOperabilityProcessEnv();
+
+    if (!enabled()) return res.status(404).json({ status: 'disabled' });
+    if (req.method !== 'GET' && req.method !== 'HEAD') {
+      return res.status(405).json({ status: 'method_not_allowed' });
+    }
+
     const expectedToken = expectedHealthToken();
     if (!tokenMatches(bearerToken(req), expectedToken)) {
       if (req.method === 'HEAD') return res.status(404).end();
