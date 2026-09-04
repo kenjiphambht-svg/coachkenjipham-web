@@ -274,36 +274,14 @@ export default function VillaPage() {
                     className={`object-cover object-[46%_center] transition-transform group-hover:scale-[1.014] ${thresholdMotion}`}
                     aria-hidden="true"
                   />
-                  <div className="absolute inset-0 z-10 flex flex-col px-6 pb-8 pt-5 md:px-10 md:pb-10 md:pt-7 xl:px-12 xl:pb-12 xl:pt-8">
-                    <div className="relative w-fit">
-                      <div
-                        className="pointer-events-none absolute -left-24 -right-24 -top-24 bottom-[-16px] [--tf:24px] md:bottom-[-30px] md:[--tf:46px] opacity-[0.94] md:opacity-[0.88] xl:opacity-100"
-                        style={{
-                          background:
-                            "linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--essence-ivory-2026) 52%, transparent) 15%, color-mix(in srgb, var(--essence-ivory-2026) 52%, transparent) 85%, transparent 100%)",
-                          maskImage: "linear-gradient(to bottom, #000 0px, #000 calc(100% - var(--tf)), transparent 100%)",
-                          WebkitMaskImage: "linear-gradient(to bottom, #000 0px, #000 calc(100% - var(--tf)), transparent 100%)",
-                        }}
-                        aria-hidden="true"
-                      />
-                      <h2 className="relative z-10 font-serif text-[60px] font-normal leading-[0.9] tracking-[-0.038em] md:text-[78px] xl:text-[90px]">Coaching</h2>
-                    </div>
-                    <div className="relative mt-auto mb-[9%] max-w-[350px] md:mb-[7%] xl:mb-[5%] xl:max-w-[390px]">
-                      {/* Local readability scrim — confined to the copy band, feathered top and bottom. */}
-                      <div
-                        className="pointer-events-none absolute -bottom-7 -left-16 -top-6 right-[-30%] [--fb:26px] [--ft:22px] md:-bottom-14 md:-top-12 md:[--fb:54px] md:[--ft:46px] opacity-[0.94] md:opacity-[0.88] xl:opacity-100"
-                        style={{
-                          background:
-                            "linear-gradient(90deg, color-mix(in srgb, var(--essence-ivory-2026) 74%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 72%, transparent) 80%, color-mix(in srgb, var(--essence-ivory-2026) 42%, transparent) 90%, transparent 100%)",
-                          maskImage: "linear-gradient(to bottom, transparent 0px, #000 var(--ft), #000 calc(100% - var(--fb)), transparent 100%)",
-                          WebkitMaskImage: "linear-gradient(to bottom, transparent 0px, #000 var(--ft), #000 calc(100% - var(--fb)), transparent 100%)",
-                        }}
-                        aria-hidden="true"
-                      />
-                      <span className="relative mb-6 flex items-center" aria-hidden="true"><i className="h-1.5 w-1.5 rotate-45 bg-[#C9A441]" /><i className="h-px w-24 bg-[#C9A441]/75" /></span>
-                      <p data-body-copy className="relative font-serif text-[22px] leading-[1.58] tracking-[-0.014em] md:text-[25px] xl:text-[27px]">Khi điều cần nhìn rõ nằm trong đời sống của bạn.</p>
-                      <span className="relative my-6 block h-px w-24 bg-[#C9A441]/70" aria-hidden="true" />
-                      <p className="relative font-serif text-[22px] leading-[1.54] tracking-[-0.014em] md:text-[25px] xl:text-[27px]">Một điều đã đến lúc phải <span className="whitespace-nowrap">khác đi.<span className={`ml-3 inline-block origin-left scale-x-[1.55] text-[25px] leading-none tracking-normal text-[#B58B24] transition-transform group-hover:translate-x-1.5 ${thresholdMotion}`} aria-hidden="true">⟶</span></span></p>
+                  <div className="absolute inset-0 z-10">
+                    <h2 className="absolute left-6 top-4 font-serif text-[52px] font-normal leading-[0.9] tracking-[-0.038em] md:left-10 md:top-6 md:text-[70px] xl:left-12 xl:top-7 xl:text-[88px]">Coaching</h2>
+                    {/* Copy sits on the clean plaster wall, clear of the cup, book and table edge. */}
+                    <div className="absolute left-[19%] top-[36%] w-[245px] md:left-[12%] md:top-[20%] md:w-[262px] xl:left-[8%] xl:top-[31%] xl:w-[300px]">
+                      <span className="mb-4 flex items-center md:mb-5" aria-hidden="true"><i className="h-1.5 w-1.5 rotate-45 bg-[#A8862B]" /><i className="h-px w-16 bg-[#A8862B]/80 md:w-20" /></span>
+                      <p data-body-copy className="font-serif text-[19px] font-medium leading-[1.36] tracking-[-0.004em] md:text-[23px] md:leading-[1.4] xl:text-[26px]">Khi điều cần nhìn rõ nằm trong đời sống của bạn.</p>
+                      <span className="my-4 block h-px w-16 bg-[#A8862B]/75 md:my-5 md:w-20" aria-hidden="true" />
+                      <p className="font-serif text-[19px] font-medium leading-[1.36] tracking-[-0.004em] md:text-[23px] md:leading-[1.4] xl:text-[26px]">Một điều đã đến lúc phải <span className="whitespace-nowrap">khác đi.<span className={`ml-2 inline-block origin-left scale-x-[1.45] text-[20px] leading-none tracking-normal text-[#8A6D1F] transition-transform group-hover:translate-x-1.5 md:ml-3 md:scale-x-[1.55] md:text-[23px] ${thresholdMotion}`} aria-hidden="true">⟶</span></span></p>
                     </div>
                   </div>
                 </div>
@@ -324,38 +302,14 @@ export default function VillaPage() {
                     className={`object-cover object-center transition-transform group-hover:scale-[1.014] ${thresholdMotion}`}
                     aria-hidden="true"
                   />
-                  <div className="absolute inset-0 z-10 flex flex-col items-end px-6 pb-8 pt-5 md:px-10 md:pb-10 md:pt-7 xl:px-10 xl:pb-11 xl:pt-8">
-                    <div className="w-[82%] md:w-[68%] xl:w-[74%]">
-                      <div className="relative w-fit">
-                      <div
-                        className="pointer-events-none absolute -left-24 -right-24 -top-24 bottom-[-16px] [--tf:24px] md:bottom-[-30px] md:[--tf:46px] opacity-[0.94] md:opacity-[0.88] xl:opacity-100"
-                        style={{
-                          background:
-                            "linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--essence-ivory-2026) 52%, transparent) 15%, color-mix(in srgb, var(--essence-ivory-2026) 52%, transparent) 85%, transparent 100%)",
-                          maskImage: "linear-gradient(to bottom, #000 0px, #000 calc(100% - var(--tf)), transparent 100%)",
-                          WebkitMaskImage: "linear-gradient(to bottom, #000 0px, #000 calc(100% - var(--tf)), transparent 100%)",
-                        }}
-                        aria-hidden="true"
-                      />
-                      <h2 className="relative z-10 text-left font-serif text-[58px] font-normal leading-[0.9] tracking-[-0.038em] md:text-[74px] xl:text-[78px]">Advisory</h2>
-                      </div>
-                    </div>
-                    <div className="relative mt-auto mb-[9%] w-[82%] max-w-[360px] md:mb-[7%] md:w-[68%] xl:mb-[5%] xl:w-[74%]">
-                      {/* Local readability scrim — confined to the copy band, feathered top and bottom. */}
-                      <div
-                        className="pointer-events-none absolute -bottom-7 -right-16 -top-6 left-[-30%] [--fb:26px] [--ft:22px] md:-bottom-14 md:-top-12 md:[--fb:54px] md:[--ft:46px] opacity-[0.94] md:opacity-[0.88] xl:opacity-100"
-                        style={{
-                          background:
-                            "linear-gradient(270deg, color-mix(in srgb, var(--essence-ivory-2026) 74%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 72%, transparent) 80%, color-mix(in srgb, var(--essence-ivory-2026) 42%, transparent) 90%, transparent 100%)",
-                          maskImage: "linear-gradient(to bottom, transparent 0px, #000 var(--ft), #000 calc(100% - var(--fb)), transparent 100%)",
-                          WebkitMaskImage: "linear-gradient(to bottom, transparent 0px, #000 var(--ft), #000 calc(100% - var(--fb)), transparent 100%)",
-                        }}
-                        aria-hidden="true"
-                      />
-                      <span className="relative mb-6 flex items-center" aria-hidden="true"><i className="h-1.5 w-1.5 rotate-45 bg-[#C9A441]" /><i className="h-px w-24 bg-[#C9A441]/75" /></span>
-                      <p data-body-copy className="relative font-serif text-[22px] leading-[1.56] tracking-[-0.014em] md:text-[24px] xl:text-[25px]">Khi điều cần được làm rõ nằm trong công việc hoặc doanh nghiệp.</p>
-                      <span className="relative my-6 block h-px w-24 bg-[#C9A441]/70" aria-hidden="true" />
-                      <p className="relative font-serif text-[22px] leading-[1.52] tracking-[-0.014em] md:text-[24px] xl:text-[25px]">Một điều cần được đưa vào <span className="whitespace-nowrap">vận hành.<span className={`ml-3 inline-block origin-left scale-x-[1.55] text-[25px] leading-none tracking-normal text-[#B58B24] transition-transform group-hover:translate-x-1.5 ${thresholdMotion}`} aria-hidden="true">⟶</span></span></p>
+                  <div className="absolute inset-0 z-10">
+                    {/* One editorial column in the bright architectural band — clear of the olive tree, laptop and glass. */}
+                    <div className="absolute left-[38%] top-0 w-[170px] md:left-[38%] md:top-0 md:w-[160px] xl:left-[40%] xl:top-0 xl:w-[270px]">
+                      <h2 className="font-serif text-[36px] font-normal leading-[0.9] tracking-[-0.038em] md:text-[46px] xl:text-[64px]">Advisory</h2>
+                      <span className="mb-1.5 mt-3 flex items-center md:mb-2.5 md:mt-4 xl:mt-4" aria-hidden="true"><i className="h-1.5 w-1.5 rotate-45 bg-[#A8862B]" /><i className="h-px w-12 bg-[#A8862B]/80 md:w-16" /></span>
+                      <p data-body-copy className="font-serif text-[15px] font-medium leading-[1.26] tracking-[-0.004em] md:text-[17px] md:leading-[1.3] xl:text-[22px] xl:leading-[1.3]">Khi điều cần được làm rõ nằm trong công việc hoặc doanh nghiệp.</p>
+                      <span className="my-2 block h-px w-12 bg-[#A8862B]/75 md:my-2.5 md:w-16 xl:my-2" aria-hidden="true" />
+                      <p className="font-serif text-[15px] font-medium leading-[1.26] tracking-[-0.004em] md:text-[17px] md:leading-[1.3] xl:text-[22px] xl:leading-[1.3]">Một điều cần được đưa vào <span className="whitespace-nowrap">vận hành.<span className={`ml-2 inline-block origin-left scale-x-[1.4] text-[15px] leading-none tracking-normal text-[#8A6D1F] transition-transform group-hover:translate-x-1.5 md:scale-x-[1.5] md:text-[17px] xl:text-[20px] ${thresholdMotion}`} aria-hidden="true">⟶</span></span></p>
                     </div>
                   </div>
                 </div>
