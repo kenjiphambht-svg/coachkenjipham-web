@@ -144,7 +144,8 @@ export class D1CareOperabilityStore implements CareOperabilityStore {
         DELETE FROM ${OPERABILITY_TABLE}
         WHERE expires_at_ms <= ?
       `) as MetaD1RunnablePreparedStatement;
-      await statement.bind(nowMs).run();
+      const bound = statement.bind(nowMs) as MetaD1RunnablePreparedStatement;
+      await bound.run();
     } catch (error) {
       console.error('CARE_OPERABILITY_PURGE_DEGRADED', {
         safeErrorCode: safeCareOperabilityErrorCode(error),
