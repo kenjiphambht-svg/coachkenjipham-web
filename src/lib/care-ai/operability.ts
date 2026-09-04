@@ -149,6 +149,7 @@ export class D1CareOperabilityStore implements CareOperabilityStore {
       console.error('CARE_OPERABILITY_PURGE_DEGRADED', {
         safeErrorCode: safeCareOperabilityErrorCode(error),
       });
+      throw new Error('CARE_OPERABILITY_PURGE_FAILED');
     }
   }
 
