@@ -10,7 +10,8 @@ export type CareOperabilityStage =
   | 'OUTBOUND_SUCCESS'
   | 'OUTBOUND_FAILURE'
   | 'POLICY_NO_AUTO_REPLY'
-  | 'OUTBOUND_GATED';
+  | 'OUTBOUND_GATED'
+  | 'DUPLICATE';
 
 export interface CareOperabilityMark {
   eventKey: string;
@@ -34,6 +35,7 @@ export interface CareOperabilityStore {
 
 const OPERABILITY_TABLE = 'care_meta_operability_state';
 const SAFE_ERROR_CODE = /^CARE_[A-Z0-9_]{1,112}$/;
+const DEFAULT_RETENTION_MS = 7 * 24 * 60 * 60 * 1000;
 
 export function careOperabilityEventKey(channel: CareOperabilityChannel, externalMessageId: string): string {
   const normalized = externalMessageId.trim();
@@ -57,7 +59,14 @@ export function careOperabilityHealthDegraded(health: CareOperabilityHealth): bo
 }
 
 export class D1CareOperabilityStore implements CareOperabilityStore {
-  constructor(private readonly db: MetaD1Database) {}
+  constructor(
+    private readonly db: MetaD1Database,
+    private readonly retentionMs = DEFAULT_RETENTION_MS,
+  ) {
+    if (!Number.isInteger(retentionMs) || retentionMs < 86_400_000 || retentionMs > 30 * 86_400_000) {
+      throw new Error('CARE_OPERABILITY_RETENTION_INVALID');
+    }
+  }
 
   async mark(args: CareOperabilityMark): Promise<void> {
     if (!/^[0-9a-f]{64}$/i.test(args.eventKey)) throw new Error('CARE_OPERABILITY_EVENT_KEY_INVALID');
@@ -66,6 +75,7 @@ export class D1CareOperabilityStore implements CareOperabilityStore {
     const safeErrorCode = args.safeErrorCode ? safeCareOperabilityErrorCode(args.safeErrorCode) : null;
     const modelFailed = args.stage === 'MODEL_FAILURE' ? 1 : 0;
     const outboundFailed = args.stage === 'OUTBOUND_FAILURE' ? 1 : 0;
+    const expiresAtMs = nowMs + this.retentionMs;
 
     const row = await this.db.prepare(`
       INSERT INTO ${OPERABILITY_TABLE} (
@@ -77,12 +87,16 @@ export class D1CareOperabilityStore implements CareOperabilityStore {
         outbound_failed,
         last_error_code,
         created_at_ms,
-        updated_at_ms
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        updated_at_ms,
+        expires_at_ms
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       ON CONFLICT(event_key) DO UPDATE SET
         channel = excluded.channel,
         customer_mode = excluded.customer_mode,
-        stage = excluded.stage,
+        stage = CASE
+          WHEN excluded.stage = 'RECEIVED' THEN ${OPERABILITY_TABLE}.stage
+          ELSE excluded.stage
+        END,
         model_failed = CASE
           WHEN excluded.model_failed = 1 THEN 1
           ELSE ${OPERABILITY_TABLE}.model_failed
@@ -95,7 +109,14 @@ export class D1CareOperabilityStore implements CareOperabilityStore {
           WHEN excluded.last_error_code IS NOT NULL THEN excluded.last_error_code
           ELSE ${OPERABILITY_TABLE}.last_error_code
         END,
-        updated_at_ms = excluded.updated_at_ms
+        updated_at_ms = CASE
+          WHEN excluded.stage IN ('RECEIVED', 'DUPLICATE') THEN ${OPERABILITY_TABLE}.updated_at_ms
+          ELSE excluded.updated_at_ms
+        END,
+        expires_at_ms = CASE
+          WHEN excluded.stage IN ('RECEIVED', 'DUPLICATE') THEN ${OPERABILITY_TABLE}.expires_at_ms
+          ELSE excluded.expires_at_ms
+        END
       RETURNING event_key
     `).bind(
       args.eventKey,
@@ -107,6 +128,7 @@ export class D1CareOperabilityStore implements CareOperabilityStore {
       safeErrorCode,
       nowMs,
       nowMs,
+      expiresAtMs,
     ).first<{ event_key?: string }>();
 
     if (!row?.event_key) throw new Error('CARE_OPERABILITY_WRITE_FAILED');
@@ -135,12 +157,14 @@ export class D1CareOperabilityStore implements CareOperabilityStore {
           THEN 1 ELSE 0 END
         ) AS pending_replies
       FROM ${OPERABILITY_TABLE}
-      WHERE updated_at_ms >= ? OR created_at_ms >= ?
+      WHERE expires_at_ms > ?
+        AND (updated_at_ms >= ? OR created_at_ms >= ?)
     `).bind(
       cutoffMs,
       cutoffMs,
       cutoffMs,
       pendingBeforeMs,
+      nowMs,
       cutoffMs,
       cutoffMs,
     ).first<{
