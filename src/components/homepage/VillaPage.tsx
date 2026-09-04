@@ -246,31 +246,16 @@ export default function VillaPage() {
         </section>
 
         {/* 05 — bright editorial plane / two rectangular pathways */}
-        <section className="relative isolate z-30 -mt-16 overflow-hidden bg-e26-ivory px-6 pb-14 pt-20 md:-mt-24 md:bg-transparent md:px-10 md:pb-20 md:pt-28 xl:-mt-28 xl:pb-16 xl:pt-32">
-          <div className="pointer-events-none absolute inset-0 z-0 bg-e26-cream-deep" aria-hidden="true">
-            <Image
-              src="/images/home/home-scene-05-shared-environment.webp"
-              alt=""
-              fill
-              sizes="100vw"
-              className="object-cover object-center opacity-[0.36]"
-              style={{
-                filter: "saturate(0.84) contrast(0.8)",
-                maskImage: "linear-gradient(90deg, rgba(0,0,0,0.62), rgba(0,0,0,0.72) 38%, rgba(0,0,0,0.82) 70%, rgba(0,0,0,0.9))",
-                WebkitMaskImage: "linear-gradient(90deg, rgba(0,0,0,0.62), rgba(0,0,0,0.72) 38%, rgba(0,0,0,0.82) 70%, rgba(0,0,0,0.9))",
-              }}
-              aria-hidden="true"
-            />
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(90deg, color-mix(in srgb, var(--essence-ivory-2026) 64%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 42%, transparent) 48%, color-mix(in srgb, var(--essence-white-2026) 34%, transparent) 74%, color-mix(in srgb, var(--essence-ivory-2026) 22%, transparent) 100%), linear-gradient(to bottom, color-mix(in srgb, var(--essence-white-2026) 18%, transparent), color-mix(in srgb, var(--essence-ivory-2026) 34%, transparent))",
-              }}
-              aria-hidden="true"
-            />
-          </div>
-          <div className="pointer-events-none absolute inset-y-0 left-0 right-[10vw] z-[1] hidden bg-[color-mix(in_srgb,var(--essence-ivory-2026)_52%,transparent)] md:block" aria-hidden="true" />
+        <section className="relative isolate z-30 -mt-16 overflow-hidden bg-e26-ivory px-6 pb-14 pt-20 md:-mt-24 md:px-10 md:pb-20 md:pt-28 xl:-mt-28 xl:pb-16 xl:pt-32">
+          {/* Clean white/ivory base plane — no ambient architecture image. */}
+          <div
+            className="pointer-events-none absolute inset-0 z-0"
+            style={{
+              background:
+                "linear-gradient(to bottom, var(--essence-white-2026) 0%, color-mix(in srgb, var(--essence-white-2026) 62%, var(--essence-ivory-2026)) 38%, var(--essence-ivory-2026) 100%)",
+            }}
+            aria-hidden="true"
+          />
 
           <div className="relative z-10 mx-auto max-w-[1720px]">
             <div className="grid gap-16 md:gap-24 xl:relative xl:block xl:min-h-[790px]">
@@ -280,7 +265,7 @@ export default function VillaPage() {
                 className="group e26-reveal relative block pt-[74px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-8 focus-visible:ring-offset-e26-ivory md:pt-[96px] xl:absolute xl:inset-y-0 xl:left-0 xl:w-[58%] xl:pt-[102px]"
               >
                 <p className="absolute left-0 top-0 z-30 font-serif text-[61px] font-normal leading-none tracking-[-0.038em] md:text-[82px] xl:text-[94px]" aria-hidden="true">ESSENCE</p>
-                <div className={`relative ml-[3%] aspect-[4/5] w-[97%] overflow-hidden shadow-[0_52px_86px_-58px_rgba(26,26,26,0.55),0_20px_34px_-26px_rgba(26,26,26,0.30)] transition-transform group-hover:-translate-y-1 md:ml-[8%] md:aspect-[4/3] md:w-[89%] xl:ml-[4%] xl:h-[680px] xl:w-[96%] xl:aspect-auto ${thresholdMotion}`}>
+                <div className={`relative ml-[3%] aspect-[4/5] w-[97%] overflow-hidden shadow-[0_68px_104px_-58px_rgba(26,26,26,0.44),0_30px_50px_-30px_rgba(26,26,26,0.24),0_4px_10px_-4px_rgba(26,26,26,0.16)] transition-transform group-hover:-translate-y-1 md:ml-[8%] md:aspect-[4/3] md:w-[89%] xl:ml-[4%] xl:h-[680px] xl:w-[96%] xl:aspect-auto ${thresholdMotion}`}>
                   <Image
                     src="/images/home/home-scene-05-coaching.webp"
                     alt=""
@@ -289,19 +274,36 @@ export default function VillaPage() {
                     className={`object-cover object-[46%_center] transition-transform group-hover:scale-[1.014] ${thresholdMotion}`}
                     aria-hidden="true"
                   />
-                  <div
-                    className="absolute inset-0"
-                    style={{ background: "linear-gradient(90deg, color-mix(in srgb, var(--essence-ivory-2026) 90%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 76%, transparent) 34%, color-mix(in srgb, var(--essence-ivory-2026) 24%, transparent) 62%, transparent 80%), linear-gradient(to top, color-mix(in srgb, var(--essence-ivory-2026) 58%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 30%, transparent) 28%, transparent 56%), linear-gradient(to bottom, color-mix(in srgb, var(--essence-white-2026) 10%, transparent) 42%, transparent 100%)" }}
-                    aria-hidden="true"
-                  />
-                  <div className="absolute inset-0 md:hidden" style={{ background: "linear-gradient(to top, color-mix(in srgb, var(--essence-ivory-2026) 26%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 24%, transparent) 40%, color-mix(in srgb, var(--essence-ivory-2026) 16%, transparent) 62%, transparent 84%)" }} aria-hidden="true" />
                   <div className="absolute inset-0 z-10 flex flex-col px-6 pb-8 pt-5 md:px-10 md:pb-10 md:pt-7 xl:px-12 xl:pb-12 xl:pt-8">
-                    <h2 className="font-serif text-[60px] font-normal leading-[0.9] tracking-[-0.038em] md:text-[78px] xl:text-[90px]">Coaching</h2>
-                    <div className="mt-auto max-w-[350px] xl:max-w-[390px]">
-                      <span className="mb-6 flex items-center" aria-hidden="true"><i className="h-1.5 w-1.5 rotate-45 bg-[#C9A441]" /><i className="h-px w-24 bg-[#C9A441]/75" /></span>
-                      <p data-body-copy className="font-serif text-[22px] leading-[1.58] tracking-[-0.014em] md:text-[25px] xl:text-[27px]">Khi điều cần nhìn rõ nằm trong đời sống của bạn.</p>
-                      <span className="my-6 block h-px w-24 bg-[#C9A441]/70" aria-hidden="true" />
-                      <p className="font-serif text-[22px] leading-[1.54] tracking-[-0.014em] md:text-[25px] xl:text-[27px]">Một điều đã đến lúc phải <span className="whitespace-nowrap">khác đi.<span className={`ml-3 inline-block origin-left scale-x-[1.55] text-[25px] leading-none tracking-normal text-[#B58B24] transition-transform group-hover:translate-x-1.5 ${thresholdMotion}`} aria-hidden="true">⟶</span></span></p>
+                    <div className="relative w-fit">
+                      <div
+                        className="pointer-events-none absolute -left-24 -right-24 -top-24 bottom-[-16px] [--tf:24px] md:bottom-[-30px] md:[--tf:46px] opacity-[0.94] md:opacity-[0.88] xl:opacity-100"
+                        style={{
+                          background:
+                            "linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--essence-ivory-2026) 52%, transparent) 15%, color-mix(in srgb, var(--essence-ivory-2026) 52%, transparent) 85%, transparent 100%)",
+                          maskImage: "linear-gradient(to bottom, #000 0px, #000 calc(100% - var(--tf)), transparent 100%)",
+                          WebkitMaskImage: "linear-gradient(to bottom, #000 0px, #000 calc(100% - var(--tf)), transparent 100%)",
+                        }}
+                        aria-hidden="true"
+                      />
+                      <h2 className="relative z-10 font-serif text-[60px] font-normal leading-[0.9] tracking-[-0.038em] md:text-[78px] xl:text-[90px]">Coaching</h2>
+                    </div>
+                    <div className="relative mt-auto mb-[9%] max-w-[350px] md:mb-[7%] xl:mb-[5%] xl:max-w-[390px]">
+                      {/* Local readability scrim — confined to the copy band, feathered top and bottom. */}
+                      <div
+                        className="pointer-events-none absolute -bottom-7 -left-16 -top-6 right-[-30%] [--fb:26px] [--ft:22px] md:-bottom-14 md:-top-12 md:[--fb:54px] md:[--ft:46px] opacity-[0.94] md:opacity-[0.88] xl:opacity-100"
+                        style={{
+                          background:
+                            "linear-gradient(90deg, color-mix(in srgb, var(--essence-ivory-2026) 74%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 72%, transparent) 80%, color-mix(in srgb, var(--essence-ivory-2026) 42%, transparent) 90%, transparent 100%)",
+                          maskImage: "linear-gradient(to bottom, transparent 0px, #000 var(--ft), #000 calc(100% - var(--fb)), transparent 100%)",
+                          WebkitMaskImage: "linear-gradient(to bottom, transparent 0px, #000 var(--ft), #000 calc(100% - var(--fb)), transparent 100%)",
+                        }}
+                        aria-hidden="true"
+                      />
+                      <span className="relative mb-6 flex items-center" aria-hidden="true"><i className="h-1.5 w-1.5 rotate-45 bg-[#C9A441]" /><i className="h-px w-24 bg-[#C9A441]/75" /></span>
+                      <p data-body-copy className="relative font-serif text-[22px] leading-[1.58] tracking-[-0.014em] md:text-[25px] xl:text-[27px]">Khi điều cần nhìn rõ nằm trong đời sống của bạn.</p>
+                      <span className="relative my-6 block h-px w-24 bg-[#C9A441]/70" aria-hidden="true" />
+                      <p className="relative font-serif text-[22px] leading-[1.54] tracking-[-0.014em] md:text-[25px] xl:text-[27px]">Một điều đã đến lúc phải <span className="whitespace-nowrap">khác đi.<span className={`ml-3 inline-block origin-left scale-x-[1.55] text-[25px] leading-none tracking-normal text-[#B58B24] transition-transform group-hover:translate-x-1.5 ${thresholdMotion}`} aria-hidden="true">⟶</span></span></p>
                     </div>
                   </div>
                 </div>
@@ -313,7 +315,7 @@ export default function VillaPage() {
                 className="group e26-reveal relative block pt-[74px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-8 focus-visible:ring-offset-e26-ivory md:ml-auto md:w-[92%] md:pt-[92px] xl:absolute xl:right-0 xl:top-[68px] xl:h-[680px] xl:w-[39.5%] xl:pt-[96px]"
               >
                 <p className="absolute right-0 top-0 z-30 font-serif text-[61px] font-normal leading-none tracking-[-0.038em] md:text-[80px] xl:left-[4%] xl:right-auto xl:text-[86px]" aria-hidden="true">ESSENCE</p>
-                <div className={`relative ml-auto aspect-[4/5] w-[90%] overflow-hidden shadow-[0_48px_78px_-56px_rgba(26,26,26,0.50),0_18px_30px_-25px_rgba(26,26,26,0.28)] transition-transform group-hover:-translate-y-1 md:ml-0 md:aspect-[4/3] md:w-[86%] xl:h-[584px] xl:w-full xl:aspect-auto ${thresholdMotion}`}>
+                <div className={`relative ml-auto aspect-[4/5] w-[90%] overflow-hidden shadow-[0_58px_92px_-58px_rgba(26,26,26,0.40),0_26px_42px_-30px_rgba(26,26,26,0.22),0_3px_9px_-4px_rgba(26,26,26,0.15)] transition-transform group-hover:-translate-y-1 md:ml-0 md:aspect-[4/3] md:w-[86%] xl:h-[584px] xl:w-full xl:aspect-auto ${thresholdMotion}`}>
                   <Image
                     src="/images/home/home-scene-05-advisory.webp"
                     alt=""
@@ -322,19 +324,38 @@ export default function VillaPage() {
                     className={`object-cover object-center transition-transform group-hover:scale-[1.014] ${thresholdMotion}`}
                     aria-hidden="true"
                   />
-                  <div
-                    className="absolute inset-0"
-                    style={{ background: "linear-gradient(270deg, color-mix(in srgb, var(--essence-ivory-2026) 88%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 74%, transparent) 38%, color-mix(in srgb, var(--essence-ivory-2026) 36%, transparent) 72%, color-mix(in srgb, var(--essence-ivory-2026) 12%, transparent) 92%, transparent 100%), linear-gradient(to top, color-mix(in srgb, var(--essence-ivory-2026) 64%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 34%, transparent) 30%, transparent 58%), linear-gradient(to bottom, color-mix(in srgb, var(--essence-white-2026) 8%, transparent) 38%, transparent 100%)" }}
-                    aria-hidden="true"
-                  />
-                  <div className="absolute inset-0 md:hidden" style={{ background: "linear-gradient(to top, color-mix(in srgb, var(--essence-ivory-2026) 24%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 22%, transparent) 40%, color-mix(in srgb, var(--essence-ivory-2026) 14%, transparent) 62%, transparent 84%)" }} aria-hidden="true" />
                   <div className="absolute inset-0 z-10 flex flex-col items-end px-6 pb-8 pt-5 md:px-10 md:pb-10 md:pt-7 xl:px-10 xl:pb-11 xl:pt-8">
-                    <h2 className="w-[82%] text-left font-serif text-[58px] font-normal leading-[0.9] tracking-[-0.038em] md:w-[68%] md:text-[74px] xl:w-[74%] xl:text-[78px]">Advisory</h2>
-                    <div className="mt-auto w-[82%] max-w-[360px] md:w-[68%] xl:w-[74%]">
-                      <span className="mb-6 flex items-center" aria-hidden="true"><i className="h-1.5 w-1.5 rotate-45 bg-[#C9A441]" /><i className="h-px w-24 bg-[#C9A441]/75" /></span>
-                      <p data-body-copy className="font-serif text-[22px] leading-[1.56] tracking-[-0.014em] md:text-[24px] xl:text-[25px]">Khi điều cần được làm rõ nằm trong công việc hoặc doanh nghiệp.</p>
-                      <span className="my-6 block h-px w-24 bg-[#C9A441]/70" aria-hidden="true" />
-                      <p className="font-serif text-[22px] leading-[1.52] tracking-[-0.014em] md:text-[24px] xl:text-[25px]">Một điều cần được đưa vào <span className="whitespace-nowrap">vận hành.<span className={`ml-3 inline-block origin-left scale-x-[1.55] text-[25px] leading-none tracking-normal text-[#B58B24] transition-transform group-hover:translate-x-1.5 ${thresholdMotion}`} aria-hidden="true">⟶</span></span></p>
+                    <div className="w-[82%] md:w-[68%] xl:w-[74%]">
+                      <div className="relative w-fit">
+                      <div
+                        className="pointer-events-none absolute -left-24 -right-24 -top-24 bottom-[-16px] [--tf:24px] md:bottom-[-30px] md:[--tf:46px] opacity-[0.94] md:opacity-[0.88] xl:opacity-100"
+                        style={{
+                          background:
+                            "linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--essence-ivory-2026) 52%, transparent) 15%, color-mix(in srgb, var(--essence-ivory-2026) 52%, transparent) 85%, transparent 100%)",
+                          maskImage: "linear-gradient(to bottom, #000 0px, #000 calc(100% - var(--tf)), transparent 100%)",
+                          WebkitMaskImage: "linear-gradient(to bottom, #000 0px, #000 calc(100% - var(--tf)), transparent 100%)",
+                        }}
+                        aria-hidden="true"
+                      />
+                      <h2 className="relative z-10 text-left font-serif text-[58px] font-normal leading-[0.9] tracking-[-0.038em] md:text-[74px] xl:text-[78px]">Advisory</h2>
+                      </div>
+                    </div>
+                    <div className="relative mt-auto mb-[9%] w-[82%] max-w-[360px] md:mb-[7%] md:w-[68%] xl:mb-[5%] xl:w-[74%]">
+                      {/* Local readability scrim — confined to the copy band, feathered top and bottom. */}
+                      <div
+                        className="pointer-events-none absolute -bottom-7 -right-16 -top-6 left-[-30%] [--fb:26px] [--ft:22px] md:-bottom-14 md:-top-12 md:[--fb:54px] md:[--ft:46px] opacity-[0.94] md:opacity-[0.88] xl:opacity-100"
+                        style={{
+                          background:
+                            "linear-gradient(270deg, color-mix(in srgb, var(--essence-ivory-2026) 74%, transparent) 0%, color-mix(in srgb, var(--essence-ivory-2026) 72%, transparent) 80%, color-mix(in srgb, var(--essence-ivory-2026) 42%, transparent) 90%, transparent 100%)",
+                          maskImage: "linear-gradient(to bottom, transparent 0px, #000 var(--ft), #000 calc(100% - var(--fb)), transparent 100%)",
+                          WebkitMaskImage: "linear-gradient(to bottom, transparent 0px, #000 var(--ft), #000 calc(100% - var(--fb)), transparent 100%)",
+                        }}
+                        aria-hidden="true"
+                      />
+                      <span className="relative mb-6 flex items-center" aria-hidden="true"><i className="h-1.5 w-1.5 rotate-45 bg-[#C9A441]" /><i className="h-px w-24 bg-[#C9A441]/75" /></span>
+                      <p data-body-copy className="relative font-serif text-[22px] leading-[1.56] tracking-[-0.014em] md:text-[24px] xl:text-[25px]">Khi điều cần được làm rõ nằm trong công việc hoặc doanh nghiệp.</p>
+                      <span className="relative my-6 block h-px w-24 bg-[#C9A441]/70" aria-hidden="true" />
+                      <p className="relative font-serif text-[22px] leading-[1.52] tracking-[-0.014em] md:text-[24px] xl:text-[25px]">Một điều cần được đưa vào <span className="whitespace-nowrap">vận hành.<span className={`ml-3 inline-block origin-left scale-x-[1.55] text-[25px] leading-none tracking-normal text-[#B58B24] transition-transform group-hover:translate-x-1.5 ${thresholdMotion}`} aria-hidden="true">⟶</span></span></p>
                     </div>
                   </div>
                 </div>
