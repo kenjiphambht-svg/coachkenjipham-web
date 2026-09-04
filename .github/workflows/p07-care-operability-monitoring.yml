@@ -1,0 +1,128 @@
+name: P07 Care Operability Monitoring
+
+on:
+  push:
+    branches:
+      - backend/p07-care-operability-monitoring-01
+  pull_request:
+    branches:
+      - backend/p07-care-multiturn-context-01
+
+permissions:
+  contents: read
+
+jobs:
+  operability-monitoring:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact source head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Assert checkout is exact source head
+        shell: bash
+        run: |
+          set -euo pipefail
+          EXPECTED_SHA='${{ github.event.pull_request.head.sha || github.sha }}'
+          ACTUAL_SHA="$(git rev-parse HEAD)"
+          test "$ACTUAL_SHA" = "$EXPECTED_SHA"
+          echo "PASS: exact source head $ACTUAL_SHA"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Assert monitoring remains runtime-gated and non-secret
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs = require('fs');
+          const raw = fs.readFileSync('wrangler.care-meta.jsonc', 'utf8').replace(/^\s*\/\/.*$/gm, '');
+          const cfg = JSON.parse(raw);
+          if (cfg.name !== 'p07-care-ai-meta-test') throw new Error('CARE_WORKER_NAME_INVALID');
+          if (cfg.keep_vars !== true) throw new Error('CARE_KEEP_VARS_REQUIRED');
+          for (const key of [
+            'CARE_META_OPERABILITY_EVENTS_ENABLED',
+            'CARE_META_OPERABILITY_HEALTH_ENABLED',
+            'CARE_META_OPERABILITY_HEALTH_TOKEN',
+            'CARE_META_OPERABILITY_LOOKBACK_MS',
+            'CARE_META_OPERABILITY_PENDING_AGE_MS',
+          ]) {
+            if (Object.prototype.hasOwnProperty.call(cfg.vars || {}, key)) {
+              throw new Error(`CARE_OPERABILITY_RUNTIME_VAR_MUST_NOT_BE_IN_SOURCE_${key}`);
+            }
+          }
+          const migration = fs.readFileSync('cloudflare/d1/20260904_p07_care_operability_state.sql', 'utf8');
+          if (!/CREATE TABLE IF NOT EXISTS care_meta_operability_state/i.test(migration)) {
+            throw new Error('CARE_OPERABILITY_MIGRATION_MISSING');
+          }
+          if (!/expires_at_ms INTEGER NOT NULL/i.test(migration)) {
+            throw new Error('CARE_OPERABILITY_RETENTION_COLUMN_MISSING');
+          }
+          console.log('PASS: operability gates remain dashboard-managed, health auth remains secret-managed, and keep_vars is preserved.');
+          NODE
+
+      - name: Run Care operability + Messenger + memory + comment regressions
+        run: >
+          npx vitest run
+          tests/care-ai-operability.test.ts
+          tests/care-ai-operability-wiring.test.ts
+          tests/care-ai-meta-sandbox.test.ts
+          tests/care-ai-meta-customer-guard.test.ts
+          tests/care-ai-provider-neutral.test.ts
+          tests/care-ai-runtime-knowledge.test.ts
+          tests/care-ai-facebook-comment.test.ts
+          tests/care-ai-facebook-comment-wiring.test.ts
+          tests/care-ai-conversation-context.test.ts
+          tests/care-ai-conversation-context-sql.test.ts
+          tests/care-ai-relationship-memory.test.ts
+          tests/care-ai-relationship-memory-runtime.test.ts
+          tests/care-ai-relationship-memory-write-runtime.test.ts
+          tests/care-ai-meta-memory-write-wiring.test.ts
+          tests/care-ai-relationship-memory-sql.test.ts
+
+      - name: Build isolated Cloudflare bundle with monitoring disabled
+        env:
+          CARE_META_SANDBOX_ENABLED: 'true'
+          CARE_META_LIVE_TEST_ENABLED: 'false'
+          CARE_META_OUTBOUND_ENABLED: 'false'
+          CARE_META_CUSTOMER_MODE_ENABLED: 'false'
+          CARE_META_FACEBOOK_COMMENT_ENABLED: 'false'
+          CARE_META_FACEBOOK_COMMENT_OUTBOUND_ENABLED: 'false'
+          CARE_META_INSTAGRAM_ENABLED: 'false'
+          CARE_META_INSTAGRAM_OUTBOUND_ENABLED: 'false'
+          CARE_META_CONVERSATION_CONTEXT_ENABLED: 'false'
+          CARE_META_OPERABILITY_EVENTS_ENABLED: 'false'
+          CARE_META_OPERABILITY_HEALTH_ENABLED: 'false'
+        run: npm run cf:build
+
+      - name: Wrangler isolated dry-run only
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf wrangler-care-operability-dry-run
+          npx wrangler deploy --dry-run --config wrangler.care-meta.jsonc --outdir wrangler-care-operability-dry-run
+          test -f wrangler-care-operability-dry-run/worker.js
+          echo 'PASS: monitoring branch packages without deployment.'
+
+      - name: Assert no live provider/channel/customer/health secrets in CI
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "${GEMINI_API_KEY:-}"
+          test -z "${CARE_MODEL_API_KEY:-}"
+          test -z "${CARE_META_APP_SECRET:-}"
+          test -z "${CARE_META_MESSENGER_ACCESS_TOKEN:-}"
+          test -z "${CARE_META_INSTAGRAM_ACCESS_TOKEN:-}"
+          test -z "${CARE_META_CONTEXT_IDENTITY_HMAC_SECRET:-}"
+          test -z "${SUPABASE_SERVICE_ROLE_KEY:-}"
+          test -z "${CARE_META_OPERABILITY_HEALTH_TOKEN:-}"
+          echo 'PASS: operability CI exports no live credentials.'

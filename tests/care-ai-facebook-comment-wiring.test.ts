@@ -2,12 +2,14 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 const endpointSource = readFileSync('src/pages/api/internal/care-ai-meta-webhook.ts', 'utf8');
+const wrapperSource = readFileSync('src/pages/api/internal/care-ai-meta-operability-wrapper.ts', 'utf8');
 const routerSource = readFileSync('src/pages/api/internal/care-ai-meta-webhook-router.ts', 'utf8');
 const wranglerSource = readFileSync('wrangler.care-meta.jsonc', 'utf8');
 
 describe('P07 Facebook Page comment runtime wiring', () => {
-  it('routes the existing callback through the new router while preserving the proven Messenger handler', () => {
-    expect(endpointSource).toContain("import handler from './care-ai-meta-webhook-router'");
+  it('routes the callback through fail-open operability then the existing router and proven Messenger handler', () => {
+    expect(endpointSource).toContain("import handler from './care-ai-meta-operability-wrapper'");
+    expect(wrapperSource).toContain("import router from './care-ai-meta-webhook-router'");
     expect(routerSource).toContain("import messengerHandler from './care-ai-meta-webhook-handler'");
     expect(routerSource).toContain('await messengerHandler(replay, capturedResponse)');
   });
