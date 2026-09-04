@@ -13,13 +13,15 @@ CREATE TABLE IF NOT EXISTS care_meta_operability_state (
     'OUTBOUND_SUCCESS',
     'OUTBOUND_FAILURE',
     'POLICY_NO_AUTO_REPLY',
-    'OUTBOUND_GATED'
+    'OUTBOUND_GATED',
+    'DUPLICATE'
   )),
   model_failed INTEGER NOT NULL DEFAULT 0 CHECK (model_failed IN (0, 1)),
   outbound_failed INTEGER NOT NULL DEFAULT 0 CHECK (outbound_failed IN (0, 1)),
   last_error_code TEXT CHECK (last_error_code IS NULL OR length(last_error_code) <= 120),
   created_at_ms INTEGER NOT NULL CHECK (created_at_ms > 0),
-  updated_at_ms INTEGER NOT NULL CHECK (updated_at_ms > 0)
+  updated_at_ms INTEGER NOT NULL CHECK (updated_at_ms > 0),
+  expires_at_ms INTEGER NOT NULL CHECK (expires_at_ms > 0)
 );
 
 CREATE INDEX IF NOT EXISTS idx_care_meta_operability_updated
@@ -27,3 +29,6 @@ CREATE INDEX IF NOT EXISTS idx_care_meta_operability_updated
 
 CREATE INDEX IF NOT EXISTS idx_care_meta_operability_stage_updated
   ON care_meta_operability_state(stage, updated_at_ms);
+
+CREATE INDEX IF NOT EXISTS idx_care_meta_operability_expiry
+  ON care_meta_operability_state(expires_at_ms);
