@@ -14,15 +14,17 @@ import {
 
 function fakeDb(firstResult: unknown) {
   const first = vi.fn(async () => firstResult);
-  let statement: MetaD1PreparedStatement;
+  const run = vi.fn(async () => ({ success: true }));
+  let statement: MetaD1PreparedStatement & { run: typeof run };
   const bind = vi.fn(() => statement);
-  statement = { bind, first } as unknown as MetaD1PreparedStatement;
+  statement = { bind, first, run } as unknown as MetaD1PreparedStatement & { run: typeof run };
   const prepare = vi.fn(() => statement);
   return {
     db: { prepare } as MetaD1Database,
     prepare,
     bind,
     first,
+    run,
   };
 }
 
@@ -77,15 +79,20 @@ describe('Care operability', () => {
     ]);
   });
 
-  it('parses aggregate D1 health counts safely', async () => {
+  it('purges expired rows before reading aggregate health counts', async () => {
     const fake = fakeDb({ model_failures: '2', outbound_failures: 1, pending_replies: null });
     const store = new D1CareOperabilityStore(fake.db);
+    const nowMs = 1_800_000_000_000;
 
     await expect(store.health({
-      nowMs: 1_800_000_000_000,
+      nowMs,
       lookbackMs: 900_000,
       pendingAgeMs: 90_000,
     })).resolves.toEqual({ modelFailures: 2, outboundFailures: 1, pendingReplies: 0 });
+
+    expect(fake.run).toHaveBeenCalledTimes(1);
+    expect(fake.prepare.mock.calls[0][0]).toContain('DELETE FROM care_meta_operability_state');
+    expect(fake.bind.mock.calls[0]).toEqual([nowMs]);
   });
 
   it('maps successful, failed, gated, policy and duplicate outcomes to terminal lifecycle stages', () => {
