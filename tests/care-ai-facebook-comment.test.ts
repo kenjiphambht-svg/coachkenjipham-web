@@ -58,6 +58,68 @@ describe('P07 Facebook Page comment adapter', () => {
     expect(facebookCommentExternalMessageId(parsed[0])).toBe('facebook-comment:C-1');
   });
 
+  it('accepts the Meta Page feed from.id commenter shape without using profile name', () => {
+    const parsed = parseFacebookPageFeedComments({
+      object: 'page',
+      entry: [{
+        id: 'PAGE-1',
+        changes: [{
+          field: 'feed',
+          value: {
+            item: 'comment',
+            verb: 'add',
+            from: { id: 'USER-2', name: 'SHOULD-NOT-BE-USED' },
+            comment_id: 'C-3',
+            post_id: 'PAGE-1_POST-1',
+            parent_id: 'PAGE-1_POST-1',
+            created_time: 456,
+            message: 'Tôi muốn hỏi Dấu Ấn giá bao nhiêu',
+          },
+        }],
+      }],
+    });
+    expect(parsed).toEqual([{
+      pageId: 'PAGE-1',
+      senderId: 'USER-2',
+      commentId: 'C-3',
+      postId: 'PAGE-1_POST-1',
+      parentId: 'PAGE-1_POST-1',
+      message: 'Tôi muốn hỏi Dấu Ấn giá bao nhiêu',
+      createdTime: 456,
+    }]);
+    expect(JSON.stringify(parsed)).not.toContain('SHOULD-NOT-BE-USED');
+  });
+
+  it('emits only boolean shape telemetry when a new comment cannot be parsed', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    expect(parseFacebookPageFeedComments({
+      object: 'page',
+      entry: [{
+        id: 'PAGE-1',
+        changes: [{
+          field: 'feed',
+          value: {
+            item: 'comment',
+            verb: 'add',
+            comment_id: 'C-DROP',
+            post_id: 'PAGE-1_POST-1',
+            message: 'PRIVATE-TEXT',
+          },
+        }],
+      }],
+    })).toEqual([]);
+    expect(warnSpy).toHaveBeenCalledWith('CARE_META_COMMENT_PARSE_DROP', {
+      hasSenderId: false,
+      hasFromId: false,
+      hasCommentId: true,
+      hasPostId: true,
+      hasMessage: true,
+    });
+    expect(JSON.stringify(warnSpy.mock.calls)).not.toContain('PRIVATE-TEXT');
+    expect(JSON.stringify(warnSpy.mock.calls)).not.toContain('C-DROP');
+    expect(JSON.stringify(warnSpy.mock.calls)).not.toContain('PAGE-1_POST-1');
+  });
+
   it('drops Page-authored comment events to prevent reply recursion', () => {
     expect(parseFacebookPageFeedComments({
       object: 'page',
