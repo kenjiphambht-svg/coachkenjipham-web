@@ -6,7 +6,7 @@ on:
       - backend/p07-care-operability-monitoring-01
   pull_request:
     branches:
-      - backend/p07-care-ai-test-console-meta-sandbox-01
+      - backend/p07-care-multiturn-context-01
 
 permissions:
   contents: read
