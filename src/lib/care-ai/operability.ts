@@ -94,7 +94,7 @@ export class D1CareOperabilityStore implements CareOperabilityStore {
         channel = excluded.channel,
         customer_mode = excluded.customer_mode,
         stage = CASE
-          WHEN excluded.stage = 'RECEIVED' THEN ${OPERABILITY_TABLE}.stage
+          WHEN excluded.stage IN ('RECEIVED', 'DUPLICATE') THEN ${OPERABILITY_TABLE}.stage
           ELSE excluded.stage
         END,
         model_failed = CASE
