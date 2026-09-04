@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import type { MetaD1Database } from './meta-channel';
+import type { MetaD1Database, MetaD1PreparedStatement } from './meta-channel';
 
 export type CareOperabilityChannel = 'facebook_messenger' | 'facebook_comment' | 'instagram';
 
@@ -31,6 +31,10 @@ export interface CareOperabilityHealth {
 export interface CareOperabilityStore {
   mark(args: CareOperabilityMark): Promise<void>;
   health(args: { nowMs?: number; lookbackMs: number; pendingAgeMs: number }): Promise<CareOperabilityHealth>;
+}
+
+interface MetaD1RunnablePreparedStatement extends MetaD1PreparedStatement {
+  run(): Promise<unknown>;
 }
 
 const OPERABILITY_TABLE = 'care_meta_operability_state';
@@ -134,6 +138,20 @@ export class D1CareOperabilityStore implements CareOperabilityStore {
     if (!row?.event_key) throw new Error('CARE_OPERABILITY_WRITE_FAILED');
   }
 
+  private async purgeExpired(nowMs: number): Promise<void> {
+    try {
+      const statement = this.db.prepare(`
+        DELETE FROM ${OPERABILITY_TABLE}
+        WHERE expires_at_ms <= ?
+      `) as MetaD1RunnablePreparedStatement;
+      await statement.bind(nowMs).run();
+    } catch (error) {
+      console.error('CARE_OPERABILITY_PURGE_DEGRADED', {
+        safeErrorCode: safeCareOperabilityErrorCode(error),
+      });
+    }
+  }
+
   async health(args: { nowMs?: number; lookbackMs: number; pendingAgeMs: number }): Promise<CareOperabilityHealth> {
     const nowMs = args.nowMs ?? Date.now();
     if (!Number.isInteger(nowMs) || nowMs <= 0) throw new Error('CARE_OPERABILITY_TIME_INVALID');
@@ -143,6 +161,8 @@ export class D1CareOperabilityStore implements CareOperabilityStore {
     if (!Number.isInteger(args.pendingAgeMs) || args.pendingAgeMs < 10_000 || args.pendingAgeMs > 600_000) {
       throw new Error('CARE_OPERABILITY_PENDING_AGE_INVALID');
     }
+
+    await this.purgeExpired(nowMs);
 
     const cutoffMs = nowMs - args.lookbackMs;
     const pendingBeforeMs = nowMs - args.pendingAgeMs;
