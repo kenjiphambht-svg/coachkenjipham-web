@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   assertOfficialMetaSendEndpoint,
   createD1MetaIdempotencyStore,
+  formatMetaMessengerSenderActionPayload,
   formatMetaTextSendPayload,
   parseMetaWebhook,
   sendMetaText,
@@ -60,11 +61,19 @@ describe('Care AI Meta sandbox adapters', () => {
     expect(syntheticChannelInbound('instagram', 'C').externalSenderId).toBe('synthetic-igsid');
   });
 
-  it('formats Messenger as RESPONSE and Instagram as native Instagram Login text payload', () => {
+  it('formats Messenger response, sender actions and Instagram native text payloads', () => {
     expect(formatMetaTextSendPayload('facebook_messenger', 'RECIPIENT', 'Hello')).toEqual({
       recipient: { id: 'RECIPIENT' },
       messaging_type: 'RESPONSE',
       message: { text: 'Hello' },
+    });
+    expect(formatMetaMessengerSenderActionPayload('RECIPIENT', 'typing_on')).toEqual({
+      recipient: { id: 'RECIPIENT' },
+      sender_action: 'typing_on',
+    });
+    expect(formatMetaMessengerSenderActionPayload('RECIPIENT', 'typing_off')).toEqual({
+      recipient: { id: 'RECIPIENT' },
+      sender_action: 'typing_off',
     });
     expect(formatMetaTextSendPayload('instagram', 'IGSID', 'Hello IG')).toEqual({
       recipient: { id: 'IGSID' },
@@ -72,8 +81,10 @@ describe('Care AI Meta sandbox adapters', () => {
     });
   });
 
-  it('pins Messenger outbound to graph.facebook.com and the inbound Page', async () => {
-    const spy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify({ recipient_id: 'R', message_id: 'M' }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
+  it('shows Messenger typing around the reply while preserving the pinned official endpoint', async () => {
+    const spy = vi.spyOn(globalThis, 'fetch').mockImplementation(async () =>
+      new Response(JSON.stringify({ recipient_id: 'R', message_id: 'M' }), { status: 200, headers: { 'Content-Type': 'application/json' } }),
+    );
     const endpoint = 'https://graph.facebook.com/v26.0/PAGE-1/messages';
     const result = await sendMetaText({
       config: { channel: 'facebook_messenger', sendEndpoint: endpoint, accessToken: 'meta-secret', expectedAccountId: 'PAGE-1' },
@@ -81,12 +92,39 @@ describe('Care AI Meta sandbox adapters', () => {
       text: 'Hello',
     });
     expect(result).toEqual({ recipientId: 'R', messageId: 'M' });
-    const [url, init] = spy.mock.calls[0];
-    expect(url).toBe(endpoint);
-    expect(init?.redirect).toBe('manual');
-    expect((init?.headers as Record<string, string>).Authorization).toBe('Bearer meta-secret');
-    expect(String(init?.body)).not.toContain('meta-secret');
-    expect(JSON.parse(String(init?.body))).toMatchObject({ messaging_type: 'RESPONSE' });
+    expect(spy).toHaveBeenCalledTimes(3);
+    for (const [url, init] of spy.mock.calls) {
+      expect(url).toBe(endpoint);
+      expect(init?.redirect).toBe('manual');
+      expect((init?.headers as Record<string, string>).Authorization).toBe('Bearer meta-secret');
+      expect(String(init?.body)).not.toContain('meta-secret');
+    }
+    expect(JSON.parse(String(spy.mock.calls[0][1]?.body))).toEqual({ recipient: { id: 'RECIPIENT' }, sender_action: 'typing_on' });
+    expect(JSON.parse(String(spy.mock.calls[1][1]?.body))).toMatchObject({ messaging_type: 'RESPONSE', message: { text: 'Hello' } });
+    expect(JSON.parse(String(spy.mock.calls[2][1]?.body))).toEqual({ recipient: { id: 'RECIPIENT' }, sender_action: 'typing_off' });
+  });
+
+  it('keeps Messenger reply fail-open when typing_on is rejected', async () => {
+    let call = 0;
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async () => {
+      call += 1;
+      if (call === 1) return new Response('{}', { status: 500, headers: { 'Content-Type': 'application/json' } });
+      return new Response(JSON.stringify({ recipient_id: 'R', message_id: 'M' }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    });
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const result = await sendMetaText({
+      config: {
+        channel: 'facebook_messenger',
+        sendEndpoint: 'https://graph.facebook.com/v26.0/PAGE-1/messages',
+        accessToken: 'meta-secret',
+        expectedAccountId: 'PAGE-1',
+      },
+      recipientId: 'RECIPIENT',
+      text: 'Hello',
+    });
+    expect(result).toEqual({ recipientId: 'R', messageId: 'M' });
+    expect(call).toBe(2);
+    expect(warnSpy).toHaveBeenCalledWith('CARE_META_TYPING_DEGRADED', { status: 500, senderAction: 'typing_on' });
   });
 
   it('pins Instagram outbound to graph.instagram.com and the inbound Instagram professional account', async () => {
@@ -98,6 +136,7 @@ describe('Care AI Meta sandbox adapters', () => {
       text: 'Hello IG',
     });
     expect(result).toEqual({ recipientId: 'IGSID-1', messageId: 'IG-M-2' });
+    expect(spy).toHaveBeenCalledTimes(1);
     const [url, init] = spy.mock.calls[0];
     expect(url).toBe(endpoint);
     expect(init?.redirect).toBe('manual');
@@ -107,8 +146,12 @@ describe('Care AI Meta sandbox adapters', () => {
   });
 
   it('emits only safe numeric diagnostics when Meta Send API rejects outbound', async () => {
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
-      new Response(
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async (_url, init) => {
+      const body = JSON.parse(String(init?.body));
+      if (body.sender_action) {
+        return new Response('{}', { status: 200, headers: { 'Content-Type': 'application/json' } });
+      }
+      return new Response(
         JSON.stringify({
           error: {
             message: 'Sensitive upstream message mentioning PSID-SECRET and TOKEN-SECRET',
@@ -119,8 +162,8 @@ describe('Care AI Meta sandbox adapters', () => {
           },
         }),
         { status: 400, headers: { 'Content-Type': 'application/json' } },
-      ),
-    );
+      );
+    });
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
     await expect(
