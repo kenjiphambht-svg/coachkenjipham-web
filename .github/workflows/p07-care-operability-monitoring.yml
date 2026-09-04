@@ -43,6 +43,7 @@ jobs:
           for (const key of [
             'CARE_META_OPERABILITY_EVENTS_ENABLED',
             'CARE_META_OPERABILITY_HEALTH_ENABLED',
+            'CARE_META_OPERABILITY_HEALTH_TOKEN',
             'CARE_META_OPERABILITY_LOOKBACK_MS',
             'CARE_META_OPERABILITY_PENDING_AGE_MS',
           ]) {
@@ -50,13 +51,21 @@ jobs:
               throw new Error(`CARE_OPERABILITY_RUNTIME_VAR_MUST_NOT_BE_IN_SOURCE_${key}`);
             }
           }
-          console.log('PASS: operability gates remain dashboard-managed and existing keep_vars invariant is preserved.');
+          const migration = fs.readFileSync('cloudflare/d1/20260904_p07_care_operability_state.sql', 'utf8');
+          if (!/CREATE TABLE IF NOT EXISTS care_meta_operability_state/i.test(migration)) {
+            throw new Error('CARE_OPERABILITY_MIGRATION_MISSING');
+          }
+          if (!/expires_at_ms INTEGER NOT NULL/i.test(migration)) {
+            throw new Error('CARE_OPERABILITY_RETENTION_COLUMN_MISSING');
+          }
+          console.log('PASS: operability gates remain dashboard-managed, health auth remains secret-managed, and keep_vars is preserved.');
           NODE
 
       - name: Run Care operability and current Meta regression tests
         run: >
           npx vitest run
           tests/care-ai-operability.test.ts
+          tests/care-ai-operability-wiring.test.ts
           tests/care-ai-meta-sandbox.test.ts
           tests/care-ai-meta-customer-guard.test.ts
           tests/care-ai-provider-neutral.test.ts
@@ -87,7 +96,7 @@ jobs:
           test -f wrangler-care-operability-dry-run/worker.js
           echo 'PASS: monitoring branch packages without deployment.'
 
-      - name: Assert no live provider/channel/customer secrets in CI
+      - name: Assert no live provider/channel/customer/health secrets in CI
         shell: bash
         run: |
           set -euo pipefail
@@ -98,4 +107,5 @@ jobs:
           test -z "${CARE_META_INSTAGRAM_ACCESS_TOKEN:-}"
           test -z "${CARE_META_CONTEXT_IDENTITY_HMAC_SECRET:-}"
           test -z "${SUPABASE_SERVICE_ROLE_KEY:-}"
+          test -z "${CARE_META_OPERABILITY_HEALTH_TOKEN:-}"
           echo 'PASS: operability CI exports no live credentials.'
