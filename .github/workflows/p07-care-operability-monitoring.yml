@@ -61,7 +61,7 @@ jobs:
           console.log('PASS: operability gates remain dashboard-managed, health auth remains secret-managed, and keep_vars is preserved.');
           NODE
 
-      - name: Run Care operability and current Meta regression tests
+      - name: Run Care operability + Messenger + memory + comment regressions
         run: >
           npx vitest run
           tests/care-ai-operability.test.ts
@@ -69,8 +69,16 @@ jobs:
           tests/care-ai-meta-sandbox.test.ts
           tests/care-ai-meta-customer-guard.test.ts
           tests/care-ai-provider-neutral.test.ts
+          tests/care-ai-runtime-knowledge.test.ts
           tests/care-ai-facebook-comment.test.ts
           tests/care-ai-facebook-comment-wiring.test.ts
+          tests/care-ai-conversation-context.test.ts
+          tests/care-ai-conversation-context-sql.test.ts
+          tests/care-ai-relationship-memory.test.ts
+          tests/care-ai-relationship-memory-runtime.test.ts
+          tests/care-ai-relationship-memory-write-runtime.test.ts
+          tests/care-ai-meta-memory-write-wiring.test.ts
+          tests/care-ai-relationship-memory-sql.test.ts
 
       - name: Build isolated Cloudflare bundle with monitoring disabled
         env:
