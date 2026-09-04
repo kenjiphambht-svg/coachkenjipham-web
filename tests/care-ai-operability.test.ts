@@ -7,6 +7,10 @@ import {
   markCareOperabilitySafely,
   safeCareOperabilityErrorCode,
 } from '../src/lib/care-ai/operability';
+import {
+  careOperabilityStageForFailedRequest,
+  careOperabilityStagesForOutcome,
+} from '../src/pages/api/internal/care-ai-meta-operability-wrapper';
 
 function fakeDb(firstResult: unknown) {
   const first = vi.fn(async () => firstResult);
@@ -45,16 +49,17 @@ describe('Care operability', () => {
     expect(careOperabilityHealthDegraded({ modelFailures: 0, outboundFailures: 0, pendingReplies: 1 })).toBe(true);
   });
 
-  it('writes only opaque event state through D1', async () => {
+  it('writes only opaque bounded event state with seven-day expiry', async () => {
     const fake = fakeDb({ event_key: 'a'.repeat(64) });
     const store = new D1CareOperabilityStore(fake.db);
+    const nowMs = 1_800_000_000_000;
 
     await store.mark({
       eventKey: 'a'.repeat(64),
       channel: 'facebook_messenger',
       stage: 'RECEIVED',
       customerMode: true,
-      nowMs: 1_800_000_000_000,
+      nowMs,
     });
 
     expect(fake.prepare).toHaveBeenCalledTimes(1);
@@ -66,8 +71,9 @@ describe('Care operability', () => {
       0,
       0,
       null,
-      1_800_000_000_000,
-      1_800_000_000_000,
+      nowMs,
+      nowMs,
+      nowMs + 7 * 24 * 60 * 60 * 1000,
     ]);
   });
 
@@ -80,6 +86,36 @@ describe('Care operability', () => {
       lookbackMs: 900_000,
       pendingAgeMs: 90_000,
     })).resolves.toEqual({ modelFailures: 2, outboundFailures: 1, pendingReplies: 0 });
+  });
+
+  it('maps successful, failed, gated, policy and duplicate outcomes to terminal lifecycle stages', () => {
+    expect(careOperabilityStagesForOutcome({
+      modelCalled: true,
+      modelFallbackUsed: false,
+      outboundSent: true,
+    })).toEqual(['MODEL_SUCCESS', 'OUTBOUND_SUCCESS']);
+
+    expect(careOperabilityStagesForOutcome({
+      modelCalled: true,
+      modelFallbackUsed: true,
+      outboundSent: false,
+    })).toEqual(['MODEL_FAILURE']);
+
+    expect(careOperabilityStagesForOutcome({
+      modelCalled: true,
+      modelFallbackUsed: false,
+      outboundSent: false,
+    })).toEqual(['MODEL_SUCCESS', 'OUTBOUND_GATED']);
+
+    expect(careOperabilityStagesForOutcome({
+      modelCalled: false,
+      requiresHumanReview: true,
+      outboundSent: false,
+    })).toEqual(['POLICY_NO_AUTO_REPLY']);
+
+    expect(careOperabilityStagesForOutcome({ duplicate: true })).toEqual(['DUPLICATE']);
+    expect(careOperabilityStageForFailedRequest('CARE_MODEL_TIMEOUT')).toBe('MODEL_FAILURE');
+    expect(careOperabilityStageForFailedRequest('CARE_META_SEND_HTTP_500')).toBe('OUTBOUND_FAILURE');
   });
 
   it('never lets telemetry-store failure break the Care reply path', async () => {
