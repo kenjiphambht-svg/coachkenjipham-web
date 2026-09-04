@@ -54,6 +54,13 @@ const PRODUCTS: readonly CareRuntimeProduct[] = [
     price: '8.000.000đ',
     summary: 'ACTIVE SALE. Phù hợp khi khách có nhiều thông tin/góc nhìn về bản thân nhưng chưa tích hợp tốt vào công việc, quan hệ, tiền và quyết định; khoảng 150 phút làm việc trực tiếp với Kenji + phân tích viết cá nhân hóa. Không phải “cấp cao hơn” Lặng 90’.',
   },
+  {
+    slug: 'khoi_dau',
+    label: 'Khởi đầu',
+    aliases: ['khoi dau'],
+    price: 'Cá nhân 100.000đ / Parent 100.000đ / Công việc-Business FREE',
+    summary: 'CURRENT PRODUCT TRUTH. Khởi đầu giúp định hướng/qualification với giá trị độc lập; Cá nhân 100.000đ paid, Parent 100.000đ paid, Công việc/Business free. Không ép Khởi đầu nếu khách đã có nhu cầu rõ và intent cao.',
+  },
 ] as const;
 
 const KNOWLEDGE = `
@@ -138,6 +145,9 @@ export function runtimeProductFallbackReply(product: CareRuntimeProduct, salutat
   }
   if (product.slug === 'lang_90') {
     return `${product.label} đang mở bán ở mức ${product.price}. Đây là phiên 1:1 trực tiếp 90 phút cho một quyết định/vấn đề cá nhân hệ trọng; lịch/chỗ cụ thể cần được xác nhận khi chốt.`;
+  }
+  if (product.slug === 'khoi_dau') {
+    return `${product.label} có giá hiện tại: Cá nhân 100.000đ, Parent 100.000đ, Công việc/Business miễn phí. Đây là bước định hướng/qualification có giá trị độc lập và không bắt buộc nếu ${who} đã biết khá rõ mình cần gì.`;
   }
   return `${product.label} đang mở bán ở mức ${product.price}. ${product.summary}`;
 }
