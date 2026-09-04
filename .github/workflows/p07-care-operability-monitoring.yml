@@ -15,11 +15,20 @@ jobs:
   operability-monitoring:
     runs-on: ubuntu-24.04
     steps:
-      - name: Checkout exact head
+      - name: Checkout exact source head
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
+
+      - name: Assert checkout is exact source head
+        shell: bash
+        run: |
+          set -euo pipefail
+          EXPECTED_SHA='${{ github.event.pull_request.head.sha || github.sha }}'
+          ACTUAL_SHA="$(git rev-parse HEAD)"
+          test "$ACTUAL_SHA" = "$EXPECTED_SHA"
+          echo "PASS: exact source head $ACTUAL_SHA"
 
       - name: Setup Node
         uses: actions/setup-node@v4
