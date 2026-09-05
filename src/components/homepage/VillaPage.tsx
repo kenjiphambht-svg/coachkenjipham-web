@@ -316,41 +316,29 @@ export default function VillaPage() {
         </section>
 
         {/* 06 — Founder / origin + question */}
-        <section className="relative overflow-hidden bg-e26-white px-5 pb-20 pt-0 md:px-[2.5vw] md:pb-24 min-[1440px]:pb-28">
-          {/* One large stage, inset from the page. The white page is only its margin. */}
-          <div className="relative mx-auto max-w-[1880px] overflow-hidden bg-e26-cream min-[1700px]:min-h-[900px]">
-            {/* The photograph is the stage itself — the full deep world behind everything */}
+        <section className="relative overflow-hidden bg-e26-white px-[14px] pb-20 pt-0 md:px-[1.25vw] md:pb-24 min-[1440px]:pb-28">
+          {/* Page lip — the white home plane runs over the top edge of the stage */}
+          <div
+            className="pointer-events-none absolute inset-x-0 top-0 z-20 h-10 bg-e26-white md:h-11 min-[1440px]:h-12"
+            style={{ boxShadow: "0 12px 20px -12px rgba(26,26,26,0.26)" }}
+            aria-hidden="true"
+          />
+
+          {/* The founder stage sits behind that lip */}
+          <div className="relative -mt-10 overflow-hidden bg-e26-cream md:-mt-11 min-[1440px]:-mt-12 min-[1440px]:min-h-[900px]">
+            {/* The photograph, exactly as approved — no veil, no wash, no grading */}
             <div className="relative aspect-[4/3] w-full md:aspect-[16/9] min-[1440px]:absolute min-[1440px]:inset-0 min-[1440px]:aspect-auto">
               <Image
                 src="/images/home/home-scene-06-founder.webp"
                 alt="Kenji Phạm — Founder, ESSENCE"
                 fill
-                sizes="(max-width: 1439px) 92vw, 90vw"
+                sizes="(max-width: 1439px) 97vw, 97vw"
                 className="object-cover object-[92%_center] md:object-[86%_center] min-[1440px]:object-[48%_center] min-[1700px]:object-[72%_center]"
-              />
-              {/* One broad atmosphere across the stage — heaviest behind the copy, gone before Kenji */}
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(90deg, color-mix(in srgb, var(--essence-cream-2026) 44%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 36%, transparent) 34%, color-mix(in srgb, var(--essence-cream-2026) 16%, transparent) 56%, transparent 76%)",
-                }}
-                aria-hidden="true"
               />
             </div>
 
-            {/* Contact depth — the white page plane sits a touch above the founder world */}
-            <div
-              className="pointer-events-none absolute inset-0 z-[5]"
-              style={{
-                boxShadow:
-                  "inset 0 26px 54px -34px rgba(26,26,26,0.34), inset 22px 0 48px -40px rgba(26,26,26,0.24), inset -22px 0 48px -40px rgba(26,26,26,0.20), inset 0 -18px 44px -38px rgba(26,26,26,0.18)",
-              }}
-              aria-hidden="true"
-            />
-
-            {/* Typography — the foreground plane, inside the same stage */}
-            <div className="relative z-10 -mt-7 px-6 pb-12 pt-0 md:-mt-10 md:px-10 md:pb-16 md:pt-0 min-[1440px]:mt-0 min-[1440px]:w-[63%] min-[1440px]:min-w-[812px] min-[1440px]:max-w-[920px] min-[1440px]:px-14 min-[1440px]:py-12">
+            {/* Typography — the front plane, held inside the plaster wall */}
+            <div className="relative z-10 -mt-7 px-6 pb-12 pt-0 md:-mt-10 md:px-10 md:pb-16 md:pt-0 min-[1440px]:mt-0 min-[1440px]:w-[822px] min-[1440px]:px-14 min-[1440px]:pb-12 min-[1440px]:pt-[104px] min-[1700px]:w-[886px] min-[1700px]:pl-[120px]">
               <div className="e26-reveal">
                 <p data-body-copy className="max-w-[590px] font-sans text-[17px] leading-[1.78] md:text-[18px]">
                   Trước ESSENCE, tôi làm nhiều việc với nhân hiệu, hình ảnh và cách một người xuất hiện.
@@ -362,7 +350,7 @@ export default function VillaPage() {
 
                 <div className="relative mt-14 border-t border-[#E0C068]/62 pt-9 md:mt-16 md:pt-10">
                   <p className="mb-5 font-sans text-[12px] font-medium uppercase tracking-[0.13em] text-e26-text-2">Từ đó, một câu hỏi ở lại với tôi:</p>
-                  <p className="max-w-[900px] font-serif text-[48px] font-medium leading-[1.02] tracking-[-0.024em] md:text-[76px] lg:text-[88px]">“Điều gì ở đây thật sự đáng để được xây?”</p>
+                  <p className="max-w-[720px] font-serif text-[48px] font-medium leading-[1.02] tracking-[-0.024em] md:text-[76px] lg:text-[88px]">“Điều gì ở đây thật sự đáng để được xây?”</p>
                 </div>
 
                 <div className="mt-10 border-l border-[#E0C068]/72 pl-4">
@@ -371,16 +359,16 @@ export default function VillaPage() {
 
                 <Link
                   href="/ve-kenji"
-                  className={`group mt-12 inline-flex min-h-11 items-center gap-6 font-sans text-[15px] font-medium uppercase tracking-[0.1em] text-e26-text md:mt-14 md:text-[17px] ${thresholdMotion}`}
+                  className={`group mt-12 inline-flex min-h-11 max-w-full items-center gap-4 font-sans text-[28px] font-medium uppercase leading-none tracking-[0.06em] text-e26-text md:mt-14 md:gap-6 md:text-[32px] ${thresholdMotion}`}
                 >
                   <span>Về Kenji</span>
                   <svg
-                    viewBox="0 0 108 12"
-                    className={`h-3 w-[88px] shrink-0 md:w-[108px] group-hover:translate-x-1.5 ${thresholdMotion} transition-transform`}
+                    viewBox="0 0 170 14"
+                    className={`h-3.5 w-[118px] shrink-0 md:w-[170px] group-hover:translate-x-2 ${thresholdMotion} transition-transform`}
                     fill="none"
                     aria-hidden="true"
                   >
-                    <path d="M0 6h100M93.5 1.6 100 6l-6.5 4.4" stroke="#8A6D1F" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M0 7h161M153 2.2 161 7l-8 4.8" stroke="#8A6D1F" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </Link>
               </div>
