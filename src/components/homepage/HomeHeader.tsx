@@ -1,75 +1,63 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 
-// Header dùng chung cho toàn site (nhiều trang, không chỉ trang chủ) — theo
-// BRIEF-CLAUDE-CODE-trang-chu-CHOT.md, quyết định B: menu sổ dạng tấm phủ
-// toàn màn hình (không còn 6 link nằm ngang trên thanh header).
-// (SỬA 07/08/2026: bỏ số đếm cụ thể "10 trang" — route /trang-chu-v2 đã
-// retire, số trang dùng chung header có thể đổi theo thời gian nên không
-// khoá cứng một con số dễ lỗi thời.)
-// 6 mục đều là link trang thật, không còn anchor cuộn (#essence, #hat-mam,
-// #ghi-chep đã bỏ khỏi menu theo BAN-CHOT).
 const PRODUCT_LINKS = [
   { href: "/ban-sac-cua-ban", label: "Bản Sắc Của Bạn" },
   { href: "/ban-sac-cua-con", label: "Bản Sắc Của Con" },
 ];
 
-// SỬA 23/07/2026 (brief bổ sung mục menu ⑨, MT4) — thêm "Một góc để quay lại".
-// Section ⑨ nằm TRÊN trang chủ (không có route trang riêng — 3 card còn "chưa
-// mở"), nên trỏ ANCHOR tới section: href đầy đủ "/#..." để chạy
-// đúng CẢ khi đang ở trang khác dùng chung Header (10 trang) — bấm sẽ về trang
-// chủ rồi cuộn tới ⑨. Đặt ngay SAU "Điều Essence không hứa" (⑧) và TRƯỚC "Liên
-// hệ" — đúng thứ tự mạch cuộn trang (⑧ rồi ⑨), giữ Liên hệ ở cuối theo lệ.
-// (Lưu ý: menu vốn đã bỏ anchor #essence/#hat-mam/#ghi-chep theo BAN-CHOT; đây
-// là anchor DUY NHẤT được thêm lại theo yêu cầu đích danh của Kenji cho ⑨.)
 const TRUST_LINKS = [
+  { href: "/khoi-dau", label: "Khởi đầu" },
   { href: "/ve-kenji", label: "Về Kenji" },
-  { href: "/phuong-phap", label: "Phương pháp" },
-  { href: "/dieu-essence-khong-hua", label: "Điều Essence không hứa" },
-  { href: "/#mot-goc-de-quay-lai", label: "Một góc để quay lại" },
+  { href: "/#goc-doc", label: "Góc đọc" },
   { href: "/lien-he", label: "Liên hệ" },
 ];
 
-// Lockup logo — chữ ký Kenji (dòng chính) + wordmark Essence Coaching (phụ đề,
-// canh giữa bên dưới). Dùng 2 file SVG có sẵn trong public/brand/logo/, KHÔNG
-// sửa nội dung file gốc. Header luôn nằm trên nền kem/trong suốt — không dùng
-// bản -dark (để dành cho trang có header trên nền tối sau này, nếu có).
-// TINH CHỈNH 18/07/2026 (lần 2): Kenji yêu cầu tăng wordmark gấp đôi so với
-// mức 67% vừa chỉnh — h-[14px]/h-[17px] → h-[28px]/h-[34px]. LƯU Ý tự phản
-// biện: ở mức này wordmark RỘNG HƠN chữ ký (~130% thay vì phụ đề nhỏ hơn dòng
-// chính) — đã chụp ảnh thật gửi kèm báo cáo để Kenji xác nhận đúng ý muốn.
-// TINH CHỈNH 19/07/2026 (lần 3) — Header gọn lại: gap giữa 2 dòng lockup đã
-// đo thật = 4px (mt-1), đã nằm trong khoảng gợi ý 2-6px nên GIỮ NGUYÊN, chỉ
-// kéo sát thêm 1 nấc xuống mt-0.5 (2px) theo đúng tinh thần "sát". Phần lớn
-// độ cao header đo được (119px) đến từ padding ngoài (py-4), không phải gap
-// này — xem HomeHeader's header/nav padding.
-// TINH CHỈNH 20/07/2026 (lần 4) — kéo sát thêm nấc cuối: mt-0.5 (2px) →
-// mt-0 (0px), 2 dòng chạm sát nhau thật sự. KHÔNG đổi h-10/h-12/h-[28px]/
-// h-[34px] của 2 file SVG — chỉ khoảng cách giữa chúng.
-function HeaderLogo() {
+const HOME_COACHING_CHILDREN = [
+  { href: "/ban-sac-cua-ban", label: "Bản Sắc Của Bạn" },
+  { href: "/ban-sac-cua-con", label: "Bản Sắc Của Con" },
+  { href: "/phuong-phap", label: "Phương pháp coaching" },
+];
+
+const HOME_SHARED_LINKS = [
+  { href: "/khoi-dau", label: "Khởi đầu" },
+  { href: "/ve-kenji", label: "Về Kenji" },
+  { href: "/#goc-doc", label: "Góc đọc" },
+  { href: "/lien-he", label: "Liên hệ" },
+];
+
+const thresholdMotion = "duration-[420ms] ease-out motion-reduce:transition-none motion-reduce:duration-0";
+
+function HeaderLogo({ heroOverlay = false }: { heroOverlay?: boolean }) {
   return (
-    <span className="flex flex-col items-center">
+    <span className="flex flex-col items-center py-1">
       <img
-        src="/brand/logo/kenji-signature-2026.svg"
+        src="/brand/essence/32_SIGNATURE_WEB_BLACK.svg"
         alt="Kenji Phạm"
-        className="h-10 md:h-12 w-auto"
+        className={`block h-[66px] w-auto md:h-[78px] ${heroOverlay ? "brightness-0 invert" : ""}`}
       />
       <img
-        src="/brand/logo/essence-wordmark-minimal-2026.svg"
-        alt="Essence Coaching"
-        className="h-[28px] md:h-[34px] w-auto mt-0"
+        src="/brand/essence/essence-wordmark-only-light.svg"
+        alt="Essence"
+        className="relative -left-2 -mt-1 block h-[31px] w-auto md:-left-3 md:-mt-1.5 md:h-[35px]"
       />
     </span>
   );
 }
 
-export default function HomeHeader() {
+type HomeHeaderProps = {
+  homeIa?: boolean;
+};
+
+export default function HomeHeader({ homeIa = false }: HomeHeaderProps) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
+  const overlayHero = homeIa && router.pathname === "/";
 
-  // Escape đóng menu + trả focus về nút MENU.
   useEffect(() => {
     if (!open) return;
 
@@ -81,10 +69,7 @@ export default function HomeHeader() {
       }
       if (e.key !== "Tab" || !panelRef.current) return;
 
-      // Focus trap: Tab không thoát ra ngoài tấm phủ.
-      const focusable = panelRef.current.querySelectorAll<HTMLElement>(
-        'a[href], button:not([disabled])'
-      );
+      const focusable = panelRef.current.querySelectorAll<HTMLElement>('a[href], button:not([disabled])');
       if (focusable.length === 0) return;
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
@@ -108,22 +93,27 @@ export default function HomeHeader() {
     };
   }, [open]);
 
+  const closeMenu = () => setOpen(false);
+
   return (
-    <header className="relative z-50 bg-e26-ivory border-b border-e26-border px-6">
-      {/* TINH CHỈNH 19/07/2026 (lần 4, v8-FINAL) — thu gọn thêm: py-2.5 (10px,
-          lần 3) vẫn còn thấy dày → py-1.5 (6px). Áp cùng mức cho cả header
-          cuộn (đây) lẫn tấm phủ menu (bên dưới) để nhất quán.
-          TINH CHỈNH 20/07/2026 (lần 5) — thu hẹp thêm 1 nấc: py-1.5 (6px) →
-          py-1 (4px), CHỈ khung/spacing, KHÔNG đụng kích thước 2 file SVG logo
-          (giữ nguyên h-10/h-12 chữ ký, h-[28px]/h-[34px] wordmark). Áp cùng
-          mức cho cả 2 chỗ (đây + tấm phủ menu bên dưới). */}
-      <div className="max-w-[1120px] mx-auto flex items-center justify-between py-1">
-        <Link
-          href="/"
-          aria-label="Về trang chủ"
-          className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory"
-        >
-          <HeaderLogo />
+    <header
+      className={
+        overlayHero
+          ? "absolute inset-x-0 top-0 z-50 bg-transparent px-6"
+          : "relative z-50 border-b border-e26-border bg-e26-ivory px-6"
+      }
+    >
+      {overlayHero && (
+        <style>{`
+          main > section:first-of-type .e26-reveal > div:last-child > p {
+            font-size: 15.4px;
+          }
+        `}</style>
+      )}
+
+      <div className="mx-auto flex max-w-[1120px] items-center justify-between py-1">
+        <Link href="/" aria-label="Về trang chủ" className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory">
+          <HeaderLogo heroOverlay={overlayHero} />
         </Link>
         <button
           ref={menuButtonRef}
@@ -131,14 +121,16 @@ export default function HomeHeader() {
           onClick={() => setOpen(true)}
           aria-expanded={open}
           aria-controls="site-menu-panel"
-          className="font-sans text-sm tracking-[0.16em] uppercase text-e26-text hover:text-e26-gold-deep transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory"
+          className={`inline-flex min-h-11 min-w-11 items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-ivory ${
+            overlayHero
+              ? "min-h-[52px] min-w-[100px] px-3 font-serif text-[22px] font-medium normal-case tracking-[0.025em] text-e26-text hover:text-e26-gold-deep md:mr-[9vw] md:min-h-[54px] md:min-w-[108px] md:text-[23px]"
+              : "font-sans text-sm uppercase tracking-[0.16em] text-e26-text hover:text-e26-gold-deep"
+          } ${thresholdMotion}`}
         >
           Menu
         </button>
       </div>
 
-      {/* Tấm phủ toàn màn hình — luôn nằm trong DOM để transition mượt,
-          ẩn bằng transform + opacity khi đóng (không unmount). */}
       <div
         id="site-menu-panel"
         ref={panelRef}
@@ -146,22 +138,23 @@ export default function HomeHeader() {
         aria-modal="true"
         aria-label="Menu điều hướng"
         aria-hidden={!open}
-        onClick={() => setOpen(false)}
-        className={`fixed inset-0 z-50 bg-e26-cream transition-all duration-[400ms] ease-out motion-reduce:transition-none motion-reduce:duration-0 ${
-          open
-            ? "opacity-100 translate-y-0 pointer-events-auto"
-            : "opacity-0 -translate-y-4 pointer-events-none"
-        }`}
+        onClick={closeMenu}
+        className={`fixed inset-0 z-50 overflow-hidden bg-e26-cream transition-all ${thresholdMotion} ${open ? "pointer-events-auto translate-y-0 opacity-100" : "pointer-events-none -translate-y-3 opacity-0"}`}
       >
-        <div className="max-w-[1120px] mx-auto h-full flex flex-col px-6">
+        {homeIa && (
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(circle at 78% 18%, color-mix(in srgb, var(--essence-white-2026) 74%, transparent), transparent 32%), linear-gradient(118deg, color-mix(in srgb, var(--essence-ivory-2026) 54%, transparent), transparent 58%)",
+            }}
+            aria-hidden="true"
+          />
+        )}
+
+        <div className="relative mx-auto flex h-full max-w-[1120px] flex-col px-6 md:px-10">
           <div className="flex items-center justify-between py-1">
-            <Link
-              href="/"
-              aria-label="Về trang chủ"
-              tabIndex={open ? 0 : -1}
-              onClick={(e) => e.stopPropagation()}
-              className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
-            >
+            <Link href="/" aria-label="Về trang chủ" tabIndex={open ? 0 : -1} onClick={(e) => e.stopPropagation()} className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream">
               <HeaderLogo />
             </Link>
             <button
@@ -169,51 +162,97 @@ export default function HomeHeader() {
               tabIndex={open ? 0 : -1}
               onClick={(e) => {
                 e.stopPropagation();
-                setOpen(false);
+                closeMenu();
                 menuButtonRef.current?.focus();
               }}
-              className="font-sans text-sm tracking-[0.16em] uppercase text-e26-text hover:text-e26-gold-deep transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
+              className={`min-h-11 min-w-11 font-sans text-sm uppercase tracking-[0.16em] text-e26-text transition-colors hover:text-e26-gold-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream ${thresholdMotion}`}
             >
               Đóng
             </button>
           </div>
 
-          <nav
-            aria-label="Điều hướng trang"
-            onClick={(e) => e.stopPropagation()}
-            className="flex-1 flex flex-col items-start justify-center gap-8 md:gap-10 pb-16 w-fit"
-          >
-            <div className="flex flex-col gap-4 md:gap-5">
-              {PRODUCT_LINKS.map((link, i) => (
-                <Link
-                  key={link.href}
-                  ref={i === 0 ? firstLinkRef : undefined}
-                  href={link.href}
-                  tabIndex={open ? 0 : -1}
-                  onClick={() => setOpen(false)}
-                  className="font-serif font-normal text-[32px] md:text-[44px] leading-tight text-e26-text hover:text-e26-gold-deep transition-colors duration-300 min-h-11 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
+          {homeIa ? (
+            <nav aria-label="Điều hướng trang" onClick={(e) => e.stopPropagation()} className="relative z-10 flex flex-1 overflow-y-auto pb-10 pt-6 md:items-center md:overflow-visible md:pb-12 md:pt-4">
+              <div className="w-full md:grid md:grid-cols-12 md:gap-8">
+                <div className={`md:col-span-6 md:col-start-5 lg:col-span-5 lg:col-start-5 transition-transform ${open ? "translate-y-0" : "translate-y-3"} ${thresholdMotion}`}>
+                  <div>
+                    <Link
+                      ref={firstLinkRef}
+                      href="/coaching"
+                      tabIndex={open ? 0 : -1}
+                      onClick={closeMenu}
+                      className="group relative inline-flex min-h-11 items-center font-serif text-[34px] font-normal leading-[1.06] tracking-[-0.016em] text-e26-text md:text-[40px] lg:text-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
+                    >
+                      ESSENCE Coaching
+                      <span className={`absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform group-hover:scale-x-100 ${thresholdMotion}`} aria-hidden="true" />
+                    </Link>
 
-            <div className="w-16 h-px bg-e26-border" aria-hidden="true" />
+                    <div className="mt-3 flex flex-col items-start md:mt-4">
+                      {HOME_COACHING_CHILDREN.map((link) => (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          tabIndex={open ? 0 : -1}
+                          onClick={closeMenu}
+                          className={`group flex min-h-11 w-fit items-center font-sans text-[14px] leading-[1.5] text-e26-text-2 transition-colors hover:text-e26-text md:text-[15px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream ${thresholdMotion}`}
+                        >
+                          <span className="mr-3 text-[10px] text-[#E0C068]" aria-hidden="true">—</span>
+                          {link.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
 
-            <div className="flex flex-col gap-4 md:gap-5">
-              {TRUST_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  tabIndex={open ? 0 : -1}
-                  onClick={() => setOpen(false)}
-                  className="font-serif font-normal text-[32px] md:text-[44px] leading-tight text-e26-text hover:text-e26-gold-deep transition-colors duration-300 min-h-11 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          </nav>
+                  <div className="mt-5 md:mt-7">
+                    <Link
+                      href="/advisory"
+                      tabIndex={open ? 0 : -1}
+                      onClick={closeMenu}
+                      className="group relative inline-flex min-h-11 items-center font-serif text-[34px] font-normal leading-[1.06] tracking-[-0.016em] text-e26-text md:text-[40px] lg:text-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
+                    >
+                      ESSENCE Advisory
+                      <span className={`absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform group-hover:scale-x-100 ${thresholdMotion}`} aria-hidden="true" />
+                    </Link>
+                  </div>
+
+                  <div className="mt-10 flex flex-col items-start md:mt-12">
+                    {HOME_SHARED_LINKS.map((link) => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        tabIndex={open ? 0 : -1}
+                        onClick={closeMenu}
+                        className="group relative flex min-h-11 w-fit items-center font-serif text-[27px] font-normal leading-[1.08] tracking-[-0.012em] text-e26-text md:text-[30px] lg:text-[32px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream"
+                      >
+                        {link.label}
+                        <span className={`absolute bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-[#E0C068] transition-transform group-hover:scale-x-100 ${thresholdMotion}`} aria-hidden="true" />
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </nav>
+          ) : (
+            <nav aria-label="Điều hướng trang" onClick={(e) => e.stopPropagation()} className="flex w-fit flex-1 flex-col items-start justify-center gap-8 pb-16 md:gap-10">
+              <div className="flex flex-col gap-4 md:gap-5">
+                {PRODUCT_LINKS.map((link, i) => (
+                  <Link key={link.href} ref={i === 0 ? firstLinkRef : undefined} href={link.href} tabIndex={open ? 0 : -1} onClick={closeMenu} className="min-h-11 font-serif text-[32px] font-normal leading-tight text-e26-text transition-colors duration-300 hover:text-e26-gold-deep md:text-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream">
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+
+              <div className="h-px w-16 bg-e26-border" aria-hidden="true" />
+
+              <div className="flex flex-col gap-4 md:gap-5">
+                {TRUST_LINKS.map((link) => (
+                  <Link key={link.href} href={link.href} tabIndex={open ? 0 : -1} onClick={closeMenu} className="min-h-11 font-serif text-[32px] font-normal leading-tight text-e26-text transition-colors duration-300 hover:text-e26-gold-deep md:text-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-e26-gold focus-visible:ring-offset-4 focus-visible:ring-offset-e26-cream">
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </nav>
+          )}
         </div>
       </div>
     </header>

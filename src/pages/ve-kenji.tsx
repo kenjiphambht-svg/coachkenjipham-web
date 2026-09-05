@@ -618,6 +618,13 @@ export default function VeKenjiPage() {
                 );
               })}
             </ol>
+            <div className="mt-14 flex justify-center md:mt-16">
+              <img
+                src="/brand/essence/32_SIGNATURE_WEB_BLACK.svg"
+                alt="Chữ ký Kenji Phạm"
+                className="block h-auto w-[200px] sm:w-[240px] md:w-[280px]"
+              />
+            </div>
           </div>
         </section>
 

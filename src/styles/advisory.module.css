@@ -37,11 +37,9 @@
 }
 .brandLockup {
   display: inline-flex;
-  flex-direction: column;
   align-items: center;
 }
-.brandLockup img:first-child { width: auto; height: 48px; }
-.brandLockup img:last-child { width: auto; height: 34px; margin-top: 0; }
+.brandLockup img { display: block; width: 280px; max-width: 100%; height: auto; }
 .trustLink {
   color: var(--essence-text-primary-2026);
   font-size: 14px;
@@ -612,8 +610,7 @@
 @media (max-width: 720px) {
   .header { padding: 0 18px; }
   .headerInner { min-height: 72px; }
-  .brandLockup img:first-child { height: 40px; }
-  .brandLockup img:last-child { height: 28px; }
+  .brandLockup img { width: 220px; }
   .trustLink { font-size: 13px; }
 
   .shell,
@@ -694,6 +691,10 @@
   .formColumn { padding-top: 0; }
   .field textarea { min-height: 100px; }
   .fieldPriority textarea { min-height: 156px; }
+}
+
+@media (max-width: 359px) {
+  .brandLockup img { width: 145px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

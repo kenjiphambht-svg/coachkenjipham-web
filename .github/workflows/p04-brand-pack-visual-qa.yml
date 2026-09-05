@@ -1,0 +1,257 @@
+name: P04 Brand Pack surface visual QA
+
+on:
+  push:
+    branches:
+      - p04/essence-brand-pack-web-implement-01
+
+permissions:
+  contents: read
+
+concurrency:
+  group: p04-brand-pack-surface-visual-qa
+  cancel-in-progress: true
+
+jobs:
+  surface-qa:
+    if: ${{ contains(github.event.head_commit.message, '[p04-brand-visual-run]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: p04/essence-brand-pack-web-implement-01
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install locked app dependencies
+        run: npm ci
+
+      - name: Production build
+        run: npm run build
+
+      - name: Install ephemeral Playwright QA dependency
+        run: |
+          npm install --no-save --package-lock=false @playwright/test@1.55.0
+          npx playwright install chromium
+
+      - name: Run final Home Founder-lock QA
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/p04-brand-surface-evidence
+          (npm start -- -p 3000 > /tmp/p04-next.log 2>&1 & echo $! > /tmp/p04-next.pid)
+          for i in {1..60}; do
+            if curl -fsS http://127.0.0.1:3000/ >/dev/null; then break; fi
+            sleep 1
+          done
+          cat > p04-brand-surface.spec.cjs <<'JS'
+          const { test, expect } = require('@playwright/test');
+          const fs = require('fs');
+          const out = '/tmp/p04-brand-surface-evidence';
+          const base = 'http://127.0.0.1:3000';
+          test.setTimeout(90_000);
+
+          async function prepareFullPage(page) {
+            if (await page.evaluate(() => Boolean(document.fonts?.ready))) {
+              await page.evaluate(() => document.fonts.ready);
+            }
+            const reveals = page.locator('.e26-reveal');
+            const count = await reveals.count();
+            for (let i = 0; i < count; i += 1) {
+              await reveals.nth(i).scrollIntoViewIfNeeded();
+              await page.waitForTimeout(60);
+            }
+            await page.waitForTimeout(350);
+            await page.evaluate(() => {
+              document.querySelectorAll('.e26-reveal').forEach((el) => el.classList.add('is-visible'));
+              window.scrollTo({ top: 0, behavior: 'instant' });
+            });
+            await page.waitForTimeout(300);
+          }
+
+          test('final desktop and mobile full-page evidence', async ({ browser }) => {
+            for (const [mode, viewport] of [
+              ['desktop', { width: 1440, height: 1000 }],
+              ['mobile', { width: 390, height: 844 }],
+            ]) {
+              const page = await browser.newPage({ viewport });
+              await page.goto(base + '/', { waitUntil: 'networkidle' });
+              await prepareFullPage(page);
+              await expect(page.locator('main section')).toHaveCount(7);
+              for (const line of [
+                'Có những điều bạn biết rất rõ.',
+                'Điều gì đang chọn thay bạn?',
+                'Trí tuệ không phải biết nhiều hơn.',
+                'Câu chuyện cuộc sống của bạn là một kiệt tác.',
+                '“Điều gì ở đây thật sự đáng để được xây?”',
+                'Bạn không cần biết hết để bắt đầu.',
+              ]) {
+                await expect(page.getByText(line, { exact: true }).first()).toBeVisible();
+              }
+              await expect(page.getByText('NHẬN RA', { exact: true }).first()).toBeVisible();
+              for (const removed of [
+                'Và tự do bắt đầu từ đó.',
+                'Một ranh giới được nói ra.',
+                'Một quyết định có người đứng tên.',
+                'Một cách làm mới thật sự được thử.',
+                'Một cách bạn xuất hiện bắt đầu đi sau điều mình chọn đứng về.',
+              ]) {
+                await expect(page.getByText(removed, { exact: true })).toHaveCount(0);
+              }
+              await expect(page.getByText('Trước ESSENCE, tôi làm nhiều việc với nhân hiệu, hình ảnh và cách một người xuất hiện.', { exact: true }).first()).toBeVisible();
+              await expect(page.locator('main a[href="/coaching"]').first()).toHaveAttribute('href', '/coaching');
+              await expect(page.locator('main a[href="/advisory"]').first()).toHaveAttribute('href', '/advisory');
+              await expect(page.locator('#goc-doc').getByText('Khởi đầu', { exact: true }).first()).toBeVisible();
+              await expect(page.locator('#goc-doc').getByText('Góc đọc', { exact: false }).first()).toBeVisible();
+              await expect(page.locator('#goc-doc').getByText('Ebook', { exact: false }).first()).toBeVisible();
+              await expect(page.locator('#goc-doc').getByRole('link', { name: 'Đi tới Khởi đầu' })).toHaveAttribute('href', '/khoi-dau');
+              await page.screenshot({ path: `${out}/home-full-${mode}.png`, fullPage: true });
+              await page.close();
+            }
+          });
+
+          test('desktop restrained display treatment', async ({ browser }) => {
+            const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+            await page.goto(base + '/', { waitUntil: 'networkidle' });
+            await prepareFullPage(page);
+
+            const anchors = page.locator('[data-home-flow-anchor]');
+            await expect(anchors).toHaveCount(3);
+            for (let i = 0; i < 3; i += 1) {
+              const metrics = await anchors.nth(i).evaluate((el) => {
+                const style = getComputedStyle(el);
+                return { whiteSpace: style.whiteSpace, fontSize: parseFloat(style.fontSize), height: el.getBoundingClientRect().height };
+              });
+              expect(metrics.whiteSpace).toBe('nowrap');
+              expect(metrics.fontSize).toBeLessThanOrEqual(64);
+              expect(metrics.height).toBeLessThan(metrics.fontSize * 1.35);
+            }
+
+            const startHeadline = await page.locator('[data-start-headline]').evaluate((el) => {
+              const style = getComputedStyle(el);
+              return { whiteSpace: style.whiteSpace, fontSize: parseFloat(style.fontSize), height: el.getBoundingClientRect().height };
+            });
+            expect(startHeadline.whiteSpace).toBe('nowrap');
+            expect(startHeadline.fontSize).toBeLessThanOrEqual(72);
+            expect(startHeadline.height).toBeLessThan(startHeadline.fontSize * 1.35);
+
+            const attribution = page.locator('[data-founder-attribution]');
+            const attributionColors = await attribution.evaluate((el) => ({
+              parent: getComputedStyle(el).color,
+              child: getComputedStyle(el.querySelector('span')).color,
+            }));
+            expect(attributionColors.child).toBe(attributionColors.parent);
+
+            const flowArrowWidths = await page.locator('[data-flow-arrow] > span:first-child').evaluateAll((els) => els.map((el) => el.getBoundingClientRect().width));
+            expect(flowArrowWidths.length).toBe(2);
+            for (const width of flowArrowWidths) expect(width).toBeGreaterThanOrEqual(56);
+            const thresholdArrowWidth = await page.locator('[data-threshold-arrow] > span:first-child').evaluate((el) => el.getBoundingClientRect().width);
+            expect(thresholdArrowWidth).toBeGreaterThanOrEqual(96);
+            await page.close();
+          });
+
+          test('final menu open-state evidence and locked IA', async ({ browser }) => {
+            for (const [mode, viewport] of [
+              ['desktop', { width: 1440, height: 1000 }],
+              ['mobile', { width: 390, height: 844 }],
+            ]) {
+              const page = await browser.newPage({ viewport });
+              await page.goto(base + '/', { waitUntil: 'networkidle' });
+              const menu = page.getByRole('button', { name: 'Menu' });
+              await menu.click();
+              const panel = page.locator('#site-menu-panel');
+              await expect(panel).toHaveAttribute('aria-hidden', 'false');
+              await expect(panel.locator('a[href="/coaching"]').first()).toBeFocused();
+              for (const href of ['/ban-sac-cua-ban','/ban-sac-cua-con','/phuong-phap','/advisory','/khoi-dau','/ve-kenji','/#goc-doc','/lien-he']) {
+                await expect(panel.locator(`a[href="${href}"]`)).toHaveCount(1);
+              }
+              await panel.screenshot({ path: `${out}/home-menu-open-${mode}.png` });
+              await page.keyboard.press('Escape');
+              await expect(menu).toBeFocused();
+              await page.close();
+            }
+          });
+
+          test('mobile readability and tap targets', async ({ browser }) => {
+            const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+            await page.goto(base + '/', { waitUntil: 'networkidle' });
+            await prepareFullPage(page);
+
+            const bodyBlocks = page.locator('[data-body-copy]');
+            expect(await bodyBlocks.count()).toBeGreaterThanOrEqual(7);
+            for (let i = 0; i < await bodyBlocks.count(); i += 1) {
+              const metrics = await bodyBlocks.nth(i).evaluate((el) => {
+                const style = getComputedStyle(el);
+                const fontSize = parseFloat(style.fontSize);
+                const lineHeight = parseFloat(style.lineHeight);
+                return { fontSize, ratio: lineHeight / fontSize };
+              });
+              expect(metrics.fontSize).toBeGreaterThanOrEqual(16);
+              expect(metrics.ratio).toBeGreaterThanOrEqual(1.55);
+            }
+
+            for (const href of ['/coaching','/advisory','/khoi-dau']) {
+              const box = await page.locator(`main a[href="${href}"]`).first().boundingBox();
+              expect(Math.round(box?.height || 0)).toBeGreaterThanOrEqual(44);
+            }
+
+            await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+            const menu = page.getByRole('button', { name: 'Menu' });
+            expect(Math.round((await menu.boundingBox())?.height || 0)).toBeGreaterThanOrEqual(44);
+            await menu.click();
+            const navLinks = page.locator('#site-menu-panel nav a');
+            for (let i = 0; i < await navLinks.count(); i += 1) {
+              expect(Math.round((await navLinks.nth(i).boundingBox())?.height || 0)).toBeGreaterThanOrEqual(44);
+            }
+            await page.close();
+          });
+
+          test('short Home motion recording', async ({ browser }) => {
+            const context = await browser.newContext({
+              viewport: { width: 1280, height: 720 },
+              recordVideo: { dir: out, size: { width: 1280, height: 720 } },
+            });
+            const page = await context.newPage();
+            const video = page.video();
+            await page.goto(base + '/', { waitUntil: 'networkidle' });
+            await page.waitForTimeout(700);
+
+            const sections = page.locator('main section');
+            for (let i = 1; i < await sections.count(); i += 1) {
+              await sections.nth(i).scrollIntoViewIfNeeded();
+              await page.waitForTimeout(520);
+            }
+            const coaching = page.locator('main a[href="/coaching"]').first();
+            await coaching.scrollIntoViewIfNeeded();
+            await coaching.hover();
+            await page.waitForTimeout(650);
+            await page.locator('main a[href="/advisory"]').first().hover();
+            await page.waitForTimeout(650);
+            await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
+            await page.waitForTimeout(900);
+            await page.getByRole('button', { name: 'Menu' }).click();
+            await page.waitForTimeout(750);
+            await page.locator('#site-menu-panel a[href="/advisory"]').hover();
+            await page.waitForTimeout(650);
+            await page.keyboard.press('Escape');
+            await page.waitForTimeout(400);
+            await context.close();
+            fs.renameSync(await video.path(), `${out}/home-motion-desktop.webm`);
+          });
+          JS
+          npx playwright test p04-brand-surface.spec.cjs --workers=1 --reporter=line
+          rm p04-brand-surface.spec.cjs
+          kill "$(cat /tmp/p04-next.pid)" || true
+          test "$(find /tmp/p04-brand-surface-evidence -name '*.png' | wc -l)" -eq 4
+          test "$(find /tmp/p04-brand-surface-evidence -name '*.webm' | wc -l)" -eq 1
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p04-brand-pack-surface-qa-v2
+          path: /tmp/p04-brand-surface-evidence/*
+          if-no-files-found: error
