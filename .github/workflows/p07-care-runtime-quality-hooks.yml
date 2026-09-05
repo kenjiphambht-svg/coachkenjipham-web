@@ -1,0 +1,146 @@
+name: P07 Care Runtime Quality Hooks
+
+on:
+  push:
+    branches:
+      - backend/p07-care-runtime-quality-hooks-01
+  pull_request:
+    branches:
+      - backend/p07-care-operability-monitoring-01
+
+permissions:
+  contents: read
+
+jobs:
+  runtime-quality-hooks:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact source head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Assert exact head and pinned operability base ancestry
+        shell: bash
+        run: |
+          set -euo pipefail
+          EXPECTED_SHA='${{ github.event.pull_request.head.sha || github.sha }}'
+          ACTUAL_SHA="$(git rev-parse HEAD)"
+          test "$ACTUAL_SHA" = "$EXPECTED_SHA"
+          PINNED_BASE='1ad8e043bf31de85eb40f9fea44de9d2dcb57253'
+          test "$(git merge-base "$PINNED_BASE" HEAD)" = "$PINNED_BASE"
+          echo "PASS: exact quality-hooks head $ACTUAL_SHA derives from pinned operability base $PINNED_BASE"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Assert bounded quality-hook scope and data minimization
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs = require('fs');
+          const raw = fs.readFileSync('wrangler.care-meta.jsonc', 'utf8').replace(/^\s*\/\/.*$/gm, '');
+          const cfg = JSON.parse(raw);
+          if (cfg.name !== 'p07-care-ai-meta-test') throw new Error('CARE_WORKER_NAME_INVALID');
+          if (cfg.keep_vars !== true) throw new Error('CARE_KEEP_VARS_REQUIRED');
+          for (const key of Object.keys(cfg.vars || {})) {
+            if (key.startsWith('CARE_META_QUALITY_')) throw new Error(`CARE_QUALITY_RUNTIME_GATE_MUST_NOT_BE_SOURCE_PINNED_${key}`);
+          }
+
+          const migration = fs.readFileSync('cloudflare/d1/20260905_p07_care_runtime_quality_hooks.sql', 'utf8');
+          for (const required of [
+            'CREATE TABLE IF NOT EXISTS care_meta_quality_turns',
+            'CREATE TABLE IF NOT EXISTS care_meta_quality_flags',
+            'expires_at_ms INTEGER NOT NULL',
+          ]) {
+            if (!migration.includes(required)) throw new Error(`CARE_QUALITY_SCHEMA_REQUIRED_${required}`);
+          }
+          const forbiddenColumn = /\b(sender_id|customer_name|raw_message|raw_reply|transcript|chain_of_thought|api_key|access_token|secret_value)\b/i;
+          if (forbiddenColumn.test(migration)) throw new Error('CARE_QUALITY_RAW_OR_SECRET_SCHEMA_FORBIDDEN');
+
+          const liveFiles = [
+            'src/pages/api/internal/care-ai-meta-webhook.ts',
+            'src/pages/api/internal/care-ai-meta-webhook-router.ts',
+            'src/pages/api/internal/care-ai-meta-operability-wrapper.ts',
+            'src/pages/api/internal/care-ai-meta-operability-health.ts',
+          ];
+          for (const file of liveFiles) {
+            const content = fs.readFileSync(file, 'utf8');
+            if (/runtime-quality-hooks|runtime-quality-fixtures/.test(content)) {
+              throw new Error(`CARE_QUALITY_LIVE_WIRING_NOT_AUTHORIZED_${file}`);
+            }
+          }
+          console.log('PASS: quality hooks remain isolated, migration is proposal-only source, and no raw/private schema widening is present.');
+          NODE
+
+      - name: Run targeted deterministic + seeded synthetic proof
+        run: >
+          npx vitest run
+          tests/care-ai-runtime-quality-hooks.test.ts
+          tests/care-ai-runtime-quality-hooks-synthetic.test.ts
+
+      - name: Run existing Messenger + Facebook + memory + operability regressions
+        run: >
+          npx vitest run
+          tests/care-ai-operability.test.ts
+          tests/care-ai-operability-wiring.test.ts
+          tests/care-ai-meta-sandbox.test.ts
+          tests/care-ai-meta-customer-guard.test.ts
+          tests/care-ai-provider-neutral.test.ts
+          tests/care-ai-runtime-knowledge.test.ts
+          tests/care-ai-facebook-comment.test.ts
+          tests/care-ai-facebook-comment-wiring.test.ts
+          tests/care-ai-conversation-context.test.ts
+          tests/care-ai-conversation-context-sql.test.ts
+          tests/care-ai-relationship-memory.test.ts
+          tests/care-ai-relationship-memory-runtime.test.ts
+          tests/care-ai-relationship-memory-write-runtime.test.ts
+          tests/care-ai-meta-memory-write-wiring.test.ts
+          tests/care-ai-relationship-memory-sql.test.ts
+          tests/care-ai-model-quality.test.ts
+
+      - name: Build isolated Cloudflare bundle with all mutable customer gates off
+        env:
+          CARE_META_SANDBOX_ENABLED: 'true'
+          CARE_META_LIVE_TEST_ENABLED: 'false'
+          CARE_META_OUTBOUND_ENABLED: 'false'
+          CARE_META_CUSTOMER_MODE_ENABLED: 'false'
+          CARE_META_FACEBOOK_COMMENT_ENABLED: 'false'
+          CARE_META_FACEBOOK_COMMENT_OUTBOUND_ENABLED: 'false'
+          CARE_META_INSTAGRAM_ENABLED: 'false'
+          CARE_META_INSTAGRAM_OUTBOUND_ENABLED: 'false'
+          CARE_META_CONVERSATION_CONTEXT_ENABLED: 'false'
+          CARE_META_OPERABILITY_EVENTS_ENABLED: 'false'
+          CARE_META_OPERABILITY_HEALTH_ENABLED: 'false'
+        run: npm run cf:build
+
+      - name: Wrangler isolated dry-run only
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf wrangler-care-quality-dry-run
+          npx wrangler deploy --dry-run --config wrangler.care-meta.jsonc --outdir wrangler-care-quality-dry-run
+          test -f wrangler-care-quality-dry-run/worker.js
+          echo 'PASS: quality-hooks branch packages without provider deployment.'
+
+      - name: Assert no live secrets in quality-hooks CI
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "${GEMINI_API_KEY:-}"
+          test -z "${CARE_MODEL_API_KEY:-}"
+          test -z "${CARE_META_APP_SECRET:-}"
+          test -z "${CARE_META_MESSENGER_ACCESS_TOKEN:-}"
+          test -z "${CARE_META_INSTAGRAM_ACCESS_TOKEN:-}"
+          test -z "${CARE_META_CONTEXT_IDENTITY_HMAC_SECRET:-}"
+          test -z "${CARE_META_OPERABILITY_HEALTH_TOKEN:-}"
+          test -z "${SUPABASE_SERVICE_ROLE_KEY:-}"
+          echo 'PASS: quality-hooks CI exports no live credentials.'
