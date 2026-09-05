@@ -316,9 +316,9 @@ export default function VillaPage() {
         </section>
 
         {/* 06 — Founder / origin + question */}
-        <section className="relative overflow-hidden bg-e26-white px-5 py-20 md:px-[5vw] md:py-24 min-[1440px]:py-28">
+        <section className="relative overflow-hidden bg-e26-white px-5 pb-20 pt-0 md:px-[2.5vw] md:pb-24 min-[1440px]:pb-28">
           {/* One large stage, inset from the page. The white page is only its margin. */}
-          <div className="relative mx-auto max-w-[1720px] overflow-hidden bg-e26-cream">
+          <div className="relative mx-auto max-w-[1880px] overflow-hidden bg-e26-cream min-[1700px]:min-h-[900px]">
             {/* The photograph is the stage itself — the full deep world behind everything */}
             <div className="relative aspect-[4/3] w-full md:aspect-[16/9] min-[1440px]:absolute min-[1440px]:inset-0 min-[1440px]:aspect-auto">
               <Image
@@ -326,22 +326,31 @@ export default function VillaPage() {
                 alt="Kenji Phạm — Founder, ESSENCE"
                 fill
                 sizes="(max-width: 1439px) 92vw, 90vw"
-                className="object-cover object-[92%_center] md:object-[86%_center] min-[1440px]:object-[46%_center]"
-                style={{ filter: "saturate(0.88) contrast(0.94) brightness(1.03)" }}
+                className="object-cover object-[92%_center] md:object-[86%_center] min-[1440px]:object-[48%_center] min-[1700px]:object-[72%_center]"
               />
               {/* One broad atmosphere across the stage — heaviest behind the copy, gone before Kenji */}
               <div
                 className="absolute inset-0"
                 style={{
                   background:
-                    "linear-gradient(90deg, color-mix(in srgb, var(--essence-cream-2026) 78%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 70%, transparent) 30%, color-mix(in srgb, var(--essence-cream-2026) 44%, transparent) 52%, color-mix(in srgb, var(--essence-cream-2026) 14%, transparent) 70%, transparent 84%)",
+                    "linear-gradient(90deg, color-mix(in srgb, var(--essence-cream-2026) 44%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 36%, transparent) 34%, color-mix(in srgb, var(--essence-cream-2026) 16%, transparent) 56%, transparent 76%)",
                 }}
                 aria-hidden="true"
               />
             </div>
 
+            {/* Contact depth — the white page plane sits a touch above the founder world */}
+            <div
+              className="pointer-events-none absolute inset-0 z-[5]"
+              style={{
+                boxShadow:
+                  "inset 0 26px 54px -34px rgba(26,26,26,0.34), inset 22px 0 48px -40px rgba(26,26,26,0.24), inset -22px 0 48px -40px rgba(26,26,26,0.20), inset 0 -18px 44px -38px rgba(26,26,26,0.18)",
+              }}
+              aria-hidden="true"
+            />
+
             {/* Typography — the foreground plane, inside the same stage */}
-            <div className="relative z-10 -mt-8 px-6 pb-12 pt-8 md:-mt-10 md:px-10 md:pb-16 md:pt-10 min-[1440px]:mt-0 min-[1440px]:w-[63%] min-[1440px]:min-w-[812px] min-[1440px]:max-w-[900px] min-[1440px]:px-14 min-[1440px]:py-16">
+            <div className="relative z-10 -mt-7 px-6 pb-12 pt-0 md:-mt-10 md:px-10 md:pb-16 md:pt-0 min-[1440px]:mt-0 min-[1440px]:w-[63%] min-[1440px]:min-w-[812px] min-[1440px]:max-w-[920px] min-[1440px]:px-14 min-[1440px]:py-12">
               <div className="e26-reveal">
                 <p data-body-copy className="max-w-[590px] font-sans text-[17px] leading-[1.78] md:text-[18px]">
                   Trước ESSENCE, tôi làm nhiều việc với nhân hiệu, hình ảnh và cách một người xuất hiện.
@@ -362,13 +371,17 @@ export default function VillaPage() {
 
                 <Link
                   href="/ve-kenji"
-                  className={`group mt-8 flex min-h-11 max-w-[420px] items-center gap-5 font-sans text-[13px] font-medium uppercase tracking-[0.12em] text-e26-text md:mt-9 ${thresholdMotion}`}
+                  className={`group mt-12 inline-flex min-h-11 items-center gap-6 font-sans text-[15px] font-medium uppercase tracking-[0.1em] text-e26-text md:mt-14 md:text-[17px] ${thresholdMotion}`}
                 >
                   <span>Về Kenji</span>
-                  <span className="flex flex-1 items-center" aria-hidden="true">
-                    <i className={`h-px flex-1 bg-[#8A6D1F]/55 transition-all group-hover:bg-[#8A6D1F]/80 ${thresholdMotion}`} />
-                    <span className={`-ml-px inline-block origin-left scale-x-[1.5] text-[17px] leading-none text-[#8A6D1F] transition-transform group-hover:translate-x-1.5 ${thresholdMotion}`}>⟶</span>
-                  </span>
+                  <svg
+                    viewBox="0 0 108 12"
+                    className={`h-3 w-[88px] shrink-0 md:w-[108px] group-hover:translate-x-1.5 ${thresholdMotion} transition-transform`}
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path d="M0 6h100M93.5 1.6 100 6l-6.5 4.4" stroke="#8A6D1F" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
                 </Link>
               </div>
             </div>
