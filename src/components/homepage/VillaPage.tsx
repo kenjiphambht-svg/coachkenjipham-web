@@ -319,16 +319,33 @@ export default function VillaPage() {
         </section>
 
         {/* 06 — Founder / origin + question */}
-        <section className="relative overflow-hidden bg-e26-white px-6 py-28 md:px-10 md:py-48">
-          <Image src="/images/home/kenji-section-light-wall.webp" alt="" fill sizes="100vw" className="object-cover object-left opacity-60" aria-hidden="true" />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(90deg, color-mix(in srgb, var(--essence-cream-2026) 52%, transparent), color-mix(in srgb, var(--essence-cream-2026) 82%, transparent) 56%, color-mix(in srgb, var(--essence-ivory-2026) 97%, transparent))" }} aria-hidden="true" />
+        <section className="relative isolate -mt-6 overflow-hidden bg-e26-cream px-6 pb-24 pt-0 md:-mt-10 md:px-10 md:pb-32 xl:py-48">
+          {/* Layer 01 — the founder photograph. A scene band on narrow viewports, the full
+              environment behind the type from xl up. */}
+          <div className="relative -mx-6 aspect-[4/3] md:-mx-10 md:aspect-[7/3] xl:absolute xl:inset-0 xl:mx-0 xl:aspect-auto">
+            <Image
+              src="/images/home/home-scene-06-founder.webp"
+              alt="Kenji Phạm — Founder, ESSENCE"
+              fill
+              sizes="100vw"
+              className="object-cover object-[95%_center] md:object-center"
+            />
+            {/* Layer 02 — one soft horizontal atmosphere, feathered top and bottom, gone before Kenji */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(90deg, color-mix(in srgb, var(--essence-cream-2026) 62%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 52%, transparent) 34%, color-mix(in srgb, var(--essence-cream-2026) 20%, transparent) 58%, transparent 76%)",
+                maskImage: "linear-gradient(to bottom, transparent 0%, #000 16%, #000 80%, transparent 100%)",
+                WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, #000 16%, #000 80%, transparent 100%)",
+              }}
+              aria-hidden="true"
+            />
+          </div>
 
-          <div className="relative z-10 mx-auto grid max-w-7xl items-start gap-14 md:grid-cols-12 md:gap-8">
-            <div className="e26-reveal relative -ml-6 aspect-[4/5] w-[calc(100%+1.5rem)] max-w-[430px] overflow-hidden bg-e26-cream-deep md:col-span-4 md:-ml-10 md:mt-16 md:w-[calc(100%+2.5rem)]">
-              <Image src="/images/home/kenji-portrait.webp" alt="Kenji Phạm — Founder, ESSENCE" fill sizes="(max-width: 768px) 100vw, 34vw" className={`object-cover transition-transform hover:scale-[1.01] ${thresholdMotion}`} />
-            </div>
-
-            <div className="e26-reveal md:col-span-8 md:col-start-5 md:pt-8">
+          {/* Layer 03 — typography, unchanged hierarchy; the plaster field on the left from xl up */}
+          <div className="relative z-10 mx-auto max-w-7xl pt-14 md:pt-20 xl:pt-0">
+            <div className="e26-reveal max-w-[520px] md:max-w-[640px] xl:max-w-[720px]">
               <p data-body-copy className="max-w-[590px] font-sans text-[17px] leading-[1.78] md:text-[18px]">
                 Trước ESSENCE, tôi làm nhiều việc với nhân hiệu, hình ảnh và cách một người xuất hiện.
               </p>
