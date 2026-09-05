@@ -316,20 +316,20 @@ export default function VillaPage() {
         </section>
 
         {/* 06 — Founder / origin + question */}
-        <section className="relative overflow-hidden bg-e26-white px-[14px] pb-20 pt-0 md:px-[1.25vw] md:pb-24 min-[1440px]:pb-28">
+        <section className="relative overflow-hidden bg-e26-white px-3 pb-20 pt-0 md:px-[1vw] md:pb-24 min-[1440px]:pb-28">
           {/* Page lip — the white home plane runs over the top edge of the stage */}
           <div
-            className="pointer-events-none absolute inset-x-0 top-0 z-20 h-10 bg-e26-white md:h-11 min-[1440px]:h-12"
+            className="pointer-events-none absolute inset-x-0 top-0 z-20 h-4 bg-e26-white md:h-7 min-[1440px]:h-12"
             style={{ boxShadow: "0 12px 20px -12px rgba(26,26,26,0.26)" }}
             aria-hidden="true"
           />
 
           {/* The founder stage sits behind that lip */}
-          <div className="relative -mt-10 overflow-hidden bg-e26-cream md:-mt-11 min-[1440px]:-mt-12 min-[1440px]:min-h-[900px]">
+          <div className="relative -mt-4 overflow-hidden bg-e26-cream md:-mt-7 min-[1440px]:-mt-12 min-[1440px]:min-h-[900px]">
             {/* The photograph, exactly as approved — no veil, no wash, no grading */}
             <div className="relative aspect-[4/3] w-full md:aspect-[16/9] min-[1440px]:absolute min-[1440px]:inset-0 min-[1440px]:aspect-auto">
               <Image
-                src="/images/home/home-scene-06-founder.webp"
+                src="/images/home/home-scene-06-founder-v2.webp"
                 alt="Kenji Phạm — Founder, ESSENCE"
                 fill
                 sizes="(max-width: 1439px) 97vw, 97vw"
