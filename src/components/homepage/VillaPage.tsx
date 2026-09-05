@@ -275,13 +275,13 @@ export default function VillaPage() {
                     aria-hidden="true"
                   />
                   <div className="absolute inset-0 z-10">
-                    <h2 className="absolute left-6 top-4 font-serif text-[52px] font-normal leading-[0.9] tracking-[-0.038em] md:left-10 md:top-6 md:text-[70px] xl:left-12 xl:top-7 xl:text-[88px]">Coaching</h2>
+                    <h2 className="absolute left-6 top-4 font-serif text-[44px] font-normal leading-[0.9] tracking-[-0.038em] md:left-10 md:top-6 md:text-[70px] xl:left-12 xl:top-7 xl:text-[88px]">Coaching</h2>
                     {/* Copy sits on the clean plaster wall, clear of the cup, book and table edge. */}
-                    <div className="absolute left-[19%] top-[36%] w-[245px] md:left-[12%] md:top-[20%] md:w-[262px] xl:left-[8%] xl:top-[31%] xl:w-[300px]">
-                      <span className="mb-4 flex items-center md:mb-5" aria-hidden="true"><i className="h-1.5 w-1.5 rotate-45 bg-[#A8862B]" /><i className="h-px w-16 bg-[#A8862B]/80 md:w-20" /></span>
-                      <p data-body-copy className="font-serif text-[19px] font-medium leading-[1.36] tracking-[-0.004em] md:text-[23px] md:leading-[1.4] xl:text-[26px]">Khi điều cần nhìn rõ nằm trong đời sống của bạn.</p>
-                      <span className="my-4 block h-px w-16 bg-[#A8862B]/75 md:my-5 md:w-20" aria-hidden="true" />
-                      <p className="font-serif text-[19px] font-medium leading-[1.36] tracking-[-0.004em] md:text-[23px] md:leading-[1.4] xl:text-[26px]">Một điều đã đến lúc phải <span className="whitespace-nowrap">khác đi.<span className={`ml-2 inline-block origin-left scale-x-[1.45] text-[20px] leading-none tracking-normal text-[#8A6D1F] transition-transform group-hover:translate-x-1.5 md:ml-3 md:scale-x-[1.55] md:text-[23px] ${thresholdMotion}`} aria-hidden="true">⟶</span></span></p>
+                    <div className="absolute left-6 top-[18%] w-[205px] md:left-[12%] md:top-[20%] md:w-[262px] xl:left-[8%] xl:top-[31%] xl:w-[300px]">
+                      <span className="mb-3 flex items-center md:mb-5" aria-hidden="true"><i className="h-1.5 w-1.5 rotate-45 bg-[#A8862B]" /><i className="h-px w-14 bg-[#A8862B]/80 md:w-20" /></span>
+                      <p data-body-copy className="font-serif text-[17px] font-medium leading-[1.34] tracking-[-0.004em] md:text-[23px] md:leading-[1.4] xl:text-[26px]">Khi điều cần nhìn rõ nằm trong đời sống của bạn.</p>
+                      <span className="my-3 block h-px w-14 bg-[#A8862B]/75 md:my-5 md:w-20" aria-hidden="true" />
+                      <p className="font-serif text-[17px] font-medium leading-[1.34] tracking-[-0.004em] md:text-[23px] md:leading-[1.4] xl:text-[26px]">Một điều đã đến lúc phải <span className="whitespace-nowrap">khác đi.<span className={`ml-2 inline-block origin-left scale-x-[1.45] text-[17px] leading-none tracking-normal text-[#8A6D1F] transition-transform group-hover:translate-x-1.5 md:ml-3 md:scale-x-[1.55] md:text-[23px] ${thresholdMotion}`} aria-hidden="true">⟶</span></span></p>
                     </div>
                   </div>
                 </div>
