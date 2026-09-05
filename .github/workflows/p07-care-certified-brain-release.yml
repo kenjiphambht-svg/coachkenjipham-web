@@ -1,0 +1,237 @@
+name: P07 Care Certified Brain Direct Production Release
+
+on:
+  push:
+    branches:
+      - release/p07-care-certified-brain-fd-2026-049
+
+permissions:
+  contents: read
+
+env:
+  WORKER_NAME: p07-care-ai-meta-test
+  WORKER_CONFIG: wrangler.care-meta.jsonc
+  WORKER_URL: https://p07-care-ai-meta-test.kenjipham-bht.workers.dev
+  EXPECTED_BASELINE_VERSION: 5b3d0c70-a316-428c-bdc3-ca78d3584fc2
+  EXPECTED_BASELINE_DEPLOYMENT: 06e3ca4f-1bd3-4946-9dce-6c5d1304220c
+  EXPECTED_BINDING_COUNT: '49'
+  EXPECTED_SECRET_COUNT: '7'
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+  CARE_META_OPERABILITY_HEALTH_TOKEN: ${{ secrets.CARE_META_OPERABILITY_HEALTH_TOKEN }}
+
+jobs:
+  direct-production-release:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact release head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Assert release source and Founder-authorized bounded delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = '${{ github.sha }}'
+          BASE='1ad8e043bf31de85eb40f9fea44de9d2dcb57253'
+          test "$(git merge-base "$BASE" HEAD)" = "$BASE"
+          grep -Fq "CARE-BRAIN-v0.1" src/lib/care-ai/runtime-knowledge.ts
+          grep -Fq "Dấu Ấn Của Bạn: 8.000.000đ, ACTIVE SALE" src/lib/care-ai/runtime-knowledge.ts
+          git diff --exit-code "$BASE" HEAD -- \
+            wrangler.care-meta.jsonc \
+            src/lib/care-ai/provider-neutral-model.ts \
+            src/pages/api/internal/care-ai-meta-webhook.ts \
+            src/pages/api/internal/care-ai-meta-webhook-handler.ts \
+            src/pages/api/internal/care-ai-meta-webhook-router.ts \
+            src/pages/api/internal/care-ai-meta-operability-wrapper.ts \
+            src/pages/api/internal/care-ai-meta-operability-health.ts \
+            src/lib/care-ai/conversation-context.ts \
+            src/lib/care-ai/relationship-memory.ts \
+            src/lib/care-ai/meta-channel.ts
+          echo "PASS: release head is bounded Certified Brain delta from exact live base."
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Fail before mutation unless Cloudflare executor is authenticated
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+            echo 'BLOCKED: CLOUDFLARE_API_TOKEN is not available to the release executor.' >&2
+            exit 41
+          fi
+          npx wrangler whoami --json >/tmp/cf-whoami.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const data = JSON.parse(fs.readFileSync('/tmp/cf-whoami.json', 'utf8'));
+          if (!data || typeof data !== 'object') throw new Error('CARE_RELEASE_CLOUDFLARE_AUTH_INVALID');
+          console.log('PASS: Cloudflare executor authenticated; credential value not printed.');
+          NODE
+
+      - name: Fresh-lock active Worker version deployment bindings secrets and health
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler deployments list --name "$WORKER_NAME" --config "$WORKER_CONFIG" --json >/tmp/pre-deployments.json
+          npx wrangler versions list --name "$WORKER_NAME" --config "$WORKER_CONFIG" --json >/tmp/pre-versions.json
+          npx wrangler secret list --name "$WORKER_NAME" --config "$WORKER_CONFIG" --format json >/tmp/pre-secrets.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const depRaw = JSON.parse(fs.readFileSync('/tmp/pre-deployments.json', 'utf8'));
+          const deps = Array.isArray(depRaw) ? depRaw : (depRaw.deployments || depRaw.result || []);
+          if (!Array.isArray(deps) || !deps.length) throw new Error('CARE_RELEASE_DEPLOYMENTS_READBACK_EMPTY');
+          const sorted = [...deps].sort((a,b) => Date.parse(b.created_on || b.created_at || 0) - Date.parse(a.created_on || a.created_at || 0));
+          const active = sorted[0];
+          const versions = Array.isArray(active.versions) ? active.versions : [];
+          if (versions.length !== 1 || Number(versions[0].percentage) !== 100 || !versions[0].version_id) {
+            throw new Error('CARE_RELEASE_BASELINE_TRAFFIC_NOT_SINGLE_100');
+          }
+          if (active.id !== process.env.EXPECTED_BASELINE_DEPLOYMENT || versions[0].version_id !== process.env.EXPECTED_BASELINE_VERSION) {
+            throw new Error(`CARE_RELEASE_BASELINE_DRIFT_${active.id || 'NONE'}_${versions[0]?.version_id || 'NONE'}`);
+          }
+          const secretsRaw = JSON.parse(fs.readFileSync('/tmp/pre-secrets.json', 'utf8'));
+          const secrets = Array.isArray(secretsRaw) ? secretsRaw : (secretsRaw.result || secretsRaw.secrets || []);
+          if (!Array.isArray(secrets) || secrets.length !== Number(process.env.EXPECTED_SECRET_COUNT)) {
+            throw new Error(`CARE_RELEASE_SECRET_COUNT_${secrets?.length ?? 'INVALID'}`);
+          }
+          fs.writeFileSync('/tmp/pre-secret-names.txt', secrets.map((s) => String(s.name || '')).filter(Boolean).sort().join('\n') + '\n');
+          fs.appendFileSync(process.env.GITHUB_ENV, `ROLLBACK_DEPLOYMENT_ID=${active.id}\nROLLBACK_VERSION_ID=${versions[0].version_id}\n`);
+          console.log(`PASS: fresh rollback baseline locked deployment=${active.id} version=${versions[0].version_id} traffic=100 secret_count=${secrets.length}`);
+          NODE
+          npx wrangler versions view "$ROLLBACK_VERSION_ID" --name "$WORKER_NAME" --config "$WORKER_CONFIG" --json >/tmp/pre-version-view.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const root = JSON.parse(fs.readFileSync('/tmp/pre-version-view.json','utf8'));
+          const data = root.result || root;
+          const bindings = data?.resources?.bindings || [];
+          if (!Array.isArray(bindings) || bindings.length !== Number(process.env.EXPECTED_BINDING_COUNT)) {
+            throw new Error(`CARE_RELEASE_BINDING_COUNT_${bindings?.length ?? 'INVALID'}`);
+          }
+          const inventory = bindings.map((b) => `${String(b.name || '')}:${String(b.type || '')}`).sort();
+          fs.writeFileSync('/tmp/pre-binding-inventory.txt', inventory.join('\n') + '\n');
+          const safe = new Map(bindings.map((b) => [b.name, b.text ?? b.value]));
+          const expected = {
+            CARE_MODEL_PROVIDER: 'google_gemini',
+            CARE_MODEL_NAME: 'gemini-3.5-flash-lite',
+            CARE_META_DURABLE_MEMORY_READ_ENABLED: 'true',
+            CARE_META_DURABLE_MEMORY_WRITE_ENABLED: 'true',
+            CARE_MEMORY_CONTRACT_VERSION: 'p09-memory-v0.3',
+            CARE_MEMORY_ITEMS_MAX: '10',
+            CARE_MEMORY_CHARS_MAX: '2500',
+            CARE_META_LIVE_TEST_ENABLED: 'true',
+            CARE_META_OUTBOUND_ENABLED: 'true',
+            CARE_META_CUSTOMER_MODE_ENABLED: 'true',
+            CARE_META_FACEBOOK_COMMENT_ENABLED: 'true',
+            CARE_META_FACEBOOK_COMMENT_OUTBOUND_ENABLED: 'true',
+            CARE_META_OPERABILITY_EVENTS_ENABLED: 'true',
+            CARE_META_OPERABILITY_HEALTH_ENABLED: 'true',
+          };
+          for (const [name, value] of Object.entries(expected)) {
+            if (String(safe.get(name)) !== value) throw new Error(`CARE_RELEASE_PRE_BINDING_VALUE_${name}`);
+          }
+          if (String(safe.get('CARE_META_INSTAGRAM_ENABLED') || 'false') === 'true' || String(safe.get('CARE_META_INSTAGRAM_OUTBOUND_ENABLED') || 'false') === 'true') {
+            throw new Error('CARE_RELEASE_PRE_INSTAGRAM_ENABLED');
+          }
+          console.log(`PASS: fresh active version has ${bindings.length} bindings and all required provider/model/memory/channel/operability gates are preserved.`);
+          NODE
+          HEALTH_SQL="WITH p AS (SELECT unixepoch('now')*1000 AS now_ms) SELECT COALESCE(SUM(CASE WHEN updated_at_ms >= now_ms-900000 AND model_failed=1 THEN 1 ELSE 0 END),0) AS model_failures, COALESCE(SUM(CASE WHEN updated_at_ms >= now_ms-900000 AND outbound_failed=1 THEN 1 ELSE 0 END),0) AS outbound_failures, COALESCE(SUM(CASE WHEN created_at_ms >= now_ms-900000 AND updated_at_ms <= now_ms-90000 AND stage IN ('RECEIVED','MODEL_SUCCESS') THEN 1 ELSE 0 END),0) AS pending_replies FROM care_meta_operability_state,p WHERE expires_at_ms > now_ms AND (updated_at_ms >= now_ms-900000 OR created_at_ms >= now_ms-900000);"
+          npx wrangler d1 execute care-meta-idempotency --remote --config "$WORKER_CONFIG" --command "$HEALTH_SQL" --json >/tmp/pre-health-d1.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const root = JSON.parse(fs.readFileSync('/tmp/pre-health-d1.json','utf8'));
+          const found=[];
+          const walk=(x)=>{if(!x||typeof x!=='object')return;if('model_failures'in x&&'outbound_failures'in x&&'pending_replies'in x)found.push(x);for(const v of Object.values(x))walk(v)}; walk(root);
+          const h=found[0];
+          if(!h) throw new Error('CARE_RELEASE_PRE_HEALTH_RESULT_MISSING');
+          if(Number(h.model_failures)!==0||Number(h.outbound_failures)!==0||Number(h.pending_replies)!==0) throw new Error(`CARE_RELEASE_PRE_HEALTH_DEGRADED_${h.model_failures}_${h.outbound_failures}_${h.pending_replies}`);
+          console.log('PASS: pre-deploy Operability health-equivalent = HEALTHY (0 model failures / 0 outbound failures / 0 pending replies).');
+          NODE
+          if [ -n "${CARE_META_OPERABILITY_HEALTH_TOKEN:-}" ]; then
+            code="$(curl -sS -o /tmp/pre-health-http.json -w '%{http_code}' -H "Authorization: Bearer ${CARE_META_OPERABILITY_HEALTH_TOKEN}" "$WORKER_URL/api/internal/care-ai-meta-operability-health")"
+            test "$code" = '200'
+            node - <<'NODE'
+            const fs=require('fs'); const x=JSON.parse(fs.readFileSync('/tmp/pre-health-http.json','utf8')); if(String(x.status||'').toLowerCase()!=='healthy') throw new Error('CARE_RELEASE_PRE_AUTH_HEALTH_NOT_HEALTHY'); console.log('PASS: authenticated pre-deploy Operability endpoint = HTTP 200 HEALTHY.');
+            NODE
+          else
+            echo 'INFO: authenticated health token is not exported to GitHub; D1 health-equivalent proof is authoritative for this executor run.'
+          fi
+
+      - name: Build exact QA-approved release bundle
+        env:
+          CARE_META_INSTAGRAM_ENABLED: 'false'
+          CARE_META_INSTAGRAM_OUTBOUND_ENABLED: 'false'
+        run: npm run cf:build
+
+      - name: Deploy exact Certified Brain head to existing Worker at 100 percent
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo 'DEPLOY_STARTED=1' >> "$GITHUB_ENV"
+          npx wrangler deploy --name "$WORKER_NAME" --config "$WORKER_CONFIG" --keep-vars --message "FD-2026-049 CARE-BRAIN-v0.1 source=${GITHUB_SHA}"
+          echo 'PASS: wrangler deploy returned success; Cloudflare default deployment target is 100% traffic and will be verified by readback.'
+
+      - name: Fresh-read deployment traffic bindings secrets provider model and Operability
+        shell: bash
+        run: |
+          set -euo pipefail
+          rollback() {
+            echo "ROLLBACK: restoring fresh locked version $ROLLBACK_VERSION_ID" >&2
+            npx wrangler rollback "$ROLLBACK_VERSION_ID" --name "$WORKER_NAME" --config "$WORKER_CONFIG" --message "FD-2026-049 automatic rollback from ${GITHUB_SHA}" || true
+            npx wrangler deployments list --name "$WORKER_NAME" --config "$WORKER_CONFIG" --json >/tmp/rollback-deployments.json || true
+          }
+          trap 'status=$?; rollback; exit $status' ERR
+
+          npx wrangler deployments list --name "$WORKER_NAME" --config "$WORKER_CONFIG" --json >/tmp/post-deployments.json
+          npx wrangler versions list --name "$WORKER_NAME" --config "$WORKER_CONFIG" --json >/tmp/post-versions.json
+          npx wrangler secret list --name "$WORKER_NAME" --config "$WORKER_CONFIG" --format json >/tmp/post-secrets.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const depRaw=JSON.parse(fs.readFileSync('/tmp/post-deployments.json','utf8'));
+          const deps=Array.isArray(depRaw)?depRaw:(depRaw.deployments||depRaw.result||[]);
+          if(!Array.isArray(deps)||!deps.length)throw new Error('CARE_RELEASE_POST_DEPLOYMENTS_EMPTY');
+          const sorted=[...deps].sort((a,b)=>Date.parse(b.created_on||b.created_at||0)-Date.parse(a.created_on||a.created_at||0));
+          const active=sorted[0]; const versions=Array.isArray(active.versions)?active.versions:[];
+          if(versions.length!==1||Number(versions[0].percentage)!==100||!versions[0].version_id)throw new Error('CARE_RELEASE_POST_TRAFFIC_NOT_SINGLE_100');
+          if(versions[0].version_id===process.env.ROLLBACK_VERSION_ID)throw new Error('CARE_RELEASE_POST_VERSION_DID_NOT_CHANGE');
+          fs.appendFileSync(process.env.GITHUB_ENV,`NEW_DEPLOYMENT_ID=${active.id}\nNEW_VERSION_ID=${versions[0].version_id}\n`);
+          console.log(`PASS: post-deploy active deployment=${active.id} version=${versions[0].version_id} traffic=100`);
+          NODE
+          npx wrangler versions view "$NEW_VERSION_ID" --name "$WORKER_NAME" --config "$WORKER_CONFIG" --json >/tmp/post-version-view.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const root=JSON.parse(fs.readFileSync('/tmp/post-version-view.json','utf8')); const data=root.result||root; const bindings=data?.resources?.bindings||[];
+          if(!Array.isArray(bindings)||bindings.length!==Number(process.env.EXPECTED_BINDING_COUNT))throw new Error(`CARE_RELEASE_POST_BINDING_COUNT_${bindings?.length??'INVALID'}`);
+          const inventory=bindings.map((b)=>`${String(b.name||'')}:${String(b.type||'')}`).sort().join('\n')+'\n';
+          if(inventory!==fs.readFileSync('/tmp/pre-binding-inventory.txt','utf8'))throw new Error('CARE_RELEASE_BINDING_INVENTORY_DRIFT');
+          const safe=new Map(bindings.map((b)=>[b.name,b.text??b.value]));
+          const expected={CARE_MODEL_PROVIDER:'google_gemini',CARE_MODEL_NAME:'gemini-3.5-flash-lite',CARE_META_DURABLE_MEMORY_READ_ENABLED:'true',CARE_META_DURABLE_MEMORY_WRITE_ENABLED:'true',CARE_MEMORY_CONTRACT_VERSION:'p09-memory-v0.3',CARE_MEMORY_ITEMS_MAX:'10',CARE_MEMORY_CHARS_MAX:'2500',CARE_META_LIVE_TEST_ENABLED:'true',CARE_META_OUTBOUND_ENABLED:'true',CARE_META_CUSTOMER_MODE_ENABLED:'true',CARE_META_FACEBOOK_COMMENT_ENABLED:'true',CARE_META_FACEBOOK_COMMENT_OUTBOUND_ENABLED:'true',CARE_META_OPERABILITY_EVENTS_ENABLED:'true',CARE_META_OPERABILITY_HEALTH_ENABLED:'true'};
+          for(const [name,value] of Object.entries(expected))if(String(safe.get(name))!==value)throw new Error(`CARE_RELEASE_POST_BINDING_VALUE_${name}`);
+          if(String(safe.get('CARE_META_INSTAGRAM_ENABLED')||'false')==='true'||String(safe.get('CARE_META_INSTAGRAM_OUTBOUND_ENABLED')||'false')==='true')throw new Error('CARE_RELEASE_POST_INSTAGRAM_ENABLED');
+          console.log(`PASS: post-deploy ${bindings.length} bindings unchanged; provider/model/memory/channel/operability gates preserved.`);
+          NODE
+          node - <<'NODE'
+          const fs=require('fs'); const raw=JSON.parse(fs.readFileSync('/tmp/post-secrets.json','utf8')); const s=Array.isArray(raw)?raw:(raw.result||raw.secrets||[]); if(!Array.isArray(s)||s.length!==Number(process.env.EXPECTED_SECRET_COUNT))throw new Error(`CARE_RELEASE_POST_SECRET_COUNT_${s?.length??'INVALID'}`); const names=s.map(x=>String(x.name||'')).filter(Boolean).sort().join('\n')+'\n'; if(names!==fs.readFileSync('/tmp/pre-secret-names.txt','utf8'))throw new Error('CARE_RELEASE_SECRET_INVENTORY_DRIFT'); console.log(`PASS: ${s.length}/${process.env.EXPECTED_SECRET_COUNT} secrets preserved by name/type inventory; values never read or printed.`);
+          NODE
+          HEALTH_SQL="WITH p AS (SELECT unixepoch('now')*1000 AS now_ms) SELECT COALESCE(SUM(CASE WHEN updated_at_ms >= now_ms-900000 AND model_failed=1 THEN 1 ELSE 0 END),0) AS model_failures, COALESCE(SUM(CASE WHEN updated_at_ms >= now_ms-900000 AND outbound_failed=1 THEN 1 ELSE 0 END),0) AS outbound_failures, COALESCE(SUM(CASE WHEN created_at_ms >= now_ms-900000 AND updated_at_ms <= now_ms-90000 AND stage IN ('RECEIVED','MODEL_SUCCESS') THEN 1 ELSE 0 END),0) AS pending_replies FROM care_meta_operability_state,p WHERE expires_at_ms > now_ms AND (updated_at_ms >= now_ms-900000 OR created_at_ms >= now_ms-900000);"
+          npx wrangler d1 execute care-meta-idempotency --remote --config "$WORKER_CONFIG" --command "$HEALTH_SQL" --json >/tmp/post-health-d1.json
+          node - <<'NODE'
+          const fs=require('fs'); const root=JSON.parse(fs.readFileSync('/tmp/post-health-d1.json','utf8')); const found=[]; const walk=(x)=>{if(!x||typeof x!=='object')return;if('model_failures'in x&&'outbound_failures'in x&&'pending_replies'in x)found.push(x);for(const v of Object.values(x))walk(v)}; walk(root); const h=found[0]; if(!h)throw new Error('CARE_RELEASE_POST_HEALTH_RESULT_MISSING'); if(Number(h.model_failures)!==0||Number(h.outbound_failures)!==0||Number(h.pending_replies)!==0)throw new Error(`CARE_RELEASE_POST_HEALTH_DEGRADED_${h.model_failures}_${h.outbound_failures}_${h.pending_replies}`); console.log('PASS: post-deploy Operability = HEALTHY (0 model failures / 0 outbound failures / 0 pending replies).');
+          NODE
+          if [ -n "${CARE_META_OPERABILITY_HEALTH_TOKEN:-}" ]; then
+            code="$(curl -sS -o /tmp/post-health-http.json -w '%{http_code}' -H "Authorization: Bearer ${CARE_META_OPERABILITY_HEALTH_TOKEN}" "$WORKER_URL/api/internal/care-ai-meta-operability-health")"
+            test "$code" = '200'
+            node - <<'NODE'
+            const fs=require('fs'); const x=JSON.parse(fs.readFileSync('/tmp/post-health-http.json','utf8')); if(String(x.status||'').toLowerCase()!=='healthy')throw new Error('CARE_RELEASE_POST_AUTH_HEALTH_NOT_HEALTHY'); console.log('PASS: authenticated post-deploy Operability endpoint = HTTP 200 HEALTHY.');
+            NODE
+          fi
+          trap - ERR
+          echo "P9_BRAIN_RELEASE_READY deployment=$NEW_DEPLOYMENT_ID version=$NEW_VERSION_ID traffic=100 rollback_version=$ROLLBACK_VERSION_ID rollback_deployment=$ROLLBACK_DEPLOYMENT_ID"
