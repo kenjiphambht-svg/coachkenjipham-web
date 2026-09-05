@@ -316,59 +316,53 @@ export default function VillaPage() {
         </section>
 
         {/* 06 — Founder / origin + question */}
-        <section className="relative overflow-hidden bg-e26-white px-6 pb-24 pt-24 md:px-10 md:pb-32 md:pt-32 xl:pb-36 xl:pt-40">
-          <div className="relative mx-auto max-w-7xl xl:min-h-[640px]">
-            {/* The founder stage — inset into the white page, never touching the viewport edge */}
-            <div className="relative mx-3 aspect-[4/3] overflow-hidden bg-e26-cream-deep md:mx-6 md:aspect-[16/9] xl:absolute xl:right-0 xl:top-1/2 xl:mx-0 xl:aspect-[3/2] xl:w-[60%] xl:-translate-y-1/2">
+        <section className="relative overflow-hidden bg-e26-white px-5 py-20 md:px-[5vw] md:py-24 min-[1440px]:py-28">
+          {/* One large stage, inset from the page. The white page is only its margin. */}
+          <div className="relative mx-auto max-w-[1720px] overflow-hidden bg-e26-cream">
+            {/* The photograph is the stage itself — the full deep world behind everything */}
+            <div className="relative aspect-[4/3] w-full md:aspect-[16/9] min-[1440px]:absolute min-[1440px]:inset-0 min-[1440px]:aspect-auto">
               <Image
                 src="/images/home/home-scene-06-founder.webp"
                 alt="Kenji Phạm — Founder, ESSENCE"
                 fill
-                sizes="(max-width: 1279px) 100vw, 66vw"
-                className="object-cover object-[95%_center] md:object-[85%_center] xl:object-[78%_center]"
-                style={{ filter: "saturate(0.90) contrast(0.95) brightness(1.02)" }}
+                sizes="(max-width: 1439px) 92vw, 90vw"
+                className="object-cover object-[92%_center] md:object-[86%_center] min-[1440px]:object-[46%_center]"
+                style={{ filter: "saturate(0.88) contrast(0.94) brightness(1.03)" }}
               />
-              {/* One horizontal atmospheric plane — the middle depth, gone before Kenji */}
+              {/* One broad atmosphere across the stage — heaviest behind the copy, gone before Kenji */}
               <div
                 className="absolute inset-0"
                 style={{
                   background:
-                    "linear-gradient(90deg, color-mix(in srgb, var(--essence-cream-2026) 58%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 44%, transparent) 32%, color-mix(in srgb, var(--essence-cream-2026) 16%, transparent) 56%, transparent 74%)",
-                  maskImage: "linear-gradient(to bottom, transparent 0%, #000 18%, #000 78%, transparent 100%)",
-                  WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, #000 18%, #000 78%, transparent 100%)",
+                    "linear-gradient(90deg, color-mix(in srgb, var(--essence-cream-2026) 78%, transparent) 0%, color-mix(in srgb, var(--essence-cream-2026) 70%, transparent) 30%, color-mix(in srgb, var(--essence-cream-2026) 44%, transparent) 52%, color-mix(in srgb, var(--essence-cream-2026) 14%, transparent) 70%, transparent 84%)",
                 }}
-                aria-hidden="true"
-              />
-              {/* The recess — light falls into the stage from the page above it */}
-              <div
-                className="pointer-events-none absolute inset-0 shadow-[inset_0_46px_72px_-30px_rgba(26,26,26,0.72),inset_34px_0_66px_-32px_rgba(26,26,26,0.54),inset_-28px_0_60px_-34px_rgba(26,26,26,0.40),inset_0_-28px_52px_-28px_rgba(26,26,26,0.44),inset_0_0_0_1px_rgba(26,26,26,0.09)]"
                 aria-hidden="true"
               />
             </div>
 
-            {/* Typography — the front plane, crossing the stage edge on the plaster side only */}
-            <div className="relative z-10 -mt-10 pt-10 md:-mt-14 md:pt-14 xl:mt-0 xl:w-[58%] xl:py-16">
+            {/* Typography — the foreground plane, inside the same stage */}
+            <div className="relative z-10 -mt-8 px-6 pb-12 pt-8 md:-mt-10 md:px-10 md:pb-16 md:pt-10 min-[1440px]:mt-0 min-[1440px]:w-[63%] min-[1440px]:min-w-[812px] min-[1440px]:max-w-[900px] min-[1440px]:px-14 min-[1440px]:py-16">
               <div className="e26-reveal">
                 <p data-body-copy className="max-w-[590px] font-sans text-[17px] leading-[1.78] md:text-[18px]">
                   Trước ESSENCE, tôi làm nhiều việc với nhân hiệu, hình ảnh và cách một người xuất hiện.
                 </p>
 
-                <p className="mt-10 max-w-[720px] font-serif text-[34px] font-medium leading-[1.16] tracking-[-0.016em] md:text-[48px]">
+                <p className="mt-8 max-w-[720px] font-serif text-[34px] font-medium leading-[1.16] tracking-[-0.016em] md:text-[48px]">
                   Hình ảnh có thể được xây nhanh hơn điều thật sự đứng phía sau nó.
                 </p>
 
-                <div className="relative mt-16 border-t border-[#E0C068]/62 pt-10 md:mt-24 md:pt-14">
-                  <p className="mb-7 font-sans text-[12px] font-medium uppercase tracking-[0.13em] text-e26-text-2">Từ đó, một câu hỏi ở lại với tôi:</p>
+                <div className="relative mt-14 border-t border-[#E0C068]/62 pt-9 md:mt-16 md:pt-10">
+                  <p className="mb-5 font-sans text-[12px] font-medium uppercase tracking-[0.13em] text-e26-text-2">Từ đó, một câu hỏi ở lại với tôi:</p>
                   <p className="max-w-[900px] font-serif text-[48px] font-medium leading-[1.02] tracking-[-0.024em] md:text-[76px] lg:text-[88px]">“Điều gì ở đây thật sự đáng để được xây?”</p>
                 </div>
 
-                <div className="mt-12 border-l border-[#E0C068]/72 pl-4">
+                <div className="mt-10 border-l border-[#E0C068]/72 pl-4">
                   <p data-founder-attribution className="font-serif text-[21px] leading-[1.4] text-e26-text">Kenji Phạm <span className="font-sans text-[12px] uppercase tracking-[0.13em] text-e26-text">— Founder, ESSENCE</span></p>
                 </div>
 
                 <Link
                   href="/ve-kenji"
-                  className={`group mt-10 flex min-h-11 max-w-[420px] items-center gap-5 font-sans text-[13px] font-medium uppercase tracking-[0.12em] text-e26-text md:mt-12 ${thresholdMotion}`}
+                  className={`group mt-8 flex min-h-11 max-w-[420px] items-center gap-5 font-sans text-[13px] font-medium uppercase tracking-[0.12em] text-e26-text md:mt-9 ${thresholdMotion}`}
                 >
                   <span>Về Kenji</span>
                   <span className="flex flex-1 items-center" aria-hidden="true">
