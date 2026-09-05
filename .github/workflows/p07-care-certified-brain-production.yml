@@ -1,0 +1,191 @@
+name: P07 Care Certified Brain Production QA
+
+on:
+  push:
+    branches:
+      - backend/p07-care-certified-brain-production-01
+  pull_request:
+    branches:
+      - backend/p07-care-operability-monitoring-01
+
+permissions:
+  contents: read
+
+jobs:
+  certified-brain-production-qa:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact source head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Assert exact head and pinned live-base ancestry
+        shell: bash
+        run: |
+          set -euo pipefail
+          EXPECTED_SHA='${{ github.event.pull_request.head.sha || github.sha }}'
+          ACTUAL_SHA="$(git rev-parse HEAD)"
+          test "$ACTUAL_SHA" = "$EXPECTED_SHA"
+          PINNED_BASE='1ad8e043bf31de85eb40f9fea44de9d2dcb57253'
+          test "$(git merge-base "$PINNED_BASE" HEAD)" = "$PINNED_BASE"
+          echo "PASS: exact Certified Brain head $ACTUAL_SHA derives from live base $PINNED_BASE"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Assert frozen P09 provenance and smallest runtime delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='1ad8e043bf31de85eb40f9fea44de9d2dcb57253'
+          mapfile -t CHANGED < <(git diff --name-only "$BASE" HEAD)
+          printf '%s\n' "${CHANGED[@]}"
+          for file in "${CHANGED[@]}"; do
+            case "$file" in
+              src/lib/care-ai/runtime-knowledge.ts|tests/care-ai-certified-brain-production.test.ts|.github/workflows/p07-care-certified-brain-production.yml|.github/workflows/p07-care-certified-brain-release.yml) ;;
+              *) echo "Unexpected file in bounded Brain release delta: $file" >&2; exit 1 ;;
+            esac
+          done
+          git diff --exit-code "$BASE" HEAD -- \
+            wrangler.care-meta.jsonc \
+            src/lib/care-ai/provider-neutral-model.ts \
+            src/pages/api/internal/care-ai-meta-webhook.ts \
+            src/pages/api/internal/care-ai-meta-webhook-handler.ts \
+            src/pages/api/internal/care-ai-meta-webhook-router.ts \
+            src/pages/api/internal/care-ai-meta-operability-wrapper.ts \
+            src/pages/api/internal/care-ai-meta-operability-health.ts \
+            src/lib/care-ai/conversation-context.ts \
+            src/lib/care-ai/relationship-memory.ts \
+            src/lib/care-ai/meta-channel.ts
+          node - <<'NODE'
+          const fs = require('fs');
+          const source = fs.readFileSync('src/lib/care-ai/runtime-knowledge.ts', 'utf8');
+          const required = [
+            'CARE-BRAIN-v0.1',
+            '1q0NA78CEwtzC6azSKEPnmPo4Wnyl1DyRJmeoRIAXN5U',
+            'ANLCKQlBXB84Lx6xdDerJ-PKv1y16ynvtc4mjWorpU_qGbH-4Kvy-jnSxWN39knCoQLYr76HgfOy55oV7FuxChT7vuevtcxDinens9HFmQ',
+            '1ih3lQ6d8Xv3P7AmU7MVvddpted5ZdGAIqRRFV5W1XlI',
+            'ANLCKQkRXLJLichgzm5sGrOqPwqpLuOk2v25h3lPC17cf_i3zA76-oR4Z9ysQ0OJnWbY_s4fYj0_Q9bbhBdOBMFgW6KClHb1F_5MiuwLpA',
+            '1iU0AU_DS8vHeG-ZNc3Wt9IiYaI6uBXo0mZpmy42Xq3A',
+            'ANLCKQl90jOzgWulFirX2vCCcE2eqWozT2L7yd-4RQhVNHvVOXuaeiwbUjjiTpg_ooKDv499Xfab-3nU6B7fWvAiwIwoGeZSugjj75N05Q',
+            '1rcgNuY8h5E_mPT-wV1Yc9NqKooHPgLMYqRWsz9aw61Y',
+            'ANLCKQlFCEhMOx_UlD8ZPiLQXl7iC1ciczj3ZN94KHGgrzP5NL7X7eJteRZfdkYkP0urbvOnz7GBQVDHqkDd2chGAktEmCsAOt50rRiMCw',
+            '1vVkW81ZW1jGXexAowFmeGR4LHfW3kxnryu_z6YXdCo0',
+            'ANLCKQnXRVRtDezCZZH6cvyayzIVI1riPMuh79X4nO5TlLtz8d6DZoFFJwDd2L0UztdfHpCG2hXK3Yf95NUeH54RvIALwtb2ch_uGXGpAQ',
+            '1VnZ_XS50h5uPvM-sIUVIA98NkMa1CzWnlc4Ku9DFdvo',
+            'ANLCKQnpX6jZa8At4ICkzplVUDeCv7TXzZvYY5-vyWO7fuJ3Kknej0bfw1xTnAnPscSE4OCMk3cSVCQzHuSlDVTwKxMAN1bY2qQvk_9boA',
+            '1EXCNBh84d-AXsjUb0M2AiB-KTxMfmAS0X-vJ2LkdtD8',
+            'ANLCKQkcnxOoNRF0tdzVsn75WfzhXjY1fcCDrekkrv4xxh45yEquXjPcUdX670pyGdRI4FJGdfA4Aq2uw0BTe6zh-hN7QT4ucW6FmJW7WQ',
+            '1ZC0L7Ao_SkZLwM-kjbj6G3hM3a-Gdh2Et7F01OfE8XY',
+            'ANLCKQlAPgb0h3j-6Zmm13HNZGwXk2eqAiJ191MPA41G8Y2e2A5QPyRBi8aizyyFcJy7HJCLbvawHDpIqM_Y6PWfNoiZBYGXQFb9W9EoGQ',
+            '1RZADG-WNeBlkM-nlWm2E55umqSXX3gtsJxgyF-P6il4',
+            'ANLCKQm4Cm-QYjuARNmqJTyE24biPF2JSZgBPbqL-pzt2KSOgkNq0AOteoRTk_qTpGbYT7ZLG2ueRRX9ggRJ91flmuqH1AawmKVLPYFNeA',
+          ];
+          for (const value of required) if (!source.includes(value)) throw new Error(`CARE_BRAIN_PROVENANCE_MISSING_${value}`);
+          if (!source.includes('Dấu Ấn Của Bạn: 8.000.000đ, ACTIVE SALE')) throw new Error('CARE_BRAIN_DAU_AN_8M_LOCK_MISSING');
+          if (!source.includes('NO current paid ESSENCE WORK offer')) throw new Error('CARE_BRAIN_WORK_BOUNDARY_MISSING');
+          console.log('PASS: frozen P09 provenance and mandatory semantic locks are source-pinned.');
+          NODE
+
+      - name: Assert keep_vars/provider/model/memory/channel invariants unchanged
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs = require('fs');
+          const raw = fs.readFileSync('wrangler.care-meta.jsonc', 'utf8').replace(/^\s*\/\/.*$/gm, '');
+          const cfg = JSON.parse(raw);
+          if (cfg.name !== 'p07-care-ai-meta-test') throw new Error('CARE_WORKER_NAME_INVALID');
+          if (cfg.keep_vars !== true) throw new Error('CARE_KEEP_VARS_REQUIRED');
+          const vars = cfg.vars || {};
+          const expected = {
+            CARE_MODEL_PROVIDER: 'google_gemini',
+            CARE_MODEL_NAME: 'gemini-3.5-flash-lite',
+            CARE_META_DURABLE_MEMORY_READ_ENABLED: 'true',
+            CARE_META_DURABLE_MEMORY_WRITE_ENABLED: 'true',
+            CARE_MEMORY_CONTRACT_VERSION: 'p09-memory-v0.3',
+            CARE_MEMORY_ITEMS_MAX: '10',
+            CARE_MEMORY_CHARS_MAX: '2500',
+          };
+          for (const [key, value] of Object.entries(expected)) {
+            if (vars[key] !== value) throw new Error(`CARE_BRAIN_INVARIANT_${key}`);
+          }
+          if (vars.CARE_META_INSTAGRAM_ENABLED === 'true' || vars.CARE_META_INSTAGRAM_OUTBOUND_ENABLED === 'true') {
+            throw new Error('CARE_BRAIN_INSTAGRAM_NOT_AUTHORIZED');
+          }
+          const db = (cfg.d1_databases || []).find((item) => item.binding === 'CARE_META_IDEMPOTENCY_DB');
+          if (!db || db.database_id !== '09d17d94-2325-4afb-9500-ddac0c31e275') throw new Error('CARE_BRAIN_D1_BINDING_DRIFT');
+          console.log('PASS: keep_vars/provider/model/memory/D1/channel source invariants preserved.');
+          NODE
+
+      - name: Run Certified Brain targeted acceptance tests
+        run: >
+          npx vitest run
+          tests/care-ai-certified-brain-production.test.ts
+          tests/care-ai-runtime-knowledge.test.ts
+          tests/care-ai-provider-neutral.test.ts
+          tests/care-ai-model-quality.test.ts
+
+      - name: Run Messenger Facebook memory operability regressions
+        run: >
+          npx vitest run
+          tests/care-ai-operability.test.ts
+          tests/care-ai-operability-wiring.test.ts
+          tests/care-ai-meta-sandbox.test.ts
+          tests/care-ai-meta-customer-guard.test.ts
+          tests/care-ai-facebook-comment.test.ts
+          tests/care-ai-facebook-comment-wiring.test.ts
+          tests/care-ai-conversation-context.test.ts
+          tests/care-ai-conversation-context-sql.test.ts
+          tests/care-ai-relationship-memory.test.ts
+          tests/care-ai-relationship-memory-runtime.test.ts
+          tests/care-ai-relationship-memory-write-runtime.test.ts
+          tests/care-ai-meta-memory-write-wiring.test.ts
+          tests/care-ai-relationship-memory-sql.test.ts
+
+      - name: Build isolated Cloudflare bundle with mutable customer gates off
+        env:
+          CARE_META_SANDBOX_ENABLED: 'true'
+          CARE_META_LIVE_TEST_ENABLED: 'false'
+          CARE_META_OUTBOUND_ENABLED: 'false'
+          CARE_META_CUSTOMER_MODE_ENABLED: 'false'
+          CARE_META_FACEBOOK_COMMENT_ENABLED: 'false'
+          CARE_META_FACEBOOK_COMMENT_OUTBOUND_ENABLED: 'false'
+          CARE_META_INSTAGRAM_ENABLED: 'false'
+          CARE_META_INSTAGRAM_OUTBOUND_ENABLED: 'false'
+          CARE_META_CONVERSATION_CONTEXT_ENABLED: 'false'
+          CARE_META_OPERABILITY_EVENTS_ENABLED: 'false'
+          CARE_META_OPERABILITY_HEALTH_ENABLED: 'false'
+        run: npm run cf:build
+
+      - name: Wrangler exact-head isolated dry-run only
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf wrangler-care-certified-brain-dry-run
+          npx wrangler deploy --dry-run --config wrangler.care-meta.jsonc --outdir wrangler-care-certified-brain-dry-run
+          test -f wrangler-care-certified-brain-dry-run/worker.js
+          echo 'PASS: Certified Brain head packages without provider mutation.'
+
+      - name: Assert no live credentials exported to QA
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "${CLOUDFLARE_API_TOKEN:-}"
+          test -z "${CLOUDFLARE_ACCOUNT_ID:-}"
+          test -z "${GEMINI_API_KEY:-}"
+          test -z "${CARE_MODEL_API_KEY:-}"
+          test -z "${CARE_META_APP_SECRET:-}"
+          test -z "${CARE_META_MESSENGER_ACCESS_TOKEN:-}"
+          test -z "${CARE_META_INSTAGRAM_ACCESS_TOKEN:-}"
+          test -z "${CARE_META_CONTEXT_IDENTITY_HMAC_SECRET:-}"
+          test -z "${CARE_META_OPERABILITY_HEALTH_TOKEN:-}"
+          echo 'PASS: QA exports no live credentials.'
